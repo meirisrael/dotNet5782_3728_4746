@@ -21,9 +21,10 @@ namespace IDAL
 				return $"Base Station:" +
 					$"Id: {this.Id}," +
 					$"Name: { this.Name}," +
-					$"Charge Slotes:{this.ChargeSlots}" +
-					$"Longitude: {this.Longitude} " +
-					$"Lattitude: {this.Lattitude}\n";
+					$"Charge Slotes:{this.ChargeSlots}," +
+					$"Longitude: {this.Longitude}," +
+					$"Lattitude: {this.Lattitude}"+
+					"\n";
 			}
 		}
 	}

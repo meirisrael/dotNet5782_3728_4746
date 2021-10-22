@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DalObject
+namespace IDAL
 {
-	public class DalObject
+	namespace DO
 	{
+		class Enums
+		{
 
+		}
 	}
 }

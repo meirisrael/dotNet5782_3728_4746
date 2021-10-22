@@ -15,6 +15,17 @@ namespace IDAL
 			public weightCategories MaxWeight { get; set; }
 			public DroneStatuses status { get; set; }
 			public double Battery { get; set; }
+
+			public string toString()
+			{
+				return $"Drone: " +
+					$"Id: {this.Id}," +
+					$"Model: {this.Model}," +
+					$"MaxWeight: {this.MaxWeight }," +
+					$"status: {this.status}," +
+					$"Battery: {this.Battery}" +
+					"\n";
+			}
 		}
 	}
 }
