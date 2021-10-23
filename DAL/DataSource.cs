@@ -26,7 +26,60 @@ namespace DalObject
 
 		public static void Inutialize()
 		{
+			for (int i = 0; i < 2; i++)//for base station
+			{
+				baseStation[i] = new IDAL.DO.BaseStation()
+				{
+					Id = i,
+					Name = i,
+					ChargeSlots = r.Next() % 5,
+					Lattitude = (r.NextDouble() * 180) - 90,
+					Longitude = (r.NextDouble() * 180) - 90
+				};
+				Config.indexBaseStation++;
+			}
+			for (int i = 0; i < 5; i++)//for the drone
+			{
+				drone[i] = new IDAL.DO.Drone()
+				{
+					Id = i,
+					Model = "x",
+					MaxWeight = r.Next(1, 4),
+					status = r.Next(1, 4),
+					Battery = (100 - i * 10)
+				};
+				Config.indexDrones++;
+			}
+			for (int i = 0; i < 10; i++)//for customer
+			{
+				customers[i] = new IDAL.DO.Customer()
+				{
+					Id = i,
+					Name = "x",
+					Phone = "x",
+					Longitude = (i + 1) * 10,
+					Lattitude = (i + 1) * 10
+				};
+				Config.indexCustomer++;
+			}
+			for (int i = 0; i < 10; i++)//for parcel
+			{
+				parcels[i] = new IDAL.DO.Parcel()
+				{
+					Id=i,
+					SenderId=i,
+					TargetId=i,
+					Weight= r.Next(1, 4),
+					Priority= r.Next(1, 4),
+					DroneId=i%5,
+					Requested=DateTime.FromFileTime(),
+					Scheduled = DateTime.FromFileTime(),
+					PickedUp = DateTime.FromFileTime(),
+					Delivered = DateTime.FromFileTime(),
 
+				};
+				Config.indexParcel++;
+			}
 		}
 	}
 }

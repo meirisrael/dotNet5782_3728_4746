@@ -8,9 +8,21 @@ namespace IDAL
 {
 	namespace DO
 	{
-		class Enums
+		public enum Choice
 		{
-
+			ADD,UPDATE,DISPLAY,VIEW_LIST,EXIT
+		}
+		public enum WeightCategories
+		{
+			Light=1,Medium,Heavy
+		}
+		public enum DroneStatuses
+		{
+			free=1,Maintenance,Shipping
+		}
+		public enum Priorities
+		{
+			Normal=1,fast,Emergecey
 		}
 	}
 }
