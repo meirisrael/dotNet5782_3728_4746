@@ -46,7 +46,7 @@ namespace DalObject
 					Model = "x",
 					MaxWeight = r.Next(1, 4),
 					status = r.Next(1, 4),
-					Battery = (100 - i * 10)
+					Battery = 100
 				};
 				Config.indexDrones++;
 			}
