@@ -44,6 +44,7 @@ namespace DalObject
 					Lattitude = (r.NextDouble() * 180) - 90,
 					Longitude = (r.NextDouble() * 180) - 90
 				};
+				Config.indexBaseStation++;
 			}
 			for (int i = 0; i < 5; i++)//for the drone
 			{
