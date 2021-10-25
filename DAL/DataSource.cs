@@ -7,6 +7,9 @@ using IDAL;
 
 namespace DalObject
 {
+	/// <summary>
+	/// 
+	/// </summary>
 	internal class DataSource
 	{
 		internal static IDAL.DO.Drone[] drone = new IDAL.DO.Drone[10];
@@ -22,6 +25,11 @@ namespace DalObject
 			internal static int indexBaseStation = 0;
 			internal static int indexCustomer = 0;
 			internal static int indexParcel = 0;
+
+			internal static int CounterDrones = 1000;
+			internal static int CounterBaseStation = 1000;
+			internal static int CounterCustomer = 3000;
+			internal static int CounterParcel = 1000;
 		}
 
 		public static void Inutialize()
@@ -30,53 +38,53 @@ namespace DalObject
 			{
 				baseStation[i] = new IDAL.DO.BaseStation()
 				{
-					Id = i,
+					Id = Config.CounterBaseStation++,
 					Name = i,
 					ChargeSlots = r.Next() % 5,
 					Lattitude = (r.NextDouble() * 180) - 90,
 					Longitude = (r.NextDouble() * 180) - 90
 				};
-				Config.indexBaseStation++;
 			}
 			for (int i = 0; i < 5; i++)//for the drone
 			{
 				drone[i] = new IDAL.DO.Drone()
 				{
-					Id = i,
-					Model = "x",
-					MaxWeight = r.Next(1, 4),
-					status = r.Next(1, 4),
+					Id = Config.CounterDrones++,
+					Model = "Fantome-"+i,
+					MaxWeight = (IDAL.DO.WeightCategories)(r.Next(1, 4)),
+					status = (IDAL.DO.DroneStatuses)(r.Next(1, 4)),
 					Battery = 100
 				};
 				Config.indexDrones++;
+				Config.CounterDrones++;
 			}
 			for (int i = 0; i < 10; i++)//for customer
 			{
 				customers[i] = new IDAL.DO.Customer()
 				{
-					Id = i,
-					Name = "x",
-					Phone = "x",
-					Longitude = (i + 1) * 10,
-					Lattitude = (i + 1) * 10
+					Id = Config.CounterCustomer++,
+					Name = ("a"+i),
+					Phone = (3761+i).ToString(),
+					Longitude = (r.NextDouble() * 180) - 90,
+					Lattitude = (r.NextDouble() * 180) - 90
 				};
 				Config.indexCustomer++;
 			}
 			for (int i = 0; i < 10; i++)//for parcel
 			{
+				DateTime today = DateTime.Now;
 				parcels[i] = new IDAL.DO.Parcel()
 				{
-					Id=i,
-					SenderId=i,
-					TargetId=i,
-					Weight= r.Next(1, 4),
-					Priority= r.Next(1, 4),
-					DroneId=i%5,
-					Requested=DateTime.FromFileTime(),
-					Scheduled = DateTime.FromFileTime(),
-					PickedUp = DateTime.FromFileTime(),
-					Delivered = DateTime.FromFileTime(),
-
+					Id=Config.CounterParcel++,
+					SenderId= r.Next(2000,2500),
+					TargetId= Config.CounterCustomer--,
+					Weight= (IDAL.DO.WeightCategories)(r.Next(1, 4)),
+					Priority=(IDAL.DO.Priorities)(r.Next(1, 4)),
+					DroneId=r.Next(1000,1005),
+					Requested=today,
+					Scheduled =today.AddDays(2),
+					PickedUp = today.AddDays(5),
+					Delivered = today.AddDays(7)
 				};
 				Config.indexParcel++;
 			}
