@@ -15,6 +15,17 @@ namespace IDAL
 			public string Phone { get; set; }
 			public double Longitude { get; set; }
 			public double Lattitude { get; set; }
+
+			public string toString()
+			{
+				return $"Customer: " +
+					$"Id: {this.Id}," +
+					$"Name: {this.Name}," +
+					$"Phone: {this.Phone}," +
+					$"Longitude: {this.Longitude}," +
+					$"Lattitude: {this.Lattitude}" +
+					"\n";
+			}
 		}
 	}
 }

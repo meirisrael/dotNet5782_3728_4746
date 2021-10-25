@@ -13,13 +13,29 @@ namespace IDAL
 			public int Id { get; set; }
 			public int SenderId { get; set; }
 			public int TargetId { get; set; }
-			public weightCategories Weight { get; set; }
-			public Priorities priority { get; set; }
+			public WeightCategories Weight { get; set; }
+			public Priorities Priority { get; set; }
 			public int DroneId { get; set; }
 			public DateTime Requested { get; set; }
 			public DateTime Scheduled { get; set; }
 			public DateTime PickedUp { get; set; }
-			public DateTime Dlivered { get; set; }
+			public DateTime Delivered { get; set; }
+
+			public string toString()
+			{
+				return $"Parcel: " +
+					$"Id: {this.Id}," +
+					$"Sender Id: {this.SenderId}," +
+					$"Target Id: {this.TargetId}," +
+					$"Weight: {this.Weight}," +
+					$"Priority: {this.Priority}," +
+					$"Drone Id: {this.DroneId}," +
+					$"Requested: {this.Requested}," +
+					$"Scheduled: {this.Scheduled}," +
+					$"Picked Up: {this.PickedUp}," +
+					$"Delivred: {this.Delivered}," +
+					"\n";
+			}
 		}
 	}
 }
