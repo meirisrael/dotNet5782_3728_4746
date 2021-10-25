@@ -52,19 +52,26 @@ namespace ConsoleUI
                         do
                         {
                             Console.WriteLine("Enter\n 1 to assign a parcel to a drone \n 2 to update the collection of a parcel by a drone" +
-                                " \n 3 to update a delivered parcel \n 4 to send a drone reload his battery at a base station");
+                                " \n 3 to update a delivered parcel \n 4 to send a drone reload his battery at a base station \n 5 to make a drone leave his charge station");
                             res = Enum.TryParse<IDAL.DO.Update>(Console.ReadLine(), out update);
                             if (!res) Console.WriteLine("Wrong input");
                         } while (!res);
                         switch (update)
                         {
                             case IDAL.DO.Update.AssignParcelToDrone:
+                                DalObject.DalObject.AssignParcelToDrone();
                                 break;
                             case IDAL.DO.Update.ParcelOnDrone:
+                                DalObject.DalObject.ParcelOnDrone();
                                 break;
                             case IDAL.DO.Update.ParcelDelivered:
+                                DalObject.DalObject.ParcelDelivered();
                                 break;
                             case IDAL.DO.Update.AssignDroneToBaseStation:
+                                DalObject.DalObject.AssignDroneToBaseStation();
+                                break;
+                            case IDAL.DO.Update.DroneLeaveChargeStation:
+                                DalObject.DalObject.DroneLeaveChargeStation();
                                 break;
                             default:
                                 break;
@@ -85,10 +92,13 @@ namespace ConsoleUI
                                 DalObject.DalObject.DisplayBaseStation();
                                 break;
                             case IDAL.DO.Display.Drone:
+                                DalObject.DalObject.DisplayDrone();
                                 break;
                             case IDAL.DO.Display.Customer:
+                                DalObject.DalObject.DisplayCustomer();
                                 break;
                             case IDAL.DO.Display.Parcel:
+                                DalObject.DalObject.DisplayParcel();
                                 break;
                             default:
                                 break;
@@ -106,16 +116,22 @@ namespace ConsoleUI
                         switch (displayList)
                         {
                             case IDAL.DO.DisplayList.BaseStations:
+                                DalObject.DalObject.DisplayListBaseStations();
                                 break;
                             case IDAL.DO.DisplayList.Drones:
+                                DalObject.DalObject.DisplayListDrones();
                                 break;
                             case IDAL.DO.DisplayList.Customers:
+                                DalObject.DalObject.DisplayListCustomers();
                                 break;
                             case IDAL.DO.DisplayList.Parcels:
+                                DalObject.DalObject.DisplayListParcels();
                                 break;
                             case IDAL.DO.DisplayList.ParcelsNotAssignedToDrone:
+                                DalObject.DalObject.DisplayParcelsNotAssignedToDrone();
                                 break;
                             case IDAL.DO.DisplayList.BaseStationsCanCharge:
+                                DalObject.DalObject.DisplayListBaseStationsCanCharge();
                                 break;
                             default:
                                 break;
