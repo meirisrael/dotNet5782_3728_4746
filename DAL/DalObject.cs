@@ -136,7 +136,17 @@ namespace DalObject
 			while (DataSource.drone[j].Id != a) j++;
 			DataSource.drone[j].status = IDAL.DO.DroneStatuses.Shipping ;
 		}
-
+		public static void ParcelDelivered()
+        {
+			int a, i = 0,j=0;
+			Console.WriteLine("ParcelId:");
+			int.TryParse(Console.ReadLine(), out a);
+			while (DataSource.parcels[i].Id != a) i++;
+			DataSource.parcels[i].Delivered = DateTime.Now;
+			a = DataSource.parcels[i].DroneId;
+			while (DataSource.drone[j].Id != a) j++;
+			DataSource.drone[j].status = IDAL.DO.DroneStatuses.free;
+		}
 		public static void DisplayBaseStation()
         {
 			Console.WriteLine("Enter Id:");
