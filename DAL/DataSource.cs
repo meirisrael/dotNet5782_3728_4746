@@ -29,9 +29,9 @@ namespace DalObject
 			internal static int indexDroneCharge = 0;
 
 			internal static int CounterDrones = 1000;
-			internal static int CounterBaseStation = 1000;
+			internal static int CounterBaseStation = 2000;
 			internal static int CounterCustomer = 3000;
-			internal static int CounterParcel = 1000;
+			internal static int CounterParcel = 4000;
 		}
 
 		public static void Inutialize()
