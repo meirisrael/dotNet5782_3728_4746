@@ -8,8 +8,13 @@ namespace DalObject
 {
 	public class DalObject
 	{
-		public DalObject() { DataSource.Inutialize(); }
-
+		public DalObject()
+		{
+			DataSource.Inutialize();
+		}
+		/// <summary>
+		/// 
+		/// </summary>
 		public static void AddBaseStation()
         {
 			IDAL.DO.BaseStation station=new IDAL.DO.BaseStation();
