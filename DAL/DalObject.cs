@@ -177,7 +177,7 @@ namespace DalObject
 				j++;
 			DataSource.drone[j].status = IDAL.DO.DroneStatuses.free;
 		}/// <summary>
-		/// change the status of a given drone to "maintenance" and give the user to choice a base station for the drone to charge (details saved in dronecharge[])
+		/// change the status of a given drone to "maintenance" and give the user to choose a base station for the drone to charge (details saved in dronecharge[])
 		/// </summary>
 		public static void AssignDroneToBaseStation()
 		{
