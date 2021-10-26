@@ -9,7 +9,7 @@ namespace IDAL
 	namespace DO
 	{
 		/// <summary>
-		/// this struct represant a customer and all of properties
+		/// this struct represant a customer and all of propertie
 		/// </summary>
 		public struct Customer
 		{
