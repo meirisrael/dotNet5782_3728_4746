@@ -9,7 +9,9 @@ namespace DalObject
 	public class DalObject
 	{
 		public DalObject() { DataSource.Inutialize(); }
-
+		/// <summary>
+		/// add a station in baseStation[] created in DataSource with details given by user
+		/// </summary>
 		public static void AddBaseStation()
         {
 			IDAL.DO.BaseStation station=new IDAL.DO.BaseStation();
@@ -33,6 +35,9 @@ namespace DalObject
 			DataSource.baseStation[DataSource.Config.indexBaseStation] = station;
 			DataSource.Config.indexBaseStation++;
 		}
+		/// <summary>
+		/// /// add a drone in drone[] created in DataSource with details given by user
+		/// </summary>
 		public static void AddDrone()
 		{
 			IDAL.DO.Drone drone = new IDAL.DO.Drone();
@@ -57,6 +62,9 @@ namespace DalObject
 			DataSource.drone[DataSource.Config.indexDrones] = drone;
 			DataSource.Config.indexDrones++;
 		}
+		/// <summary>
+		/// add a customer in customer[] created in DataSource with details given by user
+		/// </summary>
 		public static void AddCustomer()
 		{
 			IDAL.DO.Customer customer = new IDAL.DO.Customer();
@@ -78,6 +86,7 @@ namespace DalObject
 			DataSource.customers[DataSource.Config.indexCustomer] = customer;
 			DataSource.Config.indexCustomer++;
 		}
+		/// add a parcel in parcels[] created in DataSource with details given by user
 		public static void AddParcel()
 		{
 			IDAL.DO.Parcel parcel = new IDAL.DO.Parcel();
@@ -119,6 +128,9 @@ namespace DalObject
 			DataSource.parcels[DataSource.Config.indexCustomer] = parcel;
 			DataSource.Config.indexCustomer++;
 		}
+		/// <summary>
+		/// add a drone Id in droneId field from a parcel given by the user
+		/// </summary>
 		public static void AssignParcelToDrone()
         {
 			int a,i = 0;
@@ -129,6 +141,9 @@ namespace DalObject
 			int.TryParse(Console.ReadLine(), out a);
 			DataSource.parcels[i].DroneId = a;
 		}
+		/// <summary>
+		/// change the PickedUp date of a given parcel by the present time and change the status of the related drone to "shipping"
+		/// </summary>
 		public static void ParcelOnDrone()
 		{
 			int a, i = 0,j=0;
@@ -136,10 +151,12 @@ namespace DalObject
 			int.TryParse(Console.ReadLine(), out a);
 			while (DataSource.parcels[i].Id != a) i++;					// find the right parcel
 			DataSource.parcels[i].PickedUp = DateTime.Now;
-			Console.WriteLine("DroneId:");
-			while (DataSource.drone[j].Id != a) j++;					// find the right drone
+			while (DataSource.drone[j].Id != DataSource.parcels[i].DroneId) j++;					// find the right drone
 			DataSource.drone[j].status = IDAL.DO.DroneStatuses.Shipping ;// drone status updated
 		}
+		/// <summary>
+		/// change the "Delivered" date of a given parcel by the present time and change the status of the related drone to "free"
+		/// </summary>
 		public static void ParcelDelivered()
         {
 			int a, i = 0,j=0;
@@ -150,7 +167,9 @@ namespace DalObject
 			a = DataSource.parcels[i].DroneId;
 			while (DataSource.drone[j].Id != a) j++;
 			DataSource.drone[j].status = IDAL.DO.DroneStatuses.free;
-		}
+		}/// <summary>
+		/// change the status of a given drone to "maintenance" and give the user to choice a base station for the drone to charge (details saved in dronecharge[])
+		/// </summary>
 		public static void AssignDroneToBaseStation()
 		{
 			int a, i = 0,j=0,k=0;
@@ -168,7 +187,9 @@ namespace DalObject
 			DataSource.droneCharge[DataSource.Config.indexDroneCharge].StationId = DataSource.baseStation[j].Id;
 			DataSource.Config.indexDroneCharge++;
 		}
-
+		/// <summary>
+		/// change the status of a given drone to "free" and update the freed charge slot in the related basestation
+		/// </summary>
 		public static void DroneLeaveChargeStation()
         {
 			int a, i = 0,j=0,k=0;
@@ -183,6 +204,9 @@ namespace DalObject
 			for (int l = k; l < (DataSource.Config.indexDroneCharge-1); l++) DataSource.droneCharge[l] = DataSource.droneCharge[l + 1]; // erase the charge slot that is now available
 			DataSource.Config.indexDroneCharge--;
 		}
+		/// <summary>
+		/// for a given base station Id, display it details
+		/// </summary>
 		public static void DisplayBaseStation()
         {
 			Console.WriteLine("Enter Id:");
@@ -192,6 +216,9 @@ namespace DalObject
 			if (i == DataSource.Config.indexBaseStation) { Console.WriteLine("No such Base station"); return; }
 			Console.WriteLine(DataSource.baseStation[i].toString());
 		}
+		/// <summary>
+		/// for a given drone Id, display it details
+		/// </summary>
 		public static void DisplayDrone()
 		{
 			Console.WriteLine("Enter Id:");
@@ -201,6 +228,9 @@ namespace DalObject
 			if (i == DataSource.Config.indexDrones) { Console.WriteLine("No such drone"); return; }
 			Console.WriteLine(DataSource.drone[i].toString());
 		}
+		/// <summary>
+		/// for a given customer Id, display it details
+		/// </summary>
 		public static void DisplayCustomer()
 		{
 			Console.WriteLine("Enter Id:");
@@ -210,6 +240,9 @@ namespace DalObject
 			if (i == DataSource.Config.indexCustomer) { Console.WriteLine("No such customer"); return; } 
 			Console.WriteLine(DataSource.customers[i].toString());
 		}
+		/// <summary>
+		/// for a given parcel Id, display it details
+		/// </summary>
 		public static void DisplayParcel()
 		{
 			Console.WriteLine("Enter Id:");
@@ -219,6 +252,9 @@ namespace DalObject
 			if (i == DataSource.Config.indexParcel) { Console.WriteLine("No such parcel"); return; }
 			Console.WriteLine(DataSource.parcels[i].toString());
 		}
+		/// <summary>
+		/// display the details of all base stations
+		/// </summary>
 		public static void DisplayListBaseStations()
 		{
             for (int i = 0; i< DataSource.Config.indexBaseStation; i++)
@@ -226,6 +262,9 @@ namespace DalObject
 				Console.WriteLine(DataSource.baseStation[i].toString());
 			}
 		}
+		/// <summary>
+		/// display the details of all drones
+		/// </summary>
 		public static void DisplayListDrones()
 		{
 			for (int i = 0; i < DataSource.Config.indexDrones; i++)
@@ -233,6 +272,9 @@ namespace DalObject
 				Console.WriteLine(DataSource.drone[i].toString());
 			}
 		}
+		/// <summary>
+		/// display the details of all customers
+		/// </summary>
 		public static void DisplayListCustomers()
 		{
 			for (int i = 0; i < DataSource.Config.indexCustomer; i++)
@@ -240,6 +282,9 @@ namespace DalObject
 				Console.WriteLine(DataSource.customers[i].toString());
 			}
 		}
+		/// <summary>
+		/// display the details of all parcels
+		/// </summary>
 		public static void DisplayListParcels()
 		{
 			for (int i = 0; i < DataSource.Config.indexParcel; i++)
@@ -247,6 +292,9 @@ namespace DalObject
 				Console.WriteLine(DataSource.parcels[i].toString());
 			}
 		}
+		/// <summary>
+		/// display the details of all parcels not assigned to a drone yet
+		/// </summary>
 		public static void DisplayParcelsNotAssignedToDrone()
 		{
 			for (int i = 0; i < DataSource.Config.indexParcel; i++)
@@ -254,6 +302,9 @@ namespace DalObject
 				if(DataSource.parcels[i].DroneId ==0)Console.WriteLine(DataSource.parcels[i].toString());
 			}
 		}
+		/// <summary>
+		/// display the details of all base stations with available(s) charge slots
+		/// </summary>
 		public static void DisplayListBaseStationsCanCharge()
 		{
 			for (int i = 0; i < DataSource.Config.indexBaseStation; i++)
