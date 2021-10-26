@@ -21,7 +21,7 @@ namespace IDAL
 				return $"Base Station:" +
 					$"Id: {this.Id}," +
 					$"Name: { this.Name}," +
-					$"Charge Slotes: {this.ChargeSlots}," +
+					$"Charge Slots: {this.ChargeSlots}," +
 					$"Longitude: {(int)(this.Longitude)}°{(int)(this.Longitude-(int)(this.Longitude))*60}' , ,'' S"+
 					$"Lattitude: {this.Lattitude}"+
 					"\n";
