@@ -89,7 +89,9 @@ namespace DalObject
 			DataSource.customers[DataSource.Config.indexCustomer] = customer;
 			DataSource.Config.indexCustomer++;
 		}
+		/// <summary>
 		/// add a parcel in parcels[] created in DataSource with details given by user
+		/// </summary>
 		public static void AddParcel()
 		{
 			IDAL.DO.Parcel parcel = new IDAL.DO.Parcel();
