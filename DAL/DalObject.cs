@@ -8,7 +8,10 @@ namespace DalObject
 {
 	public class DalObject
 	{
-		public DalObject() { DataSource.Inutialize(); }
+		public DalObject() 
+		{ 
+			DataSource.Inutialize(); 
+		}
 		/// <summary>
 		/// add a station in baseStation[] created in DataSource with details given by user
 		/// </summary>
@@ -136,7 +139,8 @@ namespace DalObject
 			int a,i = 0;
 			Console.WriteLine("ParcelId:");
 			int.TryParse(Console.ReadLine(), out a);
-			while (DataSource.parcels[i].Id != a) i++;
+			while (DataSource.parcels[i].Id != a) 
+				i++;
 			Console.WriteLine("DroneId:");
 			int.TryParse(Console.ReadLine(), out a);
 			DataSource.parcels[i].DroneId = a;
@@ -149,7 +153,8 @@ namespace DalObject
 			int a, i = 0,j=0;
 			Console.WriteLine("ParcelId:");
 			int.TryParse(Console.ReadLine(), out a);
-			while (DataSource.parcels[i].Id != a) i++;					// find the right parcel
+			while (DataSource.parcels[i].Id != a) // find the right parcel
+				i++;					
 			DataSource.parcels[i].PickedUp = DateTime.Now;
 			while (DataSource.drone[j].Id != DataSource.parcels[i].DroneId) j++;					// find the right drone
 			DataSource.drone[j].status = IDAL.DO.DroneStatuses.Shipping ;// drone status updated
@@ -162,26 +167,30 @@ namespace DalObject
 			int a, i = 0,j=0;
 			Console.WriteLine("ParcelId:");
 			int.TryParse(Console.ReadLine(), out a);
-			while (DataSource.parcels[i].Id != a) i++;
+			while (DataSource.parcels[i].Id != a) 
+				i++;
 			DataSource.parcels[i].Delivered = DateTime.Now;
 			a = DataSource.parcels[i].DroneId;
-			while (DataSource.drone[j].Id != a) j++;
+			while (DataSource.drone[j].Id != a) 
+				j++;
 			DataSource.drone[j].status = IDAL.DO.DroneStatuses.free;
 		}/// <summary>
 		/// change the status of a given drone to "maintenance" and give the user to choice a base station for the drone to charge (details saved in dronecharge[])
 		/// </summary>
 		public static void AssignDroneToBaseStation()
 		{
-			int a, i = 0,j=0,k=0;
+			int a, i = 0, j = 0, k = 0;
 			Console.WriteLine("Droneid:");
 			int.TryParse(Console.ReadLine(), out a);
-			while (DataSource.drone[i].Id != a) i++;
+			while (DataSource.drone[i].Id != a) 
+				i++;
 			DataSource.drone[i].Battery = 0;								// drone battery updated
 			DataSource.drone[i].status = IDAL.DO.DroneStatuses.Maintenance;// drone status updated
 			Console.WriteLine("Choose a Base Station for the drone to charge by writing the Base station's Id:");
 			DisplayListBaseStationsCanCharge();
 			int.TryParse(Console.ReadLine(), out a);
-			while (DataSource.baseStation[j].Id != a) j++;
+			while (DataSource.baseStation[j].Id != a) 
+				j++;
 			DataSource.baseStation[j].ChargeSlots--;
 			DataSource.droneCharge[DataSource.Config.indexDroneCharge].DroneId = DataSource.drone[i].Id;          // drone id saved in DroneCharge with the station id where he charges
 			DataSource.droneCharge[DataSource.Config.indexDroneCharge].StationId = DataSource.baseStation[j].Id;
@@ -195,13 +204,17 @@ namespace DalObject
 			int a, i = 0,j=0,k=0;
 			Console.WriteLine("DroneId:");
 			int.TryParse(Console.ReadLine(), out a);
-			while (DataSource.drone[i].Id != a) i++;
+			while (DataSource.drone[i].Id != a) 
+				i++;
 			DataSource.drone[i].status = IDAL.DO.DroneStatuses.free;
 			DataSource.drone[i].Battery = 100;
-			while (DataSource.droneCharge[j].DroneId != a) j++;								// find the right drone in ChargeStation
-			while (DataSource.baseStation[k].Id != DataSource.droneCharge[j].StationId) k++;// find the base station where the drone was charging
+			while (DataSource.droneCharge[j].DroneId != a) // find the right drone in ChargeStation
+				j++;								
+			while (DataSource.baseStation[k].Id != DataSource.droneCharge[j].StationId) // find the base station where the drone was charging
+				k++;
 			DataSource.baseStation[k].ChargeSlots++;                                        //charging slot now available
-			for (int l = k; l < (DataSource.Config.indexDroneCharge-1); l++) DataSource.droneCharge[l] = DataSource.droneCharge[l + 1]; // erase the charge slot that is now available
+			for (int l = k; l < (DataSource.Config.indexDroneCharge-1); l++) 
+				DataSource.droneCharge[l] = DataSource.droneCharge[l + 1]; // erase the charge slot that is now available
 			DataSource.Config.indexDroneCharge--;
 		}
 		/// <summary>
@@ -212,8 +225,13 @@ namespace DalObject
 			Console.WriteLine("Enter Id:");
 			int a,i=0;
 			int.TryParse(Console.ReadLine(), out a);
-			while (DataSource.baseStation[i].Id != a && i < DataSource.Config.indexBaseStation) i++;
-			if (i == DataSource.Config.indexBaseStation) { Console.WriteLine("No such Base station"); return; }
+			while (DataSource.baseStation[i].Id != a && i < DataSource.Config.indexBaseStation) 
+				i++;
+			if (i == DataSource.Config.indexBaseStation) 
+			{ 
+				Console.WriteLine("No such Base station"); 
+				return; 
+			}
 			Console.WriteLine(DataSource.baseStation[i].toString());
 		}
 		/// <summary>
@@ -224,8 +242,13 @@ namespace DalObject
 			Console.WriteLine("Enter Id:");
 			int a, i = 0;
 			int.TryParse(Console.ReadLine(), out a);
-			while (DataSource.drone[i].Id != a && i< DataSource.Config.indexDrones) i++;
-			if (i == DataSource.Config.indexDrones) { Console.WriteLine("No such drone"); return; }
+			while (DataSource.drone[i].Id != a && i< DataSource.Config.indexDrones) 
+				i++;
+			if (i == DataSource.Config.indexDrones)
+			{ 
+				Console.WriteLine("No such drone"); 
+				return; 
+			}
 			Console.WriteLine(DataSource.drone[i].toString());
 		}
 		/// <summary>
@@ -236,8 +259,13 @@ namespace DalObject
 			Console.WriteLine("Enter Id:");
 			int a, i = 0;
 			int.TryParse(Console.ReadLine(), out a);
-			while (DataSource.customers[i].Id != a && i < DataSource.Config.indexCustomer) i++;
-			if (i == DataSource.Config.indexCustomer) { Console.WriteLine("No such customer"); return; } 
+			while (DataSource.customers[i].Id != a && i < DataSource.Config.indexCustomer) 
+				i++;
+			if (i == DataSource.Config.indexCustomer) 
+			{ 
+				Console.WriteLine("No such customer"); 
+				return; 
+			} 
 			Console.WriteLine(DataSource.customers[i].toString());
 		}
 		/// <summary>
@@ -248,8 +276,13 @@ namespace DalObject
 			Console.WriteLine("Enter Id:");
 			int a, i = 0;
 			int.TryParse(Console.ReadLine(), out a);
-			while (DataSource.parcels[i].Id != a && i < DataSource.Config.indexParcel) i++;
-			if (i == DataSource.Config.indexParcel) { Console.WriteLine("No such parcel"); return; }
+			while (DataSource.parcels[i].Id != a && i < DataSource.Config.indexParcel) 
+				i++;
+			if (i == DataSource.Config.indexParcel) 
+			{ 
+				Console.WriteLine("No such parcel");
+				return; 
+			}
 			Console.WriteLine(DataSource.parcels[i].toString());
 		}
 		/// <summary>
@@ -299,7 +332,8 @@ namespace DalObject
 		{
 			for (int i = 0; i < DataSource.Config.indexParcel; i++)
 			{
-				if(DataSource.parcels[i].DroneId ==0)Console.WriteLine(DataSource.parcels[i].toString());
+				if(DataSource.parcels[i].DroneId ==0)
+					Console.WriteLine(DataSource.parcels[i].toString());
 			}
 		}
 		/// <summary>
@@ -309,7 +343,8 @@ namespace DalObject
 		{
 			for (int i = 0; i < DataSource.Config.indexBaseStation; i++)
 			{
-				if (DataSource.baseStation[i].ChargeSlots >0) Console.WriteLine(DataSource.baseStation[i].toString());
+				if (DataSource.baseStation[i].ChargeSlots >0) 
+					Console.WriteLine(DataSource.baseStation[i].toString());
 			}
 		}
 	}
