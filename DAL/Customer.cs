@@ -26,7 +26,7 @@ namespace IDAL
 					$"Name: {this.Name}\n" +
 					$"Phone: {this.Phone}\n" +
 					$"Longitude: {Math.Abs((int)(this.Longitude))}°{Math.Abs((int)(((this.Longitude) - (int)(this.Longitude)) * 60))}'{Math.Abs(Math.Round(((((this.Longitude) - (int)(this.Longitude)) * 60) - (int)(((this.Longitude) - (int)(this.Longitude)) * 60)) * 60, 3))}''S\n" +
-					$"Lattitude: {(int)(this.Lattitude)}°{(int)(((this.Lattitude) - (int)(this.Lattitude)) * 60)}'{Math.Round(((((this.Lattitude) - (int)(this.Lattitude)) * 60) - (int)(((this.Lattitude) - (int)(this.Lattitude)) * 60)) * 60, 3)}''E" +
+					$"Lattitude: {(int)(this.Lattitude)}°{(int)(((this.Lattitude) - (int)(this.Lattitude)) * 60)}'{Math.Abs(Math.Round(((((this.Lattitude) - (int)(this.Lattitude)) * 60) - (int)(((this.Lattitude) - (int)(this.Lattitude)) * 60)) * 60, 3))}''E" +
 					"\n";
 			}
 		}
