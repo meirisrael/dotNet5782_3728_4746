@@ -9,7 +9,7 @@ namespace IDAL
 	namespace DO
 	{
 		public enum Choice
-		{
+		{ 
 			ADD,UPDATE,DISPLAY,VIEW_LIST,EXIT
 		}
 		public enum WeightCategories
