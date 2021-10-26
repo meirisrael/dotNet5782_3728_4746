@@ -5,12 +5,17 @@ namespace ConsoleUI
 	
     class Program
     {
+        /// <summary>
+        /// the main of he project 
+        /// it give the option for the user the posibility to change add or display the information 
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
             IDAL.DO.Choice choice=0;
             DalObject.DalObject p = new DalObject.DalObject();
             bool res;
-            while (choice != IDAL.DO.Choice.EXIT)
+            while (choice != IDAL.DO.Choice.EXIT)//only if the user want to leav the program
             {
                 do
                 {

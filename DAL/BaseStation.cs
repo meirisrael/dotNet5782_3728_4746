@@ -8,6 +8,9 @@ namespace IDAL
 {
 	namespace DO
 	{
+		/// <summary>
+		/// this struct represant a base station of drone and all of properties
+		/// </summary>
 		public struct BaseStation
 		{
 			public int Id { get; set; }

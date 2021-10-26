@@ -43,95 +43,107 @@ namespace DalObject
 		/// </summary>
 		public static void AddDrone()
 		{
-			IDAL.DO.Drone drone = new IDAL.DO.Drone();
-			int a;
-			double b;
-			IDAL.DO.WeightCategories c;
-			IDAL.DO.DroneStatuses d;
-			Console.WriteLine("Id:");
-			int.TryParse(Console.ReadLine(), out a);
-			drone.Id = a;
-			Console.WriteLine("Model:");
-			drone.Model = Console.ReadLine();
-			Console.WriteLine("MaxWeight:");
-			Enum.TryParse<IDAL.DO.WeightCategories>(Console.ReadLine(), out c);
-			drone.MaxWeight = c;
-			Console.WriteLine("Status:");
-			Enum.TryParse< IDAL.DO.DroneStatuses>(Console.ReadLine(), out d);
-			drone.status = d;
-			Console.WriteLine("Battery:");
-			double.TryParse(Console.ReadLine(), out b);
-			drone.Battery = b;
-			DataSource.drone[DataSource.Config.indexDrones] = drone;
-			DataSource.Config.indexDrones++;
+			if (DataSource.Config.indexDrones < 10)
+			{
+				IDAL.DO.Drone drone = new IDAL.DO.Drone();
+				int a;
+				double b;
+				IDAL.DO.WeightCategories c;
+				IDAL.DO.DroneStatuses d;
+				Console.WriteLine("Id:");
+				int.TryParse(Console.ReadLine(), out a);
+				drone.Id = a;
+				Console.WriteLine("Model:");
+				drone.Model = Console.ReadLine();
+				Console.WriteLine("MaxWeight:");
+				Enum.TryParse<IDAL.DO.WeightCategories>(Console.ReadLine(), out c);
+				drone.MaxWeight = c;
+				Console.WriteLine("Status:");
+				Enum.TryParse<IDAL.DO.DroneStatuses>(Console.ReadLine(), out d);
+				drone.status = d;
+				Console.WriteLine("Battery:");
+				double.TryParse(Console.ReadLine(), out b);
+				drone.Battery = b;
+				DataSource.drone[DataSource.Config.indexDrones] = drone;
+				DataSource.Config.indexDrones++;
+			}
+			else Console.WriteLine("no more space for a new drone");
 		}
 		/// <summary>
 		/// add a customer in customer[] created in DataSource with details given by user
 		/// </summary>
 		public static void AddCustomer()
 		{
-			IDAL.DO.Customer customer = new IDAL.DO.Customer();
-			int a;
-			double b;
-			Console.WriteLine("Id:");
-			int.TryParse(Console.ReadLine(), out a);
-			customer.Id = a;
-			Console.WriteLine("Name:");
-			customer.Name = Console.ReadLine();
-			Console.WriteLine("Phone:");
-			customer.Phone = Console.ReadLine();
-			Console.WriteLine("Longitude:");
-			double.TryParse(Console.ReadLine(), out b);
-			customer.Longitude = b;
-			Console.WriteLine("Lattitude:");
-			double.TryParse(Console.ReadLine(), out b);
-			customer.Lattitude = b;
-			DataSource.customers[DataSource.Config.indexCustomer] = customer;
-			DataSource.Config.indexCustomer++;
+			if (DataSource.Config.indexCustomer < 100)
+			{
+				IDAL.DO.Customer customer = new IDAL.DO.Customer();
+				int a;
+				double b;
+				Console.WriteLine("Id:");
+				int.TryParse(Console.ReadLine(), out a);
+				customer.Id = a;
+				Console.WriteLine("Name:");
+				customer.Name = Console.ReadLine();
+				Console.WriteLine("Phone:");
+				customer.Phone = Console.ReadLine();
+				Console.WriteLine("Longitude:");
+				double.TryParse(Console.ReadLine(), out b);
+				customer.Longitude = b;
+				Console.WriteLine("Lattitude:");
+				double.TryParse(Console.ReadLine(), out b);
+				customer.Lattitude = b;
+				DataSource.customers[DataSource.Config.indexCustomer] = customer;
+				DataSource.Config.indexCustomer++;
+			}
+			else Console.WriteLine("no more space for a new drone");
 		}
 		/// <summary>
 		/// add a parcel in parcels[] created in DataSource with details given by user
 		/// </summary>
 		public static void AddParcel()
 		{
-			IDAL.DO.Parcel parcel = new IDAL.DO.Parcel();
-			int a;
-			double b;
-			IDAL.DO.WeightCategories c;
-			IDAL.DO.Priorities d;
-			DateTime e;
-			Console.WriteLine("Id:");
-			int.TryParse(Console.ReadLine(), out a);
-			parcel.Id = a;
-			Console.WriteLine("TargetId:");
-			int.TryParse(Console.ReadLine(), out a);
-			parcel.TargetId = a;
-			Console.WriteLine("SenderId:");
-			int.TryParse(Console.ReadLine(), out a);
-			parcel.SenderId = a;
-			Console.WriteLine("Weigh:");
-			Enum.TryParse<IDAL.DO.WeightCategories>(Console.ReadLine(), out c);
-			parcel.Weight = c;
-			Console.WriteLine("Priority:");
-			Enum.TryParse<IDAL.DO.Priorities>(Console.ReadLine(), out d);
-			parcel.Priority = d;
-			Console.WriteLine("DroneId:");
-			int.TryParse(Console.ReadLine(), out a);
-			parcel.DroneId = a;
-			Console.WriteLine("Requested:(Exemple: Wed 30, 2015");
-			DateTime.TryParse(Console.ReadLine(), out e);
-			parcel.Requested = e;
-			Console.WriteLine("Scheduled:(Exemple: Wed 30, 2015");
-			DateTime.TryParse(Console.ReadLine(), out e);
-			parcel.Scheduled = e;
-			Console.WriteLine("PickedUp:(Exemple: Wed 30, 2015");
-			DateTime.TryParse(Console.ReadLine(), out e);
-			parcel.PickedUp = e;
-			Console.WriteLine("Delivered:(Exemple: Wed 30, 2015");
-			DateTime.TryParse(Console.ReadLine(), out e);
-			parcel.Delivered = e;
-			DataSource.parcels[DataSource.Config.indexCustomer] = parcel;
-			DataSource.Config.indexCustomer++;
+			if (DataSource.Config.indexParcel < 1000)
+			{
+				IDAL.DO.Parcel parcel = new IDAL.DO.Parcel();
+				int a;
+				double b;
+				IDAL.DO.WeightCategories c;
+				IDAL.DO.Priorities d;
+				DateTime e;
+				Console.WriteLine("Id:");
+				int.TryParse(Console.ReadLine(), out a);
+				parcel.Id = a;
+				Console.WriteLine("TargetId:");
+				int.TryParse(Console.ReadLine(), out a);
+				parcel.TargetId = a;
+				Console.WriteLine("SenderId:");
+				int.TryParse(Console.ReadLine(), out a);
+				parcel.SenderId = a;
+				Console.WriteLine("Weigh:");
+				Enum.TryParse<IDAL.DO.WeightCategories>(Console.ReadLine(), out c);
+				parcel.Weight = c;
+				Console.WriteLine("Priority:");
+				Enum.TryParse<IDAL.DO.Priorities>(Console.ReadLine(), out d);
+				parcel.Priority = d;
+				Console.WriteLine("DroneId:");
+				int.TryParse(Console.ReadLine(), out a);
+				parcel.DroneId = a;
+				Console.WriteLine("Requested:(Exemple: Wed 30, 2015");
+				DateTime.TryParse(Console.ReadLine(), out e);
+				parcel.Requested = e;
+				Console.WriteLine("Scheduled:(Exemple: Wed 30, 2015");
+				DateTime.TryParse(Console.ReadLine(), out e);
+				parcel.Scheduled = e;
+				Console.WriteLine("PickedUp:(Exemple: Wed 30, 2015");
+				DateTime.TryParse(Console.ReadLine(), out e);
+				parcel.PickedUp = e;
+				Console.WriteLine("Delivered:(Exemple: Wed 30, 2015");
+				DateTime.TryParse(Console.ReadLine(), out e);
+				parcel.Delivered = e;
+				DataSource.parcels[DataSource.Config.indexCustomer] = parcel;
+				DataSource.Config.indexCustomer++;
+			}
+			else Console.WriteLine("no more space for a new drone");
 		}
 		/// <summary>
 		/// add a drone Id in droneId field from a parcel given by the user

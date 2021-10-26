@@ -8,6 +8,9 @@ namespace IDAL
 {
 	namespace DO
 	{
+		/// <summary>
+		/// this struct represant a customer and all of properties
+		/// </summary>
 		public struct Customer
 		{
 			public int Id { get; set; }
@@ -18,12 +21,12 @@ namespace IDAL
 
 			public string toString()
 			{
-				return $"Customer: " +
-					$"Id: {this.Id}," +
-					$"Name: {this.Name}," +
-					$"Phone: {this.Phone}," +
-					$"Longitude: {this.Longitude}," +
-					$"Lattitude: {this.Lattitude}" +
+				return $"Customer:\n" +
+					$"Id: {this.Id}\n" +
+					$"Name: {this.Name}\n" +
+					$"Phone: {this.Phone}\n" +
+					$"Longitude: {Math.Abs((int)(this.Longitude))}°{Math.Abs((int)(((this.Longitude) - (int)(this.Longitude)) * 60))}'{Math.Abs(Math.Round(((((this.Longitude) - (int)(this.Longitude)) * 60) - (int)(((this.Longitude) - (int)(this.Longitude)) * 60)) * 60, 3))}''S\n" +
+					$"Lattitude: {(int)(this.Lattitude)}°{(int)(((this.Lattitude) - (int)(this.Lattitude)) * 60)}'{Math.Round(((((this.Lattitude) - (int)(this.Lattitude)) * 60) - (int)(((this.Lattitude) - (int)(this.Lattitude)) * 60)) * 60, 3)}''E" +
 					"\n";
 			}
 		}

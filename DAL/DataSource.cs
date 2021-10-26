@@ -8,7 +8,7 @@ using IDAL;
 namespace DalObject
 {
 	/// <summary>
-	/// 
+	/// data source of the program
 	/// </summary>
 	internal class DataSource
 	{
@@ -33,7 +33,9 @@ namespace DalObject
 			internal static int CounterCustomer = 3000;
 			internal static int CounterParcel = 4000;
 		}
-
+		/// <summary>
+		/// the func initialize all parameter of the program with a default solution for each parametre
+		/// </summary>
 		public static void Inutialize()
 		{
 			for (int i = 0; i < 2; i++)//for base station
@@ -59,7 +61,6 @@ namespace DalObject
 					Battery = 100
 				};
 				Config.indexDrones++;
-				Config.CounterDrones++;
 			}
 			for (int i = 0; i < 10; i++)//for customer
 			{
@@ -79,12 +80,12 @@ namespace DalObject
 				parcels[i] = new IDAL.DO.Parcel()
 				{
 					Id=Config.CounterParcel++,
-					SenderId= r.Next(2000,2500),
+					SenderId= r.Next(2000,3000),
 					TargetId= Config.CounterCustomer--,
 					Weight= (IDAL.DO.WeightCategories)(r.Next(1, 4)),
 					Priority=(IDAL.DO.Priorities)(r.Next(1, 4)),
-					DroneId=r.Next(1000,1005),
-					Requested=today,
+					DroneId= r.Next(1000, 1005),
+					Requested =today,
 					Scheduled =today.AddDays(2),
 					PickedUp = today.AddDays(5),
 					Delivered = today.AddDays(7)

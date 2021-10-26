@@ -8,6 +8,9 @@ namespace IDAL
 {
 	namespace DO
 	{
+		/// <summary>
+		/// this struct represant a drone and all of properties
+		/// </summary>
 		public struct Drone
 		{
 			public int Id { get; set; }
@@ -18,11 +21,11 @@ namespace IDAL
 
 			public string toString()
 			{
-				return $"Drone: " +
-					$"Id: {this.Id}," +
-					$"Model: {this.Model}," +
-					$"MaxWeight: {this.MaxWeight }," +
-					$"status: {this.status}," +
+				return $"Drone:\n" +
+					$"Id: {this.Id}\n" +
+					$"Model: {this.Model}\n" +
+					$"MaxWeight: {this.MaxWeight }\n" +
+					$"status: {this.status}\n" +
 					$"Battery: {this.Battery}" +
 					"\n";
 			}
