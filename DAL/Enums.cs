@@ -50,13 +50,17 @@ namespace IDAL
 		{
 			Light=1,Medium,Heavy
 		}
+
+
 		/// <summary>
 		/// this enum give to the user the option to set what the statue of drone right now
 		/// </summary>
-		public enum DroneStatuses
-		{
-			free=1,Maintenance,Shipping
-		}
+		//public enum DroneStatuses
+		//{
+		//	free=1,Maintenance,Shipping
+		//}
+
+
 		/// <summary>
 		/// give to the user the option to set what the priority of the packet 
 		/// </summary>

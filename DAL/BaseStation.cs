@@ -22,9 +22,9 @@ namespace IDAL
 			public string toString()
 			{
 				return $"Base Station:\n" +
-					$"Id: {this.Id},\n" +
-					$"Name: { this.Name},\n" +
-					$"Charge Slots: {this.ChargeSlots},\n" +
+					$"Id: {this.Id}\n" +
+					$"Name: { this.Name}\n" +
+					$"Charge Slots: {this.ChargeSlots}\n" +
 					$"Longitude: {Math.Abs((int)(this.Longitude))}°{Math.Abs((int)(((this.Longitude) - (int)(this.Longitude)) * 60))}'{Math.Abs(Math.Round(((((this.Longitude) - (int)(this.Longitude)) * 60) - (int)(((this.Longitude) - (int)(this.Longitude)) * 60)) * 60, 3))}''S\n" +
 					$"Lattitude: {Math.Abs((int)(this.Lattitude))}°{Math.Abs((int)(((this.Lattitude) - (int)(this.Lattitude)) * 60))}'{Math.Abs(Math.Round(((((this.Lattitude) - (int)(this.Lattitude)) * 60) - (int)(((this.Lattitude) - (int)(this.Lattitude)) * 60)) * 60, 3))}''E" +
 					"\n";

@@ -23,17 +23,17 @@ namespace IDAL
 
 			public string toString()
 			{
-				return $"Parcel: " +
-					$"Id: {this.Id}," +
-					$"Sender Id: {this.SenderId}," +
-					$"Target Id: {this.TargetId}," +
-					$"Weight: {this.Weight}," +
-					$"Priority: {this.Priority}," +
-					$"Drone Id: {this.DroneId}," +
-					$"Requested: {this.Requested}," +
-					$"Scheduled: {this.Scheduled}," +
-					$"Picked Up: {this.PickedUp}," +
-					$"Delivred: {this.Delivered}," +
+				return $"Parcel:\n " +
+					$"Id: {this.Id}\n" +
+					$"Sender Id: {this.SenderId}\n" +
+					$"Target Id: {this.TargetId}\n" +
+					$"Weight: {this.Weight}\n" +
+					$"Priority: {this.Priority}\n" +
+					$"Drone Id: {this.DroneId}\n" +
+					$"Requested: {this.Requested}\n" +
+					$"Scheduled: {this.Scheduled}\n" +
+					$"Picked Up: {this.PickedUp}\n" +
+					$"Delivred: {this.Delivered}\n" +
 					"\n";
 			}
 		}

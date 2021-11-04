@@ -16,18 +16,18 @@ namespace IDAL
 			public int Id { get; set; }
 			public string Model { get; set; }
 			public WeightCategories MaxWeight { get; set; }
-			public DroneStatuses status { get; set; }
-			public double Battery { get; set; }
+			//public DroneStatuses status { get; set; }
+			//public double Battery { get; set; }
 
 			public string toString()
 			{
 				return $"Drone:\n" +
 					$"Id: {this.Id}\n" +
 					$"Model: {this.Model}\n" +
-					$"MaxWeight: {this.MaxWeight }\n" +
+					$"MaxWeight: {this.MaxWeight }\n";/* +
 					$"status: {this.status}\n" +
 					$"Battery: {this.Battery}" +
-					"\n";
+					"\n";*/
 			}
 		}
 	}
