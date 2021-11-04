@@ -8,10 +8,9 @@ namespace DalObject
 {
 	public class DalObject : IDal.IDal
 	{
-		
 		public DalObject() 
 		{ 
-			DataSource.Inutialize(); 
+			DataSource.Initialize(); 
 		}
 		/// <summary>
 		/// add a station in baseStation[] created in DataSource with details given by user

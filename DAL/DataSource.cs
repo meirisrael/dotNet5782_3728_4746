@@ -37,7 +37,7 @@ namespace DalObject
 		/// <summary>
 		/// the func initialize all parameter of the program with a default solution for each parametre
 		/// </summary>
-		public static void Inutialize()
+		public static void Initialize()
 		{
 			for (int i = 0; i < 2; i++)//for base station
 			{
