@@ -23,11 +23,11 @@ namespace DalObject
 
 		internal class Config
 		{
-			static;
-			static;
-			static;
-			static;
-			int chargingRate;
+			static double useWhenFree;
+			static double useWhenLightly;
+			static double useWhenMedium;
+			static double useWhenHeavily;
+			double chargingRate;
 
 			internal static int CounterDrones = 1000;
 			internal static int CounterBaseStation = 2000;
