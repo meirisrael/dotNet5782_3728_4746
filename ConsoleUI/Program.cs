@@ -37,16 +37,17 @@ namespace ConsoleUI
                         switch (add)
                         {
                             case IDAL.DO.Add.AddBaseStation:
-                                DalObject.DalObject.AddBaseStation();
+
+                                p.AddBaseStation();
                                 break;
                             case IDAL.DO.Add.AddDrone:
-                                DalObject.DalObject.AddDrone();
+                                p.AddDrone();
                                 break;
                             case IDAL.DO.Add.AddCustomer:
-                                DalObject.DalObject.AddCustomer();
+                                p.AddCustomer();
                                 break;
                             case IDAL.DO.Add.AddParcel:
-                                DalObject.DalObject.AddParcel();
+                                p.AddParcel();
                                 break;
                             default:
                                 break;
@@ -64,19 +65,19 @@ namespace ConsoleUI
                         switch (update)
                         {
                             case IDAL.DO.Update.AssignParcelToDrone:
-                                DalObject.DalObject.AssignParcelToDrone();
+                                p.AssignParcelToDrone();
                                 break;
                             case IDAL.DO.Update.ParcelOnDrone:
-                                DalObject.DalObject.ParcelOnDrone();
+                                p.ParcelOnDrone();
                                 break;
                             case IDAL.DO.Update.ParcelDelivered:
-                                DalObject.DalObject.ParcelDelivered();
+                                p.ParcelDelivered();
                                 break;
                             case IDAL.DO.Update.AssignDroneToBaseStation:
-                                DalObject.DalObject.AssignDroneToBaseStation();
+                                p.AssignDroneToBaseStation();
                                 break;
                             case IDAL.DO.Update.DroneLeaveChargeStation:
-                                DalObject.DalObject.DroneLeaveChargeStation();
+                                p.DroneLeaveChargeStation();
                                 break;
                             default:
                                 break;
@@ -94,16 +95,16 @@ namespace ConsoleUI
                         switch (display)
                         {
                             case IDAL.DO.Display.BaseStation:
-                                DalObject.DalObject.DisplayBaseStation();
+                                p.DisplayBaseStation();
                                 break;
                             case IDAL.DO.Display.Drone:
-                                DalObject.DalObject.DisplayDrone();
+                                p.DisplayDrone();
                                 break;
                             case IDAL.DO.Display.Customer:
-                                DalObject.DalObject.DisplayCustomer();
+                                p.DisplayCustomer();
                                 break;
                             case IDAL.DO.Display.Parcel:
-                                DalObject.DalObject.DisplayParcel();
+                                p.DisplayParcel();
                                 break;
                             default:
                                 break;
@@ -121,22 +122,22 @@ namespace ConsoleUI
                         switch (displayList)
                         {
                             case IDAL.DO.DisplayList.BaseStations:
-                                DalObject.DalObject.DisplayListBaseStations();
+                                p.DisplayListBaseStations();
                                 break;
                             case IDAL.DO.DisplayList.Drones:
-                                DalObject.DalObject.DisplayListDrones();
+                                p.DisplayListDrones();
                                 break;
                             case IDAL.DO.DisplayList.Customers:
-                                DalObject.DalObject.DisplayListCustomers();
+                                p.DisplayListCustomers();
                                 break;
                             case IDAL.DO.DisplayList.Parcels:
-                                DalObject.DalObject.DisplayListParcels();
+                                p.DisplayListParcels();
                                 break;
                             case IDAL.DO.DisplayList.ParcelsNotAssignedToDrone:
-                                DalObject.DalObject.DisplayParcelsNotAssignedToDrone();
+                                p.DisplayParcelsNotAssignedToDrone();
                                 break;
                             case IDAL.DO.DisplayList.BaseStationsCanCharge:
-                                DalObject.DalObject.DisplayListBaseStationsCanCharge();
+                                p.DisplayListBaseStationsCanCharge();
                                 break;
                             default:
                                 break;
