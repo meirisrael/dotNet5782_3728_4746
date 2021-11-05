@@ -6,7 +6,7 @@ namespace ConsoleUI
     class Program
     {
         /// <summary>
-        /// the main of he project 
+        /// the main of the project 
         /// it give the option for the user the posibility to change add or display the information 
         /// </summary>
         /// <param name="args"></param>
@@ -19,7 +19,12 @@ namespace ConsoleUI
             {
                 do
                 {
-                    Console.WriteLine("Enter\n 1 for add options \n 2 for update options \n 3 for display options \n 4 for list display options");
+                    Console.WriteLine
+                        ("Enter\n " +
+                        "1 for add options \n " +
+                        "2 for update options \n " +
+                        "3 for display options \n" +
+                        " 4 for list display options");
                     res = Enum.TryParse<IDAL.DO.Choice>(Console.ReadLine(), out choice);
                     if (!res) Console.WriteLine("Wrong input");
                 } while (!res);

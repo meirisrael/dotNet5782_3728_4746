@@ -49,7 +49,7 @@ namespace DalObject
 				int a;
 				double b;
 				IDAL.DO.WeightCategories c;
-				IDAL.DO.DroneStatuses d;
+				//IDAL.DO.DroneStatuses d;
 				Console.WriteLine("Id:");
 				int.TryParse(Console.ReadLine(), out a);
 				drone.Id = a;
@@ -60,10 +60,10 @@ namespace DalObject
 				drone.MaxWeight = c;
 				Console.WriteLine("Status:");
 				Enum.TryParse<IDAL.DO.DroneStatuses>(Console.ReadLine(), out d);
-				drone.status = d;
+				//drone.status = d;
 				Console.WriteLine("Battery:");
 				double.TryParse(Console.ReadLine(), out b);
-				drone.Battery = b;
+				//drone.Battery = b;
 				DataSource.drone[DataSource.Config.indexDrones] = drone;
 				DataSource.Config.indexDrones++;
 			}
