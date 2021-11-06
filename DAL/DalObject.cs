@@ -363,7 +363,14 @@ namespace DalObject
 		}
 		public double[] GetChargingRate()
 		{
-			
+			DataSource.Config c = new DataSource.Config();
+			double[] arr = new double[5];
+			arr[0] = DataSource.Config.useWhenFree;
+			arr[1] = DataSource.Config.useWhenHeavily;
+			arr[2] = DataSource.Config.useWhenLightly;
+			arr[3] = DataSource.Config.useWhenMedium;
+			arr[4] = c.chargingRate;
+			return arr;
 		}
 	}
 }
