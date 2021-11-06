@@ -8,10 +8,7 @@ namespace IDAL
 {
 	namespace DO
 	{
-		class Expetion
-		{
-			
-		}
+		
 	}
 }
 
