@@ -4,14 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IDAL
+namespace IBL
 {
-	namespace DO
+	namespace BO
 	{
-		/// <summary>
-		/// this struct represant a drone and all of properties
-		/// </summary>
-		public struct Drone
+		class Drone
 		{
 			public int Id { get; set; }
 			public string Model { get; set; }
@@ -27,6 +24,5 @@ namespace IDAL
 					$"MaxWeight: {this.MaxWeight }" +
 					$"\n";
 			}
-		}
 	}
 }
