@@ -22,6 +22,11 @@ namespace IDAL
 			public InvalidIdDrone() : base("ERROR: THIS DRONE ID ALREADY EXIST\n") { }
 		}
 
+		public class InvalidIdlDroneExist : Exception
+		{
+			public InvalidIdlDroneExist() : base("ERROR: THIS DRONE ID DO NOT EXIST\n") { }
+		}
+
 		public class InvalidIdCustomer : Exception
 		{
 			public InvalidIdCustomer() : base("ERROR: THIS CUSTOMER ID ALREADY EXIST\n") { }
@@ -32,6 +37,11 @@ namespace IDAL
 			public InvalidIdParcel() : base("ERROR: THIS PARCEL ID ALREADY EXIST\n") { }
 		}
 
+		public class InvalidIdParcelExist : Exception
+		{
+			public InvalidIdParcelExist() : base("ERROR: THIS PARCEL ID DO NOT EXIST\n") { }
+		}
+
 		public class InvalidIdSender : Exception
 		{
 			public InvalidIdSender() : base("ERROR: THIS SENDER ID DO NOT EXIST\n") { }
@@ -40,11 +50,6 @@ namespace IDAL
 		public class InvalidIdTarget : Exception
 		{
 			public InvalidIdTarget() : base("ERROR: THIS TARGET ID DO NOT EXIST\n") { }
-		}
-
-		public class InvalidIdParcelDrone : Exception
-		{
-			public InvalidIdParcelDrone() : base("ERROR: THIS DRONE ID DO NOT EXIST\n") { }
 		}
 	}
 }

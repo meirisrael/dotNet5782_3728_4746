@@ -271,7 +271,6 @@ namespace ConsoleUI
                 }
 
             }
-            
         }
     }
 }
