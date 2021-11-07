@@ -22,9 +22,9 @@ namespace IDAL
 			public InvalidIdDrone() : base("ERROR: THIS DRONE ID ALREADY EXIST\n") { }
 		}
 
-		public class InvalidIdlDroneExist : Exception
+		public class InvalidIdDroneExist : Exception
 		{
-			public InvalidIdlDroneExist() : base("ERROR: THIS DRONE ID DO NOT EXIST\n") { }
+			public InvalidIdDroneExist() : base("ERROR: THIS DRONE ID DO NOT EXIST\n") { }
 		}
 
 		public class InvalidIdCustomer : Exception
