@@ -35,8 +35,9 @@ namespace DalObject
 			Console.WriteLine("Lattitude:");
 			double.TryParse(Console.ReadLine(), out b);
 			station.Lattitude = b;
-			DataSource.baseStation[DataSource.Config.CounterBaseStation] = station;
-			DataSource.Config.CounterBaseStation++;
+			DataSource.baseStation.Add(station);
+			//DataSource.baseStation[DataSource.Config.CounterBaseStation] = station;
+			//DataSource.Config.CounterBaseStation++;
 		}
 		/// <summary>
 		/// /// add a drone in drone[] created in DataSource with details given by user
@@ -58,14 +59,15 @@ namespace DalObject
 				Console.WriteLine("MaxWeight:");
 				Enum.TryParse<IDAL.DO.WeightCategories>(Console.ReadLine(), out c);
 				drone.MaxWeight = c;
-				Console.WriteLine("Status:");
-				Enum.TryParse<IDAL.DO.DroneStatuses>(Console.ReadLine(), out d);
+				//Console.WriteLine("Status:");
+				//Enum.TryParse<IDAL.DO.DroneStatuses>(Console.ReadLine(), out d);
 				//drone.status = d;
 				Console.WriteLine("Battery:");
 				double.TryParse(Console.ReadLine(), out b);
 				//drone.Battery = b;
-				DataSource.drone[DataSource.Config.CounterDrones] = drone;
-				DataSource.Config.CounterDrones++;
+				DataSource.drone.Add(drone);
+				//DataSource.drone[DataSource.Config.CounterDrones] = drone;
+				//DataSource.Config.CounterDrones++;
 			}
 			else Console.WriteLine("no more space for a new drone");
 		}
@@ -92,8 +94,9 @@ namespace DalObject
 				Console.WriteLine("Lattitude:");
 				double.TryParse(Console.ReadLine(), out b);
 				customer.Lattitude = b;
-				DataSource.customers[DataSource.Config.CounterCustomer] = customer;
-				DataSource.Config.CounterCustomer++;
+				DataSource.customers.Add(customer);
+				//DataSource.customers[DataSource.Config.CounterCustomer] = customer;
+				//DataSource.Config.CounterCustomer++;
 			}
 			else Console.WriteLine("no more space for a new drone");
 		}
@@ -140,8 +143,9 @@ namespace DalObject
 				Console.WriteLine("Delivered:(Exemple: Wed 30, 2015");
 				DateTime.TryParse(Console.ReadLine(), out e);
 				parcel.Delivered = e;
-				DataSource.parcels[DataSource.Config.CounterParcel] = parcel;
-				DataSource.Config.CounterParcel++;
+				DataSource.parcels.Add(parcel);
+				//DataSource.parcels[DataSource.Config.CounterParcel] = parcel;
+				//DataSource.Config.CounterParcel++;
 			}
 			else Console.WriteLine("no more space for a new drone");
 		}
@@ -153,6 +157,7 @@ namespace DalObject
 			int a,i = 0;
 			Console.WriteLine("ParcelId:");
 			int.TryParse(Console.ReadLine(), out a);
+
 			while (DataSource.parcels[i].Id != a) 
 				i++;
 			Console.WriteLine("DroneId:");
@@ -220,9 +225,9 @@ namespace DalObject
 			IDAL.DO.BaseStation baseStation = DataSource.baseStation[j];
 			baseStation.ChargeSlots--;
 			DataSource.baseStation[j] = baseStation;
-			DataSource.droneCharge[DataSource.Config.indexDroneCharge].DroneId = DataSource.drone[i].Id;          // drone id saved in DroneCharge with the station id where he charges
-			DataSource.droneCharge[DataSource.Config.indexDroneCharge].StationId = DataSource.baseStation[j].Id;
-			DataSource.Config.indexDroneCharge++;
+			//DataSource.droneCharge[DataSource.Config.indexDroneCharge].DroneId = DataSource.drone[i].Id;          // drone id saved in DroneCharge with the station id where he charges
+			//DataSource.droneCharge[DataSource.Config.indexDroneCharge].StationId = DataSource.baseStation[j].Id;
+			//DataSource.Config.indexDroneCharge++;
 		}
 		/// <summary>
 		/// change the status of a given drone to "free" and update the freed charge slot in the related basestation
@@ -232,21 +237,22 @@ namespace DalObject
 			int a, i = 0,j=0,k=0;
 			Console.WriteLine("DroneId:");
 			int.TryParse(Console.ReadLine(), out a);
-			while (DataSource.drone[i].Id != a) 
-				i++;
-			DataSource.drone[i].status = IDAL.DO.DroneStatuses.free;
-			DataSource.drone[i].Battery = 100;
+			//while (DataSource.drone[i].Id != a) 
+			//	i++;
+			//DataSource.drone[i].status = IDAL.DO.DroneStatuses.free;
+			//DataSource.drone[i].Battery = 100;
 			while (DataSource.droneCharge[j].DroneId != a) // find the right drone in ChargeStation
 				j++;								
 			while (DataSource.baseStation[k].Id != DataSource.droneCharge[j].StationId) // find the base station where the drone was charging
 				k++;
 			//DataSource.baseStation[k].ChargeSlots++;
 			IDAL.DO.BaseStation baseStation = DataSource.baseStation[j];
-			baseStation.ChargeSlots++;
-			DataSource.baseStation[j] = baseStation;//charging slot now available
-			for (int l = k; l < (DataSource.Config.indexDroneCharge-1); l++) 
-				DataSource.droneCharge[l] = DataSource.droneCharge[l + 1]; // erase the charge slot that is now available
-			DataSource.Config.indexDroneCharge--;
+			baseStation.ChargeSlots++;                                      //charging slot now available
+			DataSource.baseStation[j] = baseStation;
+			//for (int l = k; l < (DataSource.Config.indexDroneCharge-1); l++) 
+			//	DataSource.droneCharge[l] = DataSource.droneCharge[l + 1]; // erase the charge slot that is now available
+			//DataSource.Config.indexDroneCharge--;
+			DataSource.droneCharge.RemoveAt(j);
 		}
 		/// <summary>
 		/// for a given base station Id, display it details
@@ -256,14 +262,22 @@ namespace DalObject
 			Console.WriteLine("Enter Id:");
 			int a,i=0;
 			int.TryParse(Console.ReadLine(), out a);
-			while (DataSource.baseStation[i].Id != a && i < DataSource.Config.CounterBaseStation) 
+			foreach(IDAL.DO.BaseStation b in DataSource.baseStation)
+            {
+				if (b.Id == a)
+                {
+					IDAL.DO.BaseStation baseS = new IDAL.DO.BaseStation();
+					baseS = b;
+                }
+            }
+			while (DataSource.baseStation[i].Id != a && DataSource.baseStation[i]!= DataSource.baseStation.) 
 				i++;
 			if (i == DataSource.Config.CounterBaseStation) 
 			{ 
 				Console.WriteLine("No such Base station"); 
 				return; 
 			}
-			Console.WriteLine(DataSource.baseStation[i].toString());
+			//Console.WriteLine(DataSource.baseStation[i].toString());
 		}
 		/// <summary>
 		/// for a given drone Id, display it details
