@@ -21,20 +21,20 @@ namespace IDAL
 		public void DroneLeaveChargeStation(int droneId, int baseId);
 
 
-		public void DisplayBaseStation(int baseId);
-		public void DisplayDrone(int droneId);
-		public void DisplayCustomer(int customer);
-		public void DisplayParcel(int parecel);
+		public IDAL.DO.BaseStation DisplayBaseStation(int baseId);
+		public IDAL.DO.Drone DisplayDrone(int droneId);
+		public IDAL.DO.Customer DisplayCustomer(int customer);
+		public IDAL.DO.Parcel DisplayParcel(int parecel);
 
 
-		public void DisplayParcelsNotAssignedToDrone();
+		public IEnumerable<IDAL.DO.Parcel> DisplayParcelsNotAssignedToDrone();
 
 
-		public void DisplayListBaseStations();
-		public void DisplayListDrones();
-		public void DisplayListCustomers();
-		public void DisplayListParcels();
-		public void DisplayListBaseStationsCanCharge();
+		public IEnumerable<IDAL.DO.BaseStation> DisplayListBaseStations();
+		public IEnumerable<IDAL.DO.Drone> DisplayListDrones();
+		public IEnumerable<IDAL.DO.Customer> DisplayListCustomers();
+		public IEnumerable<IDAL.DO.Parcel> DisplayListParcels();
+		public IEnumerable<IDAL.DO.BaseStation> DisplayListBaseStationsCanCharge();
 
 		public double[] GetChargingRate();
 	}

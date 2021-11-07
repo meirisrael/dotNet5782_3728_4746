@@ -8,7 +8,10 @@ namespace IDAL
 {
 	namespace DO
 	{
-		public class 
+		public class
+		{
+
+		}
 	}
 }
 
