@@ -279,14 +279,19 @@ namespace DalObject
 			Console.WriteLine("Enter Id:");
 			int a,i=0;
 			int.TryParse(Console.ReadLine(), out a);
-			while (DataSource.baseStation[i].Id != a && i < DataSource.Config.CounterBaseStation) 
-				i++;
-			if (i == DataSource.Config.CounterBaseStation) 
-			{ 
-				Console.WriteLine("No such Base station"); 
-				return; 
-			}
-			Console.WriteLine(DataSource.baseStation[i].toString());
+			foreach(IDAL.DO.BaseStation b in DataSource.baseStation)
+            {
+				if (b.Id == a) return b;
+            }
+			throw "no such base";
+			//while (DataSource.baseStation[i].Id != a && DataSource.baseStation[i]!= DataSource.baseStation.) 
+			//	i++;
+			//if (i == DataSource.Config.CounterBaseStation) 
+			//{ 
+			//	Console.WriteLine("No such Base station"); 
+			//	return; 
+			//}
+			//Console.WriteLine(DataSource.baseStation[i].toString());
 		}
 		/// <summary>
 		/// for a given drone Id, display it details
@@ -296,14 +301,20 @@ namespace DalObject
 			Console.WriteLine("Enter Id:");
 			int a, i = 0;
 			int.TryParse(Console.ReadLine(), out a);
-			while (DataSource.drone[i].Id != a && i< DataSource.Config.CounterDrones) 
-				i++;
-			if (i == DataSource.Config.CounterDrones)
-			{ 
-				Console.WriteLine("No such drone"); 
-				return; 
+			foreach (IDAL.DO.Drone b in DataSource.drone)
+			{
+				if (b.Id == a) return b;
 			}
-			Console.WriteLine(DataSource.drone[i].toString());
+			throw "no such base";
+
+			//while (DataSource.drone[i].Id != a && i< DataSource.Config.CounterDrones) 
+			//	i++;
+			//if (i == DataSource.Config.CounterDrones)
+			//{ 
+			//	Console.WriteLine("No such drone"); 
+			//	return; 
+			//}
+			//Console.WriteLine(DataSource.drone[i].toString());
 		}
 		/// <summary>
 		/// for a given customer Id, display it details
@@ -313,14 +324,20 @@ namespace DalObject
 			Console.WriteLine("Enter Id:");
 			int a, i = 0;
 			int.TryParse(Console.ReadLine(), out a);
-			while (DataSource.customers[i].Id != a && i < DataSource.Config.CounterCustomer) 
-				i++;
-			if (i == DataSource.Config.CounterCustomer) 
-			{ 
-				Console.WriteLine("No such customer"); 
-				return; 
-			} 
-			Console.WriteLine(DataSource.customers[i].toString());
+			foreach (IDAL.DO.Customer b in DataSource.customers)
+			{
+				if (b.Id == a) return b;
+			}
+			throw "no such base";
+
+			//while (DataSource.customers[i].Id != a && i < DataSource.Config.CounterCustomer) 
+			//	i++;
+			//if (i == DataSource.Config.CounterCustomer) 
+			//{ 
+			//	Console.WriteLine("No such customer"); 
+			//	return; 
+			//} 
+			//Console.WriteLine(DataSource.customers[i].toString());
 		}
 		/// <summary>
 		/// for a given parcel Id, display it details
@@ -330,76 +347,94 @@ namespace DalObject
 			Console.WriteLine("Enter Id:");
 			int a, i = 0;
 			int.TryParse(Console.ReadLine(), out a);
-			while (DataSource.parcels[i].Id != a && i < DataSource.Config.CounterParcel) 
-				i++;
-			if (i == DataSource.Config.CounterParcel) 
-			{ 
-				Console.WriteLine("No such parcel");
-				return; 
+			foreach (IDAL.DO.Parcel b in DataSource.parcels)
+			{
+				if (b.Id == a) return b;
 			}
-			Console.WriteLine(DataSource.parcels[i].toString());
+			throw "no such base";
+
+			//while (DataSource.parcels[i].Id != a && i < DataSource.Config.CounterParcel) 
+			//	i++;
+			//if (i == DataSource.Config.CounterParcel) 
+			//{ 
+			//	Console.WriteLine("No such parcel");
+			//	return; 
+			//}
+			//Console.WriteLine(DataSource.parcels[i].toString());
 		}
 
 		/// <summary>
 		/// display the details of all base stations
 		/// </summary>
-		public void DisplayListBaseStations()
+		public IEnumerable<IDAL.DO.BaseStation> DisplayListBaseStations()
 		{
-            for (int i = 0; i< DataSource.Config.CounterBaseStation; i++)
-            {
-				Console.WriteLine(DataSource.baseStation[i].toString());
-			}
+			//for (int i = 0; i< DataSource.Config.CounterBaseStation; i++)
+			// {
+			//	Console.WriteLine(DataSource.baseStation[i].toString());
+			//}
+			foreach (IDAL.DO.BaseStation item in DataSource.baseStation) yield return item;
 		}
 		/// <summary>
 		/// display the details of all drones
 		/// </summary>
-		public void DisplayListDrones()
+		public IEnumerable<IDAL.DO.Drone> DisplayListDrones()
 		{
-			for (int i = 0; i < DataSource.Config.CounterDrones; i++)
-			{
-				Console.WriteLine(DataSource.drone[i].toString());
-			}
+			//for (int i = 0; i < DataSource.Config.CounterDrones; i++)
+			//{
+			//	Console.WriteLine(DataSource.drone[i].toString());
+			//}
+			foreach (IDAL.DO.Drone item in DataSource.drone) yield return item;
 		}
 		/// <summary>
 		/// display the details of all customers
 		/// </summary>
-		public void DisplayListCustomers()
+		public IEnumerable<IDAL.DO.Customer> DisplayListCustomers()
 		{
-			for (int i = 0; i < DataSource.Config.CounterCustomer; i++)
-			{
-				Console.WriteLine(DataSource.customers[i].toString());
-			}
+			//for (int i = 0; i < DataSource.Config.CounterCustomer; i++)
+			//{
+			//	Console.WriteLine(DataSource.customers[i].toString());
+			//}
+			foreach (IDAL.DO.Customer item in DataSource.customers) yield return item;
 		}
 		/// <summary>
 		/// display the details of all parcels
 		/// </summary>
-		public void DisplayListParcels()
+		public IEnumerable<IDAL.DO.Parcel> DisplayListParcels()
 		{
-			for (int i = 0; i < DataSource.Config.CounterParcel; i++)
-			{
-				Console.WriteLine(DataSource.parcels[i].toString());
-			}
+			//for (int i = 0; i < DataSource.Config.CounterParcel; i++)
+			//{
+			//	Console.WriteLine(DataSource.parcels[i].toString());
+			//}
+			foreach (IDAL.DO.Parcel item in DataSource.parcels) yield return item;
 		}
 		/// <summary>
 		/// display the details of all parcels not assigned to a drone yet
 		/// </summary>
-		public void DisplayParcelsNotAssignedToDrone()
+		public IEnumerable<IDAL.DO.Parcel> DisplayParcelsNotAssignedToDrone()
 		{
-			for (int i = 0; i < DataSource.Config.CounterParcel; i++)
-			{
-				if(DataSource.parcels[i].DroneId ==0)
-					Console.WriteLine(DataSource.parcels[i].toString());
-			}
+			//for (int i = 0; i < DataSource.Config.CounterParcel; i++)
+			//{
+			//	if(DataSource.parcels[i].DroneId ==0)
+			//		Console.WriteLine(DataSource.parcels[i].toString());
+			//}
+			foreach(IDAL.DO.Parcel item in DataSource.parcels)
+            {
+				if (item.DroneId == 0) yield return item;
+            }
 		}
 		/// <summary>
 		/// display the details of all base stations with available(s) charge slots
 		/// </summary>
-		public void DisplayListBaseStationsCanCharge()
+		public IEnumerable<IDAL.DO.BaseStation> DisplayListBaseStationsCanCharge()
 		{
-			for (int i = 0; i < DataSource.Config.CounterBaseStation; i++)
+			//for (int i = 0; i < DataSource.Config.CounterBaseStation; i++)
+			//{
+			//	if (DataSource.baseStation[i].ChargeSlots >0) 
+			//		Console.WriteLine(DataSource.baseStation[i].toString());
+			//}
+			foreach (IDAL.DO.BaseStation item in DataSource.baseStation)
 			{
-				if (DataSource.baseStation[i].ChargeSlots >0) 
-					Console.WriteLine(DataSource.baseStation[i].toString());
+				if (item.ChargeSlots > 0) yield return item;
 			}
 		}
 		public double[] GetChargingRate()
