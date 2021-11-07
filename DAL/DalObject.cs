@@ -35,15 +35,15 @@ namespace DalObject
 			Console.WriteLine("Lattitude:");
 			double.TryParse(Console.ReadLine(), out b);
 			station.Lattitude = b;
-			DataSource.baseStation[DataSource.Config.indexBaseStation] = station;
-			DataSource.Config.indexBaseStation++;
+			DataSource.baseStation[DataSource.Config.CounterBaseStation] = station;
+			DataSource.Config.CounterBaseStation++;
 		}
 		/// <summary>
 		/// /// add a drone in drone[] created in DataSource with details given by user
 		/// </summary>
 		public void AddDrone()
 		{
-			if (DataSource.Config.indexDrones < 10)
+			if (DataSource.Config.CounterDrones < 10)
 			{
 				IDAL.DO.Drone drone = new IDAL.DO.Drone();
 				int a;
@@ -64,8 +64,8 @@ namespace DalObject
 				Console.WriteLine("Battery:");
 				double.TryParse(Console.ReadLine(), out b);
 				//drone.Battery = b;
-				DataSource.drone[DataSource.Config.indexDrones] = drone;
-				DataSource.Config.indexDrones++;
+				DataSource.drone[DataSource.Config.CounterDrones] = drone;
+				DataSource.Config.CounterDrones++;
 			}
 			else Console.WriteLine("no more space for a new drone");
 		}
@@ -74,7 +74,7 @@ namespace DalObject
 		/// </summary>
 		public void AddCustomer()
 		{
-			if (DataSource.Config.indexCustomer < 100)
+			if (DataSource.Config.CounterCustomer < 100)
 			{
 				IDAL.DO.Customer customer = new IDAL.DO.Customer();
 				int a;
@@ -92,8 +92,8 @@ namespace DalObject
 				Console.WriteLine("Lattitude:");
 				double.TryParse(Console.ReadLine(), out b);
 				customer.Lattitude = b;
-				DataSource.customers[DataSource.Config.indexCustomer] = customer;
-				DataSource.Config.indexCustomer++;
+				DataSource.customers[DataSource.Config.CounterCustomer] = customer;
+				DataSource.Config.CounterCustomer++;
 			}
 			else Console.WriteLine("no more space for a new drone");
 		}
@@ -102,7 +102,7 @@ namespace DalObject
 		/// </summary>
 		public void AddParcel()
 		{
-			if (DataSource.Config.indexParcel < 1000)
+			if (DataSource.Config.CounterParcel < 1000)
 			{
 				IDAL.DO.Parcel parcel = new IDAL.DO.Parcel();
 				int a;
@@ -140,8 +140,8 @@ namespace DalObject
 				Console.WriteLine("Delivered:(Exemple: Wed 30, 2015");
 				DateTime.TryParse(Console.ReadLine(), out e);
 				parcel.Delivered = e;
-				DataSource.parcels[DataSource.Config.indexCustomer] = parcel;
-				DataSource.Config.indexCustomer++;
+				DataSource.parcels[DataSource.Config.CounterParcel] = parcel;
+				DataSource.Config.CounterParcel++;
 			}
 			else Console.WriteLine("no more space for a new drone");
 		}
@@ -157,7 +157,11 @@ namespace DalObject
 				i++;
 			Console.WriteLine("DroneId:");
 			int.TryParse(Console.ReadLine(), out a);
-			DataSource.parcels[i].DroneId = a;
+			IDAL.DO.Parcel parcel = DataSource.parcels[i];
+			parcel.DroneId = a;
+			DataSource.parcels[i]= parcel;
+			//DataSource.parcels[i].DroneId = a;
+			//DataSource.parcels.Insert(i,)
 		}
 		/// <summary>
 		/// change the PickedUp date of a given parcel by the present time and change the status of the related drone to "shipping"
@@ -169,9 +173,12 @@ namespace DalObject
 			int.TryParse(Console.ReadLine(), out a);
 			while (DataSource.parcels[i].Id != a) // find the right parcel
 				i++;					
-			DataSource.parcels[i].PickedUp = DateTime.Now;
-			while (DataSource.drone[j].Id != DataSource.parcels[i].DroneId) j++;					// find the right drone
-			DataSource.drone[j].status = IDAL.DO.DroneStatuses.Shipping ;// drone status updated
+			//DataSource.parcels[i].PickedUp = DateTime.Now;
+			IDAL.DO.Parcel parcel = DataSource.parcels[i];
+			parcel.PickedUp = DateTime.Now;
+			DataSource.parcels[i] = parcel;
+			//while (DataSource.drone[j].Id != DataSource.parcels[i].DroneId) j++;					// find the right drone
+			//DataSource.drone[j].status = IDAL.DO.DroneStatuses.Shipping ;// drone status updated
 		}
 		/// <summary>
 		/// change the "Delivered" date of a given parcel by the present time and change the status of the related drone to "free"
@@ -183,11 +190,15 @@ namespace DalObject
 			int.TryParse(Console.ReadLine(), out a);
 			while (DataSource.parcels[i].Id != a) 
 				i++;
-			DataSource.parcels[i].Delivered = DateTime.Now;
-			a = DataSource.parcels[i].DroneId;
-			while (DataSource.drone[j].Id != a) 
-				j++;
-			DataSource.drone[j].status = IDAL.DO.DroneStatuses.free;
+
+			//DataSource.parcels[i].Delivered = DateTime.Now;
+			IDAL.DO.Parcel parcel = DataSource.parcels[i];
+			parcel.Delivered = DateTime.Now;
+			DataSource.parcels[i] = parcel;
+			//a = DataSource.parcels[i].DroneId;
+			//while (DataSource.drone[j].Id != a) 
+			//	j++;
+			//DataSource.drone[j].status = IDAL.DO.DroneStatuses.free;
 		}/// <summary>
 		/// change the status of a given drone to "maintenance" and give the user to choose a base station for the drone to charge (details saved in dronecharge[])
 		/// </summary>
@@ -196,16 +207,19 @@ namespace DalObject
 			int a, i = 0, j = 0, k = 0;
 			Console.WriteLine("Droneid:");
 			int.TryParse(Console.ReadLine(), out a);
-			while (DataSource.drone[i].Id != a) 
-				i++;
-			DataSource.drone[i].Battery = 0;								// drone battery updated
-			DataSource.drone[i].status = IDAL.DO.DroneStatuses.Maintenance;// drone status updated
+			//while (DataSource.drone[i].Id != a) 
+			//	i++;
+			//DataSource.drone[i].Battery = 0;								// drone battery updated
+			//DataSource.drone[i].status = IDAL.DO.DroneStatuses.Maintenance;// drone status updated
 			Console.WriteLine("Choose a Base Station for the drone to charge by writing the Base station's Id:");
 			DisplayListBaseStationsCanCharge();
 			int.TryParse(Console.ReadLine(), out a);
 			while (DataSource.baseStation[j].Id != a) 
 				j++;
-			DataSource.baseStation[j].ChargeSlots--;
+			//DataSource.baseStation[j].ChargeSlots--;
+			IDAL.DO.BaseStation baseStation = DataSource.baseStation[j];
+			baseStation.ChargeSlots--;
+			DataSource.baseStation[j] = baseStation;
 			DataSource.droneCharge[DataSource.Config.indexDroneCharge].DroneId = DataSource.drone[i].Id;          // drone id saved in DroneCharge with the station id where he charges
 			DataSource.droneCharge[DataSource.Config.indexDroneCharge].StationId = DataSource.baseStation[j].Id;
 			DataSource.Config.indexDroneCharge++;
@@ -226,7 +240,10 @@ namespace DalObject
 				j++;								
 			while (DataSource.baseStation[k].Id != DataSource.droneCharge[j].StationId) // find the base station where the drone was charging
 				k++;
-			DataSource.baseStation[k].ChargeSlots++;                                        //charging slot now available
+			//DataSource.baseStation[k].ChargeSlots++;
+			IDAL.DO.BaseStation baseStation = DataSource.baseStation[j];
+			baseStation.ChargeSlots++;
+			DataSource.baseStation[j] = baseStation;//charging slot now available
 			for (int l = k; l < (DataSource.Config.indexDroneCharge-1); l++) 
 				DataSource.droneCharge[l] = DataSource.droneCharge[l + 1]; // erase the charge slot that is now available
 			DataSource.Config.indexDroneCharge--;
@@ -239,9 +256,9 @@ namespace DalObject
 			Console.WriteLine("Enter Id:");
 			int a,i=0;
 			int.TryParse(Console.ReadLine(), out a);
-			while (DataSource.baseStation[i].Id != a && i < DataSource.Config.indexBaseStation) 
+			while (DataSource.baseStation[i].Id != a && i < DataSource.Config.CounterBaseStation) 
 				i++;
-			if (i == DataSource.Config.indexBaseStation) 
+			if (i == DataSource.Config.CounterBaseStation) 
 			{ 
 				Console.WriteLine("No such Base station"); 
 				return; 
@@ -256,9 +273,9 @@ namespace DalObject
 			Console.WriteLine("Enter Id:");
 			int a, i = 0;
 			int.TryParse(Console.ReadLine(), out a);
-			while (DataSource.drone[i].Id != a && i< DataSource.Config.indexDrones) 
+			while (DataSource.drone[i].Id != a && i< DataSource.Config.CounterDrones) 
 				i++;
-			if (i == DataSource.Config.indexDrones)
+			if (i == DataSource.Config.CounterDrones)
 			{ 
 				Console.WriteLine("No such drone"); 
 				return; 
@@ -273,9 +290,9 @@ namespace DalObject
 			Console.WriteLine("Enter Id:");
 			int a, i = 0;
 			int.TryParse(Console.ReadLine(), out a);
-			while (DataSource.customers[i].Id != a && i < DataSource.Config.indexCustomer) 
+			while (DataSource.customers[i].Id != a && i < DataSource.Config.CounterCustomer) 
 				i++;
-			if (i == DataSource.Config.indexCustomer) 
+			if (i == DataSource.Config.CounterCustomer) 
 			{ 
 				Console.WriteLine("No such customer"); 
 				return; 
@@ -290,9 +307,9 @@ namespace DalObject
 			Console.WriteLine("Enter Id:");
 			int a, i = 0;
 			int.TryParse(Console.ReadLine(), out a);
-			while (DataSource.parcels[i].Id != a && i < DataSource.Config.indexParcel) 
+			while (DataSource.parcels[i].Id != a && i < DataSource.Config.CounterParcel) 
 				i++;
-			if (i == DataSource.Config.indexParcel) 
+			if (i == DataSource.Config.CounterParcel) 
 			{ 
 				Console.WriteLine("No such parcel");
 				return; 
@@ -304,7 +321,7 @@ namespace DalObject
 		/// </summary>
 		public void DisplayListBaseStations()
 		{
-            for (int i = 0; i< DataSource.Config.indexBaseStation; i++)
+            for (int i = 0; i< DataSource.Config.CounterBaseStation; i++)
             {
 				Console.WriteLine(DataSource.baseStation[i].toString());
 			}
@@ -314,7 +331,7 @@ namespace DalObject
 		/// </summary>
 		public void DisplayListDrones()
 		{
-			for (int i = 0; i < DataSource.Config.indexDrones; i++)
+			for (int i = 0; i < DataSource.Config.CounterDrones; i++)
 			{
 				Console.WriteLine(DataSource.drone[i].toString());
 			}
@@ -324,7 +341,7 @@ namespace DalObject
 		/// </summary>
 		public void DisplayListCustomers()
 		{
-			for (int i = 0; i < DataSource.Config.indexCustomer; i++)
+			for (int i = 0; i < DataSource.Config.CounterCustomer; i++)
 			{
 				Console.WriteLine(DataSource.customers[i].toString());
 			}
@@ -334,7 +351,7 @@ namespace DalObject
 		/// </summary>
 		public void DisplayListParcels()
 		{
-			for (int i = 0; i < DataSource.Config.indexParcel; i++)
+			for (int i = 0; i < DataSource.Config.CounterParcel; i++)
 			{
 				Console.WriteLine(DataSource.parcels[i].toString());
 			}
@@ -344,7 +361,7 @@ namespace DalObject
 		/// </summary>
 		public void DisplayParcelsNotAssignedToDrone()
 		{
-			for (int i = 0; i < DataSource.Config.indexParcel; i++)
+			for (int i = 0; i < DataSource.Config.CounterParcel; i++)
 			{
 				if(DataSource.parcels[i].DroneId ==0)
 					Console.WriteLine(DataSource.parcels[i].toString());
@@ -355,7 +372,7 @@ namespace DalObject
 		/// </summary>
 		public void DisplayListBaseStationsCanCharge()
 		{
-			for (int i = 0; i < DataSource.Config.indexBaseStation; i++)
+			for (int i = 0; i < DataSource.Config.CounterBaseStation; i++)
 			{
 				if (DataSource.baseStation[i].ChargeSlots >0) 
 					Console.WriteLine(DataSource.baseStation[i].toString());
