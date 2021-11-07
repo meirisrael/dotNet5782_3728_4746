@@ -74,7 +74,7 @@ namespace DalObject
 			//	//double.TryParse(Console.ReadLine(), out b);
 			//	////drone.Battery = b;
 			//DataSource.drone[DataSource.Config.CounterDrones] = drone;
-			DataSource.Config.CounterDrones++;
+			//DataSource.Config.CounterDrones++;
 		}
 		/// <summary>
 		/// add a customer in customer[] created in DataSource with details given by user
