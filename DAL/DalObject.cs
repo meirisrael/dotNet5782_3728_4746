@@ -111,7 +111,7 @@ namespace DalObject
 		public void ParcelOnDrone(int parcelId)
 		{
 			foreach (IDAL.DO.Parcel item in DataSource.parcels)
-			{if (item.Id == parcelId) throw new IDAL.DO.InvalidIdParcelExist();		}
+			{if (item.Id == parcelId) throw new IDAL.DO.InvalidIdParcelExist();}
 			for (int i = 0; i < DataSource.parcels.Count; i++)
 			{
 				if (DataSource.parcels[i].Id == parcelId)

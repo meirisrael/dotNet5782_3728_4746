@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IDAL
 {
-	interface IDal
+	public interface IDal
 	{
 		public void AddBaseStation(int id,int name, int chargeSlots, double longe, double lati);
 		public void AddDrone(int id,string model, IDAL.DO.WeightCategories weight);
