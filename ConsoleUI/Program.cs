@@ -61,8 +61,8 @@ namespace ConsoleUI
                                 double.TryParse(Console.ReadLine(), out doubB);
                                 p.AddBaseStation(intA,intB,doubA,doubB);
                                 break;
-                            case IDAL.DO.Add.AddDrone:                 
 
+                            case IDAL.DO.Add.AddDrone:                
                                 Console.WriteLine("Model:");
                                 stringA = Console.ReadLine();
                                 Console.WriteLine("MaxWeight:");
@@ -80,6 +80,7 @@ namespace ConsoleUI
                                 double.TryParse(Console.ReadLine(), out doubB);
                                 p.AddCustomer(stringA,stringB,doubA,doubB);
                                 break;
+
                             case IDAL.DO.Add.AddParcel:
                                 Console.WriteLine("SenderId:");
                                 int.TryParse(Console.ReadLine(), out intA);
@@ -128,16 +129,19 @@ namespace ConsoleUI
                                 int.TryParse(Console.ReadLine(), out intB);
                                 p.AssignParcelToDrone(intA,intB);
                                 break;
+
                             case IDAL.DO.Update.ParcelOnDrone:
                                 Console.WriteLine("ParcelId:");
                                 int.TryParse(Console.ReadLine(), out intA);
                                 p.ParcelOnDrone(intA);
                                 break;
+
                             case IDAL.DO.Update.ParcelDelivered:
                                 Console.WriteLine("ParcelId:");
                                 int.TryParse(Console.ReadLine(), out intA);
                                 p.ParcelDelivered(intA);
                                 break;
+
                             case IDAL.DO.Update.AssignDroneToBaseStation:
                                 Console.WriteLine("DroneId:");
                                 int.TryParse(Console.ReadLine(), out intA);
@@ -145,6 +149,7 @@ namespace ConsoleUI
                                 int.TryParse(Console.ReadLine(), out intB);
                                 p.AssignDroneToBaseStation(intA,intB);
                                 break;
+
                             case IDAL.DO.Update.DroneLeaveChargeStation:
                                 Console.WriteLine("DroneId:");
                                 int.TryParse(Console.ReadLine(), out intA);
@@ -175,16 +180,19 @@ namespace ConsoleUI
                                 int.TryParse(Console.ReadLine(), out intA);
                                 (p.DisplayBaseStation(intA)).toString();
                                 break;
+
                             case IDAL.DO.Display.Drone:
                                 Console.WriteLine("Enter Id:");
                                 int.TryParse(Console.ReadLine(), out intA);
                                 (p.DisplayDrone(intA)).toString();
                                 break;
+
                             case IDAL.DO.Display.Customer:
                                 Console.WriteLine("Enter Id:");
                                 int.TryParse(Console.ReadLine(), out intA);
                                 (p.DisplayCustomer(intA)).toString();
                                 break;
+
                             case IDAL.DO.Display.Parcel:
                                 Console.WriteLine("Enter Id:");
                                 int.TryParse(Console.ReadLine(), out intA);
@@ -210,39 +218,32 @@ namespace ConsoleUI
                         {
                             case IDAL.DO.DisplayList.BaseStations:
                                foreach(IDAL.DO.BaseStation item in p.DisplayListBaseStations())
-                                {
-                                    item.toString();
-                                }
+                                {item.toString();}
                                 break;
+
                             case IDAL.DO.DisplayList.Drones:
                                 foreach (IDAL.DO.Drone item in p.DisplayListDrones())
-                                {
-                                    item.toString();
-                                }
+                                {item.toString();}
                                 break;
+
                             case IDAL.DO.DisplayList.Customers:
                                 foreach (IDAL.DO.Customer item in p.DisplayListCustomers())
-                                {
-                                    item.toString();
-                                }
+                                {item.toString();}
                                 break;
+
                             case IDAL.DO.DisplayList.Parcels:
                                 foreach (IDAL.DO.Parcel item in p.DisplayListParcels())
-                                {
-                                    item.toString();
-                                }
+                                {item.toString();}
                                 break;
+
                             case IDAL.DO.DisplayList.ParcelsNotAssignedToDrone:
                                 foreach (IDAL.DO.Parcel item in p.DisplayParcelsNotAssignedToDrone())
-                                {
-                                    item.toString();
-                                }
+                                {item.toString();}
                                 break;
+
                             case IDAL.DO.DisplayList.BaseStationsCanCharge:
                                 foreach (IDAL.DO.BaseStation item in p.DisplayListBaseStationsCanCharge())
-                                {
-                                    item.toString();
-                                }
+                                {item.toString();}
                                 break;
                             default:
                                 break;
