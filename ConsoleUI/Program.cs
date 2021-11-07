@@ -13,7 +13,7 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
             IDAL.DO.Choice choice=0;
-            IDAL.IDal p = new DalObject.DalObject();
+            DalObject.DalObject p = new DalObject.DalObject();
             bool res;
             int intA,intB,intC,intD;
             double doubA,doubB;
