@@ -16,6 +16,8 @@ namespace DalObject
 		/// </summary>
 		public void AddBaseStation(int id,int name,int chargeSlots,double longe,double lati)
         {
+			foreach (IDAL.DO.BaseStation item in DataSource.baseStation)
+			{if (item.Id == id) throw new IDAL.DO.InvalidIdBase();	}
 			DataSource.baseStation.Add(new IDAL.DO.BaseStation()
 			{
 				Id = id,
@@ -30,6 +32,8 @@ namespace DalObject
 		/// </summary>
 		public void AddDrone(int id,string model,IDAL.DO.WeightCategories weight)
 		{
+			foreach (IDAL.DO.Drone item in DataSource.drone)
+			{ if (item.Id == id) throw new IDAL.DO.InvalidIdDrone(); }
 			DataSource.drone.Add(new IDAL.DO.Drone()
 			{
 				Id = id,
@@ -42,6 +46,8 @@ namespace DalObject
 		/// </summary>
 		public void AddCustomer(int id,string name,string phone,double longi,double lati)
 		{
+			foreach (IDAL.DO.Customer item in DataSource.customers)
+			{ if (item.Id == id) throw new IDAL.DO.InvalidIdCustomer(); }
 			DataSource.customers.Add(new IDAL.DO.Customer()
 			{
 				Id = id,
@@ -57,6 +63,13 @@ namespace DalObject
 		public void AddParcel(int id,int senderId,int targetId,IDAL.DO.WeightCategories weight,IDAL.DO.Priorities priorities,int droneId,DateTime requested, 
 			DateTime scheduled, DateTime pickedUp, DateTime delivered)
 		{
+			foreach (IDAL.DO.Parcel item in DataSource.parcels)
+			{
+				if (item.Id == id) throw new IDAL.DO.InvalidIdParcel();
+				if (item.SenderId== senderId) throw new IDAL.DO.InvalidIdSender();
+				if (item.TargetId== targetId) throw new IDAL.DO.InvalidIdTarget();
+				if (item.DroneId== droneId) throw new IDAL.DO.InvalidIdDroneExist();
+			}
 			DataSource.parcels.Add(new IDAL.DO.Parcel()
 			{
 				Id =id,
@@ -76,6 +89,11 @@ namespace DalObject
 		/// </summary>
 		public void AssignParcelToDrone(int parcelId,int droneId)
         {
+			foreach (IDAL.DO.Parcel item in DataSource.parcels)
+			{
+				if (item.Id == parcelId) throw new IDAL.DO.InvalidIdParcelExist();
+				if (item.DroneId == droneId) throw new IDAL.DO.InvalidIdDroneExist();
+			}
 			for (int i = 0; i < DataSource.parcels.Count; i++)
 			{
 				if (DataSource.parcels[i].Id == parcelId)
@@ -92,6 +110,8 @@ namespace DalObject
 		/// </summary>
 		public void ParcelOnDrone(int parcelId)
 		{
+			foreach (IDAL.DO.Parcel item in DataSource.parcels)
+			{if (item.Id == parcelId) throw new IDAL.DO.InvalidIdParcelExist();		}
 			for (int i = 0; i < DataSource.parcels.Count; i++)
 			{
 				if (DataSource.parcels[i].Id == parcelId)
@@ -108,6 +128,8 @@ namespace DalObject
 		/// </summary>
 		public void ParcelDelivered(int parcelId)
 		{
+			foreach (IDAL.DO.Parcel item in DataSource.parcels)
+			{ if (item.Id == parcelId) throw new IDAL.DO.InvalidIdParcelExist(); }
 			for (int i = 0; i < DataSource.parcels.Count; i++)
 			{
 				if (DataSource.parcels[i].Id == parcelId)
@@ -124,6 +146,10 @@ namespace DalObject
 		/// </summary>
 		public void AssignDroneToBaseStation(int droneId,int baseId)
 		{
+			foreach (IDAL.DO.Drone item in DataSource.drone)
+			{ if (item.Id == droneId) throw new IDAL.DO.InvalidIdDroneExist(); }
+			foreach (IDAL.DO.BaseStation item in DataSource.baseStation)
+			{ if (item.Id == baseId) throw new IDAL.DO.InvalidIdBaseExist(); }
 			for (int i = 0; i < DataSource.baseStation.Count; i++)
 			{
 				if (DataSource.baseStation[i].Id == baseId)
@@ -140,6 +166,8 @@ namespace DalObject
 		/// </summary>
 		public void DroneLeaveChargeStation(int droneId, int baseId)
         {
+			foreach (IDAL.DO.Drone item in DataSource.drone)
+			{ if (item.Id == droneId) throw new IDAL.DO.InvalidIdDroneExist(); }
 			for (int i = 0; i < DataSource.baseStation.Count; i++)
 			{
 				if (DataSource.baseStation[i].Id == baseId)
