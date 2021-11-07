@@ -24,24 +24,6 @@ namespace DalObject
 				Lattitude = lati,
 				Longitude = longe
 			});
-			//int a;
-			//double b;
-			//Console.WriteLine("Id:");
-			//int.TryParse(Console.ReadLine(),out a);
-			//station.Id = a;
-			//Console.WriteLine("Name:");
-			//int.TryParse(Console.ReadLine(), out a);
-			//station.Name = a;
-			//Console.WriteLine("ChargeSlots:");
-			//int.TryParse(Console.ReadLine(), out a);
-			//station.ChargeSlots = a;
-			//Console.WriteLine("Longitude:");
-			//double.TryParse(Console.ReadLine(), out b);
-			//station.Longitude = b;
-			//Console.WriteLine("Lattitude:");
-			//double.TryParse(Console.ReadLine(), out b);
-			//station.Lattitude = b;
-			//DataSource.baseStation[DataSource.Config.CounterBaseStation] = station;
 		}
 		/// <summary>
 		/// /// add a drone in drone[] created in DataSource with details given by user
@@ -54,27 +36,6 @@ namespace DalObject
 				Model = model,
 				MaxWeight = weight
 			});
-			//IDAL.DO.Drone drone = new IDAL.DO.Drone();
-			//int a;
-			//double b;
-			//IDAL.DO.WeightCategories c;
-			//	//IDAL.DO.DroneStatuses d;
-			//Console.WriteLine("Id:");
-			//int.TryParse(Console.ReadLine(), out a);
-			//drone.Id = a;
-			//Console.WriteLine("Model:");
-			//drone.Model = Console.ReadLine();
-			//Console.WriteLine("MaxWeight:");
-			//Enum.TryParse<IDAL.DO.WeightCategories>(Console.ReadLine(), out c);
-			//drone.MaxWeight = c;
-			//	//Console.WriteLine("Status:");
-			//	////Enum.TryParse<IDAL.DO.DroneStatuses>(Console.ReadLine(), out d);
-			//	////drone.status = d;
-			//	//Console.WriteLine("Battery:");
-			//	//double.TryParse(Console.ReadLine(), out b);
-			//	////drone.Battery = b;
-			//DataSource.drone[DataSource.Config.CounterDrones] = drone;
-			DataSource.Config.CounterDrones++;
 		}
 		/// <summary>
 		/// add a customer in customer[] created in DataSource with details given by user
@@ -89,24 +50,6 @@ namespace DalObject
 				Longitude = longi,
 				Lattitude = lati
 			});
-			//IDAL.DO.Customer customer = new IDAL.DO.Customer();
-			//int a;
-			//double b;
-			//Console.WriteLine("Id:");
-			//int.TryParse(Console.ReadLine(), out a);
-			//customer.Id = a;
-			//Console.WriteLine("Name:");
-			//customer.Name = Console.ReadLine();
-			//Console.WriteLine("Phone:");
-			//customer.Phone = Console.ReadLine();
-			//Console.WriteLine("Longitude:");
-			//double.TryParse(Console.ReadLine(), out b);
-			//customer.Longitude = b;
-			//Console.WriteLine("Lattitude:");
-			//double.TryParse(Console.ReadLine(), out b);
-			//customer.Lattitude = b;
-			//DataSource.customers[DataSource.Config.CounterCustomer] = customer;
-			//DataSource.Config.CounterCustomer++;
 		}
 		/// <summary>
 		/// add a parcel in parcels[] created in DataSource with details given by user
@@ -127,315 +70,189 @@ namespace DalObject
 				PickedUp = pickedUp,
 				Delivered = delivered
 			});
-			//IDAL.DO.Parcel parcel = new IDAL.DO.Parcel();
-			//int a;
-			//double b;
-			//IDAL.DO.WeightCategories c;
-			//IDAL.DO.Priorities d;
-			//DateTime e;
-			//Console.WriteLine("Id:");
-			//int.TryParse(Console.ReadLine(), out a);
-			//parcel.Id = a;
-			//Console.WriteLine("TargetId:");
-			//int.TryParse(Console.ReadLine(), out a);
-			//parcel.TargetId = a;
-			//Console.WriteLine("SenderId:");
-			//int.TryParse(Console.ReadLine(), out a);
-			//parcel.SenderId = a;
-			//Console.WriteLine("Weigh:");
-			//Enum.TryParse<IDAL.DO.WeightCategories>(Console.ReadLine(), out c);
-			//parcel.Weight = c;
-			//Console.WriteLine("Priority:");
-			//Enum.TryParse<IDAL.DO.Priorities>(Console.ReadLine(), out d);
-			//parcel.Priority = d;
-			//Console.WriteLine("DroneId:");
-			//int.TryParse(Console.ReadLine(), out a);
-			//parcel.DroneId = a;
-			//Console.WriteLine("Requested:(Exemple: Wed 30, 2015");
-			//DateTime.TryParse(Console.ReadLine(), out e);
-			//parcel.Requested = e;
-			//Console.WriteLine("Scheduled:(Exemple: Wed 30, 2015");
-			//DateTime.TryParse(Console.ReadLine(), out e);
-			//parcel.Scheduled = e;
-			//Console.WriteLine("PickedUp:(Exemple: Wed 30, 2015");
-			//DateTime.TryParse(Console.ReadLine(), out e);
-			//parcel.PickedUp = e;
-			//Console.WriteLine("Delivered:(Exemple: Wed 30, 2015");
-			//DateTime.TryParse(Console.ReadLine(), out e);
-			//parcel.Delivered = e;
-			//DataSource.parcels[DataSource.Config.CounterParcel] = parcel;
-			//DataSource.Config.CounterParcel++;
 		}
 		/// <summary>
 		/// add a drone Id in droneId field from a parcel given by the user
 		/// </summary>
 		public void AssignParcelToDrone(int parcelId,int droneId)
         {
-			
-			//int a,i = 0;
-			//Console.WriteLine("ParcelId:");
-			//int.TryParse(Console.ReadLine(), out a);
-			//while (DataSource.parcels[i].Id != a) 
-			//	i++;
-			//Console.WriteLine("DroneId:");
-			//int.TryParse(Console.ReadLine(), out a);
-			//IDAL.DO.Parcel parcel = DataSource.parcels[i];
-			//parcel.DroneId = a;
-			//DataSource.parcels[i]= parcel;
-			////DataSource.parcels[i].DroneId = a;
-			////DataSource.parcels.Insert(i,)
+			for (int i = 0; i < DataSource.parcels.Count; i++)
+			{
+				if (DataSource.parcels[i].Id == parcelId)
+				{
+					IDAL.DO.Parcel x = DataSource.parcels[i];
+					x.DroneId = droneId;
+					DataSource.parcels[i] = x;
+					break;
+				}
+			}
 		}
 		/// <summary>
 		/// change the PickedUp date of a given parcel by the present time and change the status of the related drone to "shipping"
 		/// </summary>
 		public void ParcelOnDrone(int parcelId)
 		{
-			//int a, i = 0,j=0;
-			//Console.WriteLine("ParcelId:");
-			//int.TryParse(Console.ReadLine(), out a);
-			//while (DataSource.parcels[i].Id != a) // find the right parcel
-			//	i++;					
-			////DataSource.parcels[i].PickedUp = DateTime.Now;
-			//IDAL.DO.Parcel parcel = DataSource.parcels[i];
-			//parcel.PickedUp = DateTime.Now;
-			//DataSource.parcels[i] = parcel;
-			//while (DataSource.drone[j].Id != DataSource.parcels[i].DroneId) j++;					// find the right drone
-			//DataSource.drone[j].status = IDAL.DO.DroneStatuses.Shipping ;// drone status updated
+			for (int i = 0; i < DataSource.parcels.Count; i++)
+			{
+				if (DataSource.parcels[i].Id == parcelId)
+				{
+					IDAL.DO.Parcel x = DataSource.parcels[i];
+					x.PickedUp=DateTime.Now;
+					DataSource.parcels[i] = x;
+					break;
+				}
+			}
 		}
 		/// <summary>
 		/// change the "Delivered" date of a given parcel by the present time and change the status of the related drone to "free"
 		/// </summary>
 		public void ParcelDelivered(int parcelId)
-        {
-			//int a, i = 0,j=0;
-			//Console.WriteLine("ParcelId:");
-			//int.TryParse(Console.ReadLine(), out a);
-			//while (DataSource.parcels[i].Id != a) 
-			//	i++;
-
-			////DataSource.parcels[i].Delivered = DateTime.Now;
-			//IDAL.DO.Parcel parcel = DataSource.parcels[i];
-			//parcel.Delivered = DateTime.Now;
-			//DataSource.parcels[i] = parcel;
-			//a = DataSource.parcels[i].DroneId;
-			//while (DataSource.drone[j].Id != a) 
-			//	j++;
-			//DataSource.drone[j].status = IDAL.DO.DroneStatuses.free;
+		{
+			for (int i = 0; i < DataSource.parcels.Count; i++)
+			{
+				if (DataSource.parcels[i].Id == parcelId)
+				{
+					IDAL.DO.Parcel x = DataSource.parcels[i];
+					x.Delivered = DateTime.Now;
+					DataSource.parcels[i] = x;
+					break;
+				}
+			}
 		}
 		/// <summary>
 		/// change the status of a given drone to "maintenance" and give the user to choose a base station for the drone to charge (details saved in dronecharge[])
 		/// </summary>
 		public void AssignDroneToBaseStation(int droneId,int baseId)
 		{
-			//int a, i = 0, j = 0, k = 0;
-			//Console.WriteLine("Droneid:");
-			//int.TryParse(Console.ReadLine(), out a);
-			////while (DataSource.drone[i].Id != a) 
-			////	i++;
-			////DataSource.drone[i].Battery = 0;								// drone battery updated
-			////DataSource.drone[i].status = IDAL.DO.DroneStatuses.Maintenance;// drone status updated
-			//Console.WriteLine("Choose a Base Station for the drone to charge by writing the Base station's Id:");
-			//DisplayListBaseStationsCanCharge();
-			//int.TryParse(Console.ReadLine(), out a);
-			//while (DataSource.baseStation[j].Id != a) 
-			//	j++;
-			////DataSource.baseStation[j].ChargeSlots--;
-			//IDAL.DO.BaseStation baseStation = DataSource.baseStation[j];
-			//baseStation.ChargeSlots--;
-			//DataSource.baseStation[j] = baseStation;
-			//DataSource.droneCharge[DataSource.Config.indexDroneCharge].DroneId = DataSource.drone[i].Id;          // drone id saved in DroneCharge with the station id where he charges
-			//DataSource.droneCharge[DataSource.Config.indexDroneCharge].StationId = DataSource.baseStation[j].Id;
-			//DataSource.Config.indexDroneCharge++;
+			for (int i = 0; i < DataSource.baseStation.Count; i++)
+			{
+				if (DataSource.baseStation[i].Id == baseId)
+				{
+					IDAL.DO.BaseStation x = DataSource.baseStation[i];
+					x.ChargeSlots--;
+					DataSource.baseStation[i] = x;
+					break;
+				}
+			}
 		}
 		/// <summary>
 		/// change the status of a given drone to "free" and update the freed charge slot in the related basestation
 		/// </summary>
 		public void DroneLeaveChargeStation(int droneId, int baseId)
         {
-			//int a, i = 0,j=0,k=0;
-			//Console.WriteLine("DroneId:");
-			//int.TryParse(Console.ReadLine(), out a);
-			//while (DataSource.drone[i].Id != a) 
-			//	i++;
-			//DataSource.drone[i].status = IDAL.DO.DroneStatuses.free;
-			//DataSource.drone[i].Battery = 100;
-			//while (DataSource.droneCharge[j].DroneId != a) // find the right drone in ChargeStation
-			//	j++;								
-			//while (DataSource.baseStation[k].Id != DataSource.droneCharge[j].StationId) // find the base station where the drone was charging
-			//	k++;
-			////DataSource.baseStation[k].ChargeSlots++;
-			//IDAL.DO.BaseStation baseStation = DataSource.baseStation[j];
-			//baseStation.ChargeSlots++;
-			//DataSource.baseStation[j] = baseStation;//charging slot now available
-			//for (int l = k; l < (DataSource.Config.indexDroneCharge-1); l++) 
-			//	DataSource.droneCharge[l] = DataSource.droneCharge[l + 1]; // erase the charge slot that is now available
-			//DataSource.Config.indexDroneCharge--;
+			for (int i = 0; i < DataSource.baseStation.Count; i++)
+			{
+				if (DataSource.baseStation[i].Id == baseId)
+				{
+					IDAL.DO.BaseStation x = DataSource.baseStation[i];
+					x.ChargeSlots++;
+					DataSource.baseStation[i] = x;
+					break;
+				}
+			}
 		}
 		/// <summary>
 		/// for a given base station Id, display it details
 		/// </summary>
-		public void DisplayBaseStation(int baseId)
+		public IDAL.DO.BaseStation DisplayBaseStation(int baseId)
         {
-			Console.WriteLine("Enter Id:");
-			int a,i=0;
-			int.TryParse(Console.ReadLine(), out a);
-			foreach(IDAL.DO.BaseStation b in DataSource.baseStation)
+			foreach(IDAL.DO.BaseStation item in DataSource.baseStation)
             {
-				if (b.Id == a) return b;
+				if (item.Id == baseId) 
+					return item;
             }
 			throw "no such base";
-			//while (DataSource.baseStation[i].Id != a && DataSource.baseStation[i]!= DataSource.baseStation.) 
-			//	i++;
-			//if (i == DataSource.Config.CounterBaseStation) 
-			//{ 
-			//	Console.WriteLine("No such Base station"); 
-			//	return; 
-			//}
-			//Console.WriteLine(DataSource.baseStation[i].toString());
 		}
 		/// <summary>
 		/// for a given drone Id, display it details
 		/// </summary>
-		public void DisplayDrone(int droneId)
+		public IDAL.DO.Drone DisplayDrone(int droneId)
 		{
-			Console.WriteLine("Enter Id:");
-			int a, i = 0;
-			int.TryParse(Console.ReadLine(), out a);
-			foreach (IDAL.DO.Drone b in DataSource.drone)
+			foreach (IDAL.DO.Drone item in DataSource.drone)
 			{
-				if (b.Id == a) return b;
+				if (item.Id == droneId) 
+					return item;
 			}
 			throw "no such base";
-
-			//while (DataSource.drone[i].Id != a && i< DataSource.Config.CounterDrones) 
-			//	i++;
-			//if (i == DataSource.Config.CounterDrones)
-			//{ 
-			//	Console.WriteLine("No such drone"); 
-			//	return; 
-			//}
-			//Console.WriteLine(DataSource.drone[i].toString());
 		}
 		/// <summary>
 		/// for a given customer Id, display it details
 		/// </summary>
-		public void DisplayCustomer(int customerId)
+		public IDAL.DO.Customer DisplayCustomer(int customerId)
 		{
-			Console.WriteLine("Enter Id:");
-			int a, i = 0;
-			int.TryParse(Console.ReadLine(), out a);
-			foreach (IDAL.DO.Customer b in DataSource.customers)
+			foreach (IDAL.DO.Customer item in DataSource.customers)
 			{
-				if (b.Id == a) return b;
+				if (item.Id == customerId) 
+					return item;
 			}
 			throw "no such base";
-
-			//while (DataSource.customers[i].Id != a && i < DataSource.Config.CounterCustomer) 
-			//	i++;
-			//if (i == DataSource.Config.CounterCustomer) 
-			//{ 
-			//	Console.WriteLine("No such customer"); 
-			//	return; 
-			//} 
-			//Console.WriteLine(DataSource.customers[i].toString());
 		}
 		/// <summary>
 		/// for a given parcel Id, display it details
 		/// </summary>
-		public void DisplayParcel(int parcelId)
+		public IDAL.DO.Parcel DisplayParcel(int parcelId)
 		{
-			Console.WriteLine("Enter Id:");
-			int a, i = 0;
-			int.TryParse(Console.ReadLine(), out a);
-			foreach (IDAL.DO.Parcel b in DataSource.parcels)
+			foreach (IDAL.DO.Parcel item in DataSource.parcels)
 			{
-				if (b.Id == a) return b;
+				if (item.Id == parcelId) 
+					return item;
 			}
 			throw "no such base";
 
-			//while (DataSource.parcels[i].Id != a && i < DataSource.Config.CounterParcel) 
-			//	i++;
-			//if (i == DataSource.Config.CounterParcel) 
-			//{ 
-			//	Console.WriteLine("No such parcel");
-			//	return; 
-			//}
-			//Console.WriteLine(DataSource.parcels[i].toString());
 		}
-
 		/// <summary>
 		/// display the details of all base stations
 		/// </summary>
 		public IEnumerable<IDAL.DO.BaseStation> DisplayListBaseStations()
 		{
-			//for (int i = 0; i< DataSource.Config.CounterBaseStation; i++)
-			// {
-			//	Console.WriteLine(DataSource.baseStation[i].toString());
-			//}
-			foreach (IDAL.DO.BaseStation item in DataSource.baseStation) yield return item;
+			return DataSource.baseStation;
 		}
 		/// <summary>
 		/// display the details of all drones
 		/// </summary>
 		public IEnumerable<IDAL.DO.Drone> DisplayListDrones()
 		{
-			//for (int i = 0; i < DataSource.Config.CounterDrones; i++)
-			//{
-			//	Console.WriteLine(DataSource.drone[i].toString());
-			//}
-			foreach (IDAL.DO.Drone item in DataSource.drone) yield return item;
+			return DataSource.drone;
 		}
 		/// <summary>
 		/// display the details of all customers
 		/// </summary>
 		public IEnumerable<IDAL.DO.Customer> DisplayListCustomers()
 		{
-			//for (int i = 0; i < DataSource.Config.CounterCustomer; i++)
-			//{
-			//	Console.WriteLine(DataSource.customers[i].toString());
-			//}
-			foreach (IDAL.DO.Customer item in DataSource.customers) yield return item;
+			return DataSource.customers;
 		}
 		/// <summary>
 		/// display the details of all parcels
 		/// </summary>
 		public IEnumerable<IDAL.DO.Parcel> DisplayListParcels()
 		{
-			//for (int i = 0; i < DataSource.Config.CounterParcel; i++)
-			//{
-			//	Console.WriteLine(DataSource.parcels[i].toString());
-			//}
-			foreach (IDAL.DO.Parcel item in DataSource.parcels) yield return item;
+			return DataSource.parcels;
 		}
 		/// <summary>
 		/// display the details of all parcels not assigned to a drone yet
 		/// </summary>
 		public IEnumerable<IDAL.DO.Parcel> DisplayParcelsNotAssignedToDrone()
 		{
-			//for (int i = 0; i < DataSource.Config.CounterParcel; i++)
-			//{
-			//	if(DataSource.parcels[i].DroneId ==0)
-			//		Console.WriteLine(DataSource.parcels[i].toString());
-			//}
-			foreach(IDAL.DO.Parcel item in DataSource.parcels)
+			List<IDAL.DO.Parcel> x = new List<IDAL.DO.Parcel>();
+			foreach (IDAL.DO.Parcel item in DataSource.parcels)
             {
-				if (item.DroneId == 0) yield return item;
+				if (item.DroneId == 0) 
+					x.Add(item);
             }
+			return x;
 		}
 		/// <summary>
 		/// display the details of all base stations with available(s) charge slots
 		/// </summary>
 		public IEnumerable<IDAL.DO.BaseStation> DisplayListBaseStationsCanCharge()
 		{
-			//for (int i = 0; i < DataSource.Config.CounterBaseStation; i++)
-			//{
-			//	if (DataSource.baseStation[i].ChargeSlots >0) 
-			//		Console.WriteLine(DataSource.baseStation[i].toString());
-			//}
+			List<IDAL.DO.BaseStation> x = new List<IDAL.DO.BaseStation>();
 			foreach (IDAL.DO.BaseStation item in DataSource.baseStation)
 			{
-				if (item.ChargeSlots > 0) yield return item;
+				if (item.ChargeSlots > 0)
+					x.Add(item);
 			}
+			return x;
 		}
 		public double[] GetChargingRate()
 		{
