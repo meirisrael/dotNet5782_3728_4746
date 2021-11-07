@@ -14,25 +14,25 @@ namespace DalObject
 		/// <summary>
 		/// add a station in baseStation[] created in DataSource with details given by user
 		/// </summary>
-		public void AddBaseStation(int name,int chargeSlots,double longe,double lati)
+		public void AddBaseStation(int id,int name,int chargeSlots,double longe,double lati)
         {
 			DataSource.baseStation.Add(new IDAL.DO.BaseStation()
 			{
-				Id =DataSource.Config.CounterBaseStation++,
+				Id = id,
 				Name = name,
 				ChargeSlots = chargeSlots,
 				Lattitude = lati,
 				Longitude = longe
-			});
+			}) ;
 		}
 		/// <summary>
 		/// /// add a drone in drone[] created in DataSource with details given by user
 		/// </summary>
-		public void AddDrone(string model,IDAL.DO.WeightCategories weight)
+		public void AddDrone(int id,string model,IDAL.DO.WeightCategories weight)
 		{
 			DataSource.drone.Add(new IDAL.DO.Drone()
 			{
-				Id = DataSource.Config.CounterDrones++,
+				Id = id,
 				Model = model,
 				MaxWeight = weight
 			});
@@ -40,11 +40,11 @@ namespace DalObject
 		/// <summary>
 		/// add a customer in customer[] created in DataSource with details given by user
 		/// </summary>
-		public void AddCustomer(string name,string phone,double longi,double lati)
+		public void AddCustomer(int id,string name,string phone,double longi,double lati)
 		{
 			DataSource.customers.Add(new IDAL.DO.Customer()
 			{
-				Id = DataSource.Config.CounterCustomer++,
+				Id = id,
 				Name = name,
 				Phone = phone,
 				Longitude = longi,
@@ -54,12 +54,12 @@ namespace DalObject
 		/// <summary>
 		/// add a parcel in parcels[] created in DataSource with details given by user
 		/// </summary>
-		public void AddParcel(int senderId,int targetId,IDAL.DO.WeightCategories weight,IDAL.DO.Priorities priorities,int droneId,DateTime requested, 
+		public void AddParcel(int id,int senderId,int targetId,IDAL.DO.WeightCategories weight,IDAL.DO.Priorities priorities,int droneId,DateTime requested, 
 			DateTime scheduled, DateTime pickedUp, DateTime delivered)
 		{
 			DataSource.parcels.Add(new IDAL.DO.Parcel()
 			{
-				Id = DataSource.Config.CounterParcel++,
+				Id =id,
 				SenderId = senderId,
 				TargetId = targetId,
 				Weight = weight,
