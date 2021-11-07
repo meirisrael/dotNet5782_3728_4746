@@ -17,7 +17,7 @@ namespace IDAL
 		public void ParcelDelivered();
 		public void AssignDroneToBaseStation();
 		public void DroneLeaveChargeStation();
-		public void DisplayBaseStation();
+		public IEnumerable<IDAL.DO.BaseStation> DisplayBaseStation();
 		public void DisplayDrone();
 		public void DisplayCustomer();
 		public void DisplayParcel();
