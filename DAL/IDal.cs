@@ -8,25 +8,34 @@ namespace IDAL
 {
 	interface IDal
 	{
-		public void AddBaseStation();
-		public void AddDrone();
-		public void AddCustomer();
-		public void AddParcel();
-		public void AssignParcelToDrone();
-		public void ParcelOnDrone();
-		public void ParcelDelivered();
-		public void AssignDroneToBaseStation();
-		public void DroneLeaveChargeStation();
-		public void DisplayBaseStation();
-		public void DisplayDrone();
-		public void DisplayCustomer();
-		public void DisplayParcel();
+		public void AddBaseStation(int name, int chargeSlots, double longe, double lati);
+		public void AddDrone(string model, IDAL.DO.WeightCategories weight);
+		public void AddCustomer(string name, string phone, double longi, double lati);
+		public void AddParcel(int senderId, int targetId, IDAL.DO.WeightCategories weight, IDAL.DO.Priorities priorities, int droneId, DateTime requested,
+			DateTime scheduled, DateTime pickedUp, DateTime delivered);
+
+		public void AssignParcelToDrone(int parcelId, int droneId);
+		public void ParcelOnDrone(int parcelId);
+		public void ParcelDelivered(int parcelId);
+		public void AssignDroneToBaseStation(int droneId, int baseId);
+		public void DroneLeaveChargeStation(int droneId, int baseId);
+
+
+		public void DisplayBaseStation(int baseId);
+		public void DisplayDrone(int droneId);
+		public void DisplayCustomer(int customer);
+		public void DisplayParcel(int parecel);
+
+
+		public void DisplayParcelsNotAssignedToDrone();
+
+
 		public void DisplayListBaseStations();
 		public void DisplayListDrones();
 		public void DisplayListCustomers();
 		public void DisplayListParcels();
-		public void DisplayParcelsNotAssignedToDrone();
 		public void DisplayListBaseStationsCanCharge();
+
 		public double[] GetChargingRate();
 	}
 }
