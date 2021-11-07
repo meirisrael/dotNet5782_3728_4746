@@ -18,7 +18,6 @@ namespace DalObject
 		internal static List<IDAL.DO.Parcel> parcels = new List<IDAL.DO.Parcel>();
 		internal static List<IDAL.DO.DroneCharge> droneCharge = new List<IDAL.DO.DroneCharge>();
 
-
 		public static Random r = new Random();
 
 		internal class Config
@@ -27,23 +26,22 @@ namespace DalObject
 			internal static double useWhenLightly = 0;
 			internal static double useWhenMedium = 0;
 			internal static double useWhenHeavily = 0;
-			internal double chargingRate = 0;
-
-			internal static int CounterDrones = 1000;
-			internal static int CounterBaseStation = 2000;
-			internal static int CounterCustomer = 3000;
-			internal static int CounterParcel = 4000;
+			internal double chargingRate = 0; 
 		}
 		/// <summary>
 		/// the func initialize all parameter of the program with a default solution for each parametre
 		/// </summary>
 		public static void Initialize()
 		{
+			int CounterBaseStation = 2000;
+			int CounterDrones = 1000;
+			int CounterCustomer = 3000;
+			int CounterParcel = 4000;
 			for (int i = 0; i < 2; i++)//for base station
 			{
 				baseStation.Add(new IDAL.DO.BaseStation() 
 				{
-					Id = Config.CounterBaseStation++,
+					Id = CounterBaseStation++,
 					Name = i,
 					ChargeSlots = r.Next() % 5,
 					Lattitude = (r.NextDouble() * 180) - 90,
@@ -54,7 +52,7 @@ namespace DalObject
 			{
 				drone.Add(new IDAL.DO.Drone()
 				{
-					Id = Config.CounterDrones++,
+					Id = CounterDrones++,
 					Model = "Fantome-" + i,
 					MaxWeight = (IDAL.DO.WeightCategories)(r.Next(1, 4)),
 					/*status = (IDAL.DO.DroneStatuses)(r.Next(1, 4)),
@@ -65,7 +63,7 @@ namespace DalObject
 			{
 				customers.Add(new IDAL.DO.Customer()
 				{
-					Id = Config.CounterCustomer++,
+					Id = CounterCustomer++,
 					Name = ("a" + i),
 					Phone = (3761 + i).ToString(),
 					Longitude = (r.NextDouble() * 180) - 90,
@@ -77,9 +75,9 @@ namespace DalObject
 				DateTime today = DateTime.Now;
 				parcels.Add(new IDAL.DO.Parcel()
 				{
-					Id = Config.CounterParcel++,
+					Id = CounterParcel++,
 					SenderId = r.Next(2000, 3000),
-					TargetId = Config.CounterCustomer--,
+					TargetId = CounterCustomer--,
 					Weight = (IDAL.DO.WeightCategories)(r.Next(1, 4)),
 					Priority = (IDAL.DO.Priorities)(r.Next(1, 4)),
 					DroneId = r.Next(1000, 1005),
