@@ -173,22 +173,22 @@ namespace ConsoleUI
                             case IDAL.DO.Display.BaseStation:
                                 Console.WriteLine("Enter Id:");
                                 int.TryParse(Console.ReadLine(), out intA);
-                                p.DisplayBaseStation(intA);
+                                (p.DisplayBaseStation(intA)).toString();
                                 break;
                             case IDAL.DO.Display.Drone:
                                 Console.WriteLine("Enter Id:");
                                 int.TryParse(Console.ReadLine(), out intA);
-                                p.DisplayDrone(intA);
+                                (p.DisplayDrone(intA)).toString();
                                 break;
                             case IDAL.DO.Display.Customer:
                                 Console.WriteLine("Enter Id:");
                                 int.TryParse(Console.ReadLine(), out intA);
-                                p.DisplayCustomer(intA);
+                                (p.DisplayCustomer(intA)).toString();
                                 break;
                             case IDAL.DO.Display.Parcel:
                                 Console.WriteLine("Enter Id:");
                                 int.TryParse(Console.ReadLine(), out intA);
-                                p.DisplayParcel(intA);
+                                (p.DisplayParcel(intA)).toString();
                                 break;
                             default:
                                 break;
@@ -209,22 +209,40 @@ namespace ConsoleUI
                         switch (displayList)
                         {
                             case IDAL.DO.DisplayList.BaseStations:
-                                p.DisplayListBaseStations();
+                               foreach(IDAL.DO.BaseStation item in p.DisplayListBaseStations())
+                                {
+                                    item.toString();
+                                }
                                 break;
                             case IDAL.DO.DisplayList.Drones:
-                                p.DisplayListDrones();
+                                foreach (IDAL.DO.Drone item in p.DisplayListDrones())
+                                {
+                                    item.toString();
+                                }
                                 break;
                             case IDAL.DO.DisplayList.Customers:
-                                p.DisplayListCustomers();
+                                foreach (IDAL.DO.Customer item in p.DisplayListCustomers())
+                                {
+                                    item.toString();
+                                }
                                 break;
                             case IDAL.DO.DisplayList.Parcels:
-                                p.DisplayListParcels();
+                                foreach (IDAL.DO.Parcel item in p.DisplayListParcels())
+                                {
+                                    item.toString();
+                                }
                                 break;
                             case IDAL.DO.DisplayList.ParcelsNotAssignedToDrone:
-                                p.DisplayParcelsNotAssignedToDrone();
+                                foreach (IDAL.DO.Parcel item in p.DisplayParcelsNotAssignedToDrone())
+                                {
+                                    item.toString();
+                                }
                                 break;
                             case IDAL.DO.DisplayList.BaseStationsCanCharge:
-                                p.DisplayListBaseStationsCanCharge();
+                                foreach (IDAL.DO.BaseStation item in p.DisplayListBaseStationsCanCharge())
+                                {
+                                    item.toString();
+                                }
                                 break;
                             default:
                                 break;

@@ -326,7 +326,7 @@ namespace DalObject
 			int.TryParse(Console.ReadLine(), out a);
 			foreach (IDAL.DO.Customer b in DataSource.customers)
 			{
-				if (b.Id == a) return b;
+				if (b.Id == a) yield return b;
 			}
 			throw "no such base";
 
