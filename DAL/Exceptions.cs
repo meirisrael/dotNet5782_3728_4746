@@ -51,6 +51,10 @@ namespace IDAL
 		{
 			public InvalidIdTarget() : base("ERROR: THIS TARGET ID DO NOT EXIST\n") { }
 		}
+		public class InvalidIdCustomerExist : Exception
+		{
+			public InvalidIdCustomerExist() : base("ERROR: THIS CUSTOMER ID DO NOT EXIST\n") { }
+		}
 	}
 }
 

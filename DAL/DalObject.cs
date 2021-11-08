@@ -189,7 +189,7 @@ namespace DalObject
 				if (item.Id == baseId) 
 					return item;
             }
-			throw "no such base";
+			throw new IDAL.DO.InvalidIdBaseExist();
 		}
 		/// <summary>
 		/// for a given drone Id, display it details
@@ -201,7 +201,7 @@ namespace DalObject
 				if (item.Id == droneId) 
 					return item;
 			}
-			throw "no such base";
+			throw new IDAL.DO.InvalidIdDroneExist();
 		}
 		/// <summary>
 		/// for a given customer Id, display it details
@@ -213,7 +213,7 @@ namespace DalObject
 				if (item.Id == customerId) 
 					return item;
 			}
-			throw "no such base";
+			throw new IDAL.DO.InvalidIdCustomerExist();
 		}
 		/// <summary>
 		/// for a given parcel Id, display it details
@@ -225,7 +225,7 @@ namespace DalObject
 				if (item.Id == parcelId) 
 					return item;
 			}
-			throw "no such base";
+			throw new IDAL.DO.InvalidIdParcelExist();
 
 		}
 		/// <summary>
