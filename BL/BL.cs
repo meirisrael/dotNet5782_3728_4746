@@ -16,7 +16,7 @@ namespace BL
 		private double _useWhenLightly;
 		private double _useWhenMedium;
 		private double _chargingRate;
-		List<IBL.BO.Drone> drone = new List<IBL.BO.Drone>();
+		List<IBL.BO.Drone> droneForList = new List<IBL.BO.Drone>();
 		BL() 
 		{
 			charge();
@@ -36,7 +36,7 @@ namespace BL
 		{
 			foreach (IDAL.DO.Drone item in p.DisplayListDrones())
 			{
-				drone.Add(new IBL.BO.Drone {Id=item.Id,Model=item.Model,MaxWeight=item.MaxWeight, });
+				drone.Add(new IBL.BO.Drone {Id=item.Id,Model=item.Model,MaxWeight=(IBL.BO.WeightCategories)item.MaxWeight, });
 			}
 
 			foreach (IDAL.DO.Parcel item in p.DisplayListParcels())
