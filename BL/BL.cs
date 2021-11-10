@@ -10,6 +10,6 @@ namespace BL
 	{
 		//BL MaintainDrone
 
-		BL() { }
+		BL() {IDAL }
 	}
 }
