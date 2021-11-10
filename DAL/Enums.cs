@@ -66,7 +66,7 @@ namespace IDAL
 		/// </summary>
 		public enum Priorities
 		{
-			Normal=1,fast,Emergecey
+			Normal=1,Fast,Emergecey
 		}
 	}
 }
