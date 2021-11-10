@@ -15,7 +15,8 @@ namespace IBL
 			public WeightCategories MaxWeight { get; set; }
 			public DroneStatuses status { get; set; }
 			public double Battery { get; set; }
-
+			//public double Longitude { get; set; }//אורך
+			//public double Lattitude { get; set; }//רוחב
 			public string toString()
 			{
 				return $"Drone:\n" +
