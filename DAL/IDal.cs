@@ -11,8 +11,8 @@ namespace IDAL
 		public void AddBaseStation(int id,int name, int chargeSlots, double longe, double lati);
 		public void AddDrone(int id,string model, IDAL.DO.WeightCategories weight);
 		public void AddCustomer(int id,string name, string phone, double longi, double lati);
-		public void AddParcel(int id,int senderId, int targetId, IDAL.DO.WeightCategories weight, IDAL.DO.Priorities priorities, int droneId, DateTime requested,
-			DateTime scheduled, DateTime pickedUp, DateTime delivered);
+		public void AddParcel(int id,int senderId, int targetId, IDAL.DO.WeightCategories weight, IDAL.DO.Priorities priorities, int droneId)//, DateTime requested,
+			//DateTime scheduled, DateTime pickedUp, DateTime delivered);
 
 		public void AssignParcelToDrone(int parcelId, int droneId);
 		public void ParcelOnDrone(int parcelId);
