@@ -20,7 +20,8 @@ namespace IBL
 			public DateTime Scheduled { get; set; }
 			public DateTime PickedUp { get; set; }
 			public DateTime Delivered { get; set; }
-
+			//public double SenderLongitude { get; set; }//אורך
+			//public double SenderLattitude { get; set; }//רוחב
 			public string toString()
 			{
 				return $"Parcel:\n " +

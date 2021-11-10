@@ -36,19 +36,19 @@ namespace BL
 		{
 			foreach (IDAL.DO.Drone item in p.DisplayListDrones())
 			{
-				drone.Add(new IBL.BO.Drone {Id=item.Id,Model=item.Model,MaxWeight=item.MaxWeight, });
+				drone.Add(new IBL.BO.Drone {Id=item.Id,Model=item.Model,MaxWeight= (IBL.BO.WeightCategories)item.MaxWeight,Battery=0,status=IBL.BO.DroneStatuses.free });
 			}
 
 			foreach (IDAL.DO.Parcel item in p.DisplayListParcels())
 			{
 				bool flag = false;
-				if (item.PickedUp >DateTime.Now && item.DroneId != 0)
+				if (item.PickedUp ==null/*>DateTime.Now*/ && item.DroneId != 0)
 				{
 					for (int i = 0; i < drone.Count(); i++)
 					{
 						if (item.DroneId==drone[i].Id)
 						{
-							drone[i].
+							drone[i].status = IBL.BO.DroneStatuses.Shipping;
 							flag = true;
 							break;
 						}
@@ -58,6 +58,9 @@ namespace BL
 					break;
 			}
 		}
+
+
+
 		private IDAL.DO.Drone searchDrone(int id)
 		{
 			foreach (IDAL.DO.Drone item in p.DisplayListDrones())
