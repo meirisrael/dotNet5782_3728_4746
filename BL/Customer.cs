@@ -16,7 +16,7 @@ namespace IBL
 			public double Longitude { get; set; }
 			public double Lattitude { get; set; }
 
-			public string toString()
+			public string ToString()
 			{
 				return $"Customer:\n" +
 					$"Id: {this.Id}\n" +

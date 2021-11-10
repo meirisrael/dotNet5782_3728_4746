@@ -17,7 +17,7 @@ namespace IBL
 			public double Battery { get; set; }
 			//public double Longitude { get; set; }//אורך
 			//public double Lattitude { get; set; }//רוחב
-			public string toString()
+			public string ToString()
 			{
 				return $"Drone:\n" +
 					$"Id: {this.Id}\n" +

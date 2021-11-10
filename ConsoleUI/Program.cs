@@ -22,7 +22,7 @@ namespace ConsoleUI
             IDAL.DO.WeightCategories weight;
             IDAL.DO.Priorities priorities;
 
-            while (choice != IDAL.DO.Choice.EXIT)//only if the user want to leav the program
+            while (choice != IDAL.DO.Choice.Exit)//only if the user want to leav the program
             {
                 do
                 {
@@ -40,7 +40,7 @@ namespace ConsoleUI
                 {
                     switch (choice)
                     {
-                        case IDAL.DO.Choice.ADD:
+                        case IDAL.DO.Choice.Add:
                             IDAL.DO.Add add;
                             do
                             {
@@ -119,7 +119,7 @@ namespace ConsoleUI
                                     break;
                             }
                             break;
-                        case IDAL.DO.Choice.UPDATE:
+                        case IDAL.DO.Choice.Update:
                             IDAL.DO.Update update;
                             do
                             {
@@ -173,7 +173,7 @@ namespace ConsoleUI
                                     break;
                             }
                             break;
-                        case IDAL.DO.Choice.DISPLAY:
+                        case IDAL.DO.Choice.Display:
                             IDAL.DO.Display display;
                             do
                             {
@@ -190,31 +190,31 @@ namespace ConsoleUI
                                 case IDAL.DO.Display.BaseStation:
                                     Console.WriteLine("Enter Id:");
                                     int.TryParse(Console.ReadLine(), out intA);
-                                    (p.DisplayBaseStation(intA)).toString();
+                                    (p.GetBaseStation(intA)).ToString();
                                     break;
 
                                 case IDAL.DO.Display.Drone:
                                     Console.WriteLine("Enter Id:");
                                     int.TryParse(Console.ReadLine(), out intA);
-                                    (p.DisplayDrone(intA)).toString();
+                                    (p.GetDrone(intA)).ToString();
                                     break;
 
                                 case IDAL.DO.Display.Customer:
                                     Console.WriteLine("Enter Id:");
                                     int.TryParse(Console.ReadLine(), out intA);
-                                    (p.DisplayCustomer(intA)).toString();
+                                    (p.GetCustomer(intA)).ToString();
                                     break;
 
                                 case IDAL.DO.Display.Parcel:
                                     Console.WriteLine("Enter Id:");
                                     int.TryParse(Console.ReadLine(), out intA);
-                                    (p.DisplayParcel(intA)).toString();
+                                    (p.GetParcel(intA)).ToString();
                                     break;
                                 default:
                                     break;
                             }
                             break;
-                        case IDAL.DO.Choice.VIEW_LIST:
+                        case IDAL.DO.Choice.View_List:
                             IDAL.DO.DisplayList displayList;
                             do
                             {
@@ -229,33 +229,33 @@ namespace ConsoleUI
                             switch (displayList)
                             {
                                 case IDAL.DO.DisplayList.BaseStations:
-                                    foreach (IDAL.DO.BaseStation item in p.DisplayListBaseStations())
-                                    { item.toString(); }
+                                    foreach (IDAL.DO.BaseStation item in p.GetListBaseStations())
+                                    { item.ToString(); }
                                     break;
 
                                 case IDAL.DO.DisplayList.Drones:
-                                    foreach (IDAL.DO.Drone item in p.DisplayListDrones())
-                                    { item.toString(); }
+                                    foreach (IDAL.DO.Drone item in p.GetListDrones())
+                                    { item.ToString(); }
                                     break;
 
                                 case IDAL.DO.DisplayList.Customers:
-                                    foreach (IDAL.DO.Customer item in p.DisplayListCustomers())
-                                    { item.toString(); }
+                                    foreach (IDAL.DO.Customer item in p.GetListCustomers())
+                                    { item.ToString(); }
                                     break;
 
                                 case IDAL.DO.DisplayList.Parcels:
-                                    foreach (IDAL.DO.Parcel item in p.DisplayListParcels())
-                                    { item.toString(); }
+                                    foreach (IDAL.DO.Parcel item in p.GetListParcels())
+                                    { item.ToString(); }
                                     break;
 
                                 case IDAL.DO.DisplayList.ParcelsNotAssignedToDrone:
-                                    foreach (IDAL.DO.Parcel item in p.DisplayParcelsNotAssignedToDrone())
-                                    { item.toString(); }
+                                    foreach (IDAL.DO.Parcel item in p.GetListOfParcelsNotAssignedToDrone())
+                                    { item.ToString(); }
                                     break;
 
                                 case IDAL.DO.DisplayList.BaseStationsCanCharge:
-                                    foreach (IDAL.DO.BaseStation item in p.DisplayListBaseStationsCanCharge())
-                                    { item.toString(); }
+                                    foreach (IDAL.DO.BaseStation item in p.GetListBaseStationsCanCharge())
+                                    { item.ToString(); }
                                     break;
                                 default:
                                     break;

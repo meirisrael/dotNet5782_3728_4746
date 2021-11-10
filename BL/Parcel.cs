@@ -22,7 +22,7 @@ namespace IBL
 			public DateTime Delivered { get; set; }
 			//public double SenderLongitude { get; set; }//אורך
 			//public double SenderLattitude { get; set; }//רוחב
-			public string toString()
+			public string ToString()
 			{
 				return $"Parcel:\n " +
 					$"Id: {this.Id}\n" +

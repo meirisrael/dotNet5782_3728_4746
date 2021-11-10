@@ -22,11 +22,11 @@ namespace DalObject
 
 		internal class Config
 		{
-			internal static double useWhenFree = 0;
-			internal static double useWhenLightly = 0;
-			internal static double useWhenMedium = 0;
-			internal static double useWhenHeavily = 0;
-			internal double chargingRate = 0; 
+			internal static double useWhenFree = 5;//5% per kilometere
+			internal static double useWhenLightly = 10;//10% per kilometere
+			internal static double useWhenMedium = 15;//15% per kilometere
+			internal static double useWhenHeavily = 25;//25% per kilometere
+			internal double chargingRate = 40; //40% per hour
 		}
 		/// <summary>
 		/// the func initialize all parameter of the program with a default solution for each parametre
@@ -55,8 +55,6 @@ namespace DalObject
 					Id = CounterDrones++,
 					Model = "Fantome-" + i,
 					MaxWeight = (IDAL.DO.WeightCategories)(r.Next(1, 4)),
-					/*status = (IDAL.DO.DroneStatuses)(r.Next(1, 4)),
-					Battery = 100*/
 				});
 			}
 			for (int i = 0; i < 10; i++)//for customer

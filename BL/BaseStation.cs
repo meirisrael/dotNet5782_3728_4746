@@ -16,7 +16,7 @@ namespace IBL
 			public double Longitude { get; set; }//אורך
 			public double Lattitude { get; set; }//רוחב
 
-			public string toString()
+			public string ToString()
 			{
 				return $"Base Station:\n" +
 					$"Id: {this.Id}\n" +

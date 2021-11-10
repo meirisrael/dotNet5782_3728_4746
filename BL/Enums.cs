@@ -13,7 +13,7 @@ namespace IBL
 		/// </summary>
 		public enum Choice
 		{
-			ADD = 1, UPDATE, DISPLAY, VIEW_LIST, EXIT
+			Add = 1, Update, Display, View_List, Exit
 		}
 		/// <summary>
 		/// this enum give to the user the option which add he want to do 
@@ -44,23 +44,19 @@ namespace IBL
 			BaseStations = 1, Drones, Customers, Parcels, ParcelsNotAssignedToDrone, BaseStationsCanCharge
 		}
 		/// <summary>
-		/// this enum give to the user the option to set the Weight Categories of the parcel or the drone can take
-		/// </summary>
-		public enum WeightCategories
-		{
-			Light = 1, Medium, Heavy
-		}
-
-
-		/// <summary>
 		/// this enum give to the user the option to set what the statue of drone right now
 		/// </summary>
 		public enum DroneStatuses
 		{
 			free = 1, Maintenance, Shipping
 		}
-
-
+		/// <summary>
+		/// this enum give to the user the option to set the Weight Categories of the parcel or the drone can take
+		/// </summary>
+		public enum WeightCategories
+		{
+			Light = 1, Medium, Heavy
+		}
 		/// <summary>
 		/// give to the user the option to set what the priority of the packet 
 		/// </summary>

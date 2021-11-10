@@ -21,7 +21,7 @@ namespace IDAL
 			public DateTime PickedUp { get; set; }
 			public DateTime Delivered { get; set; }
 
-			public string toString()
+			public override string ToString()
 			{
 				return $"Parcel:\n " +
 					$"Id: {this.Id}\n" +

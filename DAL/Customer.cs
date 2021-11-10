@@ -19,7 +19,7 @@ namespace IDAL
 			public double Longitude { get; set; }
 			public double Lattitude { get; set; }
 
-			public string toString()
+			public override string ToString()
 			{
 				return $"Customer:\n" +
 					$"Id: {this.Id}\n" +
