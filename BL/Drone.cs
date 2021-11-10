@@ -13,8 +13,8 @@ namespace IBL
 			public int Id { get; set; }
 			public string Model { get; set; }
 			public WeightCategories MaxWeight { get; set; }
-			//public DroneStatuses status { get; set; }
-			//public double Battery { get; set; }
+			public DroneStatuses status { get; set; }
+			public double Battery { get; set; }
 
 			public string toString()
 			{
