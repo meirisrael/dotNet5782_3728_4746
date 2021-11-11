@@ -32,7 +32,8 @@ namespace ConsoleUI
                         " 1 for add options \n" +
                         " 2 for update options \n" +
                         " 3 for display options \n" +
-                        " 4 for list display options");
+                        " 4 for list display options\n" +
+                        " 5 to Exit");
                     res = Enum.TryParse<IDAL.DO.Choice>(Console.ReadLine(), out choice);
                     if (!res) Console.WriteLine("Wrong input");
                 } while (!res);
@@ -54,6 +55,7 @@ namespace ConsoleUI
                             } while (!res);
                             switch (add)
                             {
+
                                 case IDAL.DO.Add.AddBaseStation:
                                     Console.WriteLine("Id:");
                                     int.TryParse(Console.ReadLine(), out intA);
@@ -68,6 +70,7 @@ namespace ConsoleUI
                                     p.AddBaseStation(intA, intB, intC, doubA, doubB);
                                     break;
 
+
                                 case IDAL.DO.Add.AddDrone:
                                     Console.WriteLine("Id:");
                                     int.TryParse(Console.ReadLine(), out intA);
@@ -76,7 +79,7 @@ namespace ConsoleUI
                                     Console.WriteLine("Weight:\n" +
                                         "   1.Light\n" +
                                         "   2.Medium\n" +
-                                        "   3.Heavy\n");
+                                        "   3.Heavy");
                                     Enum.TryParse<IDAL.DO.WeightCategories>(Console.ReadLine(), out weight);
                                     p.AddDrone(intA, stringA, weight);
                                     break;
@@ -102,8 +105,8 @@ namespace ConsoleUI
                                     Console.WriteLine("TargetId:");
                                     int.TryParse(Console.ReadLine(), out intC);
                                     Console.WriteLine("Weigh:\n" +
-                                        "   1.Light\n"+
-                                        "   2.Medium\n"+
+                                        "   1.Light\n" +
+                                        "   2.Medium\n" +
                                         "   3.Heavy\n");
                                     Enum.TryParse<IDAL.DO.WeightCategories>(Console.ReadLine(), out weight);
                                     Console.WriteLine("Priority:");
@@ -124,7 +127,7 @@ namespace ConsoleUI
                                 default:
                                     break;
                             }
-                            break;
+                                break;
                         case IDAL.DO.Choice.Update:
                             IDAL.DO.Update update;
                             do

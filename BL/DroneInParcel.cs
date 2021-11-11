@@ -8,27 +8,20 @@ namespace IBL
 {
 	namespace BO
 	{
-		class Drone
+		class DroneInParcel
 		{
 			public int Id { get; set; }
-			public string Model { get; set; }
-			public WeightCategories MaxWeight { get; set; }
-			public DroneStatuses Status { get; set; }
 			public double Battery { get; set; }
 			public Location Loc { get; set; }
-			public Parcel ParcelInTransit { get; set; }
 
 			public override string ToString()
 			{
-				return $"Drone:\n" +
+				return $"Drone In Parcel:\n" +
 					$" Id: {this.Id}\n" +
-					$" Model: {this.Model}\n" +
-					$" MaxWeight: {this.MaxWeight }\n"+
-					$" Drone Statut: {this.Status}\n"+
-					$" Battery percent: {this.Battery}%\n"+
+					$" Battery percent: {this.Battery}%\n" +
 					$" Location: {this.Loc.ToString()}"
-					;
 			}
 		}
 	}
+
 }

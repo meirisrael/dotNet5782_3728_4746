@@ -98,14 +98,13 @@ namespace DalObject
 		/// <param name="scheduled"></param>
 		/// <param name="pickedUp"></param>
 		/// <param name="delivered"></param>
-		public void AddParcel(int id,int senderId,int targetId,IDAL.DO.WeightCategories weight,IDAL.DO.Priorities priorities,int droneId)
+		public void AddParcel(int id,int senderId,int targetId,IDAL.DO.WeightCategories weight,IDAL.DO.Priorities priorities)
 		{
 			if (id < 0|| id == 0) throw new IDAL.DO.InvalidParcelId();
 			if (senderId == 0||senderId < 0) throw new IDAL.DO.InvalidSenderId();
 			if (targetId == 0 || targetId < 0) throw new IDAL.DO.InvalidTargetId();
 			if ((int)weight > 3 || (int)weight < 1) throw new IDAL.DO.InvalidWeight();
 			if ((int)priorities > 3 || (int)priorities < 1) throw new IDAL.DO.InvalidPriority();
-			if (droneId < 0 || droneId == 0) throw new IDAL.DO.InvalidDroneId();
 
 			foreach (IDAL.DO.Parcel item in DataSource.parcels)
 			{ if (item.Id == id) throw new IDAL.DO.ParcelIdExist();}
@@ -117,7 +116,7 @@ namespace DalObject
 				TargetId = targetId,
 				Weight = weight,
 				Priority = priorities,
-				DroneId = droneId,
+				DroneId = 0,
 				Requested = DateTime.MinValue,
 				Scheduled = DateTime.MinValue,
 				PickedUp = DateTime.MinValue,

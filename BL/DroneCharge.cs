@@ -13,12 +13,12 @@ namespace IBL
 			public int DroneId { get; set; }
 			public int StationId { get; set; }
 
-			public string ToString()
+			public override string ToString()
 			{
 				return $"Drone Charge:\n" +
-					$"Drone Id:{this.DroneId}\n" +
-					$"Station Id:{this.StationId}" +
-					"\n";
+					$" Drone Id:{this.DroneId}\n" +
+					$" Station Id:{this.StationId}"
+					;
 			}
 		}
 	}

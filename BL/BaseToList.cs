@@ -8,21 +8,20 @@ namespace IBL
 {
 	namespace BO
 	{
-		class BaseStation: Location
+		class BaseToList
 		{
 			public int Id { get; set; }
 			public int Name { get; set; }
 			public int ChargeSlots { get; set; }
-			public Location Loc { get; set; }
-			public List<DroneCharge> DroneInCharge { get; set; }
+			public int ChargeBusy { get; set; }
 
 			public override string ToString()
 			{
-				return $"Base Station:\n" +
+				return $"Base For List:\n" +
 					$" Id: {this.Id}\n" +
-					$" Name: { this.Name}\n" +
-					$" Charge Slots: {this.ChargeSlots}\n" +
-					$" Location: {this.Loc.ToString()}\n"
+					$" Name: {this.Name}\n" +
+					$" Nums of charge that are availble: {this.ChargeSlots}\n" +
+					$" Nums of charge that are busy: {this.ChargeBusy}"
 					;
 			}
 		}

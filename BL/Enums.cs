@@ -64,5 +64,9 @@ namespace IBL
 		{
 			Normal = 1, Fast, Emergecey
 		}
+		public enum ParcelStatues
+		{
+			Defined=1,Associated,Collected,Delivered
+		}
 	}
 }
