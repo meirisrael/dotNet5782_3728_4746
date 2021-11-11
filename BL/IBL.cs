@@ -8,5 +8,6 @@ namespace IBL
 {
 	interface IBL
 	{
+		//public void GetDataCharge();
 	}
 }

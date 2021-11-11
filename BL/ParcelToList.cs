@@ -15,7 +15,7 @@ namespace IBL
 			public string NameTarget { get; set; }
 			public WeightCategories Weight { get; set; }
 			public Priorities Priority { get; set; }
-			public ParcelStatues status { get; set; }
+			public ParcelStatues Status { get; set; }
 
 			public override string ToString()
 			{
@@ -25,7 +25,7 @@ namespace IBL
 					$" Name of Target: {this.NameTarget}\n" +
 					$" Weight: {this.Weight}\n" +
 					$" Priority: {this.Priority}\n" +
-					$" status of parcel: {this.status}"
+					$" status of parcel: {this.Status}"
 					;
 			}
 		}

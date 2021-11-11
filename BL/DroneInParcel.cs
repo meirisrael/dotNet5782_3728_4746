@@ -8,7 +8,7 @@ namespace IBL
 {
 	namespace BO
 	{
-		class DroneInParcel
+		class DroneInParcel : Location
 		{
 			public int Id { get; set; }
 			public double Battery { get; set; }
@@ -20,6 +20,7 @@ namespace IBL
 					$" Id: {this.Id}\n" +
 					$" Battery percent: {this.Battery}%\n" +
 					$" Location: {this.Loc.ToString()}"
+					;
 			}
 		}
 	}

@@ -8,7 +8,7 @@ namespace IBL
 {
 	namespace BO
 	{
-		class ParcelInTransit
+		class ParcelInTransit : Location
 		{
 			public int Id { get; set; }
 			public bool Status { get; set; }

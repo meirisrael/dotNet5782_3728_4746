@@ -66,7 +66,7 @@ namespace IBL
 		}
 		public enum ParcelStatues
 		{
-			Defined=1,Associated,Collected,Delivered
+			Defined = 1, Associated, Collected, Delivered
 		}
 	}
 }
