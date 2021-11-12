@@ -65,7 +65,7 @@ namespace ConsoleUI
                                     int.TryParse(Console.ReadLine(), out intC);
                                     Console.WriteLine("Longitude:");
                                     double.TryParse(Console.ReadLine(), out doubA);
-                                    Console.WriteLine("Lattitude:");
+                                    Console.WriteLine("Latitude:");
                                     double.TryParse(Console.ReadLine(), out doubB);
                                     p.AddBaseStation(intA, intB, intC, doubA, doubB);
                                     break;
@@ -92,7 +92,7 @@ namespace ConsoleUI
                                     stringB = Console.ReadLine();
                                     Console.WriteLine("Longitude:");
                                     double.TryParse(Console.ReadLine(), out doubA);
-                                    Console.WriteLine("Lattitude:");
+                                    Console.WriteLine("Latitude:");
                                     double.TryParse(Console.ReadLine(), out doubB);
                                     p.AddCustomer(intA, stringA, stringB, doubA, doubB);
                                     break;
@@ -113,16 +113,8 @@ namespace ConsoleUI
                                     Enum.TryParse<IDAL.DO.Priorities>(Console.ReadLine(), out priorities);
                                     Console.WriteLine("DroneId:");
                                     int.TryParse(Console.ReadLine(), out intD);
-                                    //Console.WriteLine("Requested:(Exemple: Wed 30, 2015");
-                                    //DateTime.TryParse(Console.ReadLine(), out dateA);
-                                    //Console.WriteLine("Scheduled:(Exemple: Wed 30, 2015");
-                                    //DateTime.TryParse(Console.ReadLine(), out dateB);
-                                    //Console.WriteLine("PickedUp:(Exemple: Wed 30, 2015");
-                                    //DateTime.TryParse(Console.ReadLine(), out dateC);
-                                    //Console.WriteLine("Delivered:(Exemple: Wed 30, 2015");
-                                    //DateTime.TryParse(Console.ReadLine(), out dateD);
 
-                                    p.AddParcel(intA, intB, intC, weight, priorities, intC);// dateA, dateB, dateC, dateD);
+                                    p.AddParcel(intA, intB, intC, intD, weight, priorities);
                                     break;
                                 default:
                                     break;

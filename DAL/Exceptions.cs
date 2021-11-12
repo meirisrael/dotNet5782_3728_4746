@@ -45,11 +45,15 @@ namespace IDAL
 		}
 		public class InvalidDroneId : Exception
 		{
-			public InvalidDroneId() : base("ERROR: ID OF DRONE NEED TO BE BIGGER THAN ZERO\n") { }
+			public InvalidDroneId() : base("ERROR: ID OF DRONE NEED TO BE BIGGER THAN ZERO OR EQUAL\n") { }
 		}
 		public class InvalidWeight : Exception
 		{
 			public InvalidWeight() : base("ERROR: THIS OPTION FOR WEIGHT IS NOT EXIST, YOU NEED TO GIVE AN  OPTION BETWEEN 1 TO 3\n") { }
+		}
+		public class NegativeDorneId : Exception
+		{
+			public NegativeDorneId() : base("ERROR: THE DRONE ID NEED TO BE POSITIVE OR ZERO->NOT ASSIGNE TO AN SPECIFIC DRONE OR, BIGEER THAN ZERO->ASSIGNE TO AN SPECIFIC DRONE\n") { }
 		}
 
 		// exceptions for customer

@@ -22,8 +22,8 @@ namespace DalObject
 
 		internal class Config
 		{
-			internal static double useWhenFree = 5;//5% per kilometere
-			internal static double useWhenLightly = 10;//10% per kilometere
+			internal static double useWhenFree = 2;//2% per kilometere
+			internal static double useWhenLightly = 5;//5% per kilometere
 			internal static double useWhenMedium = 15;//15% per kilometere
 			internal static double useWhenHeavily = 25;//25% per kilometere
 			internal double chargingRate = 40; //40% per hour
@@ -44,46 +44,52 @@ namespace DalObject
 					Id = CounterBaseStation++,
 					Name = i,
 					ChargeSlots = r.Next() % 5,
-					Lattitude = (r.NextDouble() * 180) - 90,
-					Longitude = (r.NextDouble() * 180) - 90
+					Latitude = (double)(r.Next(-90,91)),
+					Longitude = (double)(r.Next(-180, 181))
 				});
 			}
 			for (int i = 0; i < 5; i++)//for the drone
 			{
 				drone.Add(new IDAL.DO.Drone()
 				{
-					Id = CounterDrones++,
+					Id = CounterDrones,
 					Model = "Fantome-" + i,
-					MaxWeight = (IDAL.DO.WeightCategories)(r.Next(1, 4)),
+					MaxWeight = (IDAL.DO.WeightCategories)(r.Next(1, 4))
 				});
+				if (i < 4)
+					CounterDrones++;
 			}
 			for (int i = 0; i < 10; i++)//for customer
 			{
 				customers.Add(new IDAL.DO.Customer()
 				{
-					Id = CounterCustomer++,
+					Id = CounterCustomer,
 					Name = ("a" + i),
 					Phone = (3761 + i).ToString(),
-					Longitude = (r.NextDouble() * 180) - 90,
-					Lattitude = (r.NextDouble() * 180) - 90
+					Latitude = (double)(r.Next(-90, 91)),
+					Longitude = (double)(r.Next(-180, 181))
 				});
+				if (i < 9)
+					CounterCustomer++;
 			}
-			for (int i = 0; i < 10; i++)//for parcel
+			for (int i = 1; i <= 10; i++)//for parcel
 			{
 				DateTime today = DateTime.Now;
 				parcels.Add(new IDAL.DO.Parcel()
 				{
 					Id = CounterParcel++,
-					SenderId = r.Next(2000, 3000),
+					SenderId = i+3000,
 					TargetId = CounterCustomer--,
 					Weight = (IDAL.DO.WeightCategories)(r.Next(1, 4)),
 					Priority = (IDAL.DO.Priorities)(r.Next(1, 4)),
-					DroneId = r.Next(1000, 1005),
+					DroneId = CounterDrones,
 					Requested = today,
 					Scheduled = today.AddDays(2),
 					PickedUp = today.AddDays(5),
 					Delivered = today.AddDays(7)
 				});
+				if (i % 2 == 0)
+					CounterDrones--;
 			}
 		}
 	}

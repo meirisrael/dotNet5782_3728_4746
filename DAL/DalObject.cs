@@ -34,7 +34,7 @@ namespace DalObject
 				Id = id,
 				Name = name,
 				ChargeSlots = chargeSlots,
-				Lattitude = latti,
+				Latitude = latti,
 				Longitude = longi
 			}) ;
 		}
@@ -82,7 +82,7 @@ namespace DalObject
 				Name = name,
 				Phone = phone,
 				Longitude = longi,
-				Lattitude = latti
+				Latitude = latti
 			});
 		}
 		/// <summary>
@@ -98,17 +98,39 @@ namespace DalObject
 		/// <param name="scheduled"></param>
 		/// <param name="pickedUp"></param>
 		/// <param name="delivered"></param>
-		public void AddParcel(int id,int senderId,int targetId,IDAL.DO.WeightCategories weight,IDAL.DO.Priorities priorities)
+		public void AddParcel(int id,int senderId,int targetId,int droneId,IDAL.DO.WeightCategories weight,IDAL.DO.Priorities priorities)
 		{
 			if (id < 0|| id == 0) throw new IDAL.DO.InvalidParcelId();
 			if (senderId == 0||senderId < 0) throw new IDAL.DO.InvalidSenderId();
 			if (targetId == 0 || targetId < 0) throw new IDAL.DO.InvalidTargetId();
+			if (droneId < 0) throw new IDAL.DO.NegativeDorneId();
 			if ((int)weight > 3 || (int)weight < 1) throw new IDAL.DO.InvalidWeight();
 			if ((int)priorities > 3 || (int)priorities < 1) throw new IDAL.DO.InvalidPriority();
 
+			int counter = 1;
 			foreach (IDAL.DO.Parcel item in DataSource.parcels)
-			{ if (item.Id == id) throw new IDAL.DO.ParcelIdExist();}
+			{ if (item.Id == id) throw new IDAL.DO.ParcelIdExist(); }
 
+			foreach (IDAL.DO.Customer item in DataSource.customers) 
+			{
+				if(item.Id == senderId)
+					break;
+				else
+					counter++;
+			}
+			if (counter == DataSource.parcels.Count())
+			{ throw new IDAL.DO.SenderIdNotExist(); counter = 1; }
+			else counter = 1;
+			foreach (IDAL.DO.Customer item in DataSource.customers)
+			{
+				if (item.Id == targetId)
+					break;
+				else
+					counter++;
+			}
+			if (counter == DataSource.parcels.Count())
+			{ throw new IDAL.DO.TargetIdNotExist(); counter = 1; }
+			
 			DataSource.parcels.Add(new IDAL.DO.Parcel()
 			{
 				Id =id,
@@ -116,8 +138,8 @@ namespace DalObject
 				TargetId = targetId,
 				Weight = weight,
 				Priority = priorities,
-				DroneId = 0,
-				Requested = DateTime.MinValue,
+				DroneId = droneId,
+				Requested = DateTime.Now,
 				Scheduled = DateTime.MinValue,
 				PickedUp = DateTime.MinValue,
 				Delivered = DateTime.MinValue
@@ -130,11 +152,27 @@ namespace DalObject
 		/// <param name="droneId"></param>
 		public void AssignParcelToDrone(int parcelId,int droneId)
         {
+			int counter = 1;
 			foreach (IDAL.DO.Parcel item in DataSource.parcels)
 			{
-				if (item.Id == parcelId) throw new IDAL.DO.ParcelIdNotExist();
-				if (item.DroneId == droneId) throw new IDAL.DO.DroneIdNotExist();
+				if (item.Id == parcelId)
+					break;
+				else
+					counter++;
 			}
+			if (counter == DataSource.parcels.Count())
+			{ throw new IDAL.DO.ParcelIdNotExist(); counter = 1; }
+			else counter = 1;
+
+			foreach (IDAL.DO.Drone item in DataSource.drone)
+			{
+				if (item.Id == droneId)
+					break;
+				else
+					counter++;
+			}
+			if (counter == DataSource.drone.Count())
+			{ throw new IDAL.DO.DroneIdNotExist(); counter = 1; }
 
 			for (int i = 0; i < DataSource.parcels.Count; i++)
 			{
@@ -153,8 +191,16 @@ namespace DalObject
 		/// <param name="parcelId"></param>
 		public void ParcelOnDrone(int parcelId)
 		{
+			int counter = 1;
 			foreach (IDAL.DO.Parcel item in DataSource.parcels)
-			{if (item.Id == parcelId) throw new IDAL.DO.ParcelIdNotExist();}
+			{
+				if (item.Id == parcelId)
+					break;
+				else
+					counter++;
+			}
+			if (counter == DataSource.parcels.Count())
+			{ throw new IDAL.DO.ParcelIdNotExist(); counter = 1; }
 
 			for (int i = 0; i < DataSource.parcels.Count; i++)
 			{
@@ -173,8 +219,16 @@ namespace DalObject
 		/// <param name="parcelId"></param>
 		public void ParcelDelivered(int parcelId)
 		{
+			int counter = 1;
 			foreach (IDAL.DO.Parcel item in DataSource.parcels)
-			{ if (item.Id == parcelId) throw new IDAL.DO.ParcelIdNotExist(); }
+			{
+				if (item.Id == parcelId)
+					break;
+				else
+					counter++;
+			}
+			if (counter == DataSource.parcels.Count())
+			{ throw new IDAL.DO.ParcelIdNotExist(); counter = 1; }
 
 			for (int i = 0; i < DataSource.parcels.Count; i++)
 			{
@@ -194,11 +248,27 @@ namespace DalObject
 		/// <param name="baseId"></param>
 		public void AssignDroneToBaseStation(int droneId,int baseId)
 		{
+			int counter = 1;
 			foreach (IDAL.DO.Drone item in DataSource.drone)
-			{ if (item.Id == droneId) throw new IDAL.DO.DroneIdNotExist(); }
+			{
+				if (item.Id == droneId)
+					break;
+				else
+					counter++;
+			}
+			if (counter == DataSource.drone.Count())
+			{ throw new IDAL.DO.DroneIdNotExist(); counter = 1; }
+			else counter = 1;
 
 			foreach (IDAL.DO.BaseStation item in DataSource.baseStation)
-			{ if (item.Id == baseId) throw new IDAL.DO.BaseIdNotExist(); }
+			{
+				if (item.Id == baseId)
+					break;
+				else
+					counter++;
+			}
+			if (counter == DataSource.baseStation.Count())
+			{ throw new IDAL.DO.BaseIdNotExist(); counter = 1; }
 
 			for (int i = 0; i < DataSource.baseStation.Count; i++)
 			{
@@ -218,11 +288,27 @@ namespace DalObject
 		/// <param name="baseId"></param>
 		public void DroneLeaveChargeStation(int droneId, int baseId)
         {
+			int counter = 1;
 			foreach (IDAL.DO.Drone item in DataSource.drone)
-			{ if (item.Id == droneId) throw new IDAL.DO.DroneIdNotExist(); }
+			{
+				if (item.Id == droneId)
+					break;
+				else
+					counter++;
+			}
+			if (counter == DataSource.drone.Count())
+			{ throw new IDAL.DO.DroneIdNotExist(); counter = 1; }
+			else counter = 1;
 
 			foreach (IDAL.DO.BaseStation item in DataSource.baseStation)
-			{ if (item.Id == baseId) throw new IDAL.DO.BaseIdNotExist(); }
+			{
+				if (item.Id == baseId)
+					break;
+				else
+					counter++;
+			}
+			if (counter == DataSource.baseStation.Count())
+			{ throw new IDAL.DO.BaseIdNotExist(); counter = 1; }
 
 			for (int i = 0; i < DataSource.baseStation.Count; i++)
 			{
@@ -374,9 +460,9 @@ namespace DalObject
 			DataSource.Config c = new DataSource.Config();
 			double[] arr = new double[5];
 			arr[0] = DataSource.Config.useWhenFree;
-			arr[1] = DataSource.Config.useWhenHeavily;
-			arr[2] = DataSource.Config.useWhenLightly;
-			arr[3] = DataSource.Config.useWhenMedium;
+			arr[1] = DataSource.Config.useWhenLightly;
+			arr[2] = DataSource.Config.useWhenMedium;
+			arr[3] = DataSource.Config.useWhenHeavily;
 			arr[4] = c.chargingRate;
 			return arr;
 		}
