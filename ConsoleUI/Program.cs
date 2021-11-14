@@ -267,9 +267,9 @@ namespace ConsoleUI
                             break;
                     }
                 }
-                catch (Exception a)//(ArgumentException a)//(Exception a)
+                catch (Exception ex)
                 {
-                    Console.WriteLine(a.Message);
+                    Console.WriteLine(ex.Message);
                 }
             }
         }
