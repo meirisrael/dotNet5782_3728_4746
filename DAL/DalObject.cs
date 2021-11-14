@@ -11,6 +11,7 @@ namespace DalObject
 		public DalObject() 
 		{ DataSource.Initialize(); }
 
+		//---------------------------------------------------------------------------------------ADDING-------------------------------------------------------------------------------------------------
 		/// <summary>
 		/// add a station in baseStation[] created in DataSource with details given by user
 		/// </summary>
@@ -145,6 +146,7 @@ namespace DalObject
 				Delivered = DateTime.MinValue
 			});
 		}
+		//-----------------------------------------------------------------------------------UPDATE------------------------------------------------------------------------------------------
 		/// <summary>
 		/// add a drone Id in droneId field from a parcel given by the user
 		/// </summary>
@@ -321,13 +323,12 @@ namespace DalObject
 				}
 			}
 		}
+		//---------------------------------------------------------------------------------------------------AN SPECIFIC OBJECT-------------------------------------------------------------------------------------------------------------------
 		/// <summary>
 		/// for a given base station Id, display it details
 		/// </summary>
 		/// <param name="baseId"></param>
-		/// <returns>
-		/// an base station
-		/// </returns>
+		/// <returns> an base station </returns>
 		public IDAL.DO.BaseStation GetBaseStation(int baseId)
         {
 			foreach(IDAL.DO.BaseStation item in DataSource.baseStation)
@@ -341,9 +342,7 @@ namespace DalObject
 		/// for a given drone Id, display it details
 		/// </summary>
 		/// <param name="droneId"></param>
-		/// <returns>
-		/// an drone
-		/// </returns>
+		/// <returns> an drone </returns>
 		public IDAL.DO.Drone GetDrone(int droneId)
 		{
 			foreach (IDAL.DO.Drone item in DataSource.drone)
@@ -357,9 +356,7 @@ namespace DalObject
 		/// for a given customer Id, display it details
 		/// </summary>
 		/// <param name="customerId"></param>
-		/// <returns>
-		/// a customer
-		/// </returns>
+		/// <returns> a customer </returns>
 		public IDAL.DO.Customer GetCustomer(int customerId)
 		{
 			foreach (IDAL.DO.Customer item in DataSource.customers)
@@ -373,9 +370,7 @@ namespace DalObject
 		/// for a given parcel Id, display it details
 		/// </summary>
 		/// <param name="parcelId"></param>
-		/// <returns>
-		/// an parcel
-		/// </returns>
+		/// <returns> an parcel </returns>
 		public IDAL.DO.Parcel GetParcel(int parcelId)
 		{
 			foreach (IDAL.DO.Parcel item in DataSource.parcels)
@@ -386,9 +381,11 @@ namespace DalObject
 			throw new IDAL.DO.ParcelIdNotExist();
 
 		}
+		//----------------------------------------------------------------------------------------LIST OF AN OBJECT---------------------------------------------------------------------------------------------------------------
 		/// <summary>
 		/// display the details of all base stations
 		/// </summary>
+		/// <returns> list of Base-Station</returns>
 		public IEnumerable<IDAL.DO.BaseStation> GetListBaseStations()
 		{
 			return DataSource.baseStation;
@@ -396,6 +393,7 @@ namespace DalObject
 		/// <summary>
 		/// display the details of all drones
 		/// </summary>
+		/// <returns> list of drones </returns>
 		public IEnumerable<IDAL.DO.Drone> GetListDrones()
 		{
 			return DataSource.drone;
@@ -403,9 +401,7 @@ namespace DalObject
 		/// <summary>
 		/// display the details of all customers
 		/// </summary>
-		/// <returns>
-		/// list of customer
-		/// </returns>
+		/// <returns> list of custome </returns>
 		public IEnumerable<IDAL.DO.Customer> GetListCustomers()
 		{
 			return DataSource.customers;
@@ -413,6 +409,7 @@ namespace DalObject
 		/// <summary>
 		/// display the details of all parcels
 		/// </summary>
+		/// <returns> List of parcels </returns>
 		public IEnumerable<IDAL.DO.Parcel> GetListParcels()
 		{
 			return DataSource.parcels;
@@ -420,9 +417,7 @@ namespace DalObject
 		/// <summary>
 		/// display the details of all parcels not assigned to a drone yet
 		/// </summary>
-		/// <returns>
-		/// list of parcel that not assign to a drone
-		/// </returns>
+		/// <returns> list of parcel that not assign to a drone </returns>
 		public IEnumerable<IDAL.DO.Parcel> GetListOfParcelsNotAssignedToDrone()
 		{
 			List<IDAL.DO.Parcel> x = new List<IDAL.DO.Parcel>();
@@ -436,9 +431,7 @@ namespace DalObject
 		/// <summary>
 		/// display the details of all base stations with available(s) charge slots
 		/// </summary>
-		///<returns>
-		///list of a basse station where the drone can go to charger his battery
-		/// </returns>
+		///<returns> list of a basse station where the drone can go to charger his battery </returns>
 		public IEnumerable<IDAL.DO.BaseStation> GetListBaseStationsCanCharge()
 		{
 			List<IDAL.DO.BaseStation> x = new List<IDAL.DO.BaseStation>();
@@ -449,12 +442,11 @@ namespace DalObject
 			}
 			return x;
 		}
+		//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		/// <summary>
 		/// the func go to config to take the value of the charging rate and the electricity use
 		/// </summary>
-		/// <returns>
-		/// return the arr with the value
-		/// </returns>
+		/// <returns> return the arr with the value </returns>
 		public double[] GetChargingRate()
 		{
 			DataSource.Config c = new DataSource.Config();
