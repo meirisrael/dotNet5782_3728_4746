@@ -24,17 +24,17 @@ namespace IDAL
 			public override string ToString()
 			{
 				return $"Parcel:\n " +
-					$"Id: {this.Id}\n" +
-					$"Sender Id: {this.SenderId}\n" +
-					$"Target Id: {this.TargetId}\n" +
-					$"Weight: {this.Weight}\n" +
-					$"Priority: {this.Priority}\n" +
-					$"Drone Id: {this.DroneId}\n" +
-					$"Requested: {this.Requested}\n" +
-					$"Scheduled: {this.Scheduled}\n" +
-					$"Picked Up: {this.PickedUp}\n" +
-					$"Delivred: {this.Delivered}\n" +
-					"\n";
+					$" Id: {this.Id}\n" +
+					$" Sender Id: {this.SenderId}\n" +
+					$" Target Id: {this.TargetId}\n" +
+					$" Weight: {this.Weight}\n" +
+					$" Priority: {this.Priority}\n" +
+					$" Drone Id: {this.DroneId}\n" +
+					$" Requested: {this.Requested}\n" +
+					$" Scheduled: {this.Scheduled}\n" +
+					$" Picked Up: {this.PickedUp}\n" +
+					$" Delivred: {this.Delivered}" 
+					;
 			}
 		}
 	}

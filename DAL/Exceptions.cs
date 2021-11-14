@@ -106,6 +106,12 @@ namespace IDAL
 		{
 			public InvalidTargetId() : base("ERROR: ID OF SENDER NEED TO BE BIGGER THAN ZERO\n") { }
 		}
+
+		// exceptions for Weight that drone can't take
+		public class ParcelTooHeavy : Exception
+		{
+			public ParcelTooHeavy() : base("ERROR: THE CATEGORIE OF PARCEL IS TOO HEAVY AND THE DRONE CAN'T TAKE THEM\n") { }
+		}
 	}
 }
 

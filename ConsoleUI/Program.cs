@@ -109,7 +109,10 @@ namespace ConsoleUI
                                         "   2.Medium\n" +
                                         "   3.Heavy\n");
                                     Enum.TryParse<IDAL.DO.WeightCategories>(Console.ReadLine(), out weight);
-                                    Console.WriteLine("Priority:");
+                                    Console.WriteLine("Priority:\n" +
+                                        "   1.Normal\n" +
+                                        "   2.Fast\n" +
+                                        "   3.Emergecey");
                                     Enum.TryParse<IDAL.DO.Priorities>(Console.ReadLine(), out priorities);
                                     Console.WriteLine("DroneId:");
                                     int.TryParse(Console.ReadLine(), out intD);
@@ -191,25 +194,25 @@ namespace ConsoleUI
                                 case IDAL.DO.Display.BaseStation:
                                     Console.WriteLine("Enter Id:");
                                     int.TryParse(Console.ReadLine(), out intA);
-                                    (p.GetBaseStation(intA)).ToString();
+                                    Console.WriteLine((p.GetBaseStation(intA)).ToString());
                                     break;
 
                                 case IDAL.DO.Display.Drone:
                                     Console.WriteLine("Enter Id:");
                                     int.TryParse(Console.ReadLine(), out intA);
-                                    (p.GetDrone(intA)).ToString();
+                                    Console.WriteLine((p.GetDrone(intA)).ToString());
                                     break;
 
                                 case IDAL.DO.Display.Customer:
                                     Console.WriteLine("Enter Id:");
                                     int.TryParse(Console.ReadLine(), out intA);
-                                    (p.GetCustomer(intA)).ToString();
+                                    Console.WriteLine((p.GetCustomer(intA)).ToString());
                                     break;
 
                                 case IDAL.DO.Display.Parcel:
                                     Console.WriteLine("Enter Id:");
                                     int.TryParse(Console.ReadLine(), out intA);
-                                    (p.GetParcel(intA)).ToString();
+                                    Console.WriteLine((p.GetParcel(intA)).ToString());
                                     break;
                                 default:
                                     break;
@@ -232,32 +235,32 @@ namespace ConsoleUI
                             {
                                 case IDAL.DO.DisplayList.BaseStations:
                                     foreach (IDAL.DO.BaseStation item in p.GetListBaseStations())
-                                    { item.ToString(); }
+                                    { Console.WriteLine(item.ToString()); }
                                     break;
 
                                 case IDAL.DO.DisplayList.Drones:
                                     foreach (IDAL.DO.Drone item in p.GetListDrones())
-                                    { item.ToString(); }
+                                    { Console.WriteLine(item.ToString()); }
                                     break;
 
                                 case IDAL.DO.DisplayList.Customers:
                                     foreach (IDAL.DO.Customer item in p.GetListCustomers())
-                                    { item.ToString(); }
+                                    { Console.WriteLine(item.ToString()); }
                                     break;
 
                                 case IDAL.DO.DisplayList.Parcels:
                                     foreach (IDAL.DO.Parcel item in p.GetListParcels())
-                                    { item.ToString(); }
+                                    { Console.WriteLine(item.ToString()); }
                                     break;
 
                                 case IDAL.DO.DisplayList.ParcelsNotAssignedToDrone:
                                     foreach (IDAL.DO.Parcel item in p.GetListOfParcelsNotAssignedToDrone())
-                                    { item.ToString(); }
+                                    { Console.WriteLine(item.ToString()); }
                                     break;
 
                                 case IDAL.DO.DisplayList.BaseStationsCanCharge:
                                     foreach (IDAL.DO.BaseStation item in p.GetListBaseStationsCanCharge())
-                                    { item.ToString(); }
+                                    { Console.WriteLine(item.ToString()); }
                                     break;
                                 default:
                                     break;

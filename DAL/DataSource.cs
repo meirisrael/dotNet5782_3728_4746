@@ -74,7 +74,6 @@ namespace DalObject
 			}
 			for (int i = 1; i <= 10; i++)//for parcel
 			{
-				DateTime today = DateTime.Now;
 				parcels.Add(new IDAL.DO.Parcel()
 				{
 					Id = CounterParcel++,
@@ -83,10 +82,10 @@ namespace DalObject
 					Weight = (IDAL.DO.WeightCategories)(r.Next(1, 4)),
 					Priority = (IDAL.DO.Priorities)(r.Next(1, 4)),
 					DroneId = CounterDrones,
-					Requested = today,
-					Scheduled = today.AddDays(2),
-					PickedUp = today.AddDays(5),
-					Delivered = today.AddDays(7)
+					Requested = DateTime.Now,
+					Scheduled = DateTime.Now.AddSeconds(5),
+					PickedUp = DateTime.MinValue,
+					Delivered = DateTime.MinValue
 				});
 				if (i % 2 == 0)
 					CounterDrones--;

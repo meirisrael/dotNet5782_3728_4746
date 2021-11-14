@@ -20,10 +20,10 @@ namespace IDAL
 			public override string ToString()
 			{
 				return $"Drone:\n" +
-					$"Id: {this.Id}\n" +
-					$"Model: {this.Model}\n" +
-					$"MaxWeight: {this.MaxWeight }" +
-					$"\n";
+					$" Id: {this.Id}\n" +
+					$" Model: {this.Model}\n" +
+					$" MaxWeight: {this.MaxWeight }"
+					;
 			}
 		}
 	}
