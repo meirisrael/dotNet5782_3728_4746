@@ -348,7 +348,7 @@ namespace BL
 			foreach (IDAL.DO.BaseStation b in dal.GetListBaseStations())
 			{
 				double dis = distanceBetweenTwoPoints(b.Latitude, b.Longitude, lati, longi);
-				if (disToBase == -1 || dis < disToBase)//if "dis" that is calculate in the previous line is smaller than the "disToBase"= the smaller distanse right now so "disToBase = dis"
+				if ((disToBase == -1 || dis < disToBase) &&	b.ChargeSlots>0)//if "dis" that is calculate in the previous line is smaller than the "disToBase"= the smaller distanse right now so "disToBase = dis"
 					disToBase = dis;
 
 			}
@@ -395,9 +395,172 @@ namespace BL
 		public void UpdateDrone(int droneId, string model)
         {
 			IDAL.DO.Drone drone = new();
-			drone = dal.GetDrone(droneId);
+			drone =dal.GetDrone(droneId);
 			drone.Model = model;
-			
+			dal.UpdateDrone(drone);
+		}
+		public void UpdateBaseStation(int baseId,string name=null,string chargeslots = null)
+        {
+			int name_int, charge_slots;
+			if (name != "")
+			{
+				name_int = int.Parse(name);
+				IDAL.DO.BaseStation baseStation = new();
+				baseStation = dal.GetBaseStation(baseId);
+				baseStation.Name = name_int;
+				dal.UpdateBaseStation(baseStation);
+			}
+			if (chargeslots != "")
+			{
+				charge_slots = int.Parse(chargeslots);
+				dal.UpdateChargeSlots(baseId, charge_slots);
+			}
+		}
+		public void UpdateCustomer(int customerId, string name = null, string phone = null)
+		{
+			if (name != "")
+			{
+				IDAL.DO.Customer customer = new();
+				customer = dal.GetCustomer(customerId);
+				customer.Name = name;
+				dal.UpdateCustomer(customer);
+			}
+			if (phone != "")
+			{
+				IDAL.DO.Customer customer = new();
+				customer = dal.GetCustomer(customerId);
+				customer.Phone = phone;
+				dal.UpdateCustomer(customer);
+			}
+		}
+		public void DroneToCharge(int droneId)
+        {
+			IBL.BO.DroneToList drone = new();
+			drone = droneToList[searchDrone(droneId)];
+			if (drone.Status != IBL.BO.DroneStatuses.free) throw new IBL.BO.DroneNotFree();
+			if (drone.Battery < calcBatteryToCloserBase(drone.Longitude, drone.Latitude)) throw new IBL.BO.NotEnoughBattery();
+			drone.Battery -= calcBatteryToCloserBase(drone.Longitude, drone.Latitude);
+			IDAL.DO.BaseStation baseStation = new();
+			baseStation =CloserBase(drone.Longitude, drone.Latitude);
+			drone.Longitude = baseStation.Longitude;
+			drone.Latitude = baseStation.Latitude;
+			drone.Status = IBL.BO.DroneStatuses.Maintenance;
+			for(int i = 0; i < droneToList.Count(); i++)
+            {
+				if (drone.Id == droneToList[i].Id) droneToList[i] = drone;
+            }
+			dal.AssignDroneToBaseStation(droneId, baseStation.Id);
+		}
+
+		private IDAL.DO.BaseStation CloserBase(double longi, double lati)
+        {
+			double disToBase = -1;
+			IDAL.DO.BaseStation baseStation=new();
+			foreach (IDAL.DO.BaseStation b in dal.GetListBaseStations())
+			{
+				double dis = distanceBetweenTwoPoints(b.Latitude, b.Longitude, lati, longi);
+				if ((disToBase == -1 || dis < disToBase) && b.ChargeSlots > 0)//if "dis" that is calculate in the previous line is smaller than the "disToBase"= the smaller distanse right now so "disToBase = dis"
+				{
+					disToBase = dis;
+					baseStation = b;
+				}
+			}
+			return baseStation;
+		}
+
+		public void DroneLeaveCharge(int droneId,int time)
+        {
+			IBL.BO.DroneToList drone = new();
+			drone = droneToList[searchDrone(droneId)];
+			if (drone.Status != IBL.BO.DroneStatuses.Maintenance) throw new IBL.BO.DroneNotMaintenance();
+			drone.Status = IBL.BO.DroneStatuses.free;
+			drone.Battery += (time / 60) * 40;
+			if (drone.Battery > 100) drone.Battery = 100;
+			IDAL.DO.BaseStation baseStation = new();
+			baseStation = currentBase(drone.Longitude, drone.Latitude);
+			dal.DroneLeaveChargeStation(droneId, baseStation.Id);
+		}
+		private IDAL.DO.BaseStation currentBase(double longi,double lati)
+        {
+			foreach (IDAL.DO.BaseStation item in dal.GetListBaseStations())
+            {
+				if (item.Longitude == longi && item.Latitude == lati) return item;
+            }
+			throw new IBL.BO.DroneNotInBase();
+		}
+		public void AffectParcelToDrone(int droneId)
+        {
+			IBL.BO.DroneToList drone = new();
+			drone = droneToList[searchDrone(droneId)];
+			if (drone.Status != IBL.BO.DroneStatuses.free) throw new IBL.BO.DroneNotFree();
+			IDAL.DO.Parcel parcel = new() {Id=0 };
+			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
+            {
+				if(((int)item.Weight<=(int)drone.MaxWeight)&&(item.Priority >= parcel.Priority )&& ((  parcel.Id == 0) ||
+					(distanceBetweenTwoPoints(drone.Latitude,drone.Longitude,getSenderLocation(item.SenderId).Latitude, getSenderLocation(item.SenderId).Longitude)
+					< distanceBetweenTwoPoints(drone.Latitude, drone.Longitude, getSenderLocation(parcel.SenderId).Latitude, getSenderLocation(parcel.SenderId).Longitude))))
+                {					
+					parcel = item;
+                }
+			}
+			if (parcel.Id == 0) throw new IBL.BO.NoDroneCanParcel();
+			IBL.BO.ParcelToList parcelToList = new() { Id = parcel.Id, NameSender = dal.GetCustomer(parcel.SenderId).Name, NameTarget = dal.GetCustomer(parcel.TargetId).Name, Weight = (IBL.BO.WeightCategories)((int)parcel.Weight) };
+			if ((drone.Battery -calcBatteryToShipping(drone,parcelToList))<0)
+			drone.IdOfParcel = parcel.Id;
+			drone.Status = IBL.BO.DroneStatuses.Shipping;
+			updateDroneList(drone);
+			parcel.DroneId = drone.Id;
+			parcel.Requested = DateTime.Now;
+			dal.UpdateParcel(parcel);
+		}
+		private IBL.BO.Location getSenderLocation(int senderId)
+        {
+			IBL.BO.Location location = new();
+			foreach (IDAL.DO.Customer item in dal.GetListCustomers())
+            {
+				if(item.Id == senderId)
+                {
+					location.Longitude = item.Longitude;
+					location.Latitude = item.Latitude;
+					return location;
+                }
+            }
+			throw new IBL.BO.CustomerIdNotExist();
+
+		}
+		private void updateDroneList(IBL.BO.DroneToList drone)
+		{
+			for (int i = 0; i < droneToList.Count(); i++)
+			{
+				if (droneToList[i].Id == drone.Id) droneToList[i] = drone;
+			}
+		}
+		public void ParcelCollection(int droneId)
+        {
+			IBL.BO.DroneToList drone = new();
+			drone = droneToList[searchDrone(droneId)];
+			if (drone.IdOfParcel == 0) throw new IBL.BO.NoParcelId();
+			IDAL.DO.Parcel parcel = new();
+			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
+            {
+                if (item.Id == drone.IdOfParcel)
+                {
+					parcel = item;
+                }
+            }
+			if (parcel.PickedUp != DateTime.MinValue) throw new IBL.BO.AlreadyPickedUp();
+			if (parcel.Requested == DateTime.MinValue) throw new IBL.BO.NotRequestedYet();
+			parcel.PickedUp = DateTime.Now;
+			dal.UpdateParcel(parcel);
+			drone.Battery -= calcBatteryUsedWhenEmpty(distanceBetweenTwoPoints(drone.Latitude, drone.Longitude, getSenderLocation(parcel.SenderId).Latitude, getSenderLocation(parcel.SenderId).Longitude));
+			drone.Longitude = getSenderLocation(parcel.SenderId).Longitude;
+			drone.Latitude = getSenderLocation(parcel.SenderId).Latitude;
+			updateDroneList(drone);
+		}
+		private int calcBatteryUsedWhenEmpty(double dist)
+        {
+			double batteryUsed = _useWhenFree * dist;
+			return ((int)(Math.Ceiling(batteryUsed)));
 		}
 	}
 }

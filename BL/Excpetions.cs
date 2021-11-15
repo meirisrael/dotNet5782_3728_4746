@@ -55,6 +55,30 @@ namespace IBL
 		{
 			public NegativeDorneId() : base("ERROR: THE DRONE ID NEED TO BE POSITIVE OR ZERO->NOT ASSIGNE TO AN SPECIFIC DRONE OR, BIGEER THAN ZERO->ASSIGNE TO AN SPECIFIC DRONE\n") { }
 		}
+		public class DroneNotFree : Exception
+		{
+			public DroneNotFree() : base("ERROR: The drone can't be assigned to a charge station since it's not free.\n") { }
+		}
+		public class DroneNotMaintenance : Exception
+		{
+			public DroneNotMaintenance() : base("ERROR: The drone can't leave a charge station since it's not in maintenance.\n") { }
+		}
+		public class DroneNotInBase : Exception
+		{
+			public DroneNotInBase() : base("ERROR: The drone can't leave a charge station since it's not in a base station.\n") { }
+		}
+		public class NotEnoughBattery : Exception
+		{
+			public NotEnoughBattery() : base("ERROR: The drone hasn't enough battery to join the closer base station\n") { }
+		}
+		public class NoDroneCanParcel : Exception
+		{
+			public NoDroneCanParcel() : base("ERROR: No drone can ship this parcel\n") { }
+		}
+		public class NoParcelId : Exception
+		{
+			public NoParcelId() : base("ERROR: No parcel affiliated to this drone\n") { }
+		}
 
 		// exceptions for customer
 		public class CustomerIdExist : Exception
@@ -87,7 +111,14 @@ namespace IBL
 		{
 			public InvalidPriority() : base("ERROR: THIS  OPTION FOR PRIORITIES IS NOT EXIST, YOU NEED TO GIVE AN  OPTION BETWEEN 1 TO 3\n") { }
 		}
-
+		public class AlreadyPickedUp : Exception
+		{
+			public AlreadyPickedUp() : base("ERROR: This parcel has already been picked up\n") { }
+		}
+		public class NotRequestedYet : Exception
+		{
+			public NotRequestedYet() : base("ERROR: This parcel hasn't been requested yet\n") { }
+		}
 		// exceptions for sender
 		public class SenderIdNotExist : Exception
 		{
