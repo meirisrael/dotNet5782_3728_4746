@@ -264,9 +264,9 @@ namespace DalObject
 		/// </summary>
 		/// <param name="droneId"></param>
 		/// <param name="baseId"></param>
-		public void AssignDroneToBaseStation(int droneId,int baseId)
+		public void AssignDroneToBaseStation(int droneId, int baseId)
 		{
-			int counter = 0;
+			int counter = 1;
 			foreach (IDAL.DO.Drone item in DataSource.drone)
 			{
 				if (item.Id == droneId)
@@ -275,10 +275,9 @@ namespace DalObject
 					counter++;
 			}
 			if (counter == DataSource.drone.Count())
-			{ throw new IDAL.DO.DroneIdNotExist(); counter = 0; }
-			else counter = 0;
-
-			foreach (IDAL.DO.BaseStation item in DataSource.baseStation)
+			{ throw new IDAL.DO.DroneIdNotExist(); }
+			else counter = 1;
+			/*foreach (IDAL.DO.BaseStation item in DataSource.baseStation)
 			{
 				if (item.Id == baseId)
 					break;
@@ -287,8 +286,9 @@ namespace DalObject
 			}
 			if (counter == DataSource.baseStation.Count())
 			{ throw new IDAL.DO.BaseIdNotExist(); }
-
-			for (int i = 0; i < DataSource.baseStation.Count; i++)
+			*/
+			int i;
+			for (i = 0; i < DataSource.baseStation.Count; i++)
 			{
 				if (DataSource.baseStation[i].Id == baseId)
 				{
@@ -298,6 +298,8 @@ namespace DalObject
 					break;
 				}
 			}
+			if (i == DataSource.baseStation.Count())
+			{ throw new IDAL.DO.BaseIdNotExist(); }
 		}
 		/// <summary>
 		/// change the status of a given drone to "free" and update the freed charge slot in the related basestation
@@ -395,7 +397,6 @@ namespace DalObject
 					return item;
 			}
 			throw new IDAL.DO.ParcelIdNotExist();
-
 		}
 		//----------------------------------------------------------------------------------------LIST OF AN OBJECT---------------------------------------------------------------------------------------------------------------
 		/// <summary>

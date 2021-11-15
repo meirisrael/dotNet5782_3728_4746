@@ -11,13 +11,13 @@ namespace IBL
 		class DroneCharge
 		{
 			public int DroneId { get; set; }
-			public int StationId { get; set; }
+			public double Battery { get; set; }
 
 			public override string ToString()
 			{
 				return $"Drone Charge:\n" +
 					$" Drone Id:{this.DroneId}\n" +
-					$" Station Id:{this.StationId}"
+					$" Station Id:{this.Battery}"
 					;
 			}
 		}
