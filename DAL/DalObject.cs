@@ -11,7 +11,7 @@ namespace DalObject
 		public DalObject() 
 		{ DataSource.Initialize(); }
 
-		//---------------------------------------------------------------------------------------ADDING-------------------------------------------------------------------------------------------------
+		//----------------------------------------------------------------------------------------------------------ADDING-------------------------------------------------------------------------------------------------
 		/// <summary>
 		/// add a station in baseStation[] created in DataSource with details given by user
 		/// </summary>
@@ -108,7 +108,7 @@ namespace DalObject
 			if ((int)weight > 3 || (int)weight < 1) throw new IDAL.DO.InvalidWeight();
 			if ((int)priorities > 3 || (int)priorities < 1) throw new IDAL.DO.InvalidPriority();
 
-			int counter = 1;
+			int counter = 0;
 			foreach (IDAL.DO.Parcel item in DataSource.parcels)
 			{ if (item.Id == id) throw new IDAL.DO.ParcelIdExist(); }
 
@@ -120,8 +120,9 @@ namespace DalObject
 					counter++;
 			}
 			if (counter == DataSource.parcels.Count())
-			{ throw new IDAL.DO.SenderIdNotExist(); counter = 1; }
-			else counter = 1;
+			{ throw new IDAL.DO.SenderIdNotExist(); counter = 0; }
+
+			else counter = 0;
 			foreach (IDAL.DO.Customer item in DataSource.customers)
 			{
 				if (item.Id == targetId)
@@ -130,7 +131,7 @@ namespace DalObject
 					counter++;
 			}
 			if (counter == DataSource.parcels.Count())
-			{ throw new IDAL.DO.TargetIdNotExist(); counter = 1; }
+			{ throw new IDAL.DO.TargetIdNotExist(); }
 			
 			DataSource.parcels.Add(new IDAL.DO.Parcel()
 			{
@@ -146,7 +147,7 @@ namespace DalObject
 				Delivered = DateTime.MinValue
 			});
 		}
-		//-----------------------------------------------------------------------------------UPDATE------------------------------------------------------------------------------------------
+		//---------------------------------------------------------------------------------------------------------UPDATE--------------------------------------------------------------------------------------------------
 		/// <summary>
 		/// add a drone Id in droneId field from a parcel given by the user
 		/// </summary>
@@ -191,6 +192,7 @@ namespace DalObject
 				else if (d.MaxWeight == IDAL.DO.WeightCategories.Medium && p.Weight == IDAL.DO.WeightCategories.Medium)
 					throw new IDAL.DO.ParcelTooHeavy();
 			}
+
 			for (int i = 0; i < DataSource.parcels.Count; i++)
 			{
 				if (DataSource.parcels[i].Id == parcelId)
@@ -237,7 +239,7 @@ namespace DalObject
 		/// <param name="parcelId"></param>
 		public void ParcelDelivered(int parcelId)
 		{
-			int counter = 1;
+			int counter = 0;
 			foreach (IDAL.DO.Parcel item in DataSource.parcels)
 			{
 				if (item.Id == parcelId)
@@ -266,7 +268,7 @@ namespace DalObject
 		/// <param name="baseId"></param>
 		public void AssignDroneToBaseStation(int droneId, int baseId)
 		{
-			int counter = 1;
+			int counter = 0;
 			foreach (IDAL.DO.Drone item in DataSource.drone)
 			{
 				if (item.Id == droneId)
@@ -276,17 +278,7 @@ namespace DalObject
 			}
 			if (counter == DataSource.drone.Count())
 			{ throw new IDAL.DO.DroneIdNotExist(); }
-			else counter = 1;
-			/*foreach (IDAL.DO.BaseStation item in DataSource.baseStation)
-			{
-				if (item.Id == baseId)
-					break;
-				else
-					counter++;
-			}
-			if (counter == DataSource.baseStation.Count())
-			{ throw new IDAL.DO.BaseIdNotExist(); }
-			*/
+
 			int i;
 			for (i = 0; i < DataSource.baseStation.Count; i++)
 			{
@@ -318,19 +310,9 @@ namespace DalObject
 			}
 			if (counter == DataSource.drone.Count())
 			{ throw new IDAL.DO.DroneIdNotExist(); counter = 0; }
-			else counter = 0;
 
-			foreach (IDAL.DO.BaseStation item in DataSource.baseStation)
-			{
-				if (item.Id == baseId)
-					break;
-				else
-					counter++;
-			}
-			if (counter == DataSource.baseStation.Count())
-			{ throw new IDAL.DO.BaseIdNotExist(); }
-
-			for (int i = 0; i < DataSource.baseStation.Count; i++)
+			int i;
+			for (i = 0; i < DataSource.baseStation.Count; i++)
 			{
 				if (DataSource.baseStation[i].Id == baseId)
 				{
@@ -340,8 +322,10 @@ namespace DalObject
 					break;
 				}
 			}
+			if (i == DataSource.baseStation.Count())
+			{ throw new IDAL.DO.BaseIdNotExist(); }
 		}
-		//---------------------------------------------------------------------------------------------------AN SPECIFIC OBJECT-------------------------------------------------------------------------------------------------------------------
+		//---------------------------------------------------------------------------------------------------AN SPECIFIC OBJECT-------------------------------------------------------------------------------------------
 		/// <summary>
 		/// for a given base station Id, display it details
 		/// </summary>
@@ -398,7 +382,7 @@ namespace DalObject
 			}
 			throw new IDAL.DO.ParcelIdNotExist();
 		}
-		//----------------------------------------------------------------------------------------LIST OF AN OBJECT---------------------------------------------------------------------------------------------------------------
+		//---------------------------------------------------------------------------------------------------LIST OF AN OBJECT--------------------------------------------------------------------------------------------
 		/// <summary>
 		/// display the details of all base stations
 		/// </summary>
@@ -459,7 +443,7 @@ namespace DalObject
 			}
 			return x;
 		}
-		//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		/// <summary>
 		/// the func go to config to take the value of the charging rate and the electricity use
 		/// </summary>

@@ -25,7 +25,7 @@ namespace BL
 			settingDroneByParcel();
 			settingDrone();
 		}
-		//----------------------------------------------------------------------------METHOD FOR THE CTOR--------------------------------------------------------------------------------------------
+		//------------------------------------------------------------------------------------------------METHOD FOR THE CTOR--------------------------------------------------------------------------------------------
 		/// <summary>
 		/// the func get the data of charge and use battery for each situation(free,light packege...)
 		/// </summary>
@@ -142,7 +142,7 @@ namespace BL
 				}
 			}
 		}
-		//--------------------------------------------------------------------FUNC TO HELP THE METHOD OF THE CTOR---------------------------------------------------------------------------
+		//---------------------------------------------------------------------------------------FUNC TO HELP THE METHOD OF THE CTOR-------------------------------------------------------------------------------------
 		/// <summary>
 		/// the func calculate the distance between two points for examaple: the distance between the target and the closer base station 
 		/// </summary>
@@ -353,14 +353,26 @@ namespace BL
 			}
 			return disToBase;
 		}
-		//-------------------------------------------------------------------------------------------------------------------------------------------------------------
+		//------------------------------------------------------------------------------------------------------ADD OPTION------------------------------------------------------------------------------------------------
 		public static Random r = new Random();
-
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="name"></param>
+		/// <param name="chargeSlots"></param>
+		/// <param name="location"></param>
 		public void AddBaseStation(int id, int name, int chargeSlots, IBL.BO.Location location)
 		{
 			dal.AddBaseStation(id, name, chargeSlots, location.Longitude, location.Latitude);
 		}
-
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="model"></param>
+		/// <param name="weight"></param>
+		/// <param name="firstBaseStation"></param>
 		public void AddDrone(int id, string model, IDAL.DO.WeightCategories weight, int firstBaseStation)
 		{
 			dal.AddDrone(id, model, weight);
@@ -380,23 +392,41 @@ namespace BL
 			if (counter == droneToList.Count())
 			{ throw new IDAL.DO.DroneIdNotExist(); }
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="name"></param>
+		/// <param name="phone"></param>
+		/// <param name="location"></param>
 		public void AddCustomer(int id, string name, string phone, IBL.BO.Location location)
 		{
 			dal.AddCustomer(id, name, phone, location.Longitude, location.Latitude);
 		}
-
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="senderId"></param>
+		/// <param name="targetId"></param>
+		/// <param name="weight"></param>
+		/// <param name="priorities"></param>
 		public void AddParcel(int id, int senderId, int targetId, IDAL.DO.WeightCategories weight, IDAL.DO.Priorities priorities)
 		{
-		dal.AddParcel(id, senderId, targetId, 0, weight, priorities);
+			dal.AddParcel(id, senderId, targetId, 0, weight, priorities);
 			//ב-BL כל הזמנים יאותחלו לזמן אפס למעט תאריך יצירה שיאותחל ל-DateTime.Now
 		}
-
+		//-----------------------------------------------------------------------------------------------------------UPDATE OPTION-------------------------------------------------------------------------------------------------------
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="droneId"></param>
+		/// <param name="model"></param>
 		public void UpdateDrone(int droneId, string model)
         {
 			IDAL.DO.Drone drone = new();
 			drone = dal.GetDrone(droneId);
 			drone.Model = model;
-			
 		}
 	}
 }
