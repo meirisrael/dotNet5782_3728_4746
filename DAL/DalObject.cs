@@ -259,10 +259,9 @@ namespace DalObject
 					counter++;
 			}
 			if (counter == DataSource.drone.Count())
-			{ throw new IDAL.DO.DroneIdNotExist(); counter = 1; }
-			else counter = 1;
-
-			foreach (IDAL.DO.BaseStation item in DataSource.baseStation)
+			{ throw new IDAL.DO.DroneIdNotExist(); }
+			else counter = 1;						
+			/*foreach (IDAL.DO.BaseStation item in DataSource.baseStation)
 			{
 				if (item.Id == baseId)
 					break;
@@ -270,9 +269,10 @@ namespace DalObject
 					counter++;
 			}
 			if (counter == DataSource.baseStation.Count())
-			{ throw new IDAL.DO.BaseIdNotExist(); counter = 1; }
-
-			for (int i = 0; i < DataSource.baseStation.Count; i++)
+			{ throw new IDAL.DO.BaseIdNotExist(); }
+			*/
+			int i ;
+			for ( i = 0; i < DataSource.baseStation.Count; i++)
 			{
 				if (DataSource.baseStation[i].Id == baseId)
 				{
@@ -282,6 +282,8 @@ namespace DalObject
 					break;
 				}
 			}
+			if (i == DataSource.baseStation.Count())
+			{ throw new IDAL.DO.BaseIdNotExist(); }
 		}
 		/// <summary>
 		/// change the status of a given drone to "free" and update the freed charge slot in the related basestation
@@ -379,7 +381,6 @@ namespace DalObject
 					return item;
 			}
 			throw new IDAL.DO.ParcelIdNotExist();
-
 		}
 		//----------------------------------------------------------------------------------------LIST OF AN OBJECT---------------------------------------------------------------------------------------------------------------
 		/// <summary>

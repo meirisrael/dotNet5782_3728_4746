@@ -47,8 +47,17 @@ namespace BL
 		{
 			foreach (IDAL.DO.Drone item in dal.GetListDrones())
 			{
-				droneToList.Add(new IBL.BO.DroneToList { Id = item.Id, Model = item.Model, MaxWeight = (IBL.BO.WeightCategories)item.MaxWeight, Battery = 0,
-					Status = IBL.BO.DroneStatuses.free,Latitude=0,Longitude=0,IdOfParcel=0});
+				droneToList.Add(new IBL.BO.DroneToList
+				{
+					Id = item.Id,
+					Model = item.Model,
+					MaxWeight = (IBL.BO.WeightCategories)item.MaxWeight,
+					Battery = 0,
+					Status = IBL.BO.DroneStatuses.free,
+					Latitude = 0,
+					Longitude = 0,
+					IdOfParcel = 0
+				});
 			}
 		}
 		/// <summary>
@@ -96,7 +105,7 @@ namespace BL
 					droneToList[i].Longitude = customerList[r].Longitude;
 					droneToList[i].Latitude = customerList[r].Latitude;
 
-					int percent=calcBatteryToCloserBase(droneToList[i].Longitude, droneToList[i].Latitude);
+					int percent = calcBatteryToCloserBase(droneToList[i].Longitude, droneToList[i].Latitude);
 					int finalPercent = new Random().Next(percent, 101);
 					droneToList[i].Battery = finalPercent;
 				}
@@ -129,7 +138,7 @@ namespace BL
 					locOfDroneByParcel(parcelToList[i], droneIdAssigneToParcel);
 
 					int percent = calcBatteryToShipping(droneToList[searchDrone(droneIdAssigneToParcel)], parcelToList[i]);
-					int finalPercent= new Random().Next(percent, 101);
+					int finalPercent = new Random().Next(percent, 101);
 					droneToList[i].Battery = finalPercent;
 				}
 			}
@@ -182,7 +191,7 @@ namespace BL
 			double batteryToSender;
 			if (p.Weight == IBL.BO.WeightCategories.Light)
 				batteryToSender = _useWhenLightly * disToTarget;
-			else if(p.Weight == IBL.BO.WeightCategories.Medium)
+			else if (p.Weight == IBL.BO.WeightCategories.Medium)
 				batteryToSender = _useWhenMedium * disToTarget;
 			else
 				batteryToSender = _useWhenHeavily * disToTarget;
@@ -193,9 +202,9 @@ namespace BL
 		/// the func calculate the percent of battery that the drone need to go back to the closer base station 
 		/// </summary>
 		/// <returns></returns>
-		private int calcBatteryToCloserBase(double longi,double lati)
+		private int calcBatteryToCloserBase(double longi, double lati)
 		{
-			double disToBase = disToCloserBase(longi,lati);
+			double disToBase = disToCloserBase(longi, lati);
 			double batteryToBase = _useWhenFree * disToBase;
 			return ((int)(Math.Ceiling(batteryToBase)));
 		}
@@ -288,7 +297,7 @@ namespace BL
 		/// </summary>
 		/// <param name="p"></param>
 		/// <param name="droneId"></param>
-		private void locOfDroneByParcel(IBL.BO.ParcelToList p,int droneId)
+		private void locOfDroneByParcel(IBL.BO.ParcelToList p, int droneId)
 		{
 			if (p.Status == IBL.BO.ParcelStatues.Associated)
 			{
@@ -296,7 +305,7 @@ namespace BL
 				IBL.BO.Location loc = new IBL.BO.Location();
 				foreach (IDAL.DO.BaseStation b in dal.GetListBaseStations())
 				{
-					double dis =distanceBetweenTwoPoints(b.Latitude, b.Longitude, senderLati(p.NameSender), senderLong(p.NameSender));
+					double dis = distanceBetweenTwoPoints(b.Latitude, b.Longitude, senderLati(p.NameSender), senderLong(p.NameSender));
 					if (finalDis == -1 || dis < finalDis)
 					{
 						droneToList[searchDrone(droneId)].Loc.Longitude = b.Longitude;
@@ -323,7 +332,7 @@ namespace BL
 			{
 				if (item.Id == id)
 				{
-					IBL.BO.Customer c= new IBL.BO.Customer {Id=item.Id,Name=item.Name,Latitude=item.Latitude,Longitude=item.Longitude };
+					IBL.BO.Customer c = new IBL.BO.Customer { Id = item.Id, Name = item.Name, Latitude = item.Latitude, Longitude = item.Longitude };
 					return c;
 				}
 			}
@@ -333,7 +342,7 @@ namespace BL
 		/// the func calculate the distance of the closer base station 
 		/// </summary>
 		/// <returns> the distance </returns>
-		private double disToCloserBase(double longi,double lati)
+		private double disToCloserBase(double longi, double lati)
 		{
 			double disToBase = -1;
 			foreach (IDAL.DO.BaseStation b in dal.GetListBaseStations())
@@ -346,5 +355,49 @@ namespace BL
 			return disToBase;
 		}
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------
+		public static Random r = new Random();
+
+		public void AddBaseStation(int id, int name, int chargeSlots, IBL.BO.Location location)
+		{
+			dal.AddBaseStation(id, name, chargeSlots, location.Longitude, location.Latitude);
+		}
+
+		public void AddDrone(int id, string model, IDAL.DO.WeightCategories weight, int firstBaseStation)
+		{
+			dal.AddDrone(id, model, weight);
+			dal.AssignDroneToBaseStation(id, firstBaseStation);
+			double battery = (r.Next() % 20) + 20;
+			int counter;
+			for (counter = 0; counter < droneToList.Count(); counter++)
+			{
+				if (droneToList[counter].Id == id)
+				{
+					droneToList[counter].Status = IBL.BO.DroneStatuses.Maintenance;
+					droneToList[counter].Loc.Longitude = dal.GetBaseStation(firstBaseStation).Longitude;
+					droneToList[counter].Loc.Latitude = dal.GetBaseStation(firstBaseStation).Latitude;
+					break;
+				}
+			}
+			if (counter == droneToList.Count())
+			{ throw new IDAL.DO.DroneIdNotExist(); }
+		}
+		public void AddCustomer(int id, string name, string phone, IBL.BO.Location location)
+		{
+			dal.AddCustomer(id, name, phone, location.Longitude, location.Latitude);
+		}
+
+		public void AddParcel(int id, int senderId, int targetId, IDAL.DO.WeightCategories weight, IDAL.DO.Priorities priorities)
+		{
+		dal.AddParcel(id, senderId, targetId, 0, weight, priorities);
+			//ב-BL כל הזמנים יאותחלו לזמן אפס למעט תאריך יצירה שיאותחל ל-DateTime.Now
+		}
+
+		public void UpdateDrone(int droneId, string model)
+        {
+			IDAL.DO.Drone drone = new();
+			drone = dal.GetDrone(droneId);
+			drone.Model = model;
+			
+		}
 	}
 }
