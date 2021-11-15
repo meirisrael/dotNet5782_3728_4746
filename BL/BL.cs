@@ -10,7 +10,6 @@ namespace BL
 	class BL : IBL.IBL
 	{
 		private IDAL.IDal dal;
-		//private = new DalObject.DalObject();
 
 		private double _useWhenFree;
 		private double _useWhenLightly;
