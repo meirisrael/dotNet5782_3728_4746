@@ -147,6 +147,7 @@ namespace DalObject
 				Delivered = DateTime.MinValue
 			});
 		}
+		
 		//---------------------------------------------------------------------------------------------------------UPDATE--------------------------------------------------------------------------------------------------
 		/// <summary>
 		/// add a drone Id in droneId field from a parcel given by the user
@@ -334,7 +335,7 @@ namespace DalObject
 					break;
 				}
 			}
-			for (int i = 0; i < DataSource.droneCharge.Count(); i++)
+			for (i = 0; i < DataSource.droneCharge.Count(); i++)
             {
                 if (DataSource.droneCharge[i].DroneId == droneId)
                 {
@@ -343,7 +344,7 @@ namespace DalObject
             }
 			
 		}
-	
+		
 		//---------------------------------------------------------------------------------------------------AN SPECIFIC OBJECT-------------------------------------------------------------------------------------------
 		/// <summary>
 		/// for a given base station Id, display it details
@@ -401,6 +402,7 @@ namespace DalObject
 			}
 			throw new IDAL.DO.ParcelIdNotExist();
 		}
+		
 		//---------------------------------------------------------------------------------------------------LIST OF AN OBJECT--------------------------------------------------------------------------------------------
 		/// <summary>
 		/// display the details of all base stations
@@ -463,35 +465,59 @@ namespace DalObject
 			return x;
 		}
 
+		//--------------------------------------------------------------------------------------------------------SETTER-----------------------------------------------------------------------------------------
+		/// <summary>
+		/// the func change the name of the model drone by his id
+		/// </summary>
+		/// <param name="drone"></param>
 		public void UpdateDrone(IDAL.DO.Drone drone)
         {
+			bool flag = false;
 			for(int i = 0; i < DataSource.drone.Count(); i++)
             {
 				if (DataSource.drone[i].Id == drone.Id)
-                {	DataSource.drone[i] = drone;    }
+                {	DataSource.drone[i] = drone;  flag = true; }
             }
+			if (flag == false)
+				throw new IDAL.DO.DroneIdNotExist();
         }
-		
+		/// <summary>
+		/// the func update some data in the data base
+		/// </summary>
+		/// <param name="baseStation"></param>
 		public void UpdateBaseStation(IDAL.DO.BaseStation baseStation)
         {
+			bool flag = false;
 			for (int i = 0; i < DataSource.baseStation.Count(); i++)
 			{
 				if (DataSource.baseStation[i].Id == baseStation.Id)
-				{ DataSource.baseStation[i] = baseStation; }
+				{ DataSource.baseStation[i] = baseStation; flag = true; }
 			}
+			if (flag == false)
+				throw new IDAL.DO.BaseIdNotExist();
 		}
-		public void UpdateChargeSlots(int baseId,int chargeSlots)
-        {
-            foreach (IDAL.DO.DroneCharge item in DataSource.droneCharge)
-            {
-				if (item.StationId == baseId) chargeSlots--;
-            }
-			if (chargeSlots < 0) throw new IDAL.DO.InvalidChargeSlots();
-			IDAL.DO.BaseStation baseStation = new();
-			baseStation= GetBaseStation(baseId);
-			baseStation.ChargeSlots = chargeSlots;
-			UpdateBaseStation(baseStation);
-		}
+		///// <summary>
+		///// 
+		///// </summary>
+		///// <param name="baseId"></param>
+		///// <param name="chargeSlots"></param>
+		//public void UpdateChargeSlots(int baseId,int chargeSlots)
+		//{
+  //          foreach (IDAL.DO.DroneCharge item in DataSource.droneCharge)
+  //          {
+		//		if (item.StationId == baseId) chargeSlots--;
+  //          }
+		//	if (chargeSlots < 0)
+		//		throw new IDAL.DO.InvalidChargeSlots();
+		//	IDAL.DO.BaseStation baseStation = new();
+		//	baseStation= GetBaseStation(baseId);
+		//	baseStation.ChargeSlots = chargeSlots;
+		//	UpdateBaseStation(baseStation);
+		//}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="customer"></param>
 		public void UpdateCustomer(IDAL.DO.Customer customer)
         {
 			for (int i = 0; i < DataSource.customers.Count(); i++)
@@ -500,7 +526,10 @@ namespace DalObject
 				{ DataSource.customers[i] = customer; }
 			}
 		}
-
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="parcel"></param>
 		public void UpdateParcel(IDAL.DO.Parcel parcel)
         {
 			for (int i = 0; i < DataSource.parcels.Count(); i++)

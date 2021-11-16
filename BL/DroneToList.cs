@@ -8,7 +8,7 @@ namespace IBL
 {
 	namespace BO
 	{
-		class DroneToList : Location
+		class DroneToList
 		{
 			public int Id { get; set; }
 			public string Model { get; set; }
@@ -16,7 +16,7 @@ namespace IBL
 			public double Battery { get; set; }
 			public DroneStatuses Status { get; set; }
 			public Location Loc { get; set; }
-			public int IdOfParcel { get; set; }
+			public int NumOfParcel { get; set; }
 
 			public override string ToString()
 			{

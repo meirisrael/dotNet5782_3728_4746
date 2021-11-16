@@ -35,9 +35,9 @@ namespace IDAL
 		public IEnumerable<IDAL.DO.Customer> GetListCustomers();
 		public IEnumerable<IDAL.DO.Parcel> GetListParcels();
 		public IEnumerable<IDAL.DO.BaseStation> GetListBaseStationsCanCharge();
+
 		public void UpdateDrone(IDAL.DO.Drone drone);
 		public void UpdateBaseStation(IDAL.DO.BaseStation baseStation);
-		public void UpdateChargeSlots(int baseId, int chargeSlots);
 		public void UpdateCustomer(IDAL.DO.Customer customer);
 		public void UpdateParcel(IDAL.DO.Parcel parcel);
 		//methot return a data about the charge and the electricity use

@@ -8,7 +8,7 @@ namespace IBL
 {
 	namespace BO
 	{
-		class Customer : Location
+		class Customer
 		{
 			public int Id { set; get; }
 			public string Name { get; set; }
@@ -23,7 +23,9 @@ namespace IBL
 					$" Id: {this.Id}\n" +
 					$" Name: {this.Name}\n" +
 					$" Phone: {this.Phone}\n" +
-					$" Location: {this.Loc.ToString()}"
+					$" Location: {this.Loc.ToString()}\n" +
+					$" Parcel From Customer: {this.ParcelFromCustomer.ToString()}\n" +
+					$" Parcel To Customer: {this.ParcelToCustomer.ToString()}\n"
 					;
 			}
 		}
