@@ -119,6 +119,14 @@ namespace IBL
 		{
 			public NotRequestedYet() : base("ERROR: This parcel hasn't been requested yet\n") { }
 		}
+		public class NotPickedUpYet : Exception
+		{
+			public NotPickedUpYet() : base("ERROR: This parcel hasn't been picked up yet\n") { }
+		}
+		public class AlreadyDelivered : Exception
+		{
+			public AlreadyDelivered() : base("ERROR: This parcel has already been delivered\n") { }
+		}
 		// exceptions for sender
 		public class SenderIdNotExist : Exception
 		{

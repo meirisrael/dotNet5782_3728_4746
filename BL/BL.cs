@@ -527,8 +527,8 @@ namespace BL
 			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
             {
 				if(((int)item.Weight<=(int)drone.MaxWeight)&&(item.Priority >= parcel.Priority )&& ((  parcel.Id == 0) ||
-					(distanceBetweenTwoPoints(drone.Latitude,drone.Longitude,getSenderLocation(item.SenderId).Latitude, getSenderLocation(item.SenderId).Longitude)
-					< distanceBetweenTwoPoints(drone.Latitude, drone.Longitude, getSenderLocation(parcel.SenderId).Latitude, getSenderLocation(parcel.SenderId).Longitude))))
+					(distanceBetweenTwoPoints(drone.Latitude,drone.Longitude, getCustomerLocation(item.SenderId).Latitude, getCustomerLocation(item.SenderId).Longitude)
+					< distanceBetweenTwoPoints(drone.Latitude, drone.Longitude, getCustomerLocation(parcel.SenderId).Latitude, getCustomerLocation(parcel.SenderId).Longitude))))
                 {					
 					parcel = item;
                 }
@@ -543,12 +543,12 @@ namespace BL
 			parcel.Requested = DateTime.Now;
 			dal.UpdateParcel(parcel);
 		}
-		private IBL.BO.Location getSenderLocation(int senderId)
+		private IBL.BO.Location getCustomerLocation(int customerId)
         {
 			IBL.BO.Location location = new();
 			foreach (IDAL.DO.Customer item in dal.GetListCustomers())
             {
-				if(item.Id == senderId)
+				if(item.Id == customerId)
                 {
 					location.Longitude = item.Longitude;
 					location.Latitude = item.Latitude;
@@ -582,14 +582,45 @@ namespace BL
 			if (parcel.Requested == DateTime.MinValue) throw new IBL.BO.NotRequestedYet();
 			parcel.PickedUp = DateTime.Now;
 			dal.UpdateParcel(parcel);
-			drone.Battery -= calcBatteryUsedWhenEmpty(distanceBetweenTwoPoints(drone.Latitude, drone.Longitude, getSenderLocation(parcel.SenderId).Latitude, getSenderLocation(parcel.SenderId).Longitude));
-			drone.Longitude = getSenderLocation(parcel.SenderId).Longitude;
-			drone.Latitude = getSenderLocation(parcel.SenderId).Latitude;
+			drone.Battery -= calcBatteryUsedWhenEmpty(distanceBetweenTwoPoints(drone.Latitude, drone.Longitude, getCustomerLocation(parcel.SenderId).Latitude, getCustomerLocation(parcel.SenderId).Longitude));
+			drone.Longitude = getCustomerLocation(parcel.SenderId).Longitude;
+			drone.Latitude = getCustomerLocation(parcel.SenderId).Latitude;
 			updateDroneList(drone);
 		}
 		private int calcBatteryUsedWhenEmpty(double dist)
         {
 			double batteryUsed = _useWhenFree * dist;
+			return ((int)(Math.Ceiling(batteryUsed)));
+		}
+		public void ParcelPickUp(int droneId)
+        {
+			IBL.BO.DroneToList drone = new();
+			drone = droneToList[searchDrone(droneId)];
+			if (drone.IdOfParcel == 0) throw new IBL.BO.NoParcelId();
+			IDAL.DO.Parcel parcel = new();
+			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
+			{
+				if (item.Id == drone.IdOfParcel)
+				{
+					parcel = item;
+				}
+			}
+			if (parcel.PickedUp == DateTime.MinValue) throw new IBL.BO.NotPickedUpYet();
+			if (parcel.Delivered != DateTime.MinValue) throw new IBL.BO.AlreadyDelivered();
+			parcel.Delivered = DateTime.Now;
+			dal.UpdateParcel(parcel);
+			drone.Battery-= calcBatteryUsedWhenShipping(parcel.Weight, distanceBetweenTwoPoints(drone.Latitude, drone.Longitude, getCustomerLocation(parcel.TargetId).Latitude, getCustomerLocation(parcel.TargetId).Longitude));
+			drone.Longitude = getCustomerLocation(parcel.TargetId).Longitude;
+			drone.Latitude = getCustomerLocation(parcel.TargetId).Latitude;
+			drone.Status = IBL.BO.DroneStatuses.free;
+			updateDroneList(drone);
+		}
+		private int calcBatteryUsedWhenShipping(IDAL.DO.WeightCategories weight,double dist)
+		{
+			double batteryUsed=0;
+			if (weight == IDAL.DO.WeightCategories.Light) batteryUsed = _useWhenLightly * dist;
+			if (weight == IDAL.DO.WeightCategories.Medium) batteryUsed = _useWhenMedium * dist;
+			if (weight == IDAL.DO.WeightCategories.Heavy) batteryUsed = _useWhenHeavily * dist;
 			return ((int)(Math.Ceiling(batteryUsed)));
 		}
 	}
