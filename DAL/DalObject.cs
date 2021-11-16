@@ -349,7 +349,7 @@ namespace DalObject
 		{
 			foreach (IDAL.DO.Drone item in DataSource.drone)
 			{
-				if (item.Id == droneId) 
+				if (item.Id == droneId)
 					return item;
 			}
 			throw new IDAL.DO.DroneIdNotExist();

@@ -354,9 +354,8 @@ namespace BL
 			return disToBase;
 		}
 		//------------------------------------------------------------------------------------------------------ADD OPTION------------------------------------------------------------------------------------------------
-		public static Random r = new Random();
 		/// <summary>
-		/// 
+		/// the func add an new base station to the data base
 		/// </summary>
 		/// <param name="id"></param>
 		/// <param name="name"></param>
@@ -367,7 +366,7 @@ namespace BL
 			dal.AddBaseStation(id, name, chargeSlots, location.Longitude, location.Latitude);
 		}
 		/// <summary>
-		/// 
+		/// the func add a new drone to the data base
 		/// </summary>
 		/// <param name="id"></param>
 		/// <param name="model"></param>
@@ -377,7 +376,10 @@ namespace BL
 		{
 			dal.AddDrone(id, model, weight);
 			dal.AssignDroneToBaseStation(id, firstBaseStation);
-			double battery = (r.Next() % 20) + 20;
+
+			int r = new Random().Next(20,41);
+			double battery = r;
+
 			int counter;
 			for (counter = 0; counter < droneToList.Count(); counter++)
 			{
@@ -393,7 +395,7 @@ namespace BL
 			{ throw new IDAL.DO.DroneIdNotExist(); }
 		}
 		/// <summary>
-		/// 
+		/// the func add a new customer to the data base
 		/// </summary>
 		/// <param name="id"></param>
 		/// <param name="name"></param>
@@ -404,7 +406,7 @@ namespace BL
 			dal.AddCustomer(id, name, phone, location.Longitude, location.Latitude);
 		}
 		/// <summary>
-		/// 
+		/// the fun add an new parcel to the data base
 		/// </summary>
 		/// <param name="id"></param>
 		/// <param name="senderId"></param>
@@ -424,9 +426,12 @@ namespace BL
 		/// <param name="model"></param>
 		public void UpdateDrone(int droneId, string model)
         {
+			//dal.GetDrone(droneId).Model = model;
+			//IDAL.DO.Drone drone = dal.GetDrone(droneId);drone.Model = model;
 			IDAL.DO.Drone drone = new();
 			drone = dal.GetDrone(droneId);
 			drone.Model = model;
+
 		}
 	}
 }
