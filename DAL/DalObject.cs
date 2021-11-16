@@ -496,26 +496,8 @@ namespace DalObject
 			if (flag == false)
 				throw new IDAL.DO.BaseIdNotExist();
 		}
-		///// <summary>
-		///// 
-		///// </summary>
-		///// <param name="baseId"></param>
-		///// <param name="chargeSlots"></param>
-		//public void UpdateChargeSlots(int baseId,int chargeSlots)
-		//{
-  //          foreach (IDAL.DO.DroneCharge item in DataSource.droneCharge)
-  //          {
-		//		if (item.StationId == baseId) chargeSlots--;
-  //          }
-		//	if (chargeSlots < 0)
-		//		throw new IDAL.DO.InvalidChargeSlots();
-		//	IDAL.DO.BaseStation baseStation = new();
-		//	baseStation= GetBaseStation(baseId);
-		//	baseStation.ChargeSlots = chargeSlots;
-		//	UpdateBaseStation(baseStation);
-		//}
 		/// <summary>
-		/// 
+		/// update data of customer
 		/// </summary>
 		/// <param name="customer"></param>
 		public void UpdateCustomer(IDAL.DO.Customer customer)
@@ -527,7 +509,7 @@ namespace DalObject
 			}
 		}
 		/// <summary>
-		/// 
+		/// update date of parcel
 		/// </summary>
 		/// <param name="parcel"></param>
 		public void UpdateParcel(IDAL.DO.Parcel parcel)
