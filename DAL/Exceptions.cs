@@ -112,6 +112,10 @@ namespace IDAL
 		{
 			public ParcelTooHeavy() : base("ERROR: THE CATEGORIE OF PARCEL IS TOO HEAVY AND THE DRONE CAN'T TAKE THEM\n") { }
 		}
+		public class InvalidChargeSlots : Exception
+		{
+			public InvalidChargeSlots() : base("ERROR: INVALID NUMBER OF CHARGESLOTS, Enter a higher number or remove charging drones from this station\n") { }
+		}
 	}
 }
 

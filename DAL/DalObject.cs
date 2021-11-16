@@ -292,6 +292,7 @@ namespace DalObject
 			}
 			if (i == DataSource.baseStation.Count())
 			{ throw new IDAL.DO.BaseIdNotExist(); }
+			DataSource.droneCharge.Add(new IDAL.DO.DroneCharge { DroneId = droneId, StationId = baseId });
 		}
 		/// <summary>
 		/// change the status of a given drone to "free" and update the freed charge slot in the related basestation
@@ -310,6 +311,17 @@ namespace DalObject
 			}
 			if (counter == DataSource.drone.Count())
 			{ throw new IDAL.DO.DroneIdNotExist(); counter = 0; }
+			else counter = 0;
+
+			foreach (IDAL.DO.BaseStation item in DataSource.baseStation)
+			{
+				if (item.Id == baseId)
+					break;
+				else
+					counter++;
+			}
+			if (counter == DataSource.baseStation.Count())
+			{ throw new IDAL.DO.BaseIdNotExist(); }
 
 			int i;
 			for (i = 0; i < DataSource.baseStation.Count; i++)
@@ -322,9 +334,16 @@ namespace DalObject
 					break;
 				}
 			}
-			if (i == DataSource.baseStation.Count())
-			{ throw new IDAL.DO.BaseIdNotExist(); }
+			for (int i = 0; i < DataSource.droneCharge.Count(); i++)
+            {
+                if (DataSource.droneCharge[i].DroneId == droneId)
+                {
+					DataSource.droneCharge.RemoveAt(i);
+				}
+            }
+			
 		}
+	
 		//---------------------------------------------------------------------------------------------------AN SPECIFIC OBJECT-------------------------------------------------------------------------------------------
 		/// <summary>
 		/// for a given base station Id, display it details
@@ -443,7 +462,54 @@ namespace DalObject
 			}
 			return x;
 		}
-		//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		public void UpdateDrone(IDAL.DO.Drone drone)
+        {
+			for(int i = 0; i < DataSource.drone.Count(); i++)
+            {
+				if (DataSource.drone[i].Id == drone.Id)
+                {	DataSource.drone[i] = drone;    }
+            }
+        }
+		
+		public void UpdateBaseStation(IDAL.DO.BaseStation baseStation)
+        {
+			for (int i = 0; i < DataSource.baseStation.Count(); i++)
+			{
+				if (DataSource.baseStation[i].Id == baseStation.Id)
+				{ DataSource.baseStation[i] = baseStation; }
+			}
+		}
+		public void UpdateChargeSlots(int baseId,int chargeSlots)
+        {
+            foreach (IDAL.DO.DroneCharge item in DataSource.droneCharge)
+            {
+				if (item.StationId == baseId) chargeSlots--;
+            }
+			if (chargeSlots < 0) throw new IDAL.DO.InvalidChargeSlots();
+			IDAL.DO.BaseStation baseStation = new();
+			baseStation= GetBaseStation(baseId);
+			baseStation.ChargeSlots = chargeSlots;
+			UpdateBaseStation(baseStation);
+		}
+		public void UpdateCustomer(IDAL.DO.Customer customer)
+        {
+			for (int i = 0; i < DataSource.customers.Count(); i++)
+			{
+				if (DataSource.customers[i].Id == customer.Id)
+				{ DataSource.customers[i] = customer; }
+			}
+		}
+
+		public void UpdateParcel(IDAL.DO.Parcel parcel)
+        {
+			for (int i = 0; i < DataSource.parcels.Count(); i++)
+			{
+				if (DataSource.parcels[i].Id == parcel.Id)
+				{ DataSource.parcels[i] = parcel; }
+			}
+		}
+		//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		/// <summary>
 		/// the func go to config to take the value of the charging rate and the electricity use
 		/// </summary>
