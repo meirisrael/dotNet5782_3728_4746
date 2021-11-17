@@ -545,7 +545,7 @@ namespace BL
 
 			if (drone.Status != IBL.BO.DroneStatuses.free)
 				throw new IBL.BO.DroneNotFree();
-			IDAL.DO.Parcel parcel = new() { Id = 0 };
+			IDAL.DO.Parcel parcel = new IDAL.DO.Parcel() { Id = 0 };
 			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
 			{
 				if (((int)item.Weight <= (int)drone.MaxWeight) && (item.Priority >= parcel.Priority) && ((parcel.Id == 0) ||
@@ -567,14 +567,14 @@ namespace BL
 			dal.UpdateParcel(parcel);
 		}
 		/// <summary>
-		/// 
+		/// collect a parcel to deliver
 		/// </summary>
 		/// <param name="droneId"></param>
 		public void ParcelCollection(int droneId)
 		{
 			IBL.BO.DroneToList drone = new IBL.BO.DroneToList();
 			drone = droneToList[searchDrone(droneId)];
-			IDAL.DO.Parcel parcel = new();
+			IDAL.DO.Parcel parcel = new IDAL.DO.Parcel();
 			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
 			{
 				if (item.DroneId == drone.Id)
@@ -582,7 +582,8 @@ namespace BL
 					parcel = item;
 				}
 			}
-			if(parcel.DroneId!=droneId) throw new IBL.BO.NoParcelId();
+			if(parcel.DroneId!=droneId)
+				throw new IBL.BO.NoParcelId();
 			if (parcel.PickedUp != DateTime.MinValue)
 				throw new IBL.BO.AlreadyPickedUp();
 			if (parcel.Requested == DateTime.MinValue)
@@ -594,12 +595,11 @@ namespace BL
 			drone.Loc.Latitude = getCustomerLocation(parcel.SenderId).Latitude;
 			updateDroneList(drone);
 		}
-
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="droneId"></param>
-		public void ParcelPickUp(int droneId)
+		public void ParcelDeliverd(int droneId)
 		{
 			IBL.BO.DroneToList drone = new IBL.BO.DroneToList();
 			drone = droneToList[searchDrone(droneId)];
@@ -611,9 +611,12 @@ namespace BL
 					parcel = item;
 				}
 			}
-			if (parcel.DroneId != droneId) throw new IBL.BO.NoParcelId();
-			if (parcel.PickedUp == DateTime.MinValue) throw new IBL.BO.NotPickedUpYet();
-			if (parcel.Delivered != DateTime.MinValue) throw new IBL.BO.AlreadyDelivered();
+			if (parcel.DroneId != droneId) 
+				throw new IBL.BO.NoParcelId();
+			if (parcel.PickedUp == DateTime.MinValue) 
+				throw new IBL.BO.NotPickedUpYet();
+			if (parcel.Delivered != DateTime.MinValue) 
+				throw new IBL.BO.AlreadyDelivered();
 			parcel.Delivered = DateTime.Now;
 			dal.UpdateParcel(parcel);
 			drone.Battery -= calcBatteryUsedWhenShipping(parcel.Weight, distanceBetweenTwoPoints(drone.Loc.Latitude, drone.Loc.Longitude, getCustomerLocation(parcel.TargetId).Latitude, getCustomerLocation(parcel.TargetId).Longitude));

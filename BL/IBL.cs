@@ -21,7 +21,7 @@ namespace IBL
 		public void DroneLeaveCharge(int droneId, int time);
 		public void AffectParcelToDrone(int droneId);
 		public void ParcelCollection(int droneId);
-		public void ParcelPickUp(int droneId);
+		public void ParcelDeliverd(int droneId);
 		//
 		public BO.BaseStation GetBaseStation(int baseId);
 		public BO.Drone GetDrone(int droneId);
