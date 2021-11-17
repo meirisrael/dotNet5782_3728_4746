@@ -77,7 +77,7 @@ namespace IBL
 		}
 		public class NoParcelId : Exception
 		{
-			public NoParcelId() : base("ERROR: No parcel affiliated to this drone\n") { }
+			public NoParcelId() : base("ERROR: This parcel isn't affiliated to this drone\n") { }
 		}
 
 		// exceptions for customer
