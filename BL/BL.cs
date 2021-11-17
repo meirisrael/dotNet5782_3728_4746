@@ -557,9 +557,9 @@ namespace BL
 			}
 			if (parcel.Id == 0)
 				throw new IBL.BO.NoDroneCanParcel();
-			IBL.BO.ParcelToList parcelToList = new() { Id = parcel.Id, NameSender = dal.GetCustomer(parcel.SenderId).Name, NameTarget = dal.GetCustomer(parcel.TargetId).Name, Weight = (IBL.BO.WeightCategories)((int)parcel.Weight) };
-			if ((drone.Battery - calcBatteryToShipping(drone, parcelToList)) < 0)
-				drone.IdOfParcel = parcel.Id;
+			//IBL.BO.ParcelToList parcelToList = new() { Id = parcel.Id, NameSender = dal.GetCustomer(parcel.SenderId).Name, NameTarget = dal.GetCustomer(parcel.TargetId).Name, Weight = (IBL.BO.WeightCategories)((int)parcel.Weight) };
+			//if ((drone.Battery - calcBatteryToShipping(drone, parcelToList)) < 0)
+			//	drone.IdOfParcel = parcel.Id;
 			drone.Status = IBL.BO.DroneStatuses.Shipping;
 			updateDroneList(drone);
 			parcel.DroneId = drone.Id;
@@ -574,16 +574,15 @@ namespace BL
 		{
 			IBL.BO.DroneToList drone = new IBL.BO.DroneToList();
 			drone = droneToList[searchDrone(droneId)];
-			if (drone.IdOfParcel == 0)
-				throw new IBL.BO.NoParcelId();
 			IDAL.DO.Parcel parcel = new();
 			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
 			{
-				if (item.Id == drone.IdOfParcel)
+				if (item.DroneId == drone.Id)
 				{
 					parcel = item;
 				}
 			}
+			if(parcel.DroneId!=droneId) throw new IBL.BO.NoParcelId();
 			if (parcel.PickedUp != DateTime.MinValue)
 				throw new IBL.BO.AlreadyPickedUp();
 			if (parcel.Requested == DateTime.MinValue)
@@ -604,15 +603,15 @@ namespace BL
 		{
 			IBL.BO.DroneToList drone = new IBL.BO.DroneToList();
 			drone = droneToList[searchDrone(droneId)];
-			if (drone.IdOfParcel == 0) throw new IBL.BO.NoParcelId();
 			IDAL.DO.Parcel parcel = new();
 			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
 			{
-				if (item.Id == drone.IdOfParcel)
+				if (item.DroneId == drone.Id)
 				{
 					parcel = item;
 				}
 			}
+			if (parcel.DroneId != droneId) throw new IBL.BO.NoParcelId();
 			if (parcel.PickedUp == DateTime.MinValue) throw new IBL.BO.NotPickedUpYet();
 			if (parcel.Delivered != DateTime.MinValue) throw new IBL.BO.AlreadyDelivered();
 			parcel.Delivered = DateTime.Now;
