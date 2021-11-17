@@ -27,7 +27,7 @@ namespace IBL
 					$" Drone Statut: {this.Status}\n" +
 					$" Battery percent: {this.Battery}%\n" +
 					$" Location: {this.Loc.ToString()}\n" +
-					$" The Id of parcel that are in transit right now: {this.IdOfParcel}"
+					$" The Id of parcel that are in transit right now: {this.NumOfParcel}"
 					;
 			}
 		}

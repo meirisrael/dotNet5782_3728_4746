@@ -536,5 +536,6 @@ namespace DalObject
 			arr[4] = c.chargingRate;
 			return arr;
 		}
+		public IEnumerable<IDAL.DO.DroneCharge>
 	}
 }

@@ -79,6 +79,10 @@ namespace IBL
 		{
 			public NoParcelId() : base("ERROR: No parcel affiliated to this drone\n") { }
 		}
+		public class DroneNotInCharge : Exception
+		{
+			public DroneNotInCharge() : base("ERROR: ERROR IN THE DATA BASE AN DRONE IS NOT CHARGE\n") { }
+		}
 
 		// exceptions for customer
 		public class CustomerIdExist : Exception

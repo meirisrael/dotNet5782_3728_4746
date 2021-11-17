@@ -28,11 +28,11 @@ namespace IBL
 		public BO.Customer GetCustomer(int customerId);
 		public BO.Parcel GetParcel(int parcelId);
 		//
-		public IEnumerable<List<BO.BaseToList>> GetListBaseStations();
+		public IEnumerable<List<BO.BaseToList>> GetListOfBaseStations();
 		public IEnumerable<List<BO.DroneToList>> GetListOfDrone();
-		public IEnumerable<List<BO.CustomerToList>> GetCustomerLists();
-		public IEnumerable<List<BO.ParcelToList>> GetParceList();
-		public IEnumerable<List<BO.ParcelToList>> GetParcelNotAssignToDrone();
-		public IEnumerable<List<BO.BaseToList>> GetBaseWithChargeSlot();
+		public IEnumerable<List<BO.CustomerToList>> GetListOfCustomer();
+		public IEnumerable<List<BO.ParcelToList>> GetListOfParcel();
+		public IEnumerable<List<BO.ParcelToList>> GetListParcelNotAssignToDrone();
+		public IEnumerable<List<BO.BaseToList>> GetListBaseWithChargeSlot();
 	}
 }
