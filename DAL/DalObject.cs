@@ -487,14 +487,11 @@ namespace DalObject
 		/// <param name="baseStation"></param>
 		public void UpdateBaseStation(IDAL.DO.BaseStation baseStation)
 		{
-			bool flag = false;
 			for (int i = 0; i < DataSource.baseStation.Count(); i++)
 			{
 				if (DataSource.baseStation[i].Id == baseStation.Id)
-				{ DataSource.baseStation[i] = baseStation; flag = true; }
+				{ DataSource.baseStation[i] = baseStation; }
 			}
-			if (flag == false)
-				throw new IDAL.DO.BaseIdNotExist();
 		}
 		/// <summary>
 		/// update data of customer
@@ -540,9 +537,9 @@ namespace DalObject
 		/// the func return the list of drone that charge in the base station 
 		/// </summary>
 		/// <returns> a list of drone charge </returns>
-		public IEnumerable<IDAL.DO.DroneCharge> GetListOfDroneCharge()
-		{
+		//public IEnumerable<IDAL.DO.DroneCharge> GetListOfDroneCharge()
+		//{
 
-		}
+		//}
 	}
 }

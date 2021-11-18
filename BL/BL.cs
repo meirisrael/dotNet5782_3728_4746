@@ -98,15 +98,8 @@ namespace BL
 					List<IBL.BO.Customer> customerList = new List<IBL.BO.Customer>();
 					foreach (IDAL.DO.Parcel item in dal.GetListParcels())
 					{
-						try
-						{
-							if (item.Delivered >= DateTime.Now)
-								customerList.Add(getCustomer(item.SenderId));
-						}
-						catch (IDAL.DO.CustomerIdNotExist ex)
-						{
-							throw new IBL.BO.CustomerIdNotExist();
-						}
+						if (item.Delivered != DateTime.MinValue)
+								customerList.Add(getCustomer(item.TargetId));	
 					}
 					int r = new Random().Next(0, customerList.Count());
 					droneToList[i].Loc.Longitude = customerList[r].Loc.Longitude;
@@ -378,19 +371,19 @@ namespace BL
 			try
 			{ dal.AddBaseStation(id, name, chargeSlots, location.Longitude, location.Latitude); }
 			catch (IDAL.DO.InvalidBaseId ex)
-			{ throw new IBL.BO.InvalidBaseId(); }
+			{ throw new IBL.BO.InvalidBaseId(ex.Message); }
 
 			catch (IDAL.DO.InvalidChargeSlot ex)
-			{ throw new IBL.BO.InvalidChargeSlot(); }
+			{ throw new IBL.BO.InvalidChargeSlot(ex.Message); }
 
 			catch (IDAL.DO.InvalidLatitude ex)
-			{ throw new IBL.BO.InvalidLatitude(); }
+			{ throw new IBL.BO.InvalidLatitude(ex.Message); }
 
 			catch (IDAL.DO.InvalidLongitude ex)
-			{ throw new IBL.BO.InvalidLongitude(); }
+			{ throw new IBL.BO.InvalidLongitude(ex.Message); }
 
-			catch (IDAL.DO.BaseIdExist)
-			{ throw new IBL.BO.BaseIdExist(); }
+			catch (IDAL.DO.BaseIdExist ex)
+			{ throw new IBL.BO.BaseIdExist(ex.Message); }
 		}
 		/// <summary>
 		/// the func add a new drone to the data base
@@ -404,20 +397,20 @@ namespace BL
 			try
 			{ dal.AddDrone(id, model, weight); }
 			catch (IDAL.DO.InvalidDroneId ex)
-			{ throw new IBL.BO.InvalidDroneId(); }
+			{ throw new IBL.BO.InvalidDroneId(ex.Message); }
 
 			catch (IDAL.DO.InvalidWeight ex)
-			{ throw new IBL.BO.InvalidWeight(); }
+			{ throw new IBL.BO.InvalidWeight(ex.Message); }
 
 			catch (IDAL.DO.DroneIdExist ex)
-			{ throw new IBL.BO.DroneIdExist(); }
+			{ throw new IBL.BO.DroneIdExist(ex.Message); }
 
 			try
 			{ dal.AssignDroneToBaseStation(id, firstBaseStation); }
 			catch (IDAL.DO.DroneIdNotExist ex)
-			{ throw new IBL.BO.DroneIdNotExist(); }
+			{ throw new IBL.BO.DroneIdNotExist(ex.Message); }
 			catch (IDAL.DO.BaseIdNotExist ex)
-			{ throw new IBL.BO.BaseIdNotExist(); }
+			{ throw new IBL.BO.BaseIdNotExist(ex.Message); }
 
 			int r = new Random().Next(20, 41);
 			double battery = r;
@@ -450,16 +443,16 @@ namespace BL
 				dal.AddCustomer(id, name, phone, location.Longitude, location.Latitude);
 			}
 			catch (IDAL.DO.InvalidCustomerId ex)
-			{ throw new IBL.BO.InvalidCustomerId(); }
+			{ throw new IBL.BO.InvalidCustomerId(ex.Message); }
 
 			catch (IDAL.DO.InvalidLatitude ex)
-			{ throw new IBL.BO.InvalidLatitude(); }
+			{ throw new IBL.BO.InvalidLatitude(ex.Message); }
 
 			catch (IDAL.DO.InvalidLongitude ex)
-			{ throw new IBL.BO.InvalidLongitude(); }
+			{ throw new IBL.BO.InvalidLongitude(ex.Message); }
 
-			catch (IDAL.DO.CustomerIdExist)
-			{ throw new IBL.BO.CustomerIdExist(); }
+			catch (IDAL.DO.CustomerIdExist ex)
+			{ throw new IBL.BO.CustomerIdExist(ex.Message); }
 		}
 		/// <summary>
 		/// the fun add an new parcel to the data base
@@ -475,36 +468,36 @@ namespace BL
 			{ dal.AddParcel(id, senderId, targetId, 0, weight, priorities); }
 			//ב-BL כל הזמנים יאותחלו לזמן אפס למעט תאריך יצירה שיאותחל ל-DateTime.Now
 			catch (IDAL.DO.InvalidParcelId ex)
-			{ throw new IBL.BO.InvalidParcelId(); }
+			{ throw new IBL.BO.InvalidParcelId(ex.Message); }
 
 			catch (IDAL.DO.InvalidSenderId ex)
-			{ throw new IBL.BO.InvalidSenderId();
+			{ throw new IBL.BO.InvalidSenderId(ex.Message);
 			}
 
 			catch (IDAL.DO.InvalidTargetId ex)
-			{ throw new IBL.BO.InvalidTargetId();
+			{ throw new IBL.BO.InvalidTargetId(ex.Message);
 			}
 
 			catch (IDAL.DO.NegativeDroneId ex)
-			{ throw new IBL.BO.InvalidDroneId();
+			{ throw new IBL.BO.InvalidDroneId(ex.Message);
 			}
 
 			catch (IDAL.DO.InvalidWeight ex)
-			{ throw new IBL.BO.InvalidWeight(); }
+			{ throw new IBL.BO.InvalidWeight(ex.Message); }
 
 			catch (IDAL.DO.InvalidPriority ex)
-			{ throw new IBL.BO.InvalidPriority();
+			{ throw new IBL.BO.InvalidPriority(ex.Message);
 			}
 
 			catch (IDAL.DO.ParcelIdExist ex)
-			{ throw new IBL.BO.ParcelIdExist();
+			{ throw new IBL.BO.ParcelIdExist(ex.Message);
 			}
 
 			catch (IDAL.DO.SenderIdNotExist ex)
-			{ throw new IBL.BO.SenderIdNotExist(); }
+			{ throw new IBL.BO.SenderIdNotExist(ex.Message); }
 
 			catch (IDAL.DO.TargetIdNotExist ex)
-			{ throw new IBL.BO.TargetIdNotExist(); }
+			{ throw new IBL.BO.TargetIdNotExist(ex.Message); }
 		}
 
 		//-----------------------------------------------------------------------------------------------------UPDATE - OPTION-------------------------------------------------------------------------------------------------------
@@ -515,10 +508,15 @@ namespace BL
 		/// <param name="model"></param>
 		public void UpdateDrone(int droneId, string model)
 		{
-			IDAL.DO.Drone drone = new IDAL.DO.Drone();
-			drone = dal.GetDrone(droneId);
-			drone.Model = model;
-			dal.UpdateDrone(drone);
+			try
+			{
+				IDAL.DO.Drone drone = new IDAL.DO.Drone();
+				drone = dal.GetDrone(droneId);
+				drone.Model = model;
+				dal.UpdateDrone(drone);
+			}
+			catch (IDAL.DO.DroneIdNotExist ex)
+			{ throw new IBL.BO.DroneIdNotExist(ex.Message); }
 		}
 		/// <summary>
 		/// update the data of data base
@@ -529,20 +527,25 @@ namespace BL
 		public void UpdateBaseStation(int baseId, string name = null, string chargeslots = null)
 		{
 			IDAL.DO.BaseStation baseStation = new IDAL.DO.BaseStation();
+			try
+			{ baseStation = dal.GetBaseStation(baseId); }
+			catch (IDAL.DO.DroneIdNotExist ex)
+			{ throw new IBL.BO.BaseIdNotExist(ex.Message); }
+
 			int name_int, charge_slots;
 			if (name != "")
 			{
 				name_int = int.Parse(name);
 				baseStation = dal.GetBaseStation(baseId);
 				baseStation.Name = name_int;
-
+				dal.UpdateBaseStation(baseStation);
 			}
 			if (chargeslots != "")
 			{
 				charge_slots = int.Parse(chargeslots);
 				baseStation.ChargeSlots = charge_slots;
+				dal.UpdateBaseStation(baseStation);
 			}
-			dal.UpdateBaseStation(baseStation);
 		}
 		/// <summary>
 		/// the func update the data of customer
@@ -552,16 +555,20 @@ namespace BL
 		/// <param name="phone"></param>
 		public void UpdateCustomer(int customerId, string name = null, string phone = null)
 		{
+			IDAL.DO.Customer customer = new IDAL.DO.Customer();
+			try
+			{ customer = dal.GetCustomer(customerId); }
+			catch(IDAL.DO.CustomerIdNotExist ex)
+			{ throw new IBL.BO.CustomerIdExist(ex.Message); }
 			if (name != "")
 			{
-				IDAL.DO.Customer customer = new();
+				
 				customer = dal.GetCustomer(customerId);
 				customer.Name = name;
 				dal.UpdateCustomer(customer);
 			}
 			if (phone != "")
 			{
-				IDAL.DO.Customer customer = new();
 				customer = dal.GetCustomer(customerId);
 				customer.Phone = phone;
 				dal.UpdateCustomer(customer);
@@ -717,6 +724,10 @@ namespace BL
 		{
 			IBL.BO.BaseStation baseS = new IBL.BO.BaseStation();
 			IDAL.DO.BaseStation b = new IDAL.DO.BaseStation();
+			try
+			{ b = dal.GetBaseStation(baseId); }
+			catch (IDAL.DO.BaseIdNotExist ex)
+			{ throw new IBL.BO.BaseIdNotExist(ex.Message); }
 
 			baseS.Id = b.Id;
 			baseS.Name = b.Name;
@@ -739,6 +750,10 @@ namespace BL
 		public IBL.BO.Drone GetDrone(int droneId)
 		{
 			IBL.BO.Drone drone = new IBL.BO.Drone();
+			try
+			{ dal.GetDrone(droneId); }
+			catch (IDAL.DO.DroneIdNotExist ex)
+			{throw new IBL.BO.DroneIdNotExist(ex.Message); }
 			for (int i = 0; i < droneToList.Count(); i++)
 			{
 				if (droneToList[i].Id == droneId)
@@ -775,7 +790,10 @@ namespace BL
 			IBL.BO.Customer customer = new IBL.BO.Customer();
 			IBL.BO.CustomerInParcel target = new IBL.BO.CustomerInParcel();
 			IBL.BO.CustomerInParcel sender = new IBL.BO.CustomerInParcel();
-			customer = getCustomer(customerId);
+			try
+			{ customer = getCustomer(customerId); }
+			catch (IDAL.DO.CustomerIdNotExist ex)
+			{ throw new IBL.BO.CustomerIdNotExist(ex.Message); }
 			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
 			{
 				target.Id = item.TargetId;
@@ -809,6 +827,10 @@ namespace BL
 			IBL.BO.CustomerInParcel sender = new IBL.BO.CustomerInParcel();
 			IBL.BO.CustomerInParcel target = new IBL.BO.CustomerInParcel();
 			IDAL.DO.Parcel p = new IDAL.DO.Parcel();
+			try
+			{ p = dal.GetParcel(parcelId); }
+			catch (IDAL.DO.ParcelIdNotExist ex) 
+			{ throw new IBL.BO.ParcelIdNotExist(ex.Message); }
 
 			parcel.Id = p.Id;
 			parcel.Weight = (IBL.BO.WeightCategories)p.Weight;
