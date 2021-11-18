@@ -153,9 +153,9 @@ namespace IBL
 		{
 			public AlreadyPickedUp() : base("IBL-ERROR: This parcel has already been picked up\n") { }
 		}
-		public class NotRequestedYet : Exception
+		public class NotScheduledYet : Exception
 		{
-			public NotRequestedYet() : base("IBL-ERROR: This parcel hasn't been requested yet\n") { }
+			public NotScheduledYet() : base("IBL-ERROR: This parcel hasn't been requested yet\n") { }
 		}
 		public class NotPickedUpYet : Exception
 		{

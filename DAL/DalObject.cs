@@ -472,14 +472,11 @@ namespace DalObject
 		/// <param name="drone"></param>
 		public void UpdateDrone(IDAL.DO.Drone drone)
 		{
-			bool flag = false;
 			for (int i = 0; i < DataSource.drone.Count(); i++)
 			{
 				if (DataSource.drone[i].Id == drone.Id)
-				{ DataSource.drone[i] = drone; flag = true; }
+				{ DataSource.drone[i] = drone; }
 			}
-			if (flag == false)
-				throw new IDAL.DO.DroneIdNotExist();
 		}
 		/// <summary>
 		/// the func update some data in the data base
