@@ -194,7 +194,7 @@ namespace DalObject
 					throw new IDAL.DO.ParcelTooHeavy();
 			}
 
-			for (int i = 0; i < DataSource.parcels.Count; i++)
+			for (int i = 0; i < DataSource.parcels.Count(); i++)
 			{
 				if (DataSource.parcels[i].Id == parcelId)
 				{
