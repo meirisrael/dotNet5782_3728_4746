@@ -56,7 +56,7 @@ namespace BL
 					Battery = 0,
 					Status = IBL.BO.DroneStatuses.free,
 					Loc = l,
-					NumOfParcel = 0
+					IdOfParcel = 0
 				});
 			}
 		}
@@ -565,7 +565,7 @@ namespace BL
 			parcel.DroneId = drone.Id;
 			parcel.Requested = DateTime.Now;
 			dal.UpdateParcel(parcel);
-		}
+		}////////////////
 		/// <summary>
 		/// collect a parcel to deliver
 		/// </summary>
@@ -596,7 +596,7 @@ namespace BL
 			updateDroneList(drone);
 		}
 		/// <summary>
-		/// 
+		/// the func updaste that the drone was deliver the parcel
 		/// </summary>
 		/// <param name="droneId"></param>
 		public void ParcelDeliverd(int droneId)
@@ -626,7 +626,7 @@ namespace BL
 			updateDroneList(drone);
 		}
 
-		//---------------------------------------------------------------------------------------------------------------DISPLAY SPECIFIC OBJECT - OPTION------------------------------------------------------
+		//--------------------------------------------------------------------------------------------DISPLAY SPECIFIC OBJECT - OPTION------------------------------------------------------
 		/// <summary>
 		/// the func search a base station in the data base 
 		/// </summary>
@@ -747,7 +747,8 @@ namespace BL
 
 			return parcel;
 		}
-		//---------------------------------------------------------------------------------------------------------------DISPLAY LIST OF AN OBJECT - OPTION----------------------------------------------------
+		
+		//--------------------------------------------------------------------------------------------DISPLAY LIST OF AN OBJECT - OPTION----------------------------------------------------
 		/// <summary>
 		/// the func return a list of base station
 		/// </summary>
@@ -839,7 +840,8 @@ namespace BL
 			}
 			return (IEnumerable<List<IBL.BO.BaseToList>>)baseS;
 		}
-		//------------------------------------------------------------------------------------------------------------HELP FUNC--------------------------------------------------------------------
+
+		//---------------------------------------------------------------------------------------------------------HELP FUNC--------------------------------------------------------------------
 		/// <summary>
 		/// the func calculate the battery use for each parcel and their weight
 		/// </summary>

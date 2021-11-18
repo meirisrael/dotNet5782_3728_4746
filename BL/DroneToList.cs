@@ -16,7 +16,7 @@ namespace IBL
 			public double Battery { get; set; }
 			public DroneStatuses Status { get; set; }
 			public Location Loc { get; set; }
-			public int NumOfParcel { get; set; }
+			public int IdOfParcel { get; set; }
 
 			public override string ToString()
 			{
@@ -27,7 +27,7 @@ namespace IBL
 					$" Drone Statut: {this.Status}\n" +
 					$" Battery percent: {this.Battery}%\n" +
 					$" Location: {this.Loc.ToString()}\n" +
-					$" The Id of parcel that are in transit right now: {this.NumOfParcel}"
+					$" The Id of parcel that are in transit right now: {this.IdOfParcel}"
 					;
 			}
 		}
