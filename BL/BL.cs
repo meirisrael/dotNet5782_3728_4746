@@ -10,6 +10,7 @@ namespace BL
 	class BL : IBL.IBL
 	{
 		private IDAL.IDal dal;
+		private BL instance = new BL();
 
 		private double _useWhenFree;
 		private double _useWhenLightly;
@@ -18,7 +19,7 @@ namespace BL
 		private double _chargingRate;
 		List<IBL.BO.DroneToList> droneToList = new List<IBL.BO.DroneToList>();
 		//ctor
-		BL()
+		private BL()
 		{
 			getDataCharge();
 			reqListOfDrone();
@@ -66,7 +67,7 @@ namespace BL
 		private void settingDrone()
 		{
 			List<IBL.BO.BaseStation> baseS = new List<IBL.BO.BaseStation>();
-			//add the data
+			//add the data location of base station in the list
 			foreach (IDAL.DO.BaseStation b in dal.GetListBaseStations())
 			{
 				IBL.BO.Location l = new IBL.BO.Location();
@@ -76,7 +77,7 @@ namespace BL
 
 			for (int i = 0; i < droneToList.Count(); i++)
 			{
-				if (droneToList[i].Status != IBL.BO.DroneStatuses.Shipping)
+				if (droneToList[i].Status != IBL.BO.DroneStatuses.Shipping)//if the drone is not in shipping choos random status
 				{
 					int r = new Random().Next(1, 3);
 					if (r == 1)
@@ -84,29 +85,29 @@ namespace BL
 					else
 						droneToList[i].Status = IBL.BO.DroneStatuses.Maintenance;
 				}
-				if (droneToList[i].Status == IBL.BO.DroneStatuses.Maintenance)
+				if (droneToList[i].Status == IBL.BO.DroneStatuses.Maintenance)//according to the previous "if" now-if the random choose that the drone is in Maintenance
 				{
-					int r = new Random().Next(0, baseS.Count());
+					int r = new Random().Next(0, baseS.Count());//choose randome location 
 					droneToList[i].Loc.Longitude = baseS[r].Loc.Longitude;
 					droneToList[i].Loc.Latitude = baseS[r].Loc.Latitude;
-					r = new Random().Next(0, 21);
+					r = new Random().Next(0, 21);//choose random percent of battery between 0to20%
 					droneToList[i].Battery = r;
 					break;
 				}
-				else if (droneToList[i].Status == IBL.BO.DroneStatuses.free)
+				else if (droneToList[i].Status == IBL.BO.DroneStatuses.free)//according to the previous "if" now-if the random choose that the drone is free
 				{
 					List<IBL.BO.Customer> customerList = new List<IBL.BO.Customer>();
-					foreach (IDAL.DO.Parcel item in dal.GetListParcels())
+					foreach (IDAL.DO.Parcel item in dal.GetListParcels())//add data of parcel that was deliver
 					{
 						if (item.Delivered != DateTime.MinValue)
 								customerList.Add(getCustomer(item.TargetId));	
 					}
-					int r = new Random().Next(0, customerList.Count());
+					int r = new Random().Next(0, customerList.Count());//choose a random loc of parcel 
 					droneToList[i].Loc.Longitude = customerList[r].Loc.Longitude;
 					droneToList[i].Loc.Latitude = customerList[r].Loc.Latitude;
 
-					int percent = calcBatteryToCloserBase(droneToList[i].Loc.Longitude, droneToList[i].Loc.Latitude);
-					int finalPercent = new Random().Next(percent, 101);
+					int percent = calcBatteryToCloserBase(droneToList[i].Loc.Longitude, droneToList[i].Loc.Latitude);//calculate the min percent battery to go back to the base station
+					int finalPercent = new Random().Next(percent, 101);//random choose percent between "percent" to 100 
 					droneToList[i].Battery = finalPercent;
 				}
 			}
@@ -125,20 +126,20 @@ namespace BL
 					Id = item.Id,
 					Weight = (IBL.BO.WeightCategories)item.Weight,
 					Priority = (IBL.BO.Priorities)item.Priority,
-					Status = IBL.BO.ParcelStatues.Defined
+					Status = getStatusOfParcel(item)
 				});
 			}
 			for (int i = 0; i < parcelToList.Count(); i++)
 			{
 				int droneIdAssigneToParcel = searchDroneIdAssigneToParcel(parcelToList[i]);
-				if (parcelToList[i].Status != IBL.BO.ParcelStatues.Delivered && droneIdAssigneToParcel > 0)
+				if (parcelToList[i].Status != IBL.BO.ParcelStatues.Delivered && droneIdAssigneToParcel > 0)//if the parcel was not deliver and the parcel he has a drone need to the shipping
 				{
 					droneToList[searchDrone(droneIdAssigneToParcel)].Status = IBL.BO.DroneStatuses.Shipping;
 
 					locOfDroneByParcel(parcelToList[i], droneIdAssigneToParcel);
 
-					int percent = calcBatteryToShipping(droneToList[searchDrone(droneIdAssigneToParcel)], parcelToList[i]);
-					int finalPercent = new Random().Next(percent, 101);
+					int percent = calcBatteryToShipping(droneToList[searchDrone(droneIdAssigneToParcel)], parcelToList[i]);//calculate the percent of battery the drone need to do the shipping 
+					int finalPercent = new Random().Next(percent, 101);//choose random the percent between "percent" to 100
 					droneToList[i].Battery = finalPercent;
 				}
 			}
@@ -185,18 +186,21 @@ namespace BL
 		/// <returns> the percent of battery </returns>
 		private int calcBatteryToShipping(IBL.BO.DroneToList d, IBL.BO.ParcelToList p)
 		{
-			double disToTarget = distanceBetweenTwoPoints(d.Loc.Latitude, d.Loc.Longitude, targetLati(p.NameTarget), targetLong(p.NameTarget));
-			double disToBase = disToCloserBase(targetLati(p.NameTarget), targetLong(p.NameTarget));
+			double disToSenderFromBase = distanceBetweenTwoPoints(d.Loc.Latitude, d.Loc.Longitude, senderLati(p.NameSender), senderLong(p.NameSender)); //one way to the sender from the closer base station possible is equal to "0"
+			double disToTarget = distanceBetweenTwoPoints(d.Loc.Latitude, d.Loc.Longitude, targetLati(p.NameTarget), targetLong(p.NameTarget));// + one way
+			double disToBaseFromTarget = disToCloserBase(targetLati(p.NameTarget), targetLong(p.NameTarget));// + second way
 
-			double batteryToBase = _useWhenFree * disToBase;
-			double batteryToSender;
+			double batteryToBaseFromTarget = _useWhenFree * disToBaseFromTarget;//percent of battery the drone need to go back to the base station
+			double batteryToSenderFromBase = _useWhenFree * disToSenderFromBase;//percent of battery the drone need to arrive at sender
+			double batteryToTargetFromSender;// percent of battery need to go from the sender to the target
 			if (p.Weight == IBL.BO.WeightCategories.Light)
-				batteryToSender = _useWhenLightly * disToTarget;
+				batteryToTargetFromSender = _useWhenLightly * disToTarget;
 			else if (p.Weight == IBL.BO.WeightCategories.Medium)
-				batteryToSender = _useWhenMedium * disToTarget;
+				batteryToTargetFromSender = _useWhenMedium * disToTarget;
 			else
-				batteryToSender = _useWhenHeavily * disToTarget;
-			int finalBattery = (int)(Math.Ceiling(batteryToBase) + Math.Ceiling(batteryToSender));
+				batteryToTargetFromSender = _useWhenHeavily * disToTarget;
+			int finalBattery = (int)(Math.Ceiling(batteryToBaseFromTarget) + Math.Ceiling(batteryToTargetFromSender))+(int)(Math.Ceiling(batteryToSenderFromBase));
+			if (finalBattery > 100) throw new IBL.BO.DistanceTooBigger();
 			return finalBattery;
 		}
 		/// <summary>
@@ -288,10 +292,10 @@ namespace BL
 		{
 			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
 			{
-				if (item.Id == p.Id)
+				if (item.Id == p.Id)//if the drone is assciated to the parcel
 					return item.DroneId;
 			}
-			throw new IBL.BO.DroneIdNotExist();
+			return 0;
 		}
 		/// <summary>
 		/// the func locate the drone according to his status 
@@ -300,7 +304,7 @@ namespace BL
 		/// <param name="droneId"></param>
 		private void locOfDroneByParcel(IBL.BO.ParcelToList p, int droneId)
 		{
-			if (p.Status == IBL.BO.ParcelStatues.Associated)
+			if (p.Status ==IBL.BO.ParcelStatues.Associated)//if the parcel was Associated so the loc of the drone is in the close base station
 			{
 				double finalDis = -1;
 				IBL.BO.Location loc = new IBL.BO.Location();
@@ -316,7 +320,7 @@ namespace BL
 
 				}
 			}
-			else if (p.Status == IBL.BO.ParcelStatues.Collected)
+			else if (p.Status == IBL.BO.ParcelStatues.Collected)//if the parcel was collected by the drone so the loc of drone is where the sender is 
 			{
 				droneToList[searchDrone(droneId)].Loc.Latitude = senderLati(p.NameSender);
 				droneToList[searchDrone(droneId)].Loc.Longitude = senderLong(p.NameSender);

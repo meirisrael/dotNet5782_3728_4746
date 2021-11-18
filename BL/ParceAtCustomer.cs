@@ -23,7 +23,7 @@ namespace IBL
 					$" Weight: {this.Weight}\n" +
 					$" Priority: {this.Priority}\n" +
 					$" status of parcel: {this.status}\n" +
-					$" Is: {this.SenderOrTraget}"
+					$" The sender or the target: {this.SenderOrTraget}"
 					;
 
 
