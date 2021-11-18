@@ -11,154 +11,179 @@ namespace IBL
 		// exceptions for base
 		public class BaseIdExist : Exception
 		{
-			public BaseIdExist() : base("ERROR: THIS BASE-STATION ID ALREADY EXIST\n") { }
+			public BaseIdExist(string ms) : base($"{ms}\nIBL-ERROR: THIS BASE-STATION ID ALREADY EXIST\n") { }
+			public BaseIdExist() : base("IBL-ERROR: THIS BASE-STATION ID ALREADY EXIST\n") { }
 		}
 		public class BaseIdNotExist : Exception
 		{
-			public BaseIdNotExist() : base("ERROR: THIS BASE-STATION ID DO NOT EXIST\n") { }
+			public BaseIdNotExist(string ms) : base($"{ms}\nIBL-ERROR: THIS BASE-STATION ID DO NOT EXIST\n") { }
+			public BaseIdNotExist() : base("IBL-ERROR: THIS BASE-STATION ID DO NOT EXIST\n") { }
 		}
 		public class InvalidBaseId : Exception
 		{
-			public InvalidBaseId() : base("ERROR: ID OF BASE STATION NEED TO BE BIGGER THAN ZERO\n") { }
+			public InvalidBaseId(string ms) : base($"{ms}\nIBL-ERROR: ID OF BASE STATION NEED TO BE BIGGER THAN ZERO\n") { }
+			public InvalidBaseId() : base("IBL-ERROR: ID OF BASE STATION NEED TO BE BIGGER THAN ZERO\n") { }
 		}
 		public class InvalidChargeSlot : Exception
 		{
-			public InvalidChargeSlot() : base("ERROR: CHARGE SLOT NEED TO BE BIGGER THAN ZERO OR EQUAL TO ZERO\n") { }
+			public InvalidChargeSlot(string ms) : base($"{ms}\nIBL-ERROR: CHARGE SLOT NEED TO BE BIGGER THAN ZERO OR EQUAL TO ZERO\n") { }
+			public InvalidChargeSlot() : base("IBL-ERROR: CHARGE SLOT NEED TO BE BIGGER THAN ZERO OR EQUAL TO ZERO\n") { }
 		}
 		public class InvalidLongitude : Exception
 		{
-			public InvalidLongitude() : base("ERROR: LONGITUD NEED TO BE BEHTWEEN -180 TO 180\n") { }
+			public InvalidLongitude(string ms) : base($"{ms}\nIBL-ERROR: LONGITUD NEED TO BE BEHTWEEN -180 TO 180\n") { }
+			public InvalidLongitude() : base("IBL-ERROR: LONGITUD NEED TO BE BEHTWEEN -180 TO 180\n") { }
 		}
 		public class InvalidLatitude : Exception
 		{
-			public InvalidLatitude() : base("ERROR: LATITUDE NEED TO BE BEHTWEEN -90 TO 90\n") { }
+			public InvalidLatitude(string ms) : base($"{ms}\nIBL-ERROR: LATITUDE NEED TO BE BEHTWEEN -90 TO 90\n") { }
+			public InvalidLatitude() : base("IBL-ERROR: LATITUDE NEED TO BE BEHTWEEN -90 TO 90\n") { }
 		}
 
 		// exceptions for drone
-		public class DorneIdExist : Exception
+		public class DroneIdExist : Exception
 		{
-			public DorneIdExist() : base("ERROR: THIS DRONE ID ALREADY EXIST\n") { }
+			public DroneIdExist(string ms) : base($"{ms}\nIBL-ERROR: THIS DRONE ID ALREADY EXIST\n") { }
+			public DroneIdExist() : base("IBL-ERROR: THIS DRONE ID ALREADY EXIST\n") { }
 		}
 		public class DroneIdNotExist : Exception
 		{
-			public DroneIdNotExist() : base("ERROR: THIS DRONE ID DO NOT EXIST\n") { }
+			public DroneIdNotExist(string ms) : base($"{ms}\nIBL-ERROR: THIS DRONE ID DO NOT EXIST\n") { }
+			public DroneIdNotExist() : base("IBL-ERROR: THIS DRONE ID DO NOT EXIST\n") { }
 		}
 		public class InvalidDroneId : Exception
 		{
-			public InvalidDroneId() : base("ERROR: ID OF DRONE NEED TO BE BIGGER THAN ZERO OR EQUAL\n") { }
+			public InvalidDroneId(string ms) : base($"{ms}\nIBL-ERROR: ID OF DRONE NEED TO BE BIGGER THAN ZERO\n") { }
+			public InvalidDroneId() : base("IBL-ERROR: ID OF DRONE NEED TO BE BIGGER THAN ZERO\n") { }
 		}
 		public class InvalidWeight : Exception
 		{
-			public InvalidWeight() : base("ERROR: THIS OPTION FOR WEIGHT IS NOT EXIST, YOU NEED TO GIVE AN  OPTION BETWEEN 1 TO 3\n") { }
+			public InvalidWeight(string ms) : base($"{ms}\nIBL-ERROR: THIS OPTION FOR WEIGHT IS NOT EXIST, YOU NEED TO GIVE AN OPTION BETWEEN 1 TO 3\n") { }
+			public InvalidWeight() : base("IBL-ERROR: THIS OPTION FOR WEIGHT IS NOT EXIST, YOU NEED TO GIVE AN OPTION BETWEEN 1 TO 3\n") { }
 		}
-		public class NegativeDorneId : Exception
+		public class NegativeDroneId : Exception
 		{
-			public NegativeDorneId() : base("ERROR: THE DRONE ID NEED TO BE POSITIVE OR ZERO->NOT ASSIGNE TO AN SPECIFIC DRONE OR, BIGEER THAN ZERO->ASSIGNE TO AN SPECIFIC DRONE\n") { }
+			public NegativeDroneId() : base("IBL-ERROR: THE DRONE ID NEED TO BE POSITIVE OR ZERO->NOT ASSIGNE TO AN SPECIFIC DRONE OR, BIGEER THAN ZERO->ASSIGNE TO AN SPECIFIC DRONE\n") { }
 		}
 		public class DroneNotFree : Exception
 		{
-			public DroneNotFree() : base("ERROR: The drone can't be assigned to a charge station since it's not free.\n") { }
+			public DroneNotFree() : base("IBL-ERROR: The drone can't be assigned to a charge station since it's not free.\n") { }
 		}
 		public class DroneNotMaintenance : Exception
 		{
-			public DroneNotMaintenance() : base("ERROR: The drone can't leave a charge station since it's not in maintenance.\n") { }
+			public DroneNotMaintenance() : base("IBL-ERROR: The drone can't leave a charge station since it's not in maintenance.\n") { }
 		}
 		public class DroneNotInBase : Exception
 		{
-			public DroneNotInBase() : base("ERROR: The drone can't leave a charge station since it's not in a base station.\n") { }
+			public DroneNotInBase() : base("IBL-ERROR: The drone can't leave a charge station since it's not in a base station.\n") { }
 		}
 		public class NotEnoughBattery : Exception
 		{
-			public NotEnoughBattery() : base("ERROR: The drone hasn't enough battery to join the closer base station\n") { }
+			public NotEnoughBattery() : base("IBL-ERROR: The drone hasn't enough battery to join the closer base station\n") { }
 		}
 		public class NoDroneCanParcel : Exception
 		{
-			public NoDroneCanParcel() : base("ERROR: No drone can ship this parcel\n") { }
+			public NoDroneCanParcel() : base("IBL-ERROR: No drone can ship this parcel\n") { }
 		}
 		public class NoParcelId : Exception
 		{
-			public NoParcelId() : base("ERROR: This parcel isn't affiliated to this drone\n") { }
+			public NoParcelId() : base("IBL-ERROR: This parcel isn't affiliated to this drone\n") { }
+		}
+		public class DroneNotInCharge : Exception
+		{
+			public DroneNotInCharge() : base("IBL-ERROR: ERROR IN THE DATA BASE AN DRONE IS NOT CHARGE\n") { }
 		}
 
 		// exceptions for customer
 		public class CustomerIdExist : Exception
 		{
-			public CustomerIdExist() : base("ERROR: THIS CUSTOMER ID ALREADY EXIST\n") { }
+			public CustomerIdExist(string ms) : base($"{ms}\nIBL-ERROR: THIS CUSTOMER ID ALREADY EXIST\n") { }
+			public CustomerIdExist() : base("IBL-ERROR: THIS CUSTOMER ID ALREADY EXIST\n") { }
 		}
 		public class CustomerIdNotExist : Exception
 		{
-			public CustomerIdNotExist() : base("ERROR: THIS CUSTOMER ID DO NOT EXIST\n") { }
+			public CustomerIdNotExist(string ms) : base($"{ms}\nIBL-ERROR: THIS CUSTOMER ID DO NOT EXIST\n") { }
+			public CustomerIdNotExist() : base("IBL-ERROR: THIS CUSTOMER ID DO NOT EXIST\n") { }
 		}
 		public class InvalidCustomerId : Exception
 		{
-			public InvalidCustomerId() : base("ERROR: ID OF CUSTOMER NEED TO BE BIGGER THAN ZERO\n") { }
+			public InvalidCustomerId(string ms) : base($"{ms}\nIBL-ERROR: ID OF CUSTOMER NEED TO BE BIGGER THAN ZERO\n") { }
+			public InvalidCustomerId() : base("IBL-ERROR: ID OF CUSTOMER NEED TO BE BIGGER THAN ZERO\n") { }
 		}
 
 		// exceptions for parcel
 		public class ParcelIdExist : Exception
 		{
-			public ParcelIdExist() : base("ERROR: THIS PARCEL ID ALREADY EXIST\n") { }
+			public ParcelIdExist(string ms) : base($"{ms}\nIBL-ERROR: THIS PARCEL ID ALREADY EXIST\n") { }
+			public ParcelIdExist() : base("IBL-ERROR: THIS PARCEL ID ALREADY EXIST\n") { }
 		}
 		public class ParcelIdNotExist : Exception
 		{
-			public ParcelIdNotExist() : base("ERROR: THIS PARCEL ID DO NOT EXIST\n") { }
+			public ParcelIdNotExist(string ms) : base($"{ms}\nIBL-ERROR: THIS PARCEL ID DO NOT EXIST\n") { }
+			public ParcelIdNotExist() : base("IBL-ERROR: THIS PARCEL ID DO NOT EXIST\n") { }
 		}
 		public class InvalidParcelId : Exception
 		{
-			public InvalidParcelId() : base("ERROR: ID OF PARCEL NEED TO BE BIGGER THAN ZERO\n") { }
+			public InvalidParcelId(string ms) : base($"{ms}\nIBL-ERROR: ID OF PARCEL NEED TO BE BIGGER THAN ZERO\n") { }
+			public InvalidParcelId() : base("IBL-ERROR: ID OF PARCEL NEED TO BE BIGGER THAN ZERO\n") { }
 		}
 		public class InvalidPriority : Exception
 		{
-			public InvalidPriority() : base("ERROR: THIS  OPTION FOR PRIORITIES IS NOT EXIST, YOU NEED TO GIVE AN  OPTION BETWEEN 1 TO 3\n") { }
+			public InvalidPriority(string ms) : base($"{ms}\nIBL-ERROR: THIS  OPTION FOR PRIORITIES IS NOT EXIST, YOU NEED TO GIVE AN  OPTION BETWEEN 1 TO 3\n") { }
+			public InvalidPriority() : base("IBL-ERROR: THIS  OPTION FOR PRIORITIES IS NOT EXIST, YOU NEED TO GIVE AN  OPTION BETWEEN 1 TO 3\n") { }
 		}
 		public class AlreadyPickedUp : Exception
 		{
-			public AlreadyPickedUp() : base("ERROR: This parcel has already been picked up\n") { }
+			public AlreadyPickedUp() : base("IBL-ERROR: This parcel has already been picked up\n") { }
 		}
 		public class NotRequestedYet : Exception
 		{
-			public NotRequestedYet() : base("ERROR: This parcel hasn't been requested yet\n") { }
+			public NotRequestedYet() : base("IBL-ERROR: This parcel hasn't been requested yet\n") { }
 		}
 		public class NotPickedUpYet : Exception
 		{
-			public NotPickedUpYet() : base("ERROR: This parcel hasn't been picked up yet\n") { }
+			public NotPickedUpYet() : base("IBL-ERROR: This parcel hasn't been picked up yet\n") { }
 		}
 		public class AlreadyDelivered : Exception
 		{
-			public AlreadyDelivered() : base("ERROR: This parcel has already been delivered\n") { }
+			public AlreadyDelivered() : base("IBL-ERROR: This parcel has already been delivered\n") { }
 		}
 		// exceptions for sender
 		public class SenderIdNotExist : Exception
 		{
-			public SenderIdNotExist() : base("ERROR: THIS SENDER ID DO NOT EXIST\n") { }
+			public SenderIdNotExist(string ms) : base($"{ms}\nIBL-ERROR: THIS SENDER ID DO NOT EXIST\n") { }
+			public SenderIdNotExist() : base("IBL-ERROR: THIS SENDER ID DO NOT EXIST\n") { }
 		}
 		public class SenderNameNotExist : Exception
 		{
-			public SenderNameNotExist() : base("ERROR: THIS SENDER NAME DO NOT EXIST\n") { }
+			public SenderNameNotExist() : base("IBL-ERROR: THIS SENDER NAME DO NOT EXIST\n") { }
 		}
 		public class InvalidSenderId : Exception
 		{
-			public InvalidSenderId() : base("ERROR: ID OF SENDER NEED TO BE BIGGER THAN ZERO\n") { }
+			public InvalidSenderId(string ms) : base($"{ms}\nIBL-ERROR: ID OF SENDER NEED TO BE BIGGER THAN ZERO\n") { }
+			public InvalidSenderId() : base("IBL-ERROR: ID OF SENDER NEED TO BE BIGGER THAN ZERO\n") { }
 		}
 
 		// exceptions for target
 		public class TargetIdNotExist : Exception
 		{
-			public TargetIdNotExist() : base("ERROR: THIS TARGET ID DO NOT EXIST\n") { }
+			public TargetIdNotExist(string ms) : base($"{ms}\nIBL-ERROR: THIS TARGET ID DO NOT EXIST\n") { }
+			public TargetIdNotExist() : base("IBL-ERROR: THIS TARGET ID DO NOT EXIST\n") { }
 		}
 		public class TargetNameNotExist : Exception
 		{
-			public TargetNameNotExist() : base("ERROR: THIS TARGET NAME DO NOT EXIST\n") { }
+			public TargetNameNotExist() : base("IBL-ERROR: THIS TARGET NAME DO NOT EXIST\n") { }
 		}
 		public class InvalidTargetId : Exception
 		{
-			public InvalidTargetId() : base("ERROR: ID OF SENDER NEED TO BE BIGGER THAN ZERO\n") { }
+			public InvalidTargetId(string ms) : base($"{ms}\nIBL-ERROR: ID OF SENDER NEED TO BE BIGGER THAN ZERO\n") { }
+			public InvalidTargetId() : base("IBL-ERROR: ID OF SENDER NEED TO BE BIGGER THAN ZERO\n") { }
 		}
 
 		// exceptions for Weight that drone can't take
 		public class ParcelTooHeavy : Exception
 		{
-			public ParcelTooHeavy() : base("ERROR: THE CATEGORIE OF PARCEL IS TOO HEAVY AND THE DRONE CAN'T TAKE THEM\n") { }
+			public ParcelTooHeavy() : base("IBL-ERROR: THE CATEGORIE OF PARCEL IS TOO HEAVY AND THE DRONE CAN'T TAKE THEM\n") { }
 		}
 	}
 }
