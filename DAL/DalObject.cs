@@ -51,7 +51,7 @@ namespace DalObject
 			if ((int)weight > 3 || (int)weight < 1) throw new IDAL.DO.InvalidWeight();
 
 			foreach (IDAL.DO.Drone item in DataSource.drone)
-			{ if (item.Id == id) throw new IDAL.DO.DorneIdExist(); }
+			{ if (item.Id == id) throw new IDAL.DO.DroneIdExist(); }
 
 			DataSource.drone.Add(new IDAL.DO.Drone()
 			{
