@@ -639,21 +639,25 @@ namespace BL
 		public void AffectParcelToDrone(int droneId)
 		{
 			IBL.BO.DroneToList drone = new IBL.BO.DroneToList();
-			drone = droneToList[searchDrone(droneId)];
+			drone = droneToList[searchDrone(droneId)];//O(n)
 			if (drone.Status != IBL.BO.DroneStatuses.free)
 				throw new IBL.BO.DroneNotFree();
 
 			List<IDAL.DO.Parcel> parcel = new List<IDAL.DO.Parcel>();
-			foreach (IDAL.DO.Parcel item in dal.GetListOfParcelsNotAssignedToDrone())
+			foreach (IDAL.DO.Parcel item in dal.GetListOfParcelsNotAssignedToDrone())//O(n)
 			{
 				parcel.Add(item);
 			}
-			List<IDAL.DO.Parcel> parcelEmrgency = removeByPriority(parcel, IDAL.DO.Priorities.Emergecey);
-			List<IDAL.DO.Parcel> parcelFast = removeByPriority(parcel, IDAL.DO.Priorities.Fast);
-			List<IDAL.DO.Parcel> parcelNormal = removeByPriority(parcel, IDAL.DO.Priorities.Normal);
+			List<IDAL.DO.Parcel> parcelEmrgency = removeByPriority(parcel, IDAL.DO.Priorities.Emergecey);//O(n)
+			parcelEmrgency = removeByWeight(parcel,(IDAL.DO.WeightCategories)drone.MaxWeight);
+			List<IDAL.DO.Parcel> parcelFast = removeByPriority(parcel, IDAL.DO.Priorities.Fast);//O(n)
+			parcelFast= removeByWeight(parcel, (IDAL.DO.WeightCategories)drone.MaxWeight);
+			List<IDAL.DO.Parcel> parcelNormal = removeByPriority(parcel, IDAL.DO.Priorities.Normal);//O(n)
+			parcelNormal= removeByWeight(parcel, (IDAL.DO.WeightCategories)drone.MaxWeight);
 
-			parcelEmrgency.OrderByDescending(parcel=> parcelEmrgency.WeightCategories);
-
+			parcelEmrgency = (List<IDAL.DO.Parcel>)parcelEmrgency.OrderByDescending(item => item.Weight);
+			parcelNormal = (List<IDAL.DO.Parcel>)parcelNormal.OrderByDescending(item => item.Weight);
+			parcelFast = (List<IDAL.DO.Parcel>)parcelFast.OrderByDescending(item => item.Weight);
 
 
 
@@ -1198,20 +1202,49 @@ namespace BL
 			return counter;
 		}
 		/// <summary>
-		/// remove all data that their priority status is not equal to param="pri"
+		/// remove all parcel that their priority status is not equal to param="pri"
 		/// </summary>
 		/// <param name="p"></param>
 		/// <param name="pri"></param>
-		/// <returns> a list </returns>
+		/// <returns> an list </returns>
 		private List<IDAL.DO.Parcel> removeByPriority(List<IDAL.DO.Parcel> p,IDAL.DO.Priorities pri)
 		{
-			for (int i = 0; i < p.Count(); i++)
+			List<IDAL.DO.Parcel> parcel = p;
+			for (int i = 0; i < parcel.Count(); i++)
 			{
-				if (p[i].Priority == pri)
-					p.RemoveAt(i);
+				if (parcel[i].Priority == pri)
+					parcel.RemoveAt(i);
 			}
-			return p;
+			return parcel;
 		}
-
+		/// <summary>
+		/// remove all parcel that the drone can't take
+		/// </summary>
+		/// <param name="p"></param>
+		/// <param name="w"></param>
+		/// <returns> an lisrt </returns>
+		private List<IDAL.DO.Parcel> removeByWeight(List<IDAL.DO.Parcel> p, IDAL.DO.WeightCategories w)
+		{
+			List<IDAL.DO.Parcel> parcel = p;
+			if (w == IDAL.DO.WeightCategories.Heavy)//if max weight of drone can take is heavy parcel so he can take everything 
+				return p;
+			else if (w == IDAL.DO.WeightCategories.Medium)//if max weight of drone can take is medium parcel so all parcel that heavy he can't takes
+			{
+				for (int i = 0; i < parcel.Count(); i++)
+				{
+					if (parcel[i].Weight == IDAL.DO.WeightCategories.Heavy)
+						parcel.RemoveAt(i);
+				}
+			}
+			else//if max weight of drone can take is light parcel so all parcel that heavy and medium he can't takes
+			{
+				for (int i = 0; i < parcel.Count(); i++)
+				{
+					if (parcel[i].Weight == IDAL.DO.WeightCategories.Heavy|| parcel[i].Weight == IDAL.DO.WeightCategories.Medium)
+						parcel.RemoveAt(i);
+				}
+			}
+			return parcel;
+		}
 	}
 }

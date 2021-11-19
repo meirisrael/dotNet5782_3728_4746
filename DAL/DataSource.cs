@@ -22,10 +22,10 @@ namespace DalObject
 
 		internal class Config
 		{
-			internal static double useWhenFree = 2;//2% per kilometere
-			internal static double useWhenLightly = 5;//5% per kilometere
-			internal static double useWhenMedium = 15;//15% per kilometere
-			internal static double useWhenHeavily = 25;//25% per kilometere
+			internal static double useWhenFree = 0.5;//0.5% per kilometere
+			internal static double useWhenLightly = 2;//2% per kilometere
+			internal static double useWhenMedium = 3;//3% per kilometere
+			internal static double useWhenHeavily = 5;//5% per kilometere
 			internal double chargingRate = 40; //40% per hour
 		}
 		/// <summary>
