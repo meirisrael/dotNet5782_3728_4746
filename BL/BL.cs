@@ -334,7 +334,6 @@ namespace BL
 		/// <returns> an customer </returns>
 		private IBL.BO.Customer getCustomer(int id)
 		{
-
 			try
 			{
 				IBL.BO.Customer customer = new IBL.BO.Customer();
