@@ -6,8 +6,12 @@ namespace ConsoleUI_BL
     {
         static void Main(string[] args)
         {
+            IBL.IBL ibl = BL.BL.GetInstance();
+            MenuWindow(ibl);
+        }
+        static void MenuWindow(IBL.IBL ibl)
+        {
             IBL.BO.Choice choice = 0;
-            IBL.IBL ibl = new BL.BL();
             bool res;
             IBL.BO.Location loc = new();
             IDAL.DO.WeightCategories weight;
@@ -41,7 +45,7 @@ namespace ConsoleUI_BL
                                 " 2 to add a drone \n" +
                                 " 3 to register as a new customer\n" +
                                 " 4 to send a parcel");
-                            res = Enum.TryParse<IDAL.DO.Add>(Console.ReadLine(), out add);
+                            res = Enum.TryParse<IBL.BO.Add>(Console.ReadLine(), out add);
                             if (!res) Console.WriteLine("Wrong input");
                         } while (!res);
                         switch (add)
@@ -85,7 +89,7 @@ namespace ConsoleUI_BL
                                 int.TryParse(Console.ReadLine(), out intB);
                                 try
                                 {
-                                    ibl.AddDrone(intA, stringA, weight,intB);
+                                    ibl.AddDrone(intA, stringA, weight, intB);
                                 }
                                 catch (Exception ex)
                                 {
@@ -154,12 +158,12 @@ namespace ConsoleUI_BL
                                 " 2 to update a base station \n" +
                                 " 3 to update a customer \n" +
                                 " 4 to send a drone reload his battery at a base station \n" +
-                                " 5 to make a drone leave his charge station"+
+                                " 5 to make a drone leave his charge station" +
                                 " 6 to make affect a parcel to a drone" +
                                 " 7 to make a drone collect his affected parcel" +
                                 " 8 to make a drone deliver his affected parcel");
 
-                            res = Enum.TryParse<IDAL.DO.Update>(Console.ReadLine(), out update);
+                            res = Enum.TryParse<IBL.BO.Update>(Console.ReadLine(), out update);
                             if (!res) Console.WriteLine("Wrong input");
                         } while (!res);
                         switch (update)
@@ -203,7 +207,7 @@ namespace ConsoleUI_BL
                                 stringA = Console.ReadLine();
                                 Console.WriteLine("Phone:");
                                 stringB = Console.ReadLine();
-                                try                          
+                                try
                                 {
                                     ibl.UpdateCustomer(intA, stringA, stringB);
                                 }
@@ -367,8 +371,8 @@ namespace ConsoleUI_BL
                             case IBL.BO.DisplayList.BaseStations:
                                 try
                                 {
-                                    foreach (IDAL.DO.BaseStation item in ibl.GetListOfBaseStations())
-                                { Console.WriteLine(item.ToString()); }
+                                    foreach (IBL.BO.BaseToList item in ibl.GetListOfBaseStations())
+                                    { Console.WriteLine(item.ToString()); }
                                 }
                                 catch (Exception ex)
                                 {
@@ -380,7 +384,7 @@ namespace ConsoleUI_BL
                                 try
                                 {
                                     foreach (IBL.BO.DroneToList item in ibl.GetListOfDrone())
-                                     { Console.WriteLine(item.ToString()); }
+                                    { Console.WriteLine(item.ToString()); }
                                 }
                                 catch (Exception ex)
                                 {
@@ -391,7 +395,7 @@ namespace ConsoleUI_BL
                             case IBL.BO.DisplayList.Customers:
                                 try
                                 {
-                                 foreach (IBL.BO.Customer item in ibl.GetListOfCustomer())
+                                    foreach (IBL.BO.CustomerToList item in ibl.GetListOfCustomer())
                                     { Console.WriteLine(item.ToString()); }
                                 }
                                 catch (Exception ex)
@@ -403,8 +407,8 @@ namespace ConsoleUI_BL
                             case IBL.BO.DisplayList.Parcels:
                                 try
                                 {
-                                  foreach (IDAL.DO.Parcel item in ibl.GetListOfParcel())
-                                     { Console.WriteLine(item.ToString()); }
+                                    foreach (IBL.BO.ParcelToList item in ibl.GetListOfParcel())
+                                    { Console.WriteLine(item.ToString()); }
                                 }
                                 catch (Exception ex)
                                 {
@@ -415,8 +419,8 @@ namespace ConsoleUI_BL
                             case IBL.BO.DisplayList.ParcelsNotAssignedToDrone:
                                 try
                                 {
-                                    foreach (IDAL.DO.Parcel item in ibl.GetListParcelNotAssignToDrone())
-                                         { Console.WriteLine(item.ToString()); }
+                                    foreach (IBL.BO.ParcelToList item in ibl.GetListParcelNotAssignToDrone())
+                                    { Console.WriteLine(item.ToString()); }
                                 }
                                 catch (Exception ex)
                                 {
@@ -427,8 +431,8 @@ namespace ConsoleUI_BL
                             case IBL.BO.DisplayList.BaseStationsCanCharge:
                                 try
                                 {
-                                    foreach (IDAL.DO.BaseStation item in ibl.GetListBaseWithChargeSlot())
-                                      { Console.WriteLine(item.ToString()); }
+                                    foreach (IBL.BO.BaseToList item in ibl.GetListBaseWithChargeSlot())
+                                    { Console.WriteLine(item.ToString()); }
                                 }
                                 catch (Exception ex)
                                 {
@@ -444,5 +448,6 @@ namespace ConsoleUI_BL
                 }
             }
         }
+    
     }
 }
