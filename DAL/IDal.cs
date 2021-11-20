@@ -31,7 +31,7 @@ namespace IDAL
 		public IEnumerable<IDAL.DO.Parcel> GetListOfParcelsNotAssignedToDrone();
 
 		public IEnumerable<IDAL.DO.BaseStation> GetListBaseStations();
-		public IEnumerable<IDAL.DO.Drone> GetListDrones();
+		public IEnumerable<IDAL.DO.Drone> GetListDrones(); 
 		public IEnumerable<IDAL.DO.Customer> GetListCustomers();
 		public IEnumerable<IDAL.DO.Parcel> GetListParcels();
 		public IEnumerable<IDAL.DO.BaseStation> GetListBaseStationsCanCharge();

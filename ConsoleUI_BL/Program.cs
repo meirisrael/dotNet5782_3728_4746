@@ -60,7 +60,14 @@ namespace ConsoleUI_BL
                                 double.TryParse(Console.ReadLine(), out doubB);
                                 loc.Longitude = doubA;
                                 loc.Latitude = doubB;
-                                ibl.AddBaseStation(intA, intB, intC, loc);
+                                try
+                                {
+                                    ibl.AddBaseStation(intA, intB, intC, loc);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
                                 break;
 
 
@@ -76,7 +83,14 @@ namespace ConsoleUI_BL
                                 Enum.TryParse<IDAL.DO.WeightCategories>(Console.ReadLine(), out weight);
                                 Console.WriteLine("First Base Id:");
                                 int.TryParse(Console.ReadLine(), out intB);
-                                ibl.AddDrone(intA, stringA, weight,intB);
+                                try
+                                {
+                                    ibl.AddDrone(intA, stringA, weight,intB);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
                                 break;
                             case IBL.BO.Add.AddCustomer:
                                 Console.WriteLine("Id:");
@@ -91,7 +105,14 @@ namespace ConsoleUI_BL
                                 double.TryParse(Console.ReadLine(), out doubB);
                                 loc.Longitude = doubA;
                                 loc.Latitude = doubB;
-                                ibl.AddCustomer(intA, stringA, stringB, loc);
+                                try
+                                {
+                                    ibl.AddCustomer(intA, stringA, stringB, loc);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
                                 break;
 
                             case IBL.BO.Add.AddParcel:
@@ -111,7 +132,14 @@ namespace ConsoleUI_BL
                                     "   2.Fast\n" +
                                     "   3.Emergecey");
                                 Enum.TryParse<IDAL.DO.Priorities>(Console.ReadLine(), out priorities);
-                                ibl.AddParcel(intA, intB, intC, weight, priorities);
+                                try
+                                {
+                                    ibl.AddParcel(intA, intB, intC, weight, priorities);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
                                 break;
                             default:
                                 break;
@@ -141,7 +169,14 @@ namespace ConsoleUI_BL
                                 int.TryParse(Console.ReadLine(), out intA);
                                 Console.WriteLine("Model:");
                                 stringA = Console.ReadLine();
-                                ibl.UpdateDrone(intA, stringA);
+                                try
+                                {
+                                    ibl.UpdateDrone(intA, stringA);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
                                 break;
 
                             case IBL.BO.Update.UpdateBase:
@@ -151,7 +186,14 @@ namespace ConsoleUI_BL
                                 stringA = Console.ReadLine();
                                 Console.WriteLine("Chargeslots:");
                                 stringB = Console.ReadLine();
-                                ibl.UpdateBaseStation(intA,stringA,stringB);
+                                try
+                                {
+                                    ibl.UpdateBaseStation(intA, stringA, stringB);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
                                 break;
 
                             case IBL.BO.Update.UpdateCustomer:
@@ -161,13 +203,27 @@ namespace ConsoleUI_BL
                                 stringA = Console.ReadLine();
                                 Console.WriteLine("Phone:");
                                 stringB = Console.ReadLine();
-                                ibl.UpdateCustomer(intA,stringA,stringB);
+                                try                          
+                                {
+                                    ibl.UpdateCustomer(intA, stringA, stringB);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
                                 break;
 
                             case IBL.BO.Update.DroneToCharge:
                                 Console.WriteLine("DroneId:");
                                 int.TryParse(Console.ReadLine(), out intA);
-                                ibl.DroneToCharge(intA);
+                                try
+                                {
+                                    ibl.DroneToCharge(intA);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
                                 break;
 
                             case IBL.BO.Update.DroneLeaveChargeStation:
@@ -175,22 +231,50 @@ namespace ConsoleUI_BL
                                 int.TryParse(Console.ReadLine(), out intA);
                                 Console.WriteLine("Time(in minutes):");
                                 int.TryParse(Console.ReadLine(), out intB);
-                                ibl.DroneLeaveCharge(intA, intB);
+                                try
+                                {
+                                    ibl.DroneLeaveCharge(intA, intB);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
                                 break;
                             case IBL.BO.Update.AffectParcel:
                                 Console.WriteLine("DroneId:");
                                 int.TryParse(Console.ReadLine(), out intA);
-                                ibl.AffectParcelToDrone(intA);
+                                try
+                                {
+                                    ibl.AffectParcelToDrone(intA);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
                                 break;
                             case IBL.BO.Update.ParcelCollection:
                                 Console.WriteLine("DroneId:");
                                 int.TryParse(Console.ReadLine(), out intA);
-                                ibl.ParcelCollection(intA);
+                                try
+                                {
+                                    ibl.ParcelCollection(intA);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
                                 break;
                             case IBL.BO.Update.ParcelDelivery:
                                 Console.WriteLine("DroneId:");
                                 int.TryParse(Console.ReadLine(), out intA);
-                                ibl.ParcelDeliverd(intA);
+                                try
+                                {
+                                    ibl.ParcelDeliverd(intA);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
                                 break;
                             default:
                                 break;
@@ -213,25 +297,53 @@ namespace ConsoleUI_BL
                             case IBL.BO.Display.BaseStation:
                                 Console.WriteLine("Enter Id:");
                                 int.TryParse(Console.ReadLine(), out intA);
-                                Console.WriteLine((ibl.GetBaseStation(intA)).ToString());
+                                try
+                                {
+                                    Console.WriteLine((ibl.GetBaseStation(intA)).ToString());
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
                                 break;
 
                             case IBL.BO.Display.Drone:
                                 Console.WriteLine("Enter Id:");
                                 int.TryParse(Console.ReadLine(), out intA);
-                                Console.WriteLine((ibl.GetDrone(intA)).ToString());
+                                try
+                                {
+                                    Console.WriteLine((ibl.GetDrone(intA)).ToString());
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
                                 break;
 
                             case IBL.BO.Display.Customer:
                                 Console.WriteLine("Enter Id:");
                                 int.TryParse(Console.ReadLine(), out intA);
-                                Console.WriteLine((ibl.GetCustomer(intA)).ToString());
+                                try
+                                {
+                                    Console.WriteLine((ibl.GetCustomer(intA)).ToString());
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
                                 break;
 
                             case IBL.BO.Display.Parcel:
                                 Console.WriteLine("Enter Id:");
                                 int.TryParse(Console.ReadLine(), out intA);
-                                Console.WriteLine((ibl.GetParcel(intA)).ToString());
+                                try
+                                {
+                                    Console.WriteLine((ibl.GetParcel(intA)).ToString());
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
                                 break;
                             default:
                                 break;
@@ -247,39 +359,81 @@ namespace ConsoleUI_BL
                                 " 3 for customers \n" +
                                 " 4 for parcels \n" +
                                 " 5 for parcels not assigned to a drone \n 6 for base stations with free battery reload places");
-                            res = Enum.TryParse<IDAL.DO.DisplayList>(Console.ReadLine(), out displayList);
+                            res = Enum.TryParse<IBL.BO.DisplayList>(Console.ReadLine(), out displayList);
                             if (!res) Console.WriteLine("Wrong input");
                         } while (!res);
                         switch (displayList)
                         {
                             case IBL.BO.DisplayList.BaseStations:
-                                foreach (IDAL.DO.BaseStation item in ibl.GetListOfBaseStations())
+                                try
+                                {
+                                  foreach (IDAL.DO.BaseStation item in ibl.GetListOfBaseStations())
                                 { Console.WriteLine(item.ToString()); }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
                                 break;
 
                             case IBL.BO.DisplayList.Drones:
-                                foreach (IDAL.DO.Drone item in ibl.GetListOfDrone())
-                                { Console.WriteLine(item.ToString()); }
+                                try
+                                {
+                                    foreach (IBL.BO.DroneToList item in ibl.GetListOfDrone())
+                                     { Console.WriteLine(item.ToString()); }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
                                 break;
 
                             case IBL.BO.DisplayList.Customers:
-                                foreach (IDAL.DO.Customer item in ibl.GetListOfCustomer())
-                                { Console.WriteLine(item.ToString()); }
+                                try
+                                {
+                                 foreach (IBL.BO.Customer item in ibl.GetListOfCustomer())
+                                    { Console.WriteLine(item.ToString()); }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
                                 break;
 
                             case IBL.BO.DisplayList.Parcels:
-                                foreach (IDAL.DO.Parcel item in ibl.GetListOfParcel())
-                                { Console.WriteLine(item.ToString()); }
+                                try
+                                {
+                                  foreach (IDAL.DO.Parcel item in ibl.GetListOfParcel())
+                                     { Console.WriteLine(item.ToString()); }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
                                 break;
 
                             case IBL.BO.DisplayList.ParcelsNotAssignedToDrone:
-                                foreach (IDAL.DO.Parcel item in ibl.GetListParcelNotAssignToDrone())
-                                { Console.WriteLine(item.ToString()); }
+                                try
+                                {
+                                    foreach (IDAL.DO.Parcel item in ibl.GetListParcelNotAssignToDrone())
+                                         { Console.WriteLine(item.ToString()); }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
                                 break;
 
                             case IBL.BO.DisplayList.BaseStationsCanCharge:
-                                foreach (IDAL.DO.BaseStation item in ibl.GetListBaseWithChargeSlot())
-                                { Console.WriteLine(item.ToString()); }
+                                try
+                                {
+                                    foreach (IDAL.DO.BaseStation item in ibl.GetListBaseWithChargeSlot())
+                                      { Console.WriteLine(item.ToString()); }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
                                 break;
                             default:
                                 break;

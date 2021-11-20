@@ -20,7 +20,7 @@ namespace BL
 		private double _chargingRate;
 		List<IBL.BO.DroneToList> droneToList = new List<IBL.BO.DroneToList>();
 		//ctor
-		private BL()
+		public BL()
 		{
 			getDataCharge();
 			reqListOfDrone();
