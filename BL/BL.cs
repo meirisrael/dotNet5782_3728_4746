@@ -10,6 +10,8 @@ namespace BL
 	public class BL : IBL.IBL
 	{
 		private IDAL.IDal dal;
+		private static BL _instance = null;
+		public static BL GetInstance() => _instance ?? (_instance = new BL());
 
 		private double _useWhenFree;
 		private double _useWhenLightly;
@@ -18,7 +20,7 @@ namespace BL
 		private double _chargingRate;
 		List<IBL.BO.DroneToList> droneToList = new List<IBL.BO.DroneToList>();
 		//ctor
-		public BL()
+		private BL()
 		{
 			getDataCharge();
 			reqListOfDrone();
@@ -66,7 +68,7 @@ namespace BL
 		private void settingDrone()
 		{
 			List<IBL.BO.BaseStation> baseS = new List<IBL.BO.BaseStation>();
-			//add the data
+			//add the data location of base station in the list
 			foreach (IDAL.DO.BaseStation b in dal.GetListBaseStations())
 			{
 				IBL.BO.Location l = new IBL.BO.Location();
@@ -76,7 +78,7 @@ namespace BL
 
 			for (int i = 0; i < droneToList.Count(); i++)
 			{
-				if (droneToList[i].Status != IBL.BO.DroneStatuses.Shipping)
+				if (droneToList[i].Status != IBL.BO.DroneStatuses.Shipping)//if the drone is not in shipping choos random status
 				{
 					int r = new Random().Next(1, 3);
 					if (r == 1)
@@ -84,29 +86,29 @@ namespace BL
 					else
 						droneToList[i].Status = IBL.BO.DroneStatuses.Maintenance;
 				}
-				if (droneToList[i].Status == IBL.BO.DroneStatuses.Maintenance)
+				if (droneToList[i].Status == IBL.BO.DroneStatuses.Maintenance)//according to the previous "if" now-if the random choose that the drone is in Maintenance
 				{
-					int r = new Random().Next(0, baseS.Count());
+					int r = new Random().Next(0, baseS.Count());//choose randome location 
 					droneToList[i].Loc.Longitude = baseS[r].Loc.Longitude;
 					droneToList[i].Loc.Latitude = baseS[r].Loc.Latitude;
-					r = new Random().Next(0, 21);
+					r = new Random().Next(0, 21);//choose random percent of battery between 0to20%
 					droneToList[i].Battery = r;
 					break;
 				}
-				else if (droneToList[i].Status == IBL.BO.DroneStatuses.free)
+				else if (droneToList[i].Status == IBL.BO.DroneStatuses.free)//according to the previous "if" now-if the random choose that the drone is free
 				{
 					List<IBL.BO.Customer> customerList = new List<IBL.BO.Customer>();
-					foreach (IDAL.DO.Parcel item in dal.GetListParcels())
+					foreach (IDAL.DO.Parcel item in dal.GetListParcels())//add data of parcel that was deliver
 					{
 						if (item.Delivered != DateTime.MinValue)
 								customerList.Add(getCustomer(item.TargetId));	
 					}
-					int r = new Random().Next(0, customerList.Count());
+					int r = new Random().Next(0, customerList.Count());//choose a random loc of parcel 
 					droneToList[i].Loc.Longitude = customerList[r].Loc.Longitude;
 					droneToList[i].Loc.Latitude = customerList[r].Loc.Latitude;
 
-					int percent = calcBatteryToCloserBase(droneToList[i].Loc.Longitude, droneToList[i].Loc.Latitude);
-					int finalPercent = new Random().Next(percent, 101);
+					int percent = calcBatteryToCloserBase(droneToList[i].Loc.Longitude, droneToList[i].Loc.Latitude);//calculate the min percent battery to go back to the base station
+					int finalPercent = new Random().Next(percent, 101);//random choose percent between "percent" to 100 
 					droneToList[i].Battery = finalPercent;
 				}
 			}
@@ -125,20 +127,20 @@ namespace BL
 					Id = item.Id,
 					Weight = (IBL.BO.WeightCategories)item.Weight,
 					Priority = (IBL.BO.Priorities)item.Priority,
-					Status = IBL.BO.ParcelStatues.Defined
+					Status = getStatusOfParcel(item)
 				});
 			}
 			for (int i = 0; i < parcelToList.Count(); i++)
 			{
 				int droneIdAssigneToParcel = searchDroneIdAssigneToParcel(parcelToList[i]);
-				if (parcelToList[i].Status != IBL.BO.ParcelStatues.Delivered && droneIdAssigneToParcel > 0)
+				if (parcelToList[i].Status != IBL.BO.ParcelStatues.Delivered && droneIdAssigneToParcel > 0)//if the parcel was not deliver and the parcel he has a drone need to the shipping
 				{
 					droneToList[searchDrone(droneIdAssigneToParcel)].Status = IBL.BO.DroneStatuses.Shipping;
 
 					locOfDroneByParcel(parcelToList[i], droneIdAssigneToParcel);
 
-					int percent = calcBatteryToShipping(droneToList[searchDrone(droneIdAssigneToParcel)], parcelToList[i]);
-					int finalPercent = new Random().Next(percent, 101);
+					int percent = (int)Math.Ceiling(calcBatteryToShipping(droneToList[searchDrone(droneIdAssigneToParcel)], parcelToList[i]));//calculate the percent of battery the drone need to do the shipping 
+					int finalPercent = new Random().Next(percent, 101);//choose random the percent between "percent" to 100
 					droneToList[i].Battery = finalPercent;
 				}
 			}
@@ -183,20 +185,23 @@ namespace BL
 		/// <param name="d"></param>
 		/// <param name="p"></param>
 		/// <returns> the percent of battery </returns>
-		private int calcBatteryToShipping(IBL.BO.DroneToList d, IBL.BO.ParcelToList p)
+		private double calcBatteryToShipping(IBL.BO.DroneToList d, IBL.BO.ParcelToList p)
 		{
-			double disToTarget = distanceBetweenTwoPoints(d.Loc.Latitude, d.Loc.Longitude, targetLati(p.NameTarget), targetLong(p.NameTarget));
-			double disToBase = disToCloserBase(targetLati(p.NameTarget), targetLong(p.NameTarget));
+			double disToSenderFromBase = distanceBetweenTwoPoints(d.Loc.Latitude, d.Loc.Longitude, senderLati(p.NameSender), senderLong(p.NameSender)); //one way to the sender from the closer base station possible is equal to "0"
+			double disToTarget = distanceBetweenTwoPoints(d.Loc.Latitude, d.Loc.Longitude, targetLati(p.NameTarget), targetLong(p.NameTarget));// + one way
+			double disToBaseFromTarget = disToCloserBase(targetLati(p.NameTarget), targetLong(p.NameTarget));// + second way
 
-			double batteryToBase = _useWhenFree * disToBase;
-			double batteryToSender;
+			double batteryToBaseFromTarget = _useWhenFree * disToBaseFromTarget;//percent of battery the drone need to go back to the base station
+			double batteryToSenderFromBase = _useWhenFree * disToSenderFromBase;//percent of battery the drone need to arrive at sender
+			double batteryToTargetFromSender;// percent of battery need to go from the sender to the target
 			if (p.Weight == IBL.BO.WeightCategories.Light)
-				batteryToSender = _useWhenLightly * disToTarget;
+				batteryToTargetFromSender = _useWhenLightly * disToTarget;
 			else if (p.Weight == IBL.BO.WeightCategories.Medium)
-				batteryToSender = _useWhenMedium * disToTarget;
+				batteryToTargetFromSender = _useWhenMedium * disToTarget;
 			else
-				batteryToSender = _useWhenHeavily * disToTarget;
-			int finalBattery = (int)(Math.Ceiling(batteryToBase) + Math.Ceiling(batteryToSender));
+				batteryToTargetFromSender = _useWhenHeavily * disToTarget;
+			double finalBattery = batteryToBaseFromTarget + batteryToTargetFromSender + batteryToSenderFromBase;
+			if (finalBattery > 100) throw new IBL.BO.DistanceTooBigger();
 			return finalBattery;
 		}
 		/// <summary>
@@ -277,7 +282,7 @@ namespace BL
 				if (droneToList[i].Id == id)
 					return i;
 			}
-			throw new IBL.BO.DroneIdNotExist();
+			throw new IBL.BO.IdNotExist("DRONE");
 		}
 		/// <summary>
 		/// the func search which drone is assigne to this parcel if is defined
@@ -288,10 +293,10 @@ namespace BL
 		{
 			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
 			{
-				if (item.Id == p.Id)
+				if (item.Id == p.Id)//if the drone is assciated to the parcel
 					return item.DroneId;
 			}
-			throw new IBL.BO.DroneIdNotExist();
+			return 0;
 		}
 		/// <summary>
 		/// the func locate the drone according to his status 
@@ -300,7 +305,7 @@ namespace BL
 		/// <param name="droneId"></param>
 		private void locOfDroneByParcel(IBL.BO.ParcelToList p, int droneId)
 		{
-			if (p.Status == IBL.BO.ParcelStatues.Associated)
+			if (p.Status ==IBL.BO.ParcelStatues.Associated)//if the parcel was Associated so the loc of the drone is in the close base station
 			{
 				double finalDis = -1;
 				IBL.BO.Location loc = new IBL.BO.Location();
@@ -316,7 +321,7 @@ namespace BL
 
 				}
 			}
-			else if (p.Status == IBL.BO.ParcelStatues.Collected)
+			else if (p.Status == IBL.BO.ParcelStatues.Collected)//if the parcel was collected by the drone so the loc of drone is where the sender is 
 			{
 				droneToList[searchDrone(droneId)].Loc.Latitude = senderLati(p.NameSender);
 				droneToList[searchDrone(droneId)].Loc.Longitude = senderLong(p.NameSender);
@@ -329,17 +334,22 @@ namespace BL
 		/// <returns> an customer </returns>
 		private IBL.BO.Customer getCustomer(int id)
 		{
-			foreach (IDAL.DO.Customer item in dal.GetListCustomers())
+			try
 			{
-				IBL.BO.Location l = new IBL.BO.Location();
-				if (item.Id == id)
-				{
-					l.Latitude = item.Latitude; l.Longitude = item.Longitude;
-					IBL.BO.Customer c = new IBL.BO.Customer { Id = item.Id, Name = item.Name, Loc = l };
-					return c;
-				}
+				IBL.BO.Customer customer = new IBL.BO.Customer();
+				IDAL.DO.Customer c = new IDAL.DO.Customer();
+				c = dal.GetCustomer(id);
+				customer.Id = c.Id;
+				customer.Name = c.Name;
+				customer.Phone = c.Phone;
+				customer.Loc.Latitude = c.Latitude;
+				customer.Loc.Longitude = c.Longitude;
+				return customer;
 			}
-			throw new IBL.BO.CustomerIdNotExist();
+			catch(IDAL.DO.CustomerIdNotExist ex) 
+			{
+				throw new IBL.BO.IdNotExist(ex.Message,"CUSTOMER");
+			}	
 		}
 		/// <summary>
 		/// the func calculate the distance of the closer base station 
@@ -371,19 +381,19 @@ namespace BL
 			try
 			{ dal.AddBaseStation(id, name, chargeSlots, location.Longitude, location.Latitude); }
 			catch (IDAL.DO.InvalidBaseId ex)
-			{ throw new IBL.BO.InvalidBaseId(ex.Message); }
+			{ throw new IBL.BO.InvalidId(ex.Message,"BASE"); }
 
 			catch (IDAL.DO.InvalidChargeSlot ex)
 			{ throw new IBL.BO.InvalidChargeSlot(ex.Message); }
 
 			catch (IDAL.DO.InvalidLatitude ex)
-			{ throw new IBL.BO.InvalidLatitude(ex.Message); }
+			{ throw new IBL.BO.InvalidLoc(ex.Message,"LATITUDE", "-90 TO 90"); }
 
 			catch (IDAL.DO.InvalidLongitude ex)
-			{ throw new IBL.BO.InvalidLongitude(ex.Message); }
+			{ throw new IBL.BO.InvalidLoc(ex.Message,"LONGITUDE","-180 TO 180"); }
 
 			catch (IDAL.DO.BaseIdExist ex)
-			{ throw new IBL.BO.BaseIdExist(ex.Message); }
+			{ throw new IBL.BO.IdExist(ex.Message,"BASE"); }
 		}
 		/// <summary>
 		/// the func add a new drone to the data base
@@ -397,20 +407,20 @@ namespace BL
 			try
 			{ dal.AddDrone(id, model, weight); }
 			catch (IDAL.DO.InvalidDroneId ex)
-			{ throw new IBL.BO.InvalidDroneId(ex.Message); }
+			{ throw new IBL.BO.InvalidId(ex.Message,"DRONE"); }
 
 			catch (IDAL.DO.InvalidWeight ex)
-			{ throw new IBL.BO.InvalidWeight(ex.Message); }
+			{ throw new IBL.BO.InvalidCategory(ex.Message, "WEIGHT"); }
 
 			catch (IDAL.DO.DroneIdExist ex)
-			{ throw new IBL.BO.DroneIdExist(ex.Message); }
+			{ throw new IBL.BO.IdExist(ex.Message,"DRONE"); }
 
 			try
 			{ dal.AssignDroneToBaseStation(id, firstBaseStation); }
 			catch (IDAL.DO.DroneIdNotExist ex)
-			{ throw new IBL.BO.DroneIdNotExist(ex.Message); }
+			{ throw new IBL.BO.IdNotExist(ex.Message,"DRONE"); }
 			catch (IDAL.DO.BaseIdNotExist ex)
-			{ throw new IBL.BO.BaseIdNotExist(ex.Message); }
+			{ throw new IBL.BO.IdNotExist(ex.Message,"BASE"); }
 
 			int r = new Random().Next(20, 41);
 			double battery = r;
@@ -427,7 +437,7 @@ namespace BL
 				}
 			}
 			if (counter == droneToList.Count())
-			{ throw new IBL.BO.DroneIdNotExist(); }
+			{ throw new IBL.BO.IdNotExist("DRONE"); }
 		}
 		/// <summary>
 		/// the func add a new customer to the data base
@@ -443,16 +453,16 @@ namespace BL
 				dal.AddCustomer(id, name, phone, location.Longitude, location.Latitude);
 			}
 			catch (IDAL.DO.InvalidCustomerId ex)
-			{ throw new IBL.BO.InvalidCustomerId(ex.Message); }
+			{ throw new IBL.BO.InvalidId(ex.Message,"CUSTOMER"); }
 
 			catch (IDAL.DO.InvalidLatitude ex)
-			{ throw new IBL.BO.InvalidLatitude(ex.Message); }
+			{ throw new IBL.BO.InvalidLoc(ex.Message,"LATITUDE","-90 TO 90"); }
 
 			catch (IDAL.DO.InvalidLongitude ex)
-			{ throw new IBL.BO.InvalidLongitude(ex.Message); }
+			{ throw new IBL.BO.InvalidLoc(ex.Message,"LONGITUDE","-180 TO 180"); }
 
 			catch (IDAL.DO.CustomerIdExist ex)
-			{ throw new IBL.BO.CustomerIdExist(ex.Message); }
+			{ throw new IBL.BO.IdExist(ex.Message,"CUSTOMER"); }
 		}
 		/// <summary>
 		/// the fun add an new parcel to the data base
@@ -468,36 +478,36 @@ namespace BL
 			{ dal.AddParcel(id, senderId, targetId, 0, weight, priorities); }
 			//ב-BL כל הזמנים יאותחלו לזמן אפס למעט תאריך יצירה שיאותחל ל-DateTime.Now
 			catch (IDAL.DO.InvalidParcelId ex)
-			{ throw new IBL.BO.InvalidParcelId(ex.Message); }
+			{ throw new IBL.BO.InvalidId(ex.Message,"PARCEL"); }
 
 			catch (IDAL.DO.InvalidSenderId ex)
-			{ throw new IBL.BO.InvalidSenderId(ex.Message);
+			{ throw new IBL.BO.InvalidId(ex.Message,"SENDER");
 			}
 
 			catch (IDAL.DO.InvalidTargetId ex)
-			{ throw new IBL.BO.InvalidTargetId(ex.Message);
+			{ throw new IBL.BO.InvalidId(ex.Message,"TARGET");
 			}
 
 			catch (IDAL.DO.NegativeDroneId ex)
-			{ throw new IBL.BO.InvalidDroneId(ex.Message);
+			{ throw new IBL.BO.InvalidId(ex.Message,"DRONE");
 			}
 
 			catch (IDAL.DO.InvalidWeight ex)
-			{ throw new IBL.BO.InvalidWeight(ex.Message); }
+			{ throw new IBL.BO.InvalidCategory(ex.Message, "WEIGHT"); }
 
 			catch (IDAL.DO.InvalidPriority ex)
-			{ throw new IBL.BO.InvalidPriority(ex.Message);
+			{ throw new IBL.BO.InvalidCategory(ex.Message, "PRIORITIES");
 			}
 
 			catch (IDAL.DO.ParcelIdExist ex)
-			{ throw new IBL.BO.ParcelIdExist(ex.Message);
+			{ throw new IBL.BO.IdExist(ex.Message,"PARCEL");
 			}
 
 			catch (IDAL.DO.SenderIdNotExist ex)
-			{ throw new IBL.BO.SenderIdNotExist(ex.Message); }
+			{ throw new IBL.BO.IdNotExist(ex.Message,"SENDER"); }
 
 			catch (IDAL.DO.TargetIdNotExist ex)
-			{ throw new IBL.BO.TargetIdNotExist(ex.Message); }
+			{ throw new IBL.BO.IdNotExist(ex.Message,"TARGET"); }
 		}
 
 		//-----------------------------------------------------------------------------------------------------UPDATE - OPTION-------------------------------------------------------------------------------------------------------
@@ -516,7 +526,7 @@ namespace BL
 				dal.UpdateDrone(drone);
 			}
 			catch (IDAL.DO.DroneIdNotExist ex)
-			{ throw new IBL.BO.DroneIdNotExist(ex.Message); }
+			{ throw new IBL.BO.IdNotExist(ex.Message,"DRONE"); }
 		}
 		/// <summary>
 		/// update the data of data base
@@ -530,7 +540,7 @@ namespace BL
 			try
 			{ baseStation = dal.GetBaseStation(baseId); }
 			catch (IDAL.DO.DroneIdNotExist ex)
-			{ throw new IBL.BO.BaseIdNotExist(ex.Message); }
+			{ throw new IBL.BO.IdNotExist(ex.Message,"BASE"); }
 
 			int name_int, charge_slots;
 			if (name != "")
@@ -559,7 +569,7 @@ namespace BL
 			try
 			{ customer = dal.GetCustomer(customerId); }
 			catch(IDAL.DO.CustomerIdNotExist ex)
-			{ throw new IBL.BO.CustomerIdExist(ex.Message); }
+			{ throw new IBL.BO.IdExist(ex.Message,"CUSTOMER"); }
 			if (name != "")
 			{
 				
@@ -582,14 +592,14 @@ namespace BL
 		{
 			IBL.BO.DroneToList drone = new IBL.BO.DroneToList();
 			drone = droneToList[searchDrone(droneId)];
-			if (drone.Status != IBL.BO.DroneStatuses.free)
+			if (drone.Status != IBL.BO.DroneStatuses.free)//the drone is not free so he cant go to charge
 				throw new IBL.BO.DroneNotFree();
-			if (drone.Battery < calcBatteryToCloserBase(drone.Loc.Longitude, drone.Loc.Latitude))
+			if (drone.Battery < calcBatteryToCloserBase(drone.Loc.Longitude, drone.Loc.Latitude))//no enough battery to go to charge station
 				throw new IBL.BO.NotEnoughBattery();
 			drone.Battery -= calcBatteryToCloserBase(drone.Loc.Longitude, drone.Loc.Latitude);
 
 			IDAL.DO.BaseStation baseStation = new IDAL.DO.BaseStation();
-			baseStation = CloserBase(drone.Loc.Longitude, drone.Loc.Latitude);
+			baseStation = CloserBase(drone.Loc.Longitude, drone.Loc.Latitude);//search the closer base 
 			drone.Loc.Longitude = baseStation.Longitude;
 			drone.Loc.Latitude = baseStation.Latitude;
 
@@ -612,29 +622,31 @@ namespace BL
 		{
 			IBL.BO.DroneToList drone = new IBL.BO.DroneToList();
 			drone = droneToList[searchDrone(droneId)];
-			if (drone.Status != IBL.BO.DroneStatuses.Maintenance)
-				throw new IBL.BO.DroneNotMaintenance();
+			if (drone.Status != IBL.BO.DroneStatuses.Maintenance)//if the drone id of drone that the user gave is not in Maintenance so need to throw that
+				throw new IBL.BO.DroneNotInCharge();
 			drone.Status = IBL.BO.DroneStatuses.free;
 			drone.Battery += (time / 60) * _chargingRate;
 			if (drone.Battery > 100)
 				drone.Battery = 100;
 			IDAL.DO.BaseStation baseStation = new IDAL.DO.BaseStation();
 			baseStation = currentBase(drone.Loc.Longitude, drone.Loc.Latitude);
-			dal.DroneLeaveChargeStation(droneId, baseStation.Id);
+			dal.DroneLeaveChargeStation(droneId, baseStation.Id);//base station- charge slot++ and remove the drone from the list "dron charge"
 		}
 		/// <summary>
 		/// the func associte the parcel to a drone
 		/// </summary>
 		/// <param name="droneId"></param>
-		public void AffectParcelToDrone(int droneId)
+		public int AffectParcelToDrone(int droneId)
 		{
+			int parcelId;
 			IBL.BO.DroneToList drone = new IBL.BO.DroneToList();
-			drone = droneToList[searchDrone(droneId)];
-
+			drone = droneToList[searchDrone(droneId)];//O(n)
 			if (drone.Status != IBL.BO.DroneStatuses.free)
 				throw new IBL.BO.DroneNotFree();
-			IDAL.DO.Parcel parcel = new IDAL.DO.Parcel() { Id = 0 };
-			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
+
+			IDAL.DO.Parcel p = new IDAL.DO.Parcel();
+			List<IDAL.DO.Parcel> parcel = new List<IDAL.DO.Parcel>();
+			foreach (IDAL.DO.Parcel item in dal.GetListOfParcelsNotAssignedToDrone())//O(n)
 			{
 				if (((int)item.Weight <= (int)drone.MaxWeight) && (item.Priority >= parcel.Priority) && ((parcel.Id == 0) ||
 					(distanceBetweenTwoPoints(drone.Loc.Latitude, drone.Loc.Longitude, getCustomerLocation(item.SenderId).Latitude, getCustomerLocation(item.SenderId).Longitude)
@@ -649,7 +661,6 @@ namespace BL
 			//if ((drone.Battery - calcBatteryToShipping(drone, parcelToList)) < 0)
 			//	drone.IdOfParcel = parcel.Id;
 			drone.Status = IBL.BO.DroneStatuses.Shipping;
-			drone.IdOfParcel = parcel.Id;
 			updateDroneList(drone);
 			parcel.DroneId = drone.Id;
 			parcel.Requested = DateTime.Now;
@@ -673,14 +684,14 @@ namespace BL
 			}
 			if(parcel.DroneId!=droneId)
 				throw new IBL.BO.NoParcelId();
-			if (parcel.PickedUp != DateTime.MinValue)
+			if (parcel.PickedUp != DateTime.MinValue)//if parcel pick-up
 				throw new IBL.BO.AlreadyPickedUp();
-			if (parcel.Requested == DateTime.MinValue)
-				throw new IBL.BO.NotRequestedYet();
+			if (parcel.Scheduled == DateTime.MinValue)// if parcel not associate to a drone 
+				throw new IBL.BO.NotScheduledYet();
 			parcel.PickedUp = DateTime.Now;
 			dal.UpdateParcel(parcel);
 			drone.Battery -= calcBatteryUsedWhenEmpty(distanceBetweenTwoPoints(drone.Loc.Latitude, drone.Loc.Longitude, getCustomerLocation(parcel.SenderId).Latitude, getCustomerLocation(parcel.SenderId).Longitude));
-			drone.Loc.Longitude = getCustomerLocation(parcel.SenderId).Longitude;
+			drone.Loc.Longitude = getCustomerLocation(parcel.SenderId).Longitude;//update the location to the sender
 			drone.Loc.Latitude = getCustomerLocation(parcel.SenderId).Latitude;
 			updateDroneList(drone);
 		}
@@ -692,7 +703,7 @@ namespace BL
 		{
 			IBL.BO.DroneToList drone = new IBL.BO.DroneToList();
 			drone = droneToList[searchDrone(droneId)];
-			IDAL.DO.Parcel parcel = new();
+			IDAL.DO.Parcel parcel = new IDAL.DO.Parcel();
 			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
 			{
 				if (item.DroneId == drone.Id)
@@ -702,14 +713,14 @@ namespace BL
 			}
 			if (parcel.DroneId != droneId) 
 				throw new IBL.BO.NoParcelId();
-			if (parcel.PickedUp == DateTime.MinValue) 
+			if (parcel.PickedUp == DateTime.MinValue) //if parcel not pick-up
 				throw new IBL.BO.NotPickedUpYet();
-			if (parcel.Delivered != DateTime.MinValue) 
+			if (parcel.Delivered != DateTime.MinValue) //if parcel was deliver
 				throw new IBL.BO.AlreadyDelivered();
 			parcel.Delivered = DateTime.Now;
 			dal.UpdateParcel(parcel);
 			drone.Battery -= calcBatteryUsedWhenShipping(parcel.Weight, distanceBetweenTwoPoints(drone.Loc.Latitude, drone.Loc.Longitude, getCustomerLocation(parcel.TargetId).Latitude, getCustomerLocation(parcel.TargetId).Longitude));
-			drone.Loc.Longitude = getCustomerLocation(parcel.TargetId).Longitude;
+			drone.Loc.Longitude = getCustomerLocation(parcel.TargetId).Longitude;//update the location to the target
 			drone.Loc.Latitude = getCustomerLocation(parcel.TargetId).Latitude;
 			drone.Status = IBL.BO.DroneStatuses.free;
 			updateDroneList(drone);
@@ -728,7 +739,7 @@ namespace BL
 			try
 			{ b = dal.GetBaseStation(baseId); }
 			catch (IDAL.DO.BaseIdNotExist ex)
-			{ throw new IBL.BO.BaseIdNotExist(ex.Message); }
+			{ throw new IBL.BO.IdNotExist(ex.Message,"BASE"); }
 
 			baseS.Id = b.Id;
 			baseS.Name = b.Name;
@@ -754,8 +765,8 @@ namespace BL
 			try
 			{ dal.GetDrone(droneId); }
 			catch (IDAL.DO.DroneIdNotExist ex)
-			{throw new IBL.BO.DroneIdNotExist(ex.Message); }
-			for (int i = 0; i < droneToList.Count(); i++)
+			{throw new IBL.BO.IdNotExist(ex.Message,"DRONE"); }
+			for (int i = 0; i < droneToList.Count(); i++)//get all drone
 			{
 				if (droneToList[i].Id == droneId)
 				{
@@ -768,7 +779,7 @@ namespace BL
 					drone.Loc.Latitude = droneToList[i].Loc.Latitude;
 				}
 			}
-			if (drone.Status == IBL.BO.DroneStatuses.Shipping)
+			if (drone.Status == IBL.BO.DroneStatuses.Shipping)//if drone is in shipping searche who is the parcel
 			{
 				foreach (IDAL.DO.Parcel item in dal.GetListParcels())
 				{
@@ -791,15 +802,13 @@ namespace BL
 			IBL.BO.Customer customer = new IBL.BO.Customer();
 			IBL.BO.CustomerInParcel target = new IBL.BO.CustomerInParcel();
 			IBL.BO.CustomerInParcel sender = new IBL.BO.CustomerInParcel();
-			try
-			{ customer = getCustomer(customerId); }
-			catch (IDAL.DO.CustomerIdNotExist ex)
-			{ throw new IBL.BO.CustomerIdNotExist(ex.Message); }
+
+			customer = getCustomer(customerId);
 			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
 			{
 				target.Id = item.TargetId;
 				target.Name = getCustomer(item.TargetId).Name;
-				if (item.SenderId == customerId)
+				if (item.SenderId == customerId)//if the customer is the sender
 					customer.ParcelFromCustomer.Add(new IBL.BO.ParcelAtCustomer
 					{ Id = item.Id, Weight = (IBL.BO.WeightCategories)item.Weight, Priority = (IBL.BO.Priorities)item.Priority,
 						status = getStatusOfParcel(item), SenderOrTraget = target, });
@@ -808,8 +817,8 @@ namespace BL
 			{
 				sender.Id = item.SenderId;
 				target.Name = getCustomer(item.SenderId).Name;
-				if (item.TargetId == customerId)
-					customer.ParcelFromCustomer.Add(new IBL.BO.ParcelAtCustomer
+				if (item.TargetId == customerId)//if the customer is the target
+					customer.ParcelToCustomer.Add(new IBL.BO.ParcelAtCustomer
 					{
 						Id = item.Id, Weight = (IBL.BO.WeightCategories)item.Weight, Priority = (IBL.BO.Priorities)item.Priority,
 						status = getStatusOfParcel(item), SenderOrTraget = sender,
@@ -831,7 +840,7 @@ namespace BL
 			try
 			{ p = dal.GetParcel(parcelId); }
 			catch (IDAL.DO.ParcelIdNotExist ex) 
-			{ throw new IBL.BO.ParcelIdNotExist(ex.Message); }
+			{ throw new IBL.BO.IdNotExist(ex.Message,"PARCEL"); }
 
 			parcel.Id = p.Id;
 			parcel.Weight = (IBL.BO.WeightCategories)p.Weight;
@@ -1012,7 +1021,7 @@ namespace BL
 					return location;
 				}
 			}
-			throw new IBL.BO.CustomerIdNotExist();
+			throw new IBL.BO.IdNotExist("CUSTOMER");
 		}
 		/// <summary>
 		/// the func calculate who is the closer base by his location
@@ -1053,7 +1062,7 @@ namespace BL
 			parcel.PickedUp = p.PickedUp;
 			parcel.Delivered = p.Delivered;
 
-			foreach(IDAL.DO.Customer item in dal.GetListCustomers())
+			foreach(IDAL.DO.Customer item in dal.GetListCustomers())//search who is the sender and who is the target
 			{
 				if (p.SenderId == item.Id)
 				{ customerS.Id = item.Id; customerS.Name = item.Name; }
@@ -1170,6 +1179,155 @@ namespace BL
 						
 			}
 			return counter;
+		}
+		/// <summary>
+		/// remove all parcel that their priority status is not equal to param="pri"
+		/// </summary>
+		/// <param name="p"></param>
+		/// <param name="pri"></param>
+		/// <returns> an list </returns>
+		private List<IDAL.DO.Parcel> removeByPriority(List<IDAL.DO.Parcel> p,IDAL.DO.Priorities pri)
+		{
+			List<IDAL.DO.Parcel> parcel = p;
+			for (int i = 0; i < parcel.Count(); i++)
+			{
+				if (parcel[i].Priority == pri)
+					parcel.RemoveAt(i);
+			}
+			return parcel;
+		}
+		/// <summary>
+		/// remove all parcel that the drone can't take
+		/// </summary>
+		/// <param name="p"></param>
+		/// <param name="w"></param>
+		/// <returns> an lisrt </returns>
+		private List<IDAL.DO.Parcel> removeByWeight(List<IDAL.DO.Parcel> p, IDAL.DO.WeightCategories w)
+		{
+			List<IDAL.DO.Parcel> parcel = p;
+			if (w == IDAL.DO.WeightCategories.Heavy)//if max weight of drone can take is heavy parcel so he can take everything 
+				return p;
+			else if (w == IDAL.DO.WeightCategories.Medium)//if max weight of drone can take is medium parcel so all parcel that heavy he can't takes
+			{
+				for (int i = 0; i < parcel.Count(); i++)
+				{
+					if (parcel[i].Weight == IDAL.DO.WeightCategories.Heavy)
+						parcel.RemoveAt(i);
+				}
+			}
+			else//if max weight of drone can take is light parcel so all parcel that heavy and medium he can't takes
+			{
+				for (int i = 0; i < parcel.Count(); i++)
+				{
+					if (parcel[i].Weight == IDAL.DO.WeightCategories.Heavy|| parcel[i].Weight == IDAL.DO.WeightCategories.Medium)
+						parcel.RemoveAt(i);
+				}
+			}
+			return parcel;
+		}
+		/// <summary>
+		/// the func calculate by priorities and battery whiche parcel the drone can take and if it is possible return the id of parcel
+		/// </summary>
+		/// <param name="p"></param>
+		/// <param name="drone"></param>
+		/// <returns> id of parcel </returns>
+		private int chooseParcel(List<IDAL.DO.Parcel> p, IBL.BO.DroneToList drone)
+		{
+			List<IBL.BO.ParcelToList> parcelA = new List<IBL.BO.ParcelToList>();//A,B,C IS PRIORITIES
+			List<IBL.BO.ParcelToList> parcelB = new List<IBL.BO.ParcelToList>();
+			List<IBL.BO.ParcelToList> parcelC = new List<IBL.BO.ParcelToList>();
+			for (int i = 0; i < p.Count(); i++)
+			{
+				//if the next parcel is equal to maxWeight
+				if (p[i].Weight == (IDAL.DO.WeightCategories)drone.MaxWeight)
+				{
+					parcelA.Add(new IBL.BO.ParcelToList
+					{
+						Id = p[i].Id,
+						NameSender = GetCustomer(p[i].SenderId).Name,
+						NameTarget = GetCustomer(p[i].TargetId).Name,
+						Weight = (IBL.BO.WeightCategories)p[i].Weight
+					});
+				}
+				//if the next parcel is equal to maxWeight -1 but not 0 (according the enum)
+				else if ((p[i].Weight == (IDAL.DO.WeightCategories)((int)drone.MaxWeight) - 1) && ((int)(drone.MaxWeight - 1) != 0))
+				{
+					parcelB.Add(new IBL.BO.ParcelToList
+					{
+						Id = p[i].Id,
+						NameSender = GetCustomer(p[i].SenderId).Name,
+						NameTarget = GetCustomer(p[i].TargetId).Name,
+						Weight = (IBL.BO.WeightCategories)p[i].Weight
+					});
+				}
+				// if the next parcel is equal to maxWeight - 2 but not 0(according the enum)
+				else if ((p[i].Weight == (IDAL.DO.WeightCategories)((int)drone.MaxWeight) - 2) && ((int)(drone.MaxWeight - 2) != 0))
+				{
+					parcelC.Add(new IBL.BO.ParcelToList
+					{
+						Id = p[i].Id,
+						NameSender = GetCustomer(p[i].SenderId).Name,
+						NameTarget = GetCustomer(p[i].TargetId).Name,
+						Weight = (IBL.BO.WeightCategories)p[i].Weight
+					});
+				}
+
+				//IBL.BO.Location loc = new IBL.BO.Location { Longitude = GetCustomer(p[i].SenderId).Loc.Longitude, Latitude = GetCustomer(p[i].SenderId).Loc.Latitude };
+				//double x = distanceBetweenTwoPoints(drone.Loc.Latitude, drone.Loc.Longitude,loc.Latitude ,loc.Longitude );//the distance between drone and the parcel
+
+					//if (parcel.Weight == drone.MaxWeight && (x < distance || distance == -1))//
+					//	distance = x;
+					//else if ((parcel.Weight == (IBL.BO.WeightCategories)((int)drone.MaxWeight) - 1) && ((int)drone.MaxWeight != 0))//if the next parcel is equal to maxWeight -1 but not 0 (according the enum)
+					//{
+					//	int battery = 
+					//}
+					//else if ((parcel.Weight == (IBL.BO.WeightCategories)((int)drone.MaxWeight) - 2) && ((int)drone.MaxWeight != 0))//if the next parcel is equal to maxWeight -2 but not 0 (according the enum)
+					//{
+
+					//}
+			}
+			int idA = closerParcel(parcelA, drone);
+			if (calcBatteryToShipping(drone, parcelA.Find(item => (item.Id == idA))) >= drone.Battery)//if the closer parcel in list A the drone can do the shipping
+				return idA;
+			int idB = closerParcel(parcelB, drone);
+			if (calcBatteryToShipping(drone, parcelA.Find(item => (item.Id == idB))) >= drone.Battery)//if the closer parcel in list B the drone can do the shipping
+				return idB;
+			int idC = closerParcel(parcelC, drone);
+			if (calcBatteryToShipping(drone, parcelA.Find(item => (item.Id == idC))) >= drone.Battery)//if the closer parcel in list C the drone can do the shipping
+				return idC;
+			return -1;//if the drone can take any parcel return -1
+		}
+		/// <summary>
+		/// check the weight of parcel and return the battery use per kilometer for thei parcel
+		/// </summary>
+		/// <param name="parcel"></param>
+		/// <returns> battery use </returns>
+		private double whichUse(IDAL.DO.Parcel parcel)
+		{
+			if (parcel.Weight == IDAL.DO.WeightCategories.Heavy)
+				return _useWhenHeavily;
+			else if (parcel.Weight == IDAL.DO.WeightCategories.Light)
+				return _useWhenMedium;
+			else
+				return _useWhenLightly;
+		}
+		/// <summary>
+		/// calculate the closer parcel from drone
+		/// </summary>
+		/// <param name="parcel"></param>
+		/// <returns> the id of parcel </returns>
+		private int closerParcel(List<IBL.BO.ParcelToList> parcel, IBL.BO.DroneToList drone)
+		{
+			double disToParcel = -1;
+			IBL.BO.ParcelToList p = new IBL.BO.ParcelToList();
+			foreach (IBL.BO.ParcelToList item in parcel)
+			{
+				IBL.BO.Location locParcel = new IBL.BO.Location { Longitude =senderLong(item.NameSender) , Latitude = senderLati(item.NameSender) };
+				double dis = distanceBetweenTwoPoints(locParcel.Latitude, locParcel.Longitude, drone.Loc.Latitude,drone.Loc.Longitude);
+				if (disToParcel == -1 || dis < disToParcel)//if "dis" that is calculate in the previous line is smaller than the "disToParcel"= the smaller distanse right now so "disToParcel = dis"
+				{ disToParcel = dis; p = item; }
+			}
+			return p.Id;
 		}
 	}
 }

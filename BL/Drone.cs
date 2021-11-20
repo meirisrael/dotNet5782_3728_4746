@@ -26,7 +26,8 @@ namespace IBL
 					$" MaxWeight: {this.MaxWeight }\n"+
 					$" Drone Statut: {this.Status}\n"+
 					$" Battery percent: {this.Battery}%\n"+
-					$" Location: {this.Loc.ToString()}"
+					$" Location: {this.Loc.ToString()}\n"+
+					$" Parcel in transit now: {this.ParcelInTransit.ToString()}"
 					;
 			}
 		}
