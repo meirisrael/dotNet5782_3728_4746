@@ -9,7 +9,7 @@ namespace BL
 
 	public class BL : IBL.IBL
 	{
-		private IDAL.IDal dal;
+		private IDAL.IDal dal = new DalObject.DalObject();
 		private static BL _instance = null;
 		public static BL GetInstance() => _instance ?? (_instance = new BL());
 
