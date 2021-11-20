@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IBL
 {
-	interface IBL
+	public interface IBL
 	{
 		//
 		public void AddBaseStation(int id, int name, int chargeSlots, BO.Location location);

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace BL
 {
 
-	class BL : IBL.IBL
+	public class BL : IBL.IBL
 	{
 		private IDAL.IDal dal;
 
@@ -18,7 +18,7 @@ namespace BL
 		private double _chargingRate;
 		List<IBL.BO.DroneToList> droneToList = new List<IBL.BO.DroneToList>();
 		//ctor
-		BL()
+		public BL()
 		{
 			getDataCharge();
 			reqListOfDrone();
@@ -649,6 +649,7 @@ namespace BL
 			//if ((drone.Battery - calcBatteryToShipping(drone, parcelToList)) < 0)
 			//	drone.IdOfParcel = parcel.Id;
 			drone.Status = IBL.BO.DroneStatuses.Shipping;
+			drone.IdOfParcel = parcel.Id;
 			updateDroneList(drone);
 			parcel.DroneId = drone.Id;
 			parcel.Requested = DateTime.Now;

@@ -27,7 +27,7 @@ namespace IBL
 		/// </summary>
 		public enum Update
 		{
-			AssignParcelToDrone = 1, ParcelOnDrone, ParcelDelivered, AssignDroneToBaseStation, DroneLeaveChargeStation
+			UpdateDrone = 1, UpdateBase, UpdateCustomer, DroneToCharge, DroneLeaveChargeStation,AffectParcel,ParcelCollection,ParcelDelivery
 		}
 		/// <summary>
 		/// this enum give to the user the option which display he want 
