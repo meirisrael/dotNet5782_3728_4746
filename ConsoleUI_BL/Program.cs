@@ -27,7 +27,7 @@ namespace ConsoleUI_BL
                         " 3 for display options \n" +
                         " 4 for list display options\n" +
                         " 5 to Exit");
-                    res = Enum.TryParse<IDAL.DO.Choice>(Console.ReadLine(), out choice);
+                    res = Enum.TryParse<IBL.BO.Choice>(Console.ReadLine(), out choice);
                     if (!res) Console.WriteLine("Wrong input");
                 } while (!res);
                 switch (choice)
@@ -289,7 +289,7 @@ namespace ConsoleUI_BL
                                 " 2 for a drone \n" +
                                 " 3 for a customer \n" +
                                 " 4 for a parcel");
-                            res = Enum.TryParse<IDAL.DO.Display>(Console.ReadLine(), out display);
+                            res = Enum.TryParse<IBL.BO.Display>(Console.ReadLine(), out display);
                             if (!res) Console.WriteLine("Wrong input");
                         } while (!res);
                         switch (display)
@@ -367,7 +367,7 @@ namespace ConsoleUI_BL
                             case IBL.BO.DisplayList.BaseStations:
                                 try
                                 {
-                                  foreach (IDAL.DO.BaseStation item in ibl.GetListOfBaseStations())
+                                    foreach (IDAL.DO.BaseStation item in ibl.GetListOfBaseStations())
                                 { Console.WriteLine(item.ToString()); }
                                 }
                                 catch (Exception ex)
