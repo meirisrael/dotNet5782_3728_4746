@@ -19,12 +19,12 @@ namespace IBL
 			public ParcelAtCustomer() : base() { SenderOrTraget = new(); }
 			public override string ToString()
 			{
-				return $"Parcel at customer:\n" +
-					$" Id: { this.Id}\n" +
-					$" Weight: {this.Weight}\n" +
-					$" Priority: {this.Priority}\n" +
-					$" status of parcel: {this.status}\n" +
-					$" The sender or the target: {this.SenderOrTraget}"
+				return $"\n" +
+					$"	Id: { this.Id}\n" +
+					$"	Weight: {this.Weight}\n" +
+					$"	Priority: {this.Priority}\n" +
+					$"	status of parcel: {this.status}\n" +
+					$"	The sender or the target: {this.SenderOrTraget}"
 					;
 
 
