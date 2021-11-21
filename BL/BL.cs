@@ -533,6 +533,10 @@ namespace BL
 				drone = dal.GetDrone(droneId);
 				drone.Model = model;
 				dal.UpdateDrone(drone);
+				for(int i = 0; i < droneToList.Count(); i++)
+                {
+					if (droneToList[i].Id == droneId) droneToList[i].Model = model;
+                }
 			}
 			catch (IDAL.DO.DroneIdNotExist ex)
 			{ throw new IBL.BO.IdNotExist(ex.Message, "DRONE"); }

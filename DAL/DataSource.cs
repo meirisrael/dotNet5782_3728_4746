@@ -44,8 +44,8 @@ namespace DalObject
 					Id = CounterBaseStation++,
 					Name = i,
 					ChargeSlots = r.Next(1,6),
-					Latitude = r.Next(-90, 91) * r.NextDouble(),
-					Longitude = r.Next(-180, 181) * r.NextDouble()
+					Latitude = r.Next(-90, 91) * r.NextDouble(),    //(r.Next(-90, 91) * r.NextDouble())%1 +34.5,  shipping only israel
+					Longitude = r.Next(-180, 181) * r.NextDouble()  //(r.Next(-180, 181) * r.NextDouble())%3.7 +29.5 shipping only israel
 				});
 			}
 			for (int i = 0; i < 5; i++)//for the drone
@@ -66,8 +66,8 @@ namespace DalObject
 					Id = CounterCustomer,
 					Name = ("a" + i),
 					Phone = (3761 + i).ToString(),
-					Latitude = r.Next(-90, 91) * r.NextDouble(),
-					Longitude = r.Next(-180, 181) * r.NextDouble()
+					Latitude = r.Next(-90, 91) * r.NextDouble(), //(r.Next(-90, 91) * r.NextDouble())%1 +34.5,  shipping only israel
+					Longitude = r.Next(-180, 181) * r.NextDouble() //(r.Next(-180, 181) * r.NextDouble())%3.7 +29.5 shipping only israel
 				});
 				if (i < 9)
 					CounterCustomer++;
