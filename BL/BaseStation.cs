@@ -16,14 +16,20 @@ namespace IBL
 			public Location Loc { get; set; }
 			public List<DroneCharge> DroneInCharge { get; set; }
 
+			public BaseStation() : base() { Loc = new(); DroneInCharge = new(); }
 			public override string ToString()
 			{
+				string charge="";
+				foreach (DroneCharge item in DroneInCharge)
+				{
+					charge += item.ToString();
+				}
 				return $"Base Station:\n" +
 					$" Id: {this.Id}\n" +
 					$" Name: { this.Name}\n" +
 					$" Charge Slots: {this.ChargeSlots}\n" +
 					$" Location: {this.Loc.ToString()}\n" +
-					$" Drone in charge: {this.DroneInCharge.ToString()}"
+					$" Drone in charge: {charge}"
 					;
 			}
 		}

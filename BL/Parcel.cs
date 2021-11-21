@@ -21,6 +21,7 @@ namespace IBL
 			public DateTime PickedUp { get; set; }
 			public DateTime Delivered { get; set; }
 
+			public Parcel() : base() { Sender = new(); Target = new(); Drone = new(); }
 			public override string ToString()
 			{
 				return $"Parcel:\n" +

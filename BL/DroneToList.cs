@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace IBL
-{
+{	
 	namespace BO
 	{
 		public class DroneToList
@@ -18,6 +18,7 @@ namespace IBL
 			public Location Loc { get; set; }
 			public int IdOfParcel { get; set; }
 
+			public DroneToList() : base() { Loc = new(); }
 			public override string ToString()
 			{
 				return $"Drone To List:\n" +

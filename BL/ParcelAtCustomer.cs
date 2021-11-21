@@ -16,6 +16,7 @@ namespace IBL
 			public ParcelStatues status { get; set; }
 			public CustomerInParcel SenderOrTraget { get; set; }
 
+			public ParcelAtCustomer() : base() { SenderOrTraget = new(); }
 			public override string ToString()
 			{
 				return $"Parcel at customer:\n" +

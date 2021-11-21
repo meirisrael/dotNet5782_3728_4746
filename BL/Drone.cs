@@ -16,19 +16,35 @@ namespace IBL
 			public DroneStatuses Status { get; set; }
 			public double Battery { get; set; }
 			public Location Loc { get; set; }
-			public Parcel ParcelInTransit { get; set; }
+			public ParcelInTransit InTransit { get; set; }
 
+			public Drone() : base() { Loc = new(); InTransit = new(); }
 			public override string ToString()
 			{
-				return $"Drone:\n" +
-					$" Id: {this.Id}\n" +
-					$" Model: {this.Model}\n" +
-					$" MaxWeight: {this.MaxWeight }\n"+
-					$" Drone Statut: {this.Status}\n"+
-					$" Battery percent: {this.Battery}%\n"+
-					$" Location: {this.Loc.ToString()}\n"+
-					$" Parcel in transit now: {this.ParcelInTransit.ToString()}"
-					;
+				string total = "";
+				if (InTransit.Id == 0)
+				{
+					return $"Drone:\n" +
+						  $" Id: {this.Id}\n" +
+						  $" Model: {this.Model}\n" +
+						  $" MaxWeight: {this.MaxWeight }\n" +
+						  $" Drone Statut: {this.Status}\n" +
+						  $" Battery percent: {this.Battery}%\n" +
+						  $" Location: {this.Loc.ToString()}\n" +
+						  $" Parcel in transit now: none ";
+				}
+				else
+				{
+					return $"Drone:\n" +
+						  $" Id: {this.Id}\n" +
+						  $" Model: {this.Model}\n" +
+						  $" MaxWeight: {this.MaxWeight }\n" +
+						  $" Drone Statut: {this.Status}\n" +
+						  $" Battery percent: {this.Battery}%\n" +
+						  $" Location: {this.Loc.ToString()}\n" +
+						  $" Parcel in transit now: {this.InTransit.ToString()}"
+						  ;
+				}
 			}
 		}
 	}
