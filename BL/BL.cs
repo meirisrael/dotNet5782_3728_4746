@@ -430,20 +430,17 @@ namespace BL
 
 			int r = new Random().Next(20, 41);
 			double battery = r;
-
-			int counter;
-			for (counter = 0; counter < droneToList.Count(); counter++)
+			IBL.BO.Location l = new() { Latitude = dal.GetBaseStation(firstBaseStation).Latitude, Longitude = dal.GetBaseStation(firstBaseStation).Longitude };
+			droneToList.Add(new IBL.BO.DroneToList
 			{
-				if (droneToList[counter].Id == id)
-				{
-					droneToList[counter].Status = IBL.BO.DroneStatuses.Maintenance;
-					droneToList[counter].Loc.Longitude = dal.GetBaseStation(firstBaseStation).Longitude;
-					droneToList[counter].Loc.Latitude = dal.GetBaseStation(firstBaseStation).Latitude;
-					break;
-				}
-			}
-			if (counter == droneToList.Count())
-			{ throw new IBL.BO.IdNotExist("DRONE"); }
+				Id = id,
+				Model = model,
+				MaxWeight = (IBL.BO.WeightCategories)weight,
+				Battery = battery,
+				Status = IBL.BO.DroneStatuses.Maintenance,
+				Loc = l,
+				IdOfParcel = 0
+			}) ;
 		}
 		/// <summary>
 		/// the func add a new customer to the data base
