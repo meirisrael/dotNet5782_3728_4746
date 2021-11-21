@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BL
 {
@@ -126,8 +124,8 @@ namespace BL
 				parcelToList.Add(new IBL.BO.ParcelToList
 				{
 					Id = item.Id,
-					NameSender=getCustomer(item.SenderId).Name,
-					NameTarget=getCustomer(item.TargetId).Name,
+					NameSender = getCustomer(item.SenderId).Name,
+					NameTarget = getCustomer(item.TargetId).Name,
 					Weight = (IBL.BO.WeightCategories)item.Weight,
 					Priority = (IBL.BO.Priorities)item.Priority,
 					Status = getStatusOfParcel(item)
@@ -408,8 +406,8 @@ namespace BL
 		public void AddDrone(int id, string model, IDAL.DO.WeightCategories weight, int firstBaseStation)
 		{
 			try
-			{ 
-				dal.AddDrone(id, model, weight); 
+			{
+				dal.AddDrone(id, model, weight);
 			}
 			catch (IDAL.DO.InvalidDroneId ex)
 			{ throw new IBL.BO.InvalidId(ex.Message, "DRONE"); }
@@ -421,8 +419,8 @@ namespace BL
 			{ throw new IBL.BO.IdExist(ex.Message, "DRONE"); }
 
 			try
-			{ 
-				dal.AssignDroneToBaseStation(id, firstBaseStation); 
+			{
+				dal.AssignDroneToBaseStation(id, firstBaseStation);
 			}
 			catch (IDAL.DO.DroneIdNotExist ex)
 			{ throw new IBL.BO.IdNotExist(ex.Message, "DRONE"); }
@@ -441,7 +439,7 @@ namespace BL
 				Status = IBL.BO.DroneStatuses.Maintenance,
 				Loc = l,
 				IdOfParcel = 0
-			}) ;
+			});
 		}
 		/// <summary>
 		/// the func add a new customer to the data base
@@ -533,10 +531,10 @@ namespace BL
 				drone = dal.GetDrone(droneId);
 				drone.Model = model;
 				dal.UpdateDrone(drone);
-				for(int i = 0; i < droneToList.Count(); i++)
-                {
+				for (int i = 0; i < droneToList.Count(); i++)
+				{
 					if (droneToList[i].Id == droneId) droneToList[i].Model = model;
-                }
+				}
 			}
 			catch (IDAL.DO.DroneIdNotExist ex)
 			{ throw new IBL.BO.IdNotExist(ex.Message, "DRONE"); }
@@ -664,8 +662,8 @@ namespace BL
 				parcel.Add(item);
 			}
 			List<IDAL.DO.Parcel> parcelEmrgency = removeByPriority(parcel, IDAL.DO.Priorities.Emergecey);//O(n)
-			parcelEmrgency = removeByWeight(parcel, (IDAL.DO.WeightCategories)drone.MaxWeight);
-			parcelEmrgency = (List<IDAL.DO.Parcel>)parcelEmrgency.OrderByDescending(item => item.Weight);
+			parcelEmrgency = removeByWeight(parcelEmrgency, (IDAL.DO.WeightCategories)drone.MaxWeight);
+			parcelEmrgency = (List<IDAL.DO.Parcel>)parcelEmrgency.OrderByDescending(item => (int)item.Weight);
 			parcelId = chooseParcel(parcelEmrgency, drone);
 			if (parcelId != -1)
 			{
@@ -679,7 +677,7 @@ namespace BL
 			}
 			//no found a parcel in priority emergency so go to the next priority
 			List<IDAL.DO.Parcel> parcelFast = removeByPriority(parcel, IDAL.DO.Priorities.Fast);//O(n)
-			parcelFast = removeByWeight(parcel, (IDAL.DO.WeightCategories)drone.MaxWeight);
+			parcelFast = removeByWeight(parcelFast, (IDAL.DO.WeightCategories)drone.MaxWeight);
 			parcelFast = (List<IDAL.DO.Parcel>)parcelFast.OrderByDescending(item => item.Weight);
 			parcelId = chooseParcel(parcelEmrgency, drone);
 			if (parcelId != -1)
@@ -694,7 +692,7 @@ namespace BL
 			}
 			//no found a parcel in priority fast so go to the next priority
 			List<IDAL.DO.Parcel> parcelNormal = removeByPriority(parcel, IDAL.DO.Priorities.Normal);//O(n)
-			parcelNormal = removeByWeight(parcel, (IDAL.DO.WeightCategories)drone.MaxWeight);
+			parcelNormal = removeByWeight(parcelNormal, (IDAL.DO.WeightCategories)drone.MaxWeight);
 			parcelNormal = (List<IDAL.DO.Parcel>)parcelNormal.OrderByDescending(item => item.Weight);
 			parcelId = chooseParcel(parcelEmrgency, drone);
 			if (parcelId != -1)
@@ -920,14 +918,14 @@ namespace BL
 			List<IBL.BO.BaseToList> baseS = new List<IBL.BO.BaseToList>();
 			foreach (IDAL.DO.BaseStation item in dal.GetListBaseStations())
 			{
-				IBL.BO.Location l = new IBL.BO.Location();
+				IBL.BO.Location l = new() { Latitude = item.Latitude, Longitude = item.Longitude };
 				baseS.Add(new IBL.BO.BaseToList
 				{
 					Id = item.Id,
 					Name = item.Name,
 					ChargeSlots = item.ChargeSlots,
 					ChargeBusy = howManyCharge(l)
-				});
+				}) ;
 			}
 			return (IEnumerable<IBL.BO.BaseToList>)baseS;
 		}
@@ -1167,21 +1165,6 @@ namespace BL
 			return statues;
 		}
 		/// <summary>
-		/// the func search where the drone is charge 
-		/// </summary>
-		/// <param name="d"></param>
-		/// <returns> return the index in the list in data base of the base station </returns>
-		private IBL.BO.Location whereDroneCharge(IBL.BO.DroneToList d)
-		{
-			IBL.BO.Location l = new IBL.BO.Location();
-			foreach (IDAL.DO.BaseStation item in dal.GetListBaseStations())
-			{
-				if (item.Longitude == d.Loc.Longitude && item.Latitude == d.Loc.Latitude)
-				{ l.Latitude = item.Latitude; l.Longitude = item.Longitude; return l; }
-			}
-			throw new IBL.BO.DroneNotInCharge();
-		}
-		/// <summary>
 		/// the func serche how many parcel the customer sent and their was deliver
 		/// </summary>
 		/// <param name="customerId"></param>
@@ -1251,9 +1234,8 @@ namespace BL
 			int counter = 0;
 			foreach (IBL.BO.DroneToList d in droneToList)
 			{
-				if (d.Status == IBL.BO.DroneStatuses.Maintenance && loc == whereDroneCharge(d))
+				if (d.Status == IBL.BO.DroneStatuses.Maintenance && loc.Longitude == d.Loc.Longitude && loc.Latitude == d.Loc.Latitude)
 					counter++;
-
 			}
 			return counter;
 		}
@@ -1268,7 +1250,7 @@ namespace BL
 			List<IDAL.DO.Parcel> parcel = p;
 			for (int i = 0; i < parcel.Count(); i++)
 			{
-				if (parcel[i].Priority == pri)
+				if (parcel[i].Priority != pri && p[i].DroneId == 0)
 					parcel.RemoveAt(i);
 			}
 			return parcel;

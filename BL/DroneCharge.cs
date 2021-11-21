@@ -15,9 +15,9 @@ namespace IBL
 
 			public override string ToString()
 			{
-				return $"Drone Charge:\n" +
-					$" Drone Id:{this.DroneId}\n" +
-					$" Station Id:{this.Battery}\n"
+				return $"\n" +
+					$"	Drone Id - {this.DroneId}\n" +
+					$"	Battery percent - {this.Battery}%\n"
 					;
 			}
 		}

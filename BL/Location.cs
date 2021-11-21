@@ -27,8 +27,8 @@ namespace IBL
 					longi += 'N';
 
 				return $"\n" +
-					$"	Longitude: {longi}\n"+
-					$"	Latitude: {lati}"
+					$"	Longitude - {longi}\n"+
+					$"	Latitude - {lati}"
 					;
 			}
 		}
