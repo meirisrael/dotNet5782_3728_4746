@@ -136,9 +136,9 @@ namespace ConsoleUI_BL
                                     " 2 to update a base station \n" +
                                     " 3 to update a customer \n" +
                                     " 4 to send a drone reload his battery at a base station \n" +
-                                    " 5 to make a drone leave his charge station" +
-                                    " 6 to make affect a parcel to a drone" +
-                                    " 7 to make a drone collect his affected parcel" +
+                                    " 5 to make a drone leave his charge station\n" +
+                                    " 6 to make affect a parcel to a drone\n" +
+                                    " 7 to make a drone collect his affected parcel\n" +
                                     " 8 to make a drone deliver his affected parcel");
 
                                 res = Enum.TryParse<IBL.BO.Update>(Console.ReadLine(), out update);

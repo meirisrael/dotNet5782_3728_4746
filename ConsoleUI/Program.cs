@@ -18,7 +18,7 @@ namespace ConsoleUI
             int intA,intB,intC,intD;
             double doubA,doubB;
             string stringA, stringB;
-            DateTime dateA, dateB, dateC, dateD;
+            //DateTime dateA, dateB, dateC, dateD;
             IDAL.DO.WeightCategories weight;
             IDAL.DO.Priorities priorities;
 
