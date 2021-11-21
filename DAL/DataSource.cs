@@ -22,10 +22,10 @@ namespace DalObject
 
 		internal class Config
 		{
-			internal static double useWhenFree = 0.5;//0.5% per kilometere
-			internal static double useWhenLightly = 2;//2% per kilometere
-			internal static double useWhenMedium = 3;//3% per kilometere
-			internal static double useWhenHeavily = 5;//5% per kilometere
+			internal static double useWhenFree = 0.0001;//0.5% per kilometere
+			internal static double useWhenLightly = 0.0003;//2% per kilometere
+			internal static double useWhenMedium = 0.0004;//3% per kilometere
+			internal static double useWhenHeavily =0.0055;//5% per kilometere
 			internal double chargingRate = 40; //40% per hour
 		}
 		/// <summary>
@@ -77,7 +77,7 @@ namespace DalObject
 				parcels.Add(new IDAL.DO.Parcel()
 				{
 					Id = CounterParcel++,
-					SenderId = i+3000,
+					SenderId = i+3000-1,
 					TargetId = CounterCustomer--,
 					Weight = (IDAL.DO.WeightCategories)(r.Next(1, 4)),
 					Priority = (IDAL.DO.Priorities)(r.Next(1, 4)),

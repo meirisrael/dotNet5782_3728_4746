@@ -14,6 +14,7 @@ namespace IBL
 			public double Battery { get; set; }
 			public Location Loc { get; set; }
 
+			public DroneInParcel() : base(){ Loc = new(); }
 			public override string ToString()
 			{
 				return $"Drone In Parcel:\n" +

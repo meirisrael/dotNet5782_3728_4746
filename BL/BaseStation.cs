@@ -16,6 +16,7 @@ namespace IBL
 			public Location Loc { get; set; }
 			public List<DroneCharge> DroneInCharge { get; set; }
 
+			public BaseStation() : base() { Loc = new(); DroneInCharge = new(); }
 			public override string ToString()
 			{
 				return $"Base Station:\n" +

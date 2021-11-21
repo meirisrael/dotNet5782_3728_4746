@@ -125,6 +125,8 @@ namespace BL
 				parcelToList.Add(new IBL.BO.ParcelToList
 				{
 					Id = item.Id,
+					NameSender=getCustomer(item.SenderId).Name,
+					NameTarget=getCustomer(item.TargetId).Name,
 					Weight = (IBL.BO.WeightCategories)item.Weight,
 					Priority = (IBL.BO.Priorities)item.Priority,
 					Status = getStatusOfParcel(item)
@@ -133,7 +135,7 @@ namespace BL
 			for (int i = 0; i < parcelToList.Count(); i++)
 			{
 				int droneIdAssigneToParcel = searchDroneIdAssigneToParcel(parcelToList[i]);
-				if (parcelToList[i].Status != IBL.BO.ParcelStatues.Delivered && droneIdAssigneToParcel > 0)//if the parcel was not deliver and the parcel he has a drone need to the shipping
+				if (parcelToList[i].Status < IBL.BO.ParcelStatues.Delivered && droneIdAssigneToParcel > 0)//if the parcel was not deliver and the parcel he has a drone ,need to the shipping
 				{
 					droneToList[searchDrone(droneIdAssigneToParcel)].Status = IBL.BO.DroneStatuses.Shipping;
 
@@ -141,7 +143,7 @@ namespace BL
 
 					int percent = (int)Math.Ceiling(calcBatteryToShipping(droneToList[searchDrone(droneIdAssigneToParcel)], parcelToList[i]));//calculate the percent of battery the drone need to do the shipping 
 					int finalPercent = new Random().Next(percent, 101);//choose random the percent between "percent" to 100
-					droneToList[i].Battery = finalPercent;
+					droneToList[searchDrone(droneIdAssigneToParcel)].Battery = finalPercent;
 				}
 			}
 		}

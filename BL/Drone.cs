@@ -18,6 +18,7 @@ namespace IBL
 			public Location Loc { get; set; }
 			public Parcel ParcelInTransit { get; set; }
 
+			public Drone() : base() { Loc = new(); ParcelInTransit = new(); }
 			public override string ToString()
 			{
 				return $"Drone:\n" +

@@ -17,6 +17,7 @@ namespace IBL
 			public List<ParcelAtCustomer> ParcelFromCustomer { get; set; }
 			public List<ParcelAtCustomer> ParcelToCustomer { get; set; }
 
+			public Customer(): base() { Loc = new(); ParcelFromCustomer = new(); ParcelToCustomer = new(); }
 			public override string ToString()
 			{
 				return $"Customer:\n" +

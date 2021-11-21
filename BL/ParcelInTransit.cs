@@ -20,6 +20,7 @@ namespace IBL
 			public Location LocDelivered { get; set; }
 			public double DistanceDelivery { get; set; }
 
+			public ParcelInTransit() : base() { Sender = new(); Target = new(); LocPickedUp = new(); LocDelivered = new(); }
 			public override string ToString()
 			{
 				return $"Parcel In Transit:\n" +
