@@ -15,9 +15,9 @@ namespace IBL
 
 			public override string ToString()
 			{
-				return $"Customer:\n" +
-					$" Id: {this.Id}\n" +
-					$" Name: {this.Name}"
+				return $"\n		Customer-\n" +
+					$"			Id: {this.Id}\n" +
+					$"			Name: {this.Name}"
 					;
 			}
 		}

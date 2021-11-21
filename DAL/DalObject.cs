@@ -127,7 +127,7 @@ namespace DalObject
 				Priority = priorities,
 				DroneId = droneId,
 				Requested = DateTime.Now,
-				Scheduled = DateTime.Now.AddSeconds(5),
+				Scheduled = DateTime.MinValue,
 				PickedUp = DateTime.MinValue,
 				Delivered = DateTime.MinValue
 			});
@@ -438,7 +438,8 @@ namespace DalObject
 			for (int i = 0; i < DataSource.drone.Count(); i++)
 			{
 				if (DataSource.drone[i].Id == drone.Id)
-				{ DataSource.drone[i] = drone; }
+				{ 
+					DataSource.drone[i] = drone; break; }
 			}
 		}
 		/// <summary>
@@ -497,9 +498,5 @@ namespace DalObject
 		/// the func return the list of drone that charge in the base station 
 		/// </summary>
 		/// <returns> a list of drone charge </returns>
-		//public IEnumerable<IDAL.DO.DroneCharge> GetListOfDroneCharge()
-		//{
-
-		//}
 	}
 }

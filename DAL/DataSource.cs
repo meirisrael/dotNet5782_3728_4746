@@ -43,7 +43,7 @@ namespace DalObject
 				{
 					Id = CounterBaseStation++,
 					Name = i,
-					ChargeSlots = r.Next() % 5,
+					ChargeSlots = r.Next(1,6),
 					Latitude = r.Next(-90, 91) * r.NextDouble(),
 					Longitude = r.Next(-180, 181) * r.NextDouble()
 				});
