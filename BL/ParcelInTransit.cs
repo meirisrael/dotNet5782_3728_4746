@@ -8,7 +8,7 @@ namespace IBL
 {
 	namespace BO
 	{
-		class ParcelInTransit : Location
+		public class ParcelInTransit
 		{
 			public int Id { get; set; }
 			public bool Status { get; set; }
@@ -23,16 +23,16 @@ namespace IBL
 			public ParcelInTransit() : base() { Sender = new(); Target = new(); LocPickedUp = new(); LocDelivered = new(); }
 			public override string ToString()
 			{
-				return $"Parcel In Transit:\n" +
-					$" Id: {this.Id}\n" +
-					$" Parcel Statut: {this.Status}\n" +
-					$" Weight: {this.Weight}\n" +
-					$" Priority: {this.Priority}\n" +
-					$" Sender: {this.Sender.ToString()}\n" +
-					$" Target: {this.Target.ToString()}\n" +
-					$" Location of PickedUp: {this.LocPickedUp.ToString()}\n" +
-					$" Location of Delivered: {this.LocDelivered.ToString()}\n" +
-					$" The distance of delivery: {this.DistanceDelivery}"
+				return $"	\nParcel In Transit:\n" +
+					$"	Id: {this.Id}\n" +
+					$"	Parcel Statut: {this.Status}\n" +
+					$"	Weight: {this.Weight}\n" +
+					$"	Priority: {this.Priority}\n" +
+					$"	Sender: {this.Sender.ToString()}\n" +
+					$"	Target: {this.Target.ToString()}\n" +
+					$"	Location of PickedUp: {this.LocPickedUp.ToString()}\n" +
+					$"	Location of Delivered: {this.LocDelivered.ToString()}\n" +
+					$"	The distance of delivery: {this.DistanceDelivery}"
 					;
 			}
 		}

@@ -25,7 +25,7 @@ namespace DalObject
 			internal static double useWhenFree = 0.0001;//0.5% per kilometere
 			internal static double useWhenLightly = 0.0003;//2% per kilometere
 			internal static double useWhenMedium = 0.0004;//3% per kilometere
-			internal static double useWhenHeavily =0.0055;//5% per kilometere
+			internal static double useWhenHeavily =0.0007;//5% per kilometere
 			internal double chargingRate = 40; //40% per hour
 		}
 		/// <summary>
@@ -39,13 +39,13 @@ namespace DalObject
 			int CounterParcel = 4000;
 			for (int i = 0; i < 2; i++)//for base station
 			{
-				baseStation.Add(new IDAL.DO.BaseStation() 
+				baseStation.Add(new IDAL.DO.BaseStation()
 				{
 					Id = CounterBaseStation++,
 					Name = i,
 					ChargeSlots = r.Next() % 5,
-					Latitude = (double)(r.Next(-90,91)),
-					Longitude = (double)(r.Next(-180, 181))
+					Latitude = r.Next(-90, 91) * r.NextDouble(),
+					Longitude = r.Next(-180, 181) * r.NextDouble()
 				});
 			}
 			for (int i = 0; i < 5; i++)//for the drone
@@ -66,8 +66,8 @@ namespace DalObject
 					Id = CounterCustomer,
 					Name = ("a" + i),
 					Phone = (3761 + i).ToString(),
-					Latitude = (double)(r.Next(-90, 91)),
-					Longitude = (double)(r.Next(-180, 181))
+					Latitude = r.Next(-90, 91) * r.NextDouble(),
+					Longitude = r.Next(-180, 181) * r.NextDouble()
 				});
 				if (i < 9)
 					CounterCustomer++;

@@ -20,13 +20,23 @@ namespace IBL
 			public Customer(): base() { Loc = new(); ParcelFromCustomer = new(); ParcelToCustomer = new(); }
 			public override string ToString()
 			{
+				string from_ = "";
+				string to_ = "";
+				foreach (ParcelAtCustomer item in ParcelFromCustomer)
+				{
+					from_ += item.ToString();
+				}
+				foreach (ParcelAtCustomer item in ParcelToCustomer)
+				{
+					to_ += item.ToString();
+				}
 				return $"Customer:\n" +
 					$" Id: {this.Id}\n" +
 					$" Name: {this.Name}\n" +
 					$" Phone: {this.Phone}\n" +
 					$" Location: {this.Loc.ToString()}\n" +
-					$" Parcel From Customer: {this.ParcelFromCustomer.ToString()}\n" +
-					$" Parcel To Customer: {this.ParcelToCustomer.ToString()}\n"
+					$" Parcel From Customer: {from_}\n" +
+					$" Parcel To Customer: {to_}\n"
 					;
 			}
 		}

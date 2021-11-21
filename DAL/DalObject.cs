@@ -251,13 +251,9 @@ namespace DalObject
 		/// <param name="baseId"></param>
 		public void AssignDroneToBaseStation(int droneId, int baseId)
 		{
-			if (DataSource.parcels.Any(item => item.Id == droneId)) throw new IDAL.DO.DroneIdNotExist();
-			foreach (IDAL.DO.Drone item in DataSource.drone)
-			{
-				if (item.Id == droneId)
-					break;
-			}
-			if(DataSource.baseStation.Any(item=>item.Id==baseId)) throw new IDAL.DO.BaseIdNotExist();
+			if (DataSource.drone.All(item => item.Id != droneId)) throw new IDAL.DO.DroneIdNotExist();
+			
+			if(DataSource.baseStation.All(item=>item.Id!=baseId)) throw new IDAL.DO.BaseIdNotExist();
 
 			for (int i = 0; i < DataSource.baseStation.Count; i++)
 			{

@@ -85,7 +85,9 @@ namespace ConsoleUI_BL
                                     "   2.Medium\n" +
                                     "   3.Heavy");
                                 Enum.TryParse<IDAL.DO.WeightCategories>(Console.ReadLine(), out weight);
-                                Console.WriteLine("First Base Id:");
+                                Console.WriteLine("Choose first Base Id:");
+                                foreach (IBL.BO.BaseToList item in ibl.GetListOfBaseStations())
+                                { Console.WriteLine(item.ToString()); }
                                 int.TryParse(Console.ReadLine(), out intB);
                                 try
                                 {

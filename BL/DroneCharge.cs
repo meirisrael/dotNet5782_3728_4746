@@ -17,7 +17,7 @@ namespace IBL
 			{
 				return $"Drone Charge:\n" +
 					$" Drone Id:{this.DroneId}\n" +
-					$" Station Id:{this.Battery}"
+					$" Station Id:{this.Battery}\n"
 					;
 			}
 		}
