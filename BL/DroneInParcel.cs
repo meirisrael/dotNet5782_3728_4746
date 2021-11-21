@@ -17,10 +17,10 @@ namespace IBL
 			public DroneInParcel() : base(){ Loc = new(); }
 			public override string ToString()
 			{
-				return $"Drone In Parcel:\n" +
-					$" Id: {this.Id}\n" +
-					$" Battery percent: {this.Battery}%\n" +
-					$" Location: {this.Loc.ToString()}"
+				return $"\n	Drone In Parcel:\n" +
+					$"	Id: {this.Id}\n" +
+					$"	Battery percent: {this.Battery}%\n" +
+					$"	Location: {this.Loc.ToString()}"
 					;
 			}
 		}
