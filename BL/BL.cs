@@ -656,22 +656,19 @@ namespace BL
 				throw new IBL.BO.DroneNotFree();
 
 			IDAL.DO.Parcel p = new IDAL.DO.Parcel();
-			List<IDAL.DO.Parcel> parcel = new List<IDAL.DO.Parcel>();
-			foreach (IDAL.DO.Parcel item in dal.GetListOfParcelsNotAssignedToDrone())//O(n)
-			{
-				parcel.Add(item);
-			}
-			if (parcel.Count() == 0)
+			List<IDAL.DO.Parcel> parcel_ = (List<IDAL.DO.Parcel>)dal.GetListOfParcelsNotAssignedToDrone();//new List<IDAL.DO.Parcel>();
+			if (parcel_.Count() == 0)
 				throw new IBL.BO.AllParcelAssoc();
-			List<IDAL.DO.Parcel> parcelEmrgency = removeByPriority(parcel, IDAL.DO.Priorities.Emergecey);//O(n)
-			parcelEmrgency = removeByWeight(parcelEmrgency, (IDAL.DO.WeightCategories)drone.MaxWeight);
-			parcelEmrgency = parcelEmrgency.OrderByDescending(item => (int)item.Weight).ToList();
+			List<IDAL.DO.Parcel> parcelEmrgency = (List<IDAL.DO.Parcel>)dal.GetListOfParcelsNotAssignedToDrone();//removeByPriority(parcel, IDAL.DO.Priorities.Emergecey);//O(n)
+			parcelEmrgency.RemoveAll(item => (int)item.Priority != 3);
+			parcelEmrgency.RemoveAll(item=>(int)item.Weight>(int)drone.MaxWeight);//(parcelEmrgency, (IDAL.DO.WeightCategories)drone.MaxWeight);
+			parcelEmrgency.OrderByDescending(item => (int)item.Weight).ToList();
 			parcelId = chooseParcel(parcelEmrgency, drone);
 			if (parcelId != -1)
 			{
 				drone.Status = IBL.BO.DroneStatuses.Shipping;//change status of drone 
 				updateDroneList(drone);//update drone in data base
-				p = parcel.Find(item => (item.Id == parcelId));//find parcel from the list of parcel by id
+				p = parcel_.Find(item => (item.Id == parcelId));//find parcel from the list of parcel by id
 				p.DroneId = drone.Id;
 				p.Scheduled = DateTime.Now;//update time of 
 				dal.UpdateParcel(p);
@@ -679,15 +676,16 @@ namespace BL
 				return true;//no need to continue
 			}
 			//no found a parcel in priority emergency so go to the next priority
-			List<IDAL.DO.Parcel> parcelFast = removeByPriority(parcel, IDAL.DO.Priorities.Fast);//O(n)
-			parcelFast = removeByWeight(parcelFast, (IDAL.DO.WeightCategories)drone.MaxWeight);
-			parcelFast = parcelFast.OrderByDescending(item => (int)item.Weight).ToList();
+			List<IDAL.DO.Parcel> parcelFast = (List<IDAL.DO.Parcel>)dal.GetListOfParcelsNotAssignedToDrone();//removeByPriority(parcel, IDAL.DO.Priorities.Emergecey);//O(n)
+			parcelFast.RemoveAll(item => (int)item.Priority != 2);
+			parcelFast.RemoveAll(item => (int)item.Weight > (int)drone.MaxWeight);//(parcelEmrgency, (IDAL.DO.WeightCategories)drone.MaxWeight);
+			parcelFast.OrderByDescending(item => (int)item.Weight).ToList();
 			parcelId = chooseParcel(parcelFast, drone);
 			if (parcelId != -1)
 			{
 				drone.Status = IBL.BO.DroneStatuses.Shipping;//change status of drone 
 				updateDroneList(drone);//update drone in data base
-				p = parcel.Find(item => (item.Id == parcelId));//find parcel from the list of parcel by id
+				p = parcel_.Find(item => (item.Id == parcelId));//find parcel from the list of parcel by id
 				p.DroneId = drone.Id;
 				p.Scheduled = DateTime.Now;//update time of 
 				dal.UpdateParcel(p);
@@ -695,15 +693,16 @@ namespace BL
 				return true;//no need to continue
 			}
 			//no found a parcel in priority fast so go to the next priority
-			List<IDAL.DO.Parcel> parcelNormal = removeByPriority(parcel, IDAL.DO.Priorities.Normal);//O(n)
-			parcelNormal = removeByWeight(parcelNormal, (IDAL.DO.WeightCategories)drone.MaxWeight);
-			parcelNormal = parcelNormal.OrderByDescending(item => (int)item.Weight).ToList();
+			List<IDAL.DO.Parcel> parcelNormal = (List<IDAL.DO.Parcel>)dal.GetListOfParcelsNotAssignedToDrone();//removeByPriority(parcel, IDAL.DO.Priorities.Emergecey);//O(n)
+			parcelNormal.RemoveAll(item => (int)item.Priority != 1);
+			parcelNormal.RemoveAll(item => (int)item.Weight > (int)drone.MaxWeight);//(parcelEmrgency, (IDAL.DO.WeightCategories)drone.MaxWeight);
+			parcelNormal.OrderByDescending(item => (int)item.Weight).ToList();
 			parcelId = chooseParcel(parcelNormal, drone);
 			if (parcelId != -1)
 			{
 				drone.Status = IBL.BO.DroneStatuses.Shipping;//change status of drone 
 				updateDroneList(drone);//update drone in data base
-				p = parcel.Find(item => (item.Id == parcelId));//find parcel from the list of parcel by id
+				p = parcel_.Find(item => (item.Id == parcelId));//find parcel from the list of parcel by id
 				p.DroneId = drone.Id;
 				p.Scheduled = DateTime.Now;//update time of 
 				dal.UpdateParcel(p);
