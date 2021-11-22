@@ -37,6 +37,7 @@ namespace DalObject
 			int CounterDrones = 1000;
 			int CounterCustomer = 3000;
 			int CounterParcel = 4000;
+			string[] name_ = new string[] { "Meir", "Israel", "Hilel", "Mendel", "Chimon", "David", "Loki", "Rephael", "levi", "Nathan" };
 			for (int i = 0; i < 2; i++)//for base station
 			{
 				baseStation.Add(new IDAL.DO.BaseStation()
@@ -64,7 +65,7 @@ namespace DalObject
 				customers.Add(new IDAL.DO.Customer()
 				{
 					Id = CounterCustomer,
-					Name = ("a" + i),
+					Name = name_[i],
 					Phone = (3761 + i).ToString(),
 					Latitude = r.Next(-90, 91) * r.NextDouble(), //(r.Next(-90, 91) * r.NextDouble())%1 +34.5,  shipping only israel
 					Longitude = r.Next(-180, 181) * r.NextDouble() //(r.Next(-180, 181) * r.NextDouble())%3.7 +29.5 shipping only israel

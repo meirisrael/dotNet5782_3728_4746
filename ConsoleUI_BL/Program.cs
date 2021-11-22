@@ -67,7 +67,7 @@ namespace ConsoleUI_BL
                                     loc.Longitude = doubA;
                                     loc.Latitude = doubB;
                                     ibl.AddBaseStation(intA, intB, intC, loc);
-                                    Console.WriteLine("Successfuly added:");
+                                    Console.WriteLine("Successfuly added.");
 
                                     break;
 
@@ -87,7 +87,7 @@ namespace ConsoleUI_BL
                                     { Console.WriteLine(item.ToString()); }
                                     int.TryParse(Console.ReadLine(), out intB);
                                     ibl.AddDrone(intA, stringA, weight, intB);
-                                    Console.WriteLine("Successfuly added:");
+                                    Console.WriteLine("Successfuly added.");
 
                                     break;
                                 case IBL.BO.Add.AddCustomer:
@@ -104,7 +104,7 @@ namespace ConsoleUI_BL
                                     loc.Longitude = doubA;
                                     loc.Latitude = doubB;
                                     ibl.AddCustomer(intA, stringA, stringB, loc);
-                                    Console.WriteLine("Successfuly added:");
+                                    Console.WriteLine("Successfuly added.");
                                     break;
 
                                 case IBL.BO.Add.AddParcel:
@@ -125,9 +125,10 @@ namespace ConsoleUI_BL
                                         "   3.Emergecey");
                                     Enum.TryParse<IDAL.DO.Priorities>(Console.ReadLine(), out priorities);
                                     ibl.AddParcel(intA, intB, intC, weight, priorities);
-                                    Console.WriteLine("Successfuly added:");
+                                    Console.WriteLine("Successfuly added.");
                                     break;
                                 default:
+                                    Console.WriteLine("Wrong input");
                                     break;
                             }
                             break;
@@ -156,6 +157,7 @@ namespace ConsoleUI_BL
                                     Console.WriteLine("Model:");
                                     stringA = Console.ReadLine();
                                     ibl.UpdateDrone(intA, stringA);
+                                    Console.WriteLine("Successfuly updated.");
                                     break;
 
                                 case IBL.BO.Update.UpdateBase:
@@ -166,6 +168,7 @@ namespace ConsoleUI_BL
                                     Console.WriteLine("Chargeslots:");
                                     stringB = Console.ReadLine();
                                     ibl.UpdateBaseStation(intA, stringA, stringB);
+                                    Console.WriteLine("Successfuly updated.");
                                     break;
 
                                 case IBL.BO.Update.UpdateCustomer:
@@ -176,12 +179,14 @@ namespace ConsoleUI_BL
                                     Console.WriteLine("Phone:");
                                     stringB = Console.ReadLine();
                                     ibl.UpdateCustomer(intA, stringA, stringB);
+                                    Console.WriteLine("Successfuly updated.");
                                     break;
 
                                 case IBL.BO.Update.DroneToCharge:
                                     Console.WriteLine("DroneId:");
                                     int.TryParse(Console.ReadLine(), out intA);
                                     ibl.DroneToCharge(intA);
+                                    Console.WriteLine("Drone was sent to charging.");
                                     break;
 
                                 case IBL.BO.Update.DroneLeaveChargeStation:
@@ -190,23 +195,28 @@ namespace ConsoleUI_BL
                                     Console.WriteLine("Time(in minutes):");
                                     int.TryParse(Console.ReadLine(), out intB);
                                     ibl.DroneLeaveCharge(intA, intB);
+                                    Console.WriteLine("Drone was leav the charging-station.");
                                     break;
                                 case IBL.BO.Update.AffectParcel:
                                     Console.WriteLine("DroneId:");
                                     int.TryParse(Console.ReadLine(), out intA);
                                     ibl.AffectParcelToDrone(intA);
+                                    Console.WriteLine("Drone was affected to a parcel successfuly.");
                                     break;
                                 case IBL.BO.Update.ParcelCollection:
                                     Console.WriteLine("DroneId:");
                                     int.TryParse(Console.ReadLine(), out intA);
                                     ibl.ParcelCollection(intA);
+                                    Console.WriteLine("Drone was collect the parcel parcel successfuly.");
                                     break;
                                 case IBL.BO.Update.ParcelDelivery:
                                     Console.WriteLine("DroneId:");
                                     int.TryParse(Console.ReadLine(), out intA);
                                     ibl.ParcelDeliverd(intA);
+                                    Console.WriteLine("Drone was deliver the parcel parcel successfuly.");
                                     break;
                                 default:
+                                    Console.WriteLine("Wrong input");
                                     break;
                             }
                             break;
@@ -248,6 +258,7 @@ namespace ConsoleUI_BL
                                     Console.WriteLine((ibl.GetParcel(intA)).ToString());
                                     break;
                                 default:
+                                    Console.WriteLine("Wrong input");
                                     break;
                             }
                             break;
@@ -296,6 +307,7 @@ namespace ConsoleUI_BL
                                     { Console.WriteLine(item.ToString()); }
                                     break;
                                 default:
+                                    Console.WriteLine("Wrong input");
                                     break;
                             }
                             break;

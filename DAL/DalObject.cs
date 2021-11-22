@@ -111,11 +111,9 @@ namespace DalObject
 			foreach (IDAL.DO.Parcel item in DataSource.parcels)
 			{ if (item.Id == id) throw new IDAL.DO.ParcelIdExist(); }
 
-			if (DataSource.customers.Any(item => item.Id == senderId)) ;
-			else
+			if (!DataSource.customers.Any(item => item.Id == senderId)) ;
 				throw new IDAL.DO.SenderIdNotExist();
-			if (DataSource.customers.Any(item => item.Id == targetId)) ;
-			else
+			if (!DataSource.customers.Any(item => item.Id == targetId)) ;
 				throw new IDAL.DO.TargetIdNotExist();
 
 			DataSource.parcels.Add(new IDAL.DO.Parcel()
@@ -143,11 +141,9 @@ namespace DalObject
 		{
 			IDAL.DO.Parcel p = new IDAL.DO.Parcel();
 			IDAL.DO.Drone d = new IDAL.DO.Drone();
-			if (DataSource.parcels.Any(item => item.Id == parcelId)) ;
-			else
+			if (!DataSource.parcels.Any(item => item.Id == parcelId)) ;
 				throw new IDAL.DO.ParcelIdNotExist();
-			if (DataSource.drone.Any(item => item.Id == droneId)) ;
-			else
+			if (!DataSource.drone.Any(item => item.Id == droneId)) ;
 				throw new IDAL.DO.DroneIdNotExist();
 				
 			foreach (IDAL.DO.Parcel item in DataSource.parcels)
@@ -191,14 +187,8 @@ namespace DalObject
 		/// <param name="parcelId"></param>
 		public void ParcelOnDrone(int parcelId)
 		{
-			if (DataSource.parcels.Any(item => item.Id == parcelId)) ;
-			else
+			if (!DataSource.parcels.Any(item => item.Id == parcelId)) ;
 				throw new IDAL.DO.ParcelIdNotExist();
-			foreach (IDAL.DO.Parcel item in DataSource.parcels)
-			{
-				if (item.Id == parcelId)
-					break;
-			}
 
 			for (int i = 0; i < DataSource.parcels.Count; i++)
 			{
@@ -217,14 +207,8 @@ namespace DalObject
 		/// <param name="parcelId"></param>
 		public void ParcelDelivered(int parcelId)
 		{
-			if (DataSource.parcels.Any(item => item.Id == parcelId)) ;
-			else
+			if (!DataSource.parcels.Any(item => item.Id == parcelId)) ;
 				throw new IDAL.DO.ParcelIdNotExist();
-			foreach (IDAL.DO.Parcel item in DataSource.parcels)
-			{
-				if (item.Id == parcelId)
-					break;
-			}
 
 			for (int i = 0; i < DataSource.parcels.Count; i++)
 			{
@@ -244,12 +228,10 @@ namespace DalObject
 		/// <param name="baseId"></param>
 		public void AssignDroneToBaseStation(int droneId, int baseId)
 		{
-			if (DataSource.drone.Any(item => item.Id == droneId)) ;
-			else
+			if (!DataSource.drone.Any(item => item.Id == droneId)) ;
 				throw new IDAL.DO.DroneIdNotExist();
 
-			if (DataSource.baseStation.Any(item => item.Id == baseId)) ;
-			else
+			if (!DataSource.baseStation.Any(item => item.Id == baseId)) ;
 				throw new IDAL.DO.BaseIdNotExist();
 
 			for (int i = 0; i < DataSource.baseStation.Count; i++)
@@ -271,22 +253,10 @@ namespace DalObject
 		/// <param name="baseId"></param>
 		public void DroneLeaveChargeStation(int droneId, int baseId)
 		{
-			if (DataSource.drone.Any(item => item.Id == droneId)) ;
-			else
+			if (!DataSource.drone.Any(item => item.Id == droneId)) ;
 				throw new IDAL.DO.DroneIdNotExist();
-			if (DataSource.baseStation.Any(item => item.Id == baseId)) ;
-			else
+			if (!DataSource.baseStation.Any(item => item.Id == baseId)) ;
 				throw new IDAL.DO.BaseIdNotExist();
-			foreach (IDAL.DO.Drone item in DataSource.drone)
-			{
-				if (item.Id == droneId)
-					break;
-			}
-			foreach (IDAL.DO.BaseStation item in DataSource.baseStation)
-			{
-				if (item.Id == baseId)
-					break;
-			}
 
 			for (int i = 0; i < DataSource.baseStation.Count; i++)
 			{
@@ -438,8 +408,9 @@ namespace DalObject
 			for (int i = 0; i < DataSource.drone.Count(); i++)
 			{
 				if (DataSource.drone[i].Id == drone.Id)
-				{ 
-					DataSource.drone[i] = drone; break; }
+				{	
+					DataSource.drone[i] = drone; break;
+				}
 			}
 		}
 		/// <summary>
@@ -451,7 +422,9 @@ namespace DalObject
 			for (int i = 0; i < DataSource.baseStation.Count(); i++)
 			{
 				if (DataSource.baseStation[i].Id == baseStation.Id)
-				{ DataSource.baseStation[i] = baseStation; }
+				{ 
+					DataSource.baseStation[i] = baseStation; break;
+				}
 			}
 		}
 		/// <summary>
@@ -463,7 +436,9 @@ namespace DalObject
 			for (int i = 0; i < DataSource.customers.Count(); i++)
 			{
 				if (DataSource.customers[i].Id == customer.Id)
-				{ DataSource.customers[i] = customer; }
+				{ 
+					DataSource.customers[i] = customer; break;
+				}
 			}
 		}
 		/// <summary>
@@ -475,7 +450,9 @@ namespace DalObject
 			for (int i = 0; i < DataSource.parcels.Count(); i++)
 			{
 				if (DataSource.parcels[i].Id == parcel.Id)
-					DataSource.parcels[i] = parcel;
+				{
+					DataSource.parcels[i] = parcel; break;
+				}
 			}
 		}
 		//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -494,9 +471,5 @@ namespace DalObject
 			arr[4] = c.chargingRate;
 			return arr;
 		}
-		/// <summary>
-		/// the func return the list of drone that charge in the base station 
-		/// </summary>
-		/// <returns> a list of drone charge </returns>
 	}
 }
