@@ -111,7 +111,7 @@ namespace DalObject
 			foreach (IDAL.DO.Parcel item in DataSource.parcels)
 			{ if (item.Id == id) throw new IDAL.DO.ParcelIdExist(); }
 
-			if (DataSource.customers.Any(item => item.Id == senderId))
+			if (!DataSource.customers.Any(item => item.Id == senderId))
 				throw new IDAL.DO.SenderIdNotExist();
 			if (!DataSource.customers.Any(item => item.Id == targetId))
 				throw new IDAL.DO.TargetIdNotExist();
