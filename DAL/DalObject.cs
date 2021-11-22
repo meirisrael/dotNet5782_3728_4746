@@ -187,7 +187,7 @@ namespace DalObject
 		/// <param name="parcelId"></param>
 		public void ParcelOnDrone(int parcelId)
 		{
-			if (!DataSource.parcels.Any(item => item.Id == parcelId)) ;
+			if (!DataSource.parcels.Any(item => item.Id == parcelId)) 
 				throw new IDAL.DO.ParcelIdNotExist();
 
 			for (int i = 0; i < DataSource.parcels.Count; i++)
@@ -207,7 +207,7 @@ namespace DalObject
 		/// <param name="parcelId"></param>
 		public void ParcelDelivered(int parcelId)
 		{
-			if (!DataSource.parcels.Any(item => item.Id == parcelId)) ;
+			if (!DataSource.parcels.Any(item => item.Id == parcelId)) 
 				throw new IDAL.DO.ParcelIdNotExist();
 
 			for (int i = 0; i < DataSource.parcels.Count; i++)
