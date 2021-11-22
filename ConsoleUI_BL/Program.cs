@@ -67,6 +67,7 @@ namespace ConsoleUI_BL
                                     loc.Longitude = doubA;
                                     loc.Latitude = doubB;
                                     ibl.AddBaseStation(intA, intB, intC, loc);
+                                    Console.WriteLine("Successfuly added:");
 
                                     break;
 
@@ -86,6 +87,7 @@ namespace ConsoleUI_BL
                                     { Console.WriteLine(item.ToString()); }
                                     int.TryParse(Console.ReadLine(), out intB);
                                     ibl.AddDrone(intA, stringA, weight, intB);
+                                    Console.WriteLine("Successfuly added:");
 
                                     break;
                                 case IBL.BO.Add.AddCustomer:
@@ -102,6 +104,7 @@ namespace ConsoleUI_BL
                                     loc.Longitude = doubA;
                                     loc.Latitude = doubB;
                                     ibl.AddCustomer(intA, stringA, stringB, loc);
+                                    Console.WriteLine("Successfuly added:");
                                     break;
 
                                 case IBL.BO.Add.AddParcel:
@@ -122,6 +125,7 @@ namespace ConsoleUI_BL
                                         "   3.Emergecey");
                                     Enum.TryParse<IDAL.DO.Priorities>(Console.ReadLine(), out priorities);
                                     ibl.AddParcel(intA, intB, intC, weight, priorities);
+                                    Console.WriteLine("Successfuly added:");
                                     break;
                                 default:
                                     break;
