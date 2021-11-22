@@ -24,10 +24,10 @@ namespace IBL
 					$" Id: { this.Id}\n" +
 					$" Name: {this.Name}\n" +
 					$" Phone: {this.Phone}\n" +
-					$" Nums of parcels that are delivered {this.ParcelDelivred}\n"+
-					$" Nums of parcels that are sent but not delivered {this.ParcelSentNotDelivred}\n"+
-					$" Nums of parcels that he recived {this.ParcelRecived}\n" +
-					$" Nums of parcels that are in transit {this.ParcelDelivred}"
+					$" Nums of parcels that are delivered: {this.ParcelDelivred}\n"+
+					$" Nums of parcels that are sent but not delivered: {this.ParcelSentNotDelivred}\n"+
+					$" Nums of parcels that he recived: {this.ParcelRecived}\n" +
+					$" Nums of parcels that are in transit: {this.ParcelDelivred}"
 					;
 			}
 		}

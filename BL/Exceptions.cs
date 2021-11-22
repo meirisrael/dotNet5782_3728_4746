@@ -12,7 +12,7 @@ namespace IBL
 		public class IdExist : Exception
 		{
 			public IdExist(string type_) : base($"IBL-ERROR: THIS {type_} ID ALREADY EXIST\n") { }
-			public IdExist(string ms,string type_) : base($"{ms}\nIBL-ERROR: THIS {type_} ID ALREADY EXIST\n") { }
+			public IdExist(string ms, string type_) : base($"{ms}\nIBL-ERROR: THIS {type_} ID ALREADY EXIST\n") { }
 		}
 		public class IdNotExist : Exception
 		{
@@ -28,8 +28,8 @@ namespace IBL
 		//
 		public class InvalidLoc : Exception
 		{
-			public InvalidLoc(string type_,string range) : base($"IBL-ERROR: {type_} NEED TO BE BEHTWEEN {range}\n") { }
-			public InvalidLoc(string ms,string type_, string range) : base($"{ms}\nIBL-ERROR: {type_} NEED TO BE BEHTWEEN {range}\n") { }
+			public InvalidLoc(string type_, string range) : base($"IBL-ERROR: {type_} NEED TO BE BEHTWEEN {range}\n") { }
+			public InvalidLoc(string ms, string type_, string range) : base($"{ms}\nIBL-ERROR: {type_} NEED TO BE BEHTWEEN {range}\n") { }
 		}
 
 		// exceptions - problem with Categories
@@ -46,7 +46,7 @@ namespace IBL
 			public InvalidChargeSlot() : base("IBL-ERROR: CHARGE SLOT NEED TO BE BIGGER THAN ZERO OR EQUAL TO ZERO\n") { }
 		}
 		// exceptions for drone
-		
+
 		public class NegativeDroneId : Exception
 		{
 			public NegativeDroneId() : base("IBL-ERROR: THE DRONE ID NEED TO BE POSITIVE OR ZERO(0=NOT ASSIGNE TO AN SPECIFIC DRONE, BIGEER THAN ZERO=ASSIGNE TO AN SPECIFIC DRONE\n") { }
@@ -81,7 +81,7 @@ namespace IBL
 		}
 
 		// exceptions for parcel
-		
+
 		public class AlreadyPickedUp : Exception
 		{
 			public AlreadyPickedUp() : base("IBL-ERROR: This parcel has already been picked up\n") { }
@@ -105,6 +105,10 @@ namespace IBL
 		public class TargetNameNotExist : Exception
 		{
 			public TargetNameNotExist() : base("IBL-ERROR: THIS TARGET NAME DO NOT EXIST\n") { }
+		}
+		public class AllParcelAssoc : Exception
+		{
+			public AllParcelAssoc() : base("IBL: ALL PARCEL ALREDY ASSOCIATED\n") { }
 		}
 
 		// exceptions for Weight that drone can't take

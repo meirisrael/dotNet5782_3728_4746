@@ -647,7 +647,7 @@ namespace BL
 		/// the func associte the parcel to a drone
 		/// </summary>
 		/// <param name="droneId"></param>
-		public int AffectParcelToDrone(int droneId)
+		public bool AffectParcelToDrone(int droneId)
 		{
 			int parcelId;
 			IBL.BO.DroneToList drone = new IBL.BO.DroneToList();
@@ -661,9 +661,11 @@ namespace BL
 			{
 				parcel.Add(item);
 			}
+			if (parcel.Count() == 0)
+				throw new IBL.BO.AllParcelAssoc();
 			List<IDAL.DO.Parcel> parcelEmrgency = removeByPriority(parcel, IDAL.DO.Priorities.Emergecey);//O(n)
 			parcelEmrgency = removeByWeight(parcelEmrgency, (IDAL.DO.WeightCategories)drone.MaxWeight);
-			parcelEmrgency = (List<IDAL.DO.Parcel>)parcelEmrgency.OrderByDescending(item => (int)item.Weight);
+			parcelEmrgency = parcelEmrgency.OrderByDescending(item => (int)item.Weight).ToList();
 			parcelId = chooseParcel(parcelEmrgency, drone);
 			if (parcelId != -1)
 			{
@@ -673,13 +675,14 @@ namespace BL
 				p.DroneId = drone.Id;
 				p.Scheduled = DateTime.Now;//update time of 
 				dal.UpdateParcel(p);
-				return 1;//no need to continue
+				droneToList[searchDrone(droneId)].IdOfParcel = parcelId;
+				return true;//no need to continue
 			}
 			//no found a parcel in priority emergency so go to the next priority
 			List<IDAL.DO.Parcel> parcelFast = removeByPriority(parcel, IDAL.DO.Priorities.Fast);//O(n)
 			parcelFast = removeByWeight(parcelFast, (IDAL.DO.WeightCategories)drone.MaxWeight);
-			parcelFast = (List<IDAL.DO.Parcel>)parcelFast.OrderByDescending(item => item.Weight);
-			parcelId = chooseParcel(parcelEmrgency, drone);
+			parcelFast = parcelFast.OrderByDescending(item => (int)item.Weight).ToList();
+			parcelId = chooseParcel(parcelFast, drone);
 			if (parcelId != -1)
 			{
 				drone.Status = IBL.BO.DroneStatuses.Shipping;//change status of drone 
@@ -688,13 +691,14 @@ namespace BL
 				p.DroneId = drone.Id;
 				p.Scheduled = DateTime.Now;//update time of 
 				dal.UpdateParcel(p);
-				return 1;//no need to continue
+				droneToList[searchDrone(droneId)].IdOfParcel = parcelId;
+				return true;//no need to continue
 			}
 			//no found a parcel in priority fast so go to the next priority
 			List<IDAL.DO.Parcel> parcelNormal = removeByPriority(parcel, IDAL.DO.Priorities.Normal);//O(n)
 			parcelNormal = removeByWeight(parcelNormal, (IDAL.DO.WeightCategories)drone.MaxWeight);
-			parcelNormal = (List<IDAL.DO.Parcel>)parcelNormal.OrderByDescending(item => item.Weight);
-			parcelId = chooseParcel(parcelEmrgency, drone);
+			parcelNormal = parcelNormal.OrderByDescending(item => (int)item.Weight).ToList();
+			parcelId = chooseParcel(parcelNormal, drone);
 			if (parcelId != -1)
 			{
 				drone.Status = IBL.BO.DroneStatuses.Shipping;//change status of drone 
@@ -703,7 +707,8 @@ namespace BL
 				p.DroneId = drone.Id;
 				p.Scheduled = DateTime.Now;//update time of 
 				dal.UpdateParcel(p);
-				return 1;//no need to continue
+				droneToList[searchDrone(droneId)].IdOfParcel = parcelId;
+				return true;//no need to continue
 			}
 			throw new IBL.BO.NoDroneCanParcel();//the drone can't take any parcel
 
@@ -843,26 +848,13 @@ namespace BL
 			IBL.BO.CustomerInParcel sender = new IBL.BO.CustomerInParcel();
 
 			customer = getCustomer(customerId);
-			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
+			foreach (IDAL.DO.Parcel item in dal.GetListParcels())//add to the list parcel that the customer is the sender
 			{
-				target.Id = item.TargetId;
-				target.Name = getCustomer(item.TargetId).Name;
+				sender.Id = item.SenderId;//
+				sender.Name = getCustomer(item.SenderId).Name;
 				if (item.SenderId == customerId)//if the customer is the sender
+				{
 					customer.ParcelFromCustomer.Add(new IBL.BO.ParcelAtCustomer
-					{
-						Id = item.Id,
-						Weight = (IBL.BO.WeightCategories)item.Weight,
-						Priority = (IBL.BO.Priorities)item.Priority,
-						status = getStatusOfParcel(item),
-						SenderOrTraget = target,
-					});
-			}
-			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
-			{
-				sender.Id = item.SenderId;
-				target.Name = getCustomer(item.SenderId).Name;
-				if (item.TargetId == customerId)//if the customer is the target
-					customer.ParcelToCustomer.Add(new IBL.BO.ParcelAtCustomer
 					{
 						Id = item.Id,
 						Weight = (IBL.BO.WeightCategories)item.Weight,
@@ -870,6 +862,23 @@ namespace BL
 						status = getStatusOfParcel(item),
 						SenderOrTraget = sender,
 					});
+				}
+			}
+			foreach (IDAL.DO.Parcel item in dal.GetListParcels())//add to the list parcel that the customer is the target
+			{
+				target.Id = item.TargetId;
+				target.Name = getCustomer(item.TargetId).Name;
+				if (item.TargetId == customerId)//if the customer is the target
+				{
+					customer.ParcelToCustomer.Add(new IBL.BO.ParcelAtCustomer
+					{
+						Id = item.Id,
+						Weight = (IBL.BO.WeightCategories)item.Weight,
+						Priority = (IBL.BO.Priorities)item.Priority,
+						status = getStatusOfParcel(item),
+						SenderOrTraget = target,
+					});
+				}
 			}
 			return customer;
 		}
@@ -883,6 +892,7 @@ namespace BL
 			IBL.BO.Parcel parcel = new IBL.BO.Parcel();
 			IBL.BO.CustomerInParcel sender = new IBL.BO.CustomerInParcel();
 			IBL.BO.CustomerInParcel target = new IBL.BO.CustomerInParcel();
+			IBL.BO.DroneToList drone = new IBL.BO.DroneToList();
 			IDAL.DO.Parcel p = new IDAL.DO.Parcel();
 			try
 			{ p = dal.GetParcel(parcelId); }
@@ -904,6 +914,14 @@ namespace BL
 			target.Id = p.TargetId;
 			target.Name = getCustomer(target.Id).Name;
 			parcel.Target = target;
+
+			drone = droneToList.Find(item => item.IdOfParcel == parcelId);
+			if (drone != null)
+			{
+				parcel.Drone.Id = drone.Id;
+				parcel.Drone.Battery = drone.Battery;
+				parcel.Drone.Loc = drone.Loc;
+			}
 
 			return parcel;
 		}
@@ -1330,30 +1348,25 @@ namespace BL
 						Weight = (IBL.BO.WeightCategories)p[i].Weight
 					});
 				}
-
-				//IBL.BO.Location loc = new IBL.BO.Location { Longitude = GetCustomer(p[i].SenderId).Loc.Longitude, Latitude = GetCustomer(p[i].SenderId).Loc.Latitude };
-				//double x = distanceBetweenTwoPoints(drone.Loc.Latitude, drone.Loc.Longitude,loc.Latitude ,loc.Longitude );//the distance between drone and the parcel
-
-				//if (parcel.Weight == drone.MaxWeight && (x < distance || distance == -1))//
-				//	distance = x;
-				//else if ((parcel.Weight == (IBL.BO.WeightCategories)((int)drone.MaxWeight) - 1) && ((int)drone.MaxWeight != 0))//if the next parcel is equal to maxWeight -1 but not 0 (according the enum)
-				//{
-				//	int battery = 
-				//}
-				//else if ((parcel.Weight == (IBL.BO.WeightCategories)((int)drone.MaxWeight) - 2) && ((int)drone.MaxWeight != 0))//if the next parcel is equal to maxWeight -2 but not 0 (according the enum)
-				//{
-
-				//}
 			}
-			int idA = closerParcel(parcelA, drone);
-			if (calcBatteryToShipping(drone, parcelA.Find(item => (item.Id == idA))) >= drone.Battery)//if the closer parcel in list A the drone can do the shipping
-				return idA;
-			int idB = closerParcel(parcelB, drone);
-			if (calcBatteryToShipping(drone, parcelA.Find(item => (item.Id == idB))) >= drone.Battery)//if the closer parcel in list B the drone can do the shipping
-				return idB;
-			int idC = closerParcel(parcelC, drone);
-			if (calcBatteryToShipping(drone, parcelA.Find(item => (item.Id == idC))) >= drone.Battery)//if the closer parcel in list C the drone can do the shipping
-				return idC;
+			if (parcelA.Count() != 0)
+			{
+				int idA = closerParcel(parcelA, drone);
+				if (calcBatteryToShipping(drone, parcelA.Find(item => (item.Id == idA))) <= drone.Battery)//if the closer parcel in list A the drone can do the shipping
+					return idA;
+			}
+			if (parcelB.Count() != 0)
+			{
+				int idB = closerParcel(parcelB, drone);
+				if (calcBatteryToShipping(drone, parcelB.Find(item => (item.Id == idB))) <= drone.Battery)//if the closer parcel in list B the drone can do the shipping
+					return idB;
+			}
+			if (parcelC.Count() != 0)
+			{
+				int idC = closerParcel(parcelC, drone);
+				if (calcBatteryToShipping(drone, parcelC.Find(item => (item.Id == idC))) <= drone.Battery)//if the closer parcel in list C the drone can do the shipping
+					return idC;
+			}
 			return -1;//if the drone can take any parcel return -1
 		}
 		/// <summary>
