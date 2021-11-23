@@ -20,8 +20,8 @@ namespace IBL
 			public Customer(): base() { Loc = new(); ParcelFromCustomer = new(); ParcelToCustomer = new(); }
 			public override string ToString()
 			{
-				string from_ = "";
-				string to_ = "";
+				string from_ = null;
+				string to_ = null;
 				foreach (ParcelAtCustomer item in ParcelFromCustomer)
 				{
 					from_ += item.ToString();
@@ -30,6 +30,10 @@ namespace IBL
 				{
 					to_ += item.ToString();
 				}
+				if (from_ == null)
+					from_ = "none";
+				if(to_==null)
+					to_="none";
 				return $"Customer:\n" +
 					$" Id: {this.Id}\n" +
 					$" Name: {this.Name}\n" +

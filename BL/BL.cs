@@ -188,9 +188,12 @@ namespace BL
 		/// <returns> the percent of battery </returns>
 		private double calcBatteryToShipping(IBL.BO.DroneToList d, IBL.BO.ParcelToList p)
 		{
-			double disToSenderFromBase = distanceBetweenTwoPoints(d.Loc.Latitude, d.Loc.Longitude, senderLati(p.NameSender), senderLong(p.NameSender)); //one way to the sender from the closer base station possible is equal to "0"
-			double disToTarget = distanceBetweenTwoPoints(d.Loc.Latitude, d.Loc.Longitude, targetLati(p.NameTarget), targetLong(p.NameTarget));// + one way
-			double disToBaseFromTarget = disToCloserBase(targetLati(p.NameTarget), targetLong(p.NameTarget));// + second way
+			IBL.BO.Location locSender = getLocCustomer(p.NameSender);
+			IBL.BO.Location locTarget = getLocCustomer(p.NameTarget);
+
+			double disToSenderFromBase = distanceBetweenTwoPoints(d.Loc.Latitude, d.Loc.Longitude, locSender.Latitude, locSender.Longitude); //one way to the sender from the closer base station possible is equal to "0"
+			double disToTarget = distanceBetweenTwoPoints(d.Loc.Latitude, d.Loc.Longitude, locTarget.Latitude, locTarget.Longitude);// + one way
+			double disToBaseFromTarget = disToCloserBase(locTarget.Latitude, locTarget.Longitude);// + second way
 
 			double batteryToBaseFromTarget = _useWhenFree * disToBaseFromTarget;//percent of battery the drone need to go back to the base station
 			double batteryToSenderFromBase = _useWhenFree * disToSenderFromBase;//percent of battery the drone need to arrive at sender
@@ -214,63 +217,7 @@ namespace BL
 			double disToBase = disToCloserBase(longi, lati);
 			double batteryToBase = _useWhenFree * disToBase;
 			return ((int)(Math.Ceiling(batteryToBase)));
-		}
-		/// <summary>
-		/// the func search the longitude of the sender by her name in the data base
-		/// </summary>
-		/// <param name="name"></param>
-		/// <returns> the longitude </returns>
-		private double senderLong(string name)
-		{
-			foreach (IDAL.DO.Customer item in dal.GetListCustomers())
-			{
-				if (item.Name == name)
-					return item.Longitude;
-			}
-			throw new IBL.BO.SenderNameNotExist();
-		}
-		/// <summary>
-		/// the func search the latitude of the sender by her name in the data base
-		/// </summary>
-		/// <param name="name"></param>
-		/// <returns> the latitude </returns>
-		private double senderLati(string name)
-		{
-			foreach (IDAL.DO.Customer item in dal.GetListCustomers())
-			{
-				if (item.Name == name)
-					return item.Latitude;
-			}
-			throw new IBL.BO.SenderNameNotExist();
-		}
-		/// <summary>
-		/// the func search the longitude of the target by her name in the data base
-		/// </summary>
-		/// <param name="name"></param>
-		/// <returns> the longitude </returns>
-		private double targetLong(string name)
-		{
-			foreach (IDAL.DO.Customer item in dal.GetListCustomers())
-			{
-				if (item.Name == name)
-					return item.Longitude;
-			}
-			throw new IBL.BO.TargetNameNotExist();
-		}
-		/// <summary>
-		/// the func search the latitude of the target by her name in the data base
-		/// </summary>
-		/// <param name="name"></param>
-		/// <returns> the latitude </returns>
-		private double targetLati(string name)
-		{
-			foreach (IDAL.DO.Customer item in dal.GetListCustomers())
-			{
-				if (item.Name == name)
-					return item.Latitude;
-			}
-			throw new IBL.BO.TargetNameNotExist();
-		}
+		}	
 		/// <summary>
 		/// the func search a drone by her id in the "DroneToList" and return the index of the drone in drone list
 		/// </summary>
@@ -306,13 +253,14 @@ namespace BL
 		/// <param name="droneId"></param>
 		private void locOfDroneByParcel(IBL.BO.ParcelToList p, int droneId)
 		{
+			IBL.BO.Location locSender = getLocCustomer(p.NameSender);
 			if (p.Status == IBL.BO.ParcelStatues.Associated)//if the parcel was Associated so the loc of the drone is in the close base station
 			{
 				double finalDis = -1;
 				IBL.BO.Location loc = new IBL.BO.Location();
 				foreach (IDAL.DO.BaseStation b in dal.GetListBaseStations())
 				{
-					double dis = distanceBetweenTwoPoints(b.Latitude, b.Longitude, senderLati(p.NameSender), senderLong(p.NameSender));
+					double dis = distanceBetweenTwoPoints(b.Latitude, b.Longitude, locSender.Latitude, locSender.Longitude);
 					if (finalDis == -1 || dis < finalDis)
 					{
 						droneToList[searchDrone(droneId)].Loc.Longitude = b.Longitude;
@@ -324,8 +272,8 @@ namespace BL
 			}
 			else if (p.Status == IBL.BO.ParcelStatues.Collected)//if the parcel was collected by the drone so the loc of drone is where the sender is 
 			{
-				droneToList[searchDrone(droneId)].Loc.Latitude = senderLati(p.NameSender);
-				droneToList[searchDrone(droneId)].Loc.Longitude = senderLong(p.NameSender);
+				droneToList[searchDrone(droneId)].Loc.Latitude = locSender.Latitude;
+				droneToList[searchDrone(droneId)].Loc.Longitude = locSender.Longitude;
 			}
 		}
 		/// <summary>
@@ -367,6 +315,28 @@ namespace BL
 
 			}
 			return disToBase;
+		}
+		/// <summary>
+		/// the func search and return the location of customer by his name
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns> an location </returns>
+		private IBL.BO.Location getLocCustomer(string name)
+		{
+			IBL.BO.Location loc = new IBL.BO.Location();
+			foreach (IDAL.DO.Customer item in dal.GetListCustomers())
+			{
+				if (item.Name == name)
+				{
+					loc.Latitude = item.Latitude;
+					loc.Longitude = item.Longitude;
+				}
+			}
+			if (loc != null)
+				return loc;
+			else
+				throw new IBL.BO.NameNotExist("CUSTOMER");
+
 		}
 
 		//------------------------------------------------------------------------------------------------------ADD - OPTION------------------------------------------------------------------------------------------------
@@ -1330,7 +1300,7 @@ namespace BL
 			IBL.BO.ParcelToList p = new IBL.BO.ParcelToList();
 			foreach (IBL.BO.ParcelToList item in parcel)
 			{
-				IBL.BO.Location locParcel = new IBL.BO.Location { Longitude = senderLong(item.NameSender), Latitude = senderLati(item.NameSender) };
+				IBL.BO.Location locParcel = new IBL.BO.Location { Longitude = getLocCustomer(item.NameSender).Longitude, Latitude = getLocCustomer(item.NameSender).Latitude };
 				double dis = distanceBetweenTwoPoints(locParcel.Latitude, locParcel.Longitude, drone.Loc.Latitude, drone.Loc.Longitude);
 				if (disToParcel == -1 || dis < disToParcel)//if "dis" that is calculate in the previous line is smaller than the "disToParcel"= the smaller distanse right now so "disToParcel = dis"
 				{ disToParcel = dis; p = item; }
