@@ -62,6 +62,40 @@ namespace BL
 			}
 		}
 		/// <summary>
+		/// the func set the loc and the satus of the drone if is assigne to an parcel
+		/// </summary>
+		private void settingDroneByParcel()
+		{
+			List<IBL.BO.ParcelToList> parcelToList = new List<IBL.BO.ParcelToList>();
+			//add the data
+			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
+			{
+				parcelToList.Add(new IBL.BO.ParcelToList
+				{
+					Id = item.Id,
+					NameSender = getCustomer(item.SenderId).Name,
+					NameTarget = getCustomer(item.TargetId).Name,
+					Weight = (IBL.BO.WeightCategories)item.Weight,
+					Priority = (IBL.BO.Priorities)item.Priority,
+					Status = getStatusOfParcel(item)
+				});
+			}
+			for (int i = 0; i < parcelToList.Count(); i++)
+			{
+				int droneIdAssigneToParcel = searchDroneIdAssigneToParcel(parcelToList[i]);
+				if (parcelToList[i].Status < IBL.BO.ParcelStatues.Delivered && droneIdAssigneToParcel > 0)//if the parcel was not deliver and the parcel he has a drone ,need to the shipping
+				{
+					droneToList[searchDrone(droneIdAssigneToParcel)].Status = IBL.BO.DroneStatuses.Shipping;
+
+					locOfDroneByParcel(parcelToList[i], droneIdAssigneToParcel);
+
+					int percent = (int)Math.Ceiling(calcBatteryToShipping(droneToList[searchDrone(droneIdAssigneToParcel)], parcelToList[i]));//calculate the percent of battery the drone need to do the shipping 
+					int finalPercent = new Random().Next(percent, 101);//choose random the percent between "percent" to 100
+					droneToList[searchDrone(droneIdAssigneToParcel)].Battery = finalPercent;
+				}
+			}
+		}
+		/// <summary>
 		/// set for all drone that is not in shipping his battery by his status
 		/// </summary>
 		private void settingDrone()
@@ -109,40 +143,6 @@ namespace BL
 					int percent = calcBatteryToCloserBase(droneToList[i].Loc.Longitude, droneToList[i].Loc.Latitude);//calculate the min percent battery to go back to the base station
 					int finalPercent = new Random().Next(percent, 101);//random choose percent between "percent" to 100 
 					droneToList[i].Battery = finalPercent;
-				}
-			}
-		}
-		/// <summary>
-		/// the func set the loc and the satus of the drone if is assigne to an parcel
-		/// </summary>
-		private void settingDroneByParcel()
-		{
-			List<IBL.BO.ParcelToList> parcelToList = new List<IBL.BO.ParcelToList>();
-			//add the data
-			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
-			{
-				parcelToList.Add(new IBL.BO.ParcelToList
-				{
-					Id = item.Id,
-					NameSender = getCustomer(item.SenderId).Name,
-					NameTarget = getCustomer(item.TargetId).Name,
-					Weight = (IBL.BO.WeightCategories)item.Weight,
-					Priority = (IBL.BO.Priorities)item.Priority,
-					Status = getStatusOfParcel(item)
-				});
-			}
-			for (int i = 0; i < parcelToList.Count(); i++)
-			{
-				int droneIdAssigneToParcel = searchDroneIdAssigneToParcel(parcelToList[i]);
-				if (parcelToList[i].Status < IBL.BO.ParcelStatues.Delivered && droneIdAssigneToParcel > 0)//if the parcel was not deliver and the parcel he has a drone ,need to the shipping
-				{
-					droneToList[searchDrone(droneIdAssigneToParcel)].Status = IBL.BO.DroneStatuses.Shipping;
-
-					locOfDroneByParcel(parcelToList[i], droneIdAssigneToParcel);
-
-					int percent = (int)Math.Ceiling(calcBatteryToShipping(droneToList[searchDrone(droneIdAssigneToParcel)], parcelToList[i]));//calculate the percent of battery the drone need to do the shipping 
-					int finalPercent = new Random().Next(percent, 101);//choose random the percent between "percent" to 100
-					droneToList[searchDrone(droneIdAssigneToParcel)].Battery = finalPercent;
 				}
 			}
 		}
@@ -272,7 +272,7 @@ namespace BL
 			throw new IBL.BO.TargetNameNotExist();
 		}
 		/// <summary>
-		/// the func search a drone by her id in the "DroneToList" and return the index of the drone 
+		/// the func search a drone by her id in the "DroneToList" and return the index of the drone in drone list
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns> index </returns>
@@ -483,32 +483,22 @@ namespace BL
 			{ throw new IBL.BO.InvalidId(ex.Message, "PARCEL"); }
 
 			catch (IDAL.DO.InvalidSenderId ex)
-			{
-				throw new IBL.BO.InvalidId(ex.Message, "SENDER");
-			}
+			{throw new IBL.BO.InvalidId(ex.Message, "SENDER");}
 
 			catch (IDAL.DO.InvalidTargetId ex)
-			{
-				throw new IBL.BO.InvalidId(ex.Message, "TARGET");
-			}
+			{throw new IBL.BO.InvalidId(ex.Message, "TARGET");}
 
 			catch (IDAL.DO.NegativeDroneId ex)
-			{
-				throw new IBL.BO.InvalidId(ex.Message, "DRONE");
-			}
+			{throw new IBL.BO.InvalidId(ex.Message, "DRONE");}
 
 			catch (IDAL.DO.InvalidWeight ex)
 			{ throw new IBL.BO.InvalidCategory(ex.Message, "WEIGHT"); }
 
 			catch (IDAL.DO.InvalidPriority ex)
-			{
-				throw new IBL.BO.InvalidCategory(ex.Message, "PRIORITIES");
-			}
+			{throw new IBL.BO.InvalidCategory(ex.Message, "PRIORITIES");}
 
 			catch (IDAL.DO.ParcelIdExist ex)
-			{
-				throw new IBL.BO.IdExist(ex.Message, "PARCEL");
-			}
+			{throw new IBL.BO.IdExist(ex.Message, "PARCEL");}
 
 			catch (IDAL.DO.SenderIdNotExist ex)
 			{ throw new IBL.BO.IdNotExist(ex.Message, "SENDER"); }
@@ -532,9 +522,7 @@ namespace BL
 				drone.Model = model;
 				dal.UpdateDrone(drone);
 				for (int i = 0; i < droneToList.Count(); i++)
-				{
-					if (droneToList[i].Id == droneId) droneToList[i].Model = model;
-				}
+				{if (droneToList[i].Id == droneId) droneToList[i].Model = model;}
 			}
 			catch (IDAL.DO.DroneIdNotExist ex)
 			{ throw new IBL.BO.IdNotExist(ex.Message, "DRONE"); }
@@ -551,7 +539,7 @@ namespace BL
 			try
 			{ baseStation = dal.GetBaseStation(baseId); }
 			catch (IDAL.DO.DroneIdNotExist ex)
-			{ throw new IBL.BO.IdNotExist(ex.Message, "BASE"); }
+			{ throw new IBL.BO.IdNotExist(ex.Message, "BASE-STATION"); }
 
 			int name_int, charge_slots;
 			if (name != "")
@@ -583,7 +571,6 @@ namespace BL
 			{ throw new IBL.BO.IdExist(ex.Message, "CUSTOMER"); }
 			if (name != "")
 			{
-
 				customer = dal.GetCustomer(customerId);
 				customer.Name = name;
 				dal.UpdateCustomer(customer);
@@ -622,7 +609,7 @@ namespace BL
 					droneToList[i] = drone;
 			}
 
-			dal.AssignDroneToBaseStation(droneId, baseStation.Id);
+			dal.AssignDroneToBaseStation(droneId, baseStation.Id);//update the data base
 		}
 		/// <summary>
 		/// the func release the drone from base station charge
@@ -636,12 +623,12 @@ namespace BL
 			if (drone.Status != IBL.BO.DroneStatuses.Maintenance)//if the drone id of drone that the user gave is not in Maintenance so need to throw that
 				throw new IBL.BO.DroneNotInCharge();
 			drone.Status = IBL.BO.DroneStatuses.free;
-			drone.Battery += (time / 60) * _chargingRate;
+			drone.Battery += (time / 60) * _chargingRate;//get time in minuts
 			if (drone.Battery > 100)
 				drone.Battery = 100;
 			IDAL.DO.BaseStation baseStation = new IDAL.DO.BaseStation();
 			baseStation = currentBase(drone.Loc.Longitude, drone.Loc.Latitude);
-			dal.DroneLeaveChargeStation(droneId, baseStation.Id);//base station- charge slot++ and remove the drone from the list "dron charge"
+			dal.DroneLeaveChargeStation(droneId, baseStation.Id);//base station- charge slot++ and remove the drone from the list "drone charge"
 		}
 		/// <summary>
 		/// the func associte the parcel to a drone
@@ -724,9 +711,7 @@ namespace BL
 			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
 			{
 				if (item.DroneId == drone.Id)
-				{
-					parcel = item;
-				}
+					parcel = item;	
 			}
 			if (parcel.DroneId != droneId)
 				throw new IBL.BO.NoParcelId();
@@ -1076,9 +1061,7 @@ namespace BL
 		private void updateDroneList(IBL.BO.DroneToList drone)
 		{
 			for (int i = 0; i < droneToList.Count(); i++)
-			{
 				if (droneToList[i].Id == drone.Id) droneToList[i] = drone;
-			}
 		}
 		/// <summary>
 		/// the func search who is the current base by his location 
@@ -1089,9 +1072,8 @@ namespace BL
 		private IDAL.DO.BaseStation currentBase(double longi, double lati)
 		{
 			foreach (IDAL.DO.BaseStation item in dal.GetListBaseStations())
-			{
 				if (item.Longitude == longi && item.Latitude == lati) return item;
-			}
+
 			throw new IBL.BO.DroneNotInBase();
 		}
 		/// <summary>
@@ -1255,51 +1237,6 @@ namespace BL
 					counter++;
 			}
 			return counter;
-		}
-		/// <summary>
-		/// remove all parcel that their priority status is not equal to param="pri"
-		/// </summary>
-		/// <param name="p"></param>
-		/// <param name="pri"></param>
-		/// <returns> an list </returns>
-		private List<IDAL.DO.Parcel> removeByPriority(List<IDAL.DO.Parcel> p, IDAL.DO.Priorities pri)
-		{
-			List<IDAL.DO.Parcel> parcel = p;
-			for (int i = 0; i < parcel.Count(); i++)
-			{
-				if (parcel[i].Priority != pri && p[i].DroneId == 0)
-					parcel.RemoveAt(i);
-			}
-			return parcel;
-		}
-		/// <summary>
-		/// remove all parcel that the drone can't take
-		/// </summary>
-		/// <param name="p"></param>
-		/// <param name="w"></param>
-		/// <returns> an lisrt </returns>
-		private List<IDAL.DO.Parcel> removeByWeight(List<IDAL.DO.Parcel> p, IDAL.DO.WeightCategories w)
-		{
-			List<IDAL.DO.Parcel> parcel = p;
-			if (w == IDAL.DO.WeightCategories.Heavy)//if max weight of drone can take is heavy parcel so he can take everything 
-				return p;
-			else if (w == IDAL.DO.WeightCategories.Medium)//if max weight of drone can take is medium parcel so all parcel that heavy he can't takes
-			{
-				for (int i = 0; i < parcel.Count(); i++)
-				{
-					if (parcel[i].Weight == IDAL.DO.WeightCategories.Heavy)
-						parcel.RemoveAt(i);
-				}
-			}
-			else//if max weight of drone can take is light parcel so all parcel that heavy and medium he can't takes
-			{
-				for (int i = 0; i < parcel.Count(); i++)
-				{
-					if (parcel[i].Weight == IDAL.DO.WeightCategories.Heavy || parcel[i].Weight == IDAL.DO.WeightCategories.Medium)
-						parcel.RemoveAt(i);
-				}
-			}
-			return parcel;
 		}
 		/// <summary>
 		/// the func calculate by priorities and battery whiche parcel the drone can take and if it is possible return the id of parcel

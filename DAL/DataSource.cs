@@ -22,11 +22,11 @@ namespace DalObject
 
 		internal class Config
 		{
-			internal static double useWhenFree = 0.0001;//0.5% per kilometere
-			internal static double useWhenLightly = 0.0003;//2% per kilometere
-			internal static double useWhenMedium = 0.0004;//3% per kilometere
-			internal static double useWhenHeavily =0.0007;//5% per kilometere
-			internal double chargingRate = 40; //40% per hour
+			internal static double useWhenFree = 0.0001;//0.0001% per kilometere
+			internal static double useWhenLightly = 0.0003;//0.0003% per kilometere
+			internal static double useWhenMedium = 0.0004;//0.0004% per kilometere
+			internal static double useWhenHeavily =0.0009;//0.0009% per kilometere
+			internal double chargingRate = 35; //35% per hour
 		}
 		/// <summary>
 		/// the func initialize all parameter of the program with a default solution for each parametre
@@ -37,7 +37,7 @@ namespace DalObject
 			int CounterDrones = 1000;
 			int CounterCustomer = 3000;
 			int CounterParcel = 4000;
-			string[] name_ = new string[] { "Meir", "Israel", "Hilel", "Mendel", "Chimon", "David", "Loki", "Rephael", "levi", "Nathan" };
+			string[] name_ = new string[] { "Meir", "Lior", "Hilel", "Mendel", "Chimon", "David", "Loki", "Rephael", "levi", "Nathan" };
 			for (int i = 0; i < 2; i++)//for base station
 			{
 				baseStation.Add(new IDAL.DO.BaseStation()
