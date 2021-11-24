@@ -51,7 +51,7 @@ namespace IBL
 			public InvalidChargeSlot() : base("IBL-ERROR: CHARGE SLOT NEED TO BE BIGGER THAN ZERO OR EQUAL TO ZERO\n") { }
 		}
 
-		// exceptions for drone
+		// exceptions specific for drone
 		public class NegativeDroneId : Exception//if the user give an negative value when he need to give a drone id for parcel
 		{
 			public NegativeDroneId() : base("IBL-ERROR: THE DRONE ID NEED TO BE POSITIVE OR ZERO(0=NOT ASSIGNE TO AN SPECIFIC DRONE, BIGEER THAN ZERO=ASSIGNE TO AN SPECIFIC DRONE\n") { }
@@ -85,7 +85,7 @@ namespace IBL
 			public DroneNotInCharge() : base("IBL-ERROR: ERROR IN THE DATA BASE AN DRONE IS NOT CHARGE\n") { }
 		}
 
-		// exceptions for parcel
+		// exceptions specific for parcel
 
 		public class AlreadyPickedUp : Exception//if the parcel alredy  picked up
 		{

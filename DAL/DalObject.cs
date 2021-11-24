@@ -22,13 +22,13 @@ namespace DalObject
 		/// <param name="lati"></param>
 		public void AddBaseStation(int id, int name, int chargeSlots, double longi, double latti)
 		{
-			if (id < 0 || id == 0) throw new IDAL.DO.InvalidBaseId();
+			if (id < 0 || id == 0) throw new IDAL.DO.InvalidId("BASE-STATION");
 			if (chargeSlots < 0) throw new IDAL.DO.InvalidChargeSlot();
-			if (latti > 90 || latti < -90) throw new IDAL.DO.InvalidLatitude();
-			if (longi > 180 || longi < -180) throw new IDAL.DO.InvalidLongitude();
+			if (latti > 90 || latti < -90) throw new IDAL.DO.InvalidLoc("LATITUDE","-90 TO 90");
+			if (longi > 180 || longi < -180) throw new IDAL.DO.InvalidLoc("LONGITUDE","-180 TO 180");
 
 			if(DataSource.baseStation.Exists(item => item.Id == id))
-				throw new IDAL.DO.BaseIdExist();
+				throw new IDAL.DO.IdExist("BASE-STATION");
 
 			DataSource.baseStation.Add(new IDAL.DO.BaseStation()
 			{
@@ -47,11 +47,11 @@ namespace DalObject
 		/// <param name="weight"></param>
 		public void AddDrone(int id, string model, IDAL.DO.WeightCategories weight)
 		{
-			if (id < 0 || id == 0) throw new IDAL.DO.InvalidDroneId();
-			if ((int)weight > 3 || (int)weight < 1) throw new IDAL.DO.InvalidWeight();
+			if (id < 0 || id == 0) throw new IDAL.DO.InvalidId("DRONE");
+			if ((int)weight > 3 || (int)weight < 1) throw new IDAL.DO.InvalidCategory("WEIGHT");
 
 			if(DataSource.drone.Exists(item=>item.Id==id))
-				throw new IDAL.DO.DroneIdExist();
+				throw new IDAL.DO.IdExist("DRONE");
 
 			DataSource.drone.Add(new IDAL.DO.Drone()
 			{
@@ -70,12 +70,12 @@ namespace DalObject
 		/// <param name="lati"></param>
 		public void AddCustomer(int id, string name, string phone, double longi, double latti)
 		{
-			if (id < 0 || id == 0) throw new IDAL.DO.InvalidCustomerId();
-			if (latti > 90 || latti < -90) throw new IDAL.DO.InvalidLatitude();
-			if (longi > 180 || longi < -180) throw new IDAL.DO.InvalidLongitude();
+			if (id < 0 || id == 0) throw new IDAL.DO.InvalidId("CUSTOMER");
+			if (latti > 90 || latti < -90) throw new IDAL.DO.InvalidLoc("LATITUDE", "-90 TO 90");
+			if (longi > 180 || longi < -180) throw new IDAL.DO.InvalidLoc("LONGITUDE", "-180 TO 180");
 
-			if(DataSource.customers.Exists(item=>item.Id==id))
-				throw new IDAL.DO.CustomerIdExist();
+			if (DataSource.customers.Exists(item=>item.Id==id))
+				throw new IDAL.DO.IdExist("CUSTOMER");
 
 			DataSource.customers.Add(new IDAL.DO.Customer()
 			{
@@ -101,19 +101,20 @@ namespace DalObject
 		/// <param name="delivered"></param>
 		public void AddParcel(int id, int senderId, int targetId, int droneId, IDAL.DO.WeightCategories weight, IDAL.DO.Priorities priorities)
 		{
-			if (id < 0 || id == 0) throw new IDAL.DO.InvalidParcelId();
-			if (senderId == 0 || senderId < 0) throw new IDAL.DO.InvalidSenderId();
-			if (targetId == 0 || targetId < 0) throw new IDAL.DO.InvalidTargetId();
+			if (id < 0 || id == 0) throw new IDAL.DO.InvalidId("PARCEL");
+			if (senderId == 0 || senderId < 0) throw new IDAL.DO.InvalidId("SENDER");
+			if (targetId == 0 || targetId < 0) throw new IDAL.DO.InvalidId("TARGET");
+			if (targetId == senderId) throw new IDAL.DO.SenderTargetIdEqual();
 			if (droneId < 0) throw new IDAL.DO.NegativeDroneId();
-			if ((int)weight > 3 || (int)weight < 1) throw new IDAL.DO.InvalidWeight();
-			if ((int)priorities > 3 || (int)priorities < 1) throw new IDAL.DO.InvalidPriority();
+			if ((int)weight > 3 || (int)weight < 1) throw new IDAL.DO.InvalidCategory("WEIGHT");
+			if ((int)priorities > 3 || (int)priorities < 1) throw new IDAL.DO.InvalidCategory("PRIORITIES");
 
-			if(DataSource.parcels.Exists(item=>item.Id==id))
-				throw new IDAL.DO.ParcelIdExist();
+			if (DataSource.parcels.Exists(item=>item.Id==id))
+				throw new IDAL.DO.IdExist("PARCEL");
 			if(!DataSource.customers.Exists(item=>item.Id==senderId))
-				throw new IDAL.DO.SenderIdNotExist();
+				throw new IDAL.DO.IdNotExist("SENDER");
 			if (!DataSource.customers.Exists(item => item.Id == targetId))
-				throw new IDAL.DO.TargetIdNotExist();
+				throw new IDAL.DO.IdNotExist("TARGET");
 
 			DataSource.parcels.Add(new IDAL.DO.Parcel()
 			{
@@ -141,9 +142,9 @@ namespace DalObject
 			IDAL.DO.Parcel p = new IDAL.DO.Parcel();
 			IDAL.DO.Drone d = new IDAL.DO.Drone();
 			if(!DataSource.parcels.Exists(item => item.Id == parcelId))
-				throw new IDAL.DO.ParcelIdNotExist();
+				throw new IDAL.DO.IdNotExist("PARCEL");
 			if(!DataSource.drone.Exists(item => item.Id == droneId))
-				throw new IDAL.DO.DroneIdNotExist();
+				throw new IDAL.DO.IdNotExist("DRONE");
 				
 			foreach (IDAL.DO.Parcel item in DataSource.parcels)
 			{
@@ -187,7 +188,7 @@ namespace DalObject
 		public void ParcelOnDrone(int parcelId)
 		{
 			if(!DataSource.parcels.Exists(item => item.Id == parcelId))
-				throw new IDAL.DO.ParcelIdNotExist();
+				throw new IDAL.DO.IdNotExist("PARCEL");
 
 			for (int i = 0; i < DataSource.parcels.Count; i++)
 			{
@@ -207,7 +208,7 @@ namespace DalObject
 		public void ParcelDelivered(int parcelId)
 		{
 			if(!DataSource.parcels.Exists(item => item.Id == parcelId)) 
-				throw new IDAL.DO.ParcelIdNotExist();
+				throw new IDAL.DO.IdNotExist("PARCEL");
 
 			for (int i = 0; i < DataSource.parcels.Count; i++)
 			{
@@ -228,9 +229,9 @@ namespace DalObject
 		public void AssignDroneToBaseStation(int droneId, int baseId)
 		{
 			if(!DataSource.drone.Exists(item => item.Id == droneId)) 
-				throw new IDAL.DO.DroneIdNotExist();
+				throw new IDAL.DO.IdNotExist("DRONE");
 			if(!DataSource.baseStation.Exists(item => item.Id == baseId)) 
-				throw new IDAL.DO.BaseIdNotExist();
+				throw new IDAL.DO.IdNotExist("BASE-STATION");
 
 			for (int i = 0; i < DataSource.baseStation.Count; i++)
 			{
@@ -252,9 +253,9 @@ namespace DalObject
 		public void DroneLeaveChargeStation(int droneId, int baseId)
 		{
 			if(!DataSource.drone.Exists(item => item.Id == droneId))
-				throw new IDAL.DO.DroneIdNotExist();
+				throw new IDAL.DO.IdNotExist("DRONE");
 			if(!DataSource.baseStation.Exists(item => item.Id == baseId))
-				throw new IDAL.DO.BaseIdNotExist();
+				throw new IDAL.DO.IdNotExist("BASE-STATION");
 
 			for (int i = 0; i < DataSource.baseStation.Count; i++)
 			{
@@ -289,7 +290,7 @@ namespace DalObject
 				if (item.Id == baseId)
 					return item;
 			}
-			throw new IDAL.DO.BaseIdNotExist();
+			throw new IDAL.DO.IdNotExist("BASE-STATION");
 		}
 		/// <summary>
 		/// for a given drone Id, display it details
@@ -303,7 +304,7 @@ namespace DalObject
 				if (item.Id == droneId)
 					return item;
 			}
-			throw new IDAL.DO.DroneIdNotExist();
+			throw new IDAL.DO.IdNotExist("DRONE");
 		}
 		/// <summary>
 		/// for a given customer Id, display it details
@@ -317,7 +318,7 @@ namespace DalObject
 				if (item.Id == customerId)
 					return item;
 			}
-			throw new IDAL.DO.CustomerIdNotExist();
+			throw new IDAL.DO.IdNotExist("CUSTOMER");
 		}
 		/// <summary>
 		/// for a given parcel Id, display it details
@@ -331,7 +332,7 @@ namespace DalObject
 				if (item.Id == parcelId)
 					return item;
 			}
-			throw new IDAL.DO.ParcelIdNotExist();
+			throw new IDAL.DO.IdNotExist("PARCEL");
 		}
 
 		//---------------------------------------------------------------------------------------------------LIST OF AN OBJECT--------------------------------------------------------------------------------------------

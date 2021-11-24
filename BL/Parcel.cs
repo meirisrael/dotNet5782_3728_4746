@@ -24,13 +24,18 @@ namespace IBL
 			public Parcel() : base() { Sender = new(); Target = new(); Drone = new(); }
 			public override string ToString()
 			{
+				string x = null;
+				if (Drone.Id == 0)
+					x = "none";
+				else
+					x = this.Drone.ToString();
 				return $"Parcel:\n" +
 					$" Id: {this.Id}\n" +
 					$" Sender: {this.Sender.ToString()}\n" +
 					$" Target: {this.Target.ToString()}\n" +
 					$" Weight: {this.Weight}\n" +
 					$" Priority: {this.Priority}\n" +
-					$" Drone: {this.Drone.ToString()}\n" +
+					$" Drone: {x}\n" +
 					$" Requested: {this.Requested}\n" +
 					$" Scheduled: {this.Scheduled}\n" +
 					$" Picked Up: {this.PickedUp}\n" +

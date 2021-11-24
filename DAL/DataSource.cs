@@ -49,15 +49,15 @@ namespace DalObject
 					Longitude = r.Next(-180, 181) * r.NextDouble()  //(r.Next(-180, 181) * r.NextDouble())%3.7 +29.5 shipping only israel
 				});
 			}
-			for (int i = 0; i < 5; i++)//for the drone
+			for (int i = 0; i < 10; i++)//for the drone
 			{
 				drone.Add(new IDAL.DO.Drone()
 				{
 					Id = CounterDrones,
 					Model = "Fantome-" + i,
-					MaxWeight = (IDAL.DO.WeightCategories)(r.Next(1, 4))
+					MaxWeight = (IDAL.DO.WeightCategories)3
 				});
-				if (i < 4)
+				if (i < 9)
 					CounterDrones++;
 			}
 			for (int i = 0; i < 10; i++)//for customer
@@ -75,6 +75,9 @@ namespace DalObject
 			}
 			for (int i = 1; i <= 10; i++)//for parcel
 			{
+				DateTime x,z;
+				if (i % 3 == 0) { x = DateTime.Now.AddHours(2); z = x.AddHours(1); }
+				else { x = DateTime.MinValue; z = DateTime.MinValue; }
 				parcels.Add(new IDAL.DO.Parcel()
 				{
 					Id = CounterParcel++,
@@ -85,11 +88,11 @@ namespace DalObject
 					DroneId = CounterDrones,
 					Requested = DateTime.Now,
 					Scheduled = DateTime.Now.AddSeconds(5),
-					PickedUp = DateTime.MinValue,
-					Delivered = DateTime.MinValue
+					PickedUp = x,
+					Delivered = z
 				});
-				if (i % 2 == 0)
 					CounterDrones--;
+				
 			}
 		}
 	}
