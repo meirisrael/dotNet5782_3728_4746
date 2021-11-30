@@ -16,11 +16,14 @@ namespace IBL
 			public double Battery { get; set; }
 			public DroneStatuses Status { get; set; }
 			public Location Loc { get; set; }
-			public int IdOfParcel { get; set; }
+			public int? IdOfParcel { get; set; }
 
 			public DroneToList() : base() { Loc = new(); }
 			public override string ToString()
 			{
+				string idParcel="Not in shipping";
+				if (IdOfParcel != null)
+					idParcel = this.IdOfParcel.ToString();
 				return $"Drone To List:\n" +
 					$" Id: {this.Id}\n" +
 					$" Model: {this.Model}\n" +
@@ -28,7 +31,7 @@ namespace IBL
 					$" Drone Statut: {this.Status}\n" +
 					$" Battery percent: {this.Battery}%\n" +
 					$" Location: {this.Loc.ToString()}\n" +
-					$" The Id of parcel that are in transit right now: {this.IdOfParcel}"
+					$" The Id of parcel that are in transit right now: {idParcel}"
 					;
 			}
 		}

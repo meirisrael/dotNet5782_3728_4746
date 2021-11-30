@@ -340,9 +340,9 @@ namespace DalObject
 		/// display the details of all base stations
 		/// </summary>
 		/// <returns> list of Base-Station</returns>
-		public IEnumerable<IDAL.DO.BaseStation> GetListBaseStations()
+		public IEnumerable<IDAL.DO.BaseStation> GetListBaseStations(Predicate<IDAL.DO.BaseStation> f)
 		{
-			return DataSource.baseStation;
+			return DataSource.baseStation.FindAll(f);
 		}
 		/// <summary>
 		/// display the details of all drones
@@ -364,37 +364,9 @@ namespace DalObject
 		/// display the details of all parcels
 		/// </summary>
 		/// <returns> List of parcels </returns>
-		public IEnumerable<IDAL.DO.Parcel> GetListParcels()
+		public IEnumerable<IDAL.DO.Parcel> GetListParcels(Predicate<IDAL.DO.Parcel> f)
 		{
-			return DataSource.parcels;
-		}
-		/// <summary>
-		/// display the details of all parcels not assigned to a drone yet
-		/// </summary>
-		/// <returns> list of parcel that not assign to a drone </returns>
-		public IEnumerable<IDAL.DO.Parcel> GetListOfParcelsNotAssignedToDrone()
-		{
-			List<IDAL.DO.Parcel> x = new List<IDAL.DO.Parcel>();
-			foreach (IDAL.DO.Parcel item in DataSource.parcels)
-			{
-				if (item.DroneId == 0)
-					x.Add(item);
-			}
-			return x;
-		}
-		/// <summary>
-		/// display the details of all base stations with available(s) charge slots
-		/// </summary>
-		///<returns> list of a basse station where the drone can go to charger his battery </returns>
-		public IEnumerable<IDAL.DO.BaseStation> GetListBaseStationsCanCharge()
-		{
-			List<IDAL.DO.BaseStation> x = new List<IDAL.DO.BaseStation>();
-			foreach (IDAL.DO.BaseStation item in DataSource.baseStation)
-			{
-				if (item.ChargeSlots > 0)
-					x.Add(item);
-			}
-			return x;
+			return DataSource.parcels.FindAll(f);
 		}
 
 		//--------------------------------------------------------------------------------------------------------SETTER-----------------------------------------------------------------------------------------

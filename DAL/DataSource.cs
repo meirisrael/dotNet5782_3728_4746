@@ -75,9 +75,9 @@ namespace DalObject
 			}
 			for (int i = 1; i <= 10; i++)//for parcel
 			{
-				DateTime x,z;
-				if (i % 3 == 0) { x = DateTime.Now.AddHours(2); z = x.AddHours(1); }
-				else { x = DateTime.MinValue; z = DateTime.MinValue; }
+				DateTime? x,z;
+				if (i % 3 == 0) { x = DateTime.Now.AddHours(2); z =x.Value.AddHours(1) ; }
+				else { x = null; z = null; }
 				parcels.Add(new IDAL.DO.Parcel()
 				{
 					Id = CounterParcel++,

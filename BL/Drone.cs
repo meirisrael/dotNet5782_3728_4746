@@ -16,13 +16,13 @@ namespace IBL
 			public DroneStatuses Status { get; set; }
 			public double Battery { get; set; }
 			public Location Loc { get; set; }
-			public ParcelInTransit InTransit { get; set; }
+			public ParcelInTransit? InTransit { get; set; }
 
 			public Drone() : base() { Loc = new(); InTransit = new(); }
 			public override string ToString()
 			{
 				string total = "";
-				if (InTransit.Id == 0)
+				if (InTransit.Id == null)
 				{
 					return $"Drone:\n" +
 						  $" Id: {this.Id}\n" +

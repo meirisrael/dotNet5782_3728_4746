@@ -14,8 +14,8 @@ namespace IBL
 			public string Name { get; set; }
 			public string Phone { get; set; }
 			public Location Loc { get; set; }
-			public List<ParcelAtCustomer> ParcelFromCustomer { get; set; }
-			public List<ParcelAtCustomer> ParcelToCustomer { get; set; }
+			public List<ParcelAtCustomer>? ParcelFromCustomer { get; set; }
+			public List<ParcelAtCustomer>? ParcelToCustomer { get; set; }
 
 			public Customer(): base() { Loc = new(); ParcelFromCustomer = new(); ParcelToCustomer = new(); }
 			public override string ToString()

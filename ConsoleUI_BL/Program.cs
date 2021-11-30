@@ -83,7 +83,7 @@ namespace ConsoleUI_BL
                                         "   3.Heavy");
                                     Enum.TryParse<IDAL.DO.WeightCategories>(Console.ReadLine(), out weight);
                                     Console.WriteLine("Choose first Base Id:");
-                                    foreach (IBL.BO.BaseToList item in ibl.GetListOfBaseStations())
+                                    foreach (IBL.BO.BaseToList item in ibl.GetListOfBaseStations(b => b.ChargeSlots > 0))
                                     { Console.WriteLine(item.ToString()); }
                                     int.TryParse(Console.ReadLine(), out intB);
                                     ibl.AddDrone(intA, stringA, weight, intB);
@@ -278,7 +278,7 @@ namespace ConsoleUI_BL
                             switch (displayList)
                             {
                                 case IBL.BO.DisplayList.BaseStations:
-                                    foreach (IBL.BO.BaseToList item in ibl.GetListOfBaseStations())
+                                    foreach (IBL.BO.BaseToList item in ibl.GetListOfBaseStations(b => b.Id != 0))
                                     { Console.WriteLine(item.ToString()); }
                                     break;
 
@@ -293,17 +293,17 @@ namespace ConsoleUI_BL
                                     break;
 
                                 case IBL.BO.DisplayList.Parcels:
-                                    foreach (IBL.BO.ParcelToList item in ibl.GetListOfParcel())
+                                    foreach (IBL.BO.ParcelToList item in ibl.GetListOfParcel(p => p.Id != 0))
                                     { Console.WriteLine(item.ToString()); }
                                     break;
 
                                 case IBL.BO.DisplayList.ParcelsNotAssignedToDrone:
-                                    foreach (IBL.BO.ParcelToList item in ibl.GetListParcelNotAssignToDrone())
+                                    foreach (IBL.BO.ParcelToList item in ibl.GetListOfParcel(p => p.DroneId == 0))
                                     { Console.WriteLine(item.ToString()); }
                                     break;
 
                                 case IBL.BO.DisplayList.BaseStationsCanCharge:
-                                    foreach (IBL.BO.BaseToList item in ibl.GetListBaseWithChargeSlot())
+                                    foreach (IBL.BO.BaseToList item in ibl.GetListOfBaseStations(b => b.ChargeSlots > 0))
                                     { Console.WriteLine(item.ToString()); }
                                     break;
                                 default:

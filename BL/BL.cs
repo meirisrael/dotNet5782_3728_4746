@@ -57,8 +57,8 @@ namespace BL
 					Battery = 0,
 					Status = IBL.BO.DroneStatuses.free,
 					Loc = l,
-					IdOfParcel = dal.GetListParcels().ToList().Find(item => item.DroneId == d.Id).Id//return id of parcel that the drone is associated
-				}) ;
+					IdOfParcel = dal.GetListParcels(b => b.Id != 0).ToList().Find(item => item.DroneId == d.Id).Id//return id of parcel that the drone is associated
+				});
 			}
 		}
 		/// <summary>
@@ -68,7 +68,7 @@ namespace BL
 		{
 			List<IBL.BO.ParcelToList> parcelToList = new List<IBL.BO.ParcelToList>();
 			//add the data
-			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
+			foreach (IDAL.DO.Parcel item in dal.GetListParcels(p => p.Id != 0))
 			{
 				parcelToList.Add(new IBL.BO.ParcelToList
 				{
@@ -102,7 +102,7 @@ namespace BL
 		{
 			List<IBL.BO.BaseStation> baseS = new List<IBL.BO.BaseStation>();
 			//add the data location of base station in the list
-			foreach (IDAL.DO.BaseStation b in dal.GetListBaseStations())
+			foreach (IDAL.DO.BaseStation b in dal.GetListBaseStations(b => b.Id != 0))
 			{
 				IBL.BO.Location l = new IBL.BO.Location();
 				l.Latitude = b.Latitude; l.Longitude = b.Longitude;
@@ -131,9 +131,9 @@ namespace BL
 				else if (droneToList[i].Status == IBL.BO.DroneStatuses.free)//according to the previous "if" now-if the random choose that the drone is free
 				{
 					List<IBL.BO.Customer> customerList = new List<IBL.BO.Customer>();
-					foreach (IDAL.DO.Parcel item in dal.GetListParcels())//add data of parcel that was deliver
+					foreach (IDAL.DO.Parcel item in dal.GetListParcels(p => p.Id != 0))//add data of parcel that was deliver
 					{
-						if (item.Delivered != DateTime.MinValue)
+						if (item.Delivered != null)
 							customerList.Add(getCustomer(item.TargetId));
 					}
 					int r = new Random().Next(0, customerList.Count());//choose a random loc of parcel 
@@ -239,7 +239,7 @@ namespace BL
 		/// <returns> Id </returns>
 		private int searchDroneIdAssigneToParcel(IBL.BO.ParcelToList p)
 		{
-			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
+			foreach (IDAL.DO.Parcel item in dal.GetListParcels(p => p.Id != 0))
 			{
 				if (item.Id == p.Id)//if the drone is assciated to the parcel
 					return item.DroneId;
@@ -258,7 +258,7 @@ namespace BL
 			{
 				double finalDis = -1;
 				IBL.BO.Location loc = new IBL.BO.Location();
-				foreach (IDAL.DO.BaseStation b in dal.GetListBaseStations())
+				foreach (IDAL.DO.BaseStation b in dal.GetListBaseStations(b => b.Id != 0))
 				{
 					double dis = distanceBetweenTwoPoints(b.Latitude, b.Longitude, locSender.Latitude, locSender.Longitude);
 					if (finalDis == -1 || dis < finalDis)
@@ -307,7 +307,7 @@ namespace BL
 		private double disToCloserBase(double longi, double lati)
 		{
 			double disToBase = -1;
-			foreach (IDAL.DO.BaseStation b in dal.GetListBaseStations())
+			foreach (IDAL.DO.BaseStation b in dal.GetListBaseStations(b => b.Id != 0))
 			{
 				double dis = distanceBetweenTwoPoints(b.Latitude, b.Longitude, lati, longi);
 				if ((disToBase == -1 || dis < disToBase) && b.ChargeSlots > 0)//if "dis" that is calculate in the previous line is smaller than the "disToBase"= the smaller distanse right now so "disToBase = dis"
@@ -594,10 +594,10 @@ namespace BL
 				throw new IBL.BO.DroneNotFree();
 
 			IDAL.DO.Parcel p = new IDAL.DO.Parcel();
-			List<IDAL.DO.Parcel> parcel_ = (List<IDAL.DO.Parcel>)dal.GetListOfParcelsNotAssignedToDrone();//new List<IDAL.DO.Parcel>();
+			List<IDAL.DO.Parcel> parcel_ = (List<IDAL.DO.Parcel>)dal.GetListParcels(p=>p.DroneId==0);//new List<IDAL.DO.Parcel>();
 			if (parcel_.Count() == 0)
 				throw new IBL.BO.AllParcelAssoc();
-			List<IDAL.DO.Parcel> parcelEmrgency = (List<IDAL.DO.Parcel>)dal.GetListOfParcelsNotAssignedToDrone();//removeByPriority(parcel, IDAL.DO.Priorities.Emergecey);//O(n)
+			List<IDAL.DO.Parcel> parcelEmrgency = (List<IDAL.DO.Parcel>)dal.GetListParcels(p => p.DroneId == 0);//removeByPriority(parcel, IDAL.DO.Priorities.Emergecey);//O(n)
 			parcelEmrgency.RemoveAll(item => (int)item.Priority != 3);
 			parcelEmrgency.RemoveAll(item=>(int)item.Weight>(int)drone.MaxWeight);//(parcelEmrgency, (IDAL.DO.WeightCategories)drone.MaxWeight);
 			parcelEmrgency.OrderByDescending(item => (int)item.Weight).ToList();
@@ -614,7 +614,7 @@ namespace BL
 				return true;//no need to continue
 			}
 			//no found a parcel in priority emergency so go to the next priority
-			List<IDAL.DO.Parcel> parcelFast = (List<IDAL.DO.Parcel>)dal.GetListOfParcelsNotAssignedToDrone();//removeByPriority(parcel, IDAL.DO.Priorities.Emergecey);//O(n)
+			List<IDAL.DO.Parcel> parcelFast = (List<IDAL.DO.Parcel>)dal.GetListParcels(p => p.DroneId == 0);//removeByPriority(parcel, IDAL.DO.Priorities.Emergecey);//O(n)
 			parcelFast.RemoveAll(item => (int)item.Priority != 2);
 			parcelFast.RemoveAll(item => (int)item.Weight > (int)drone.MaxWeight);//(parcelEmrgency, (IDAL.DO.WeightCategories)drone.MaxWeight);
 			parcelFast.OrderByDescending(item => (int)item.Weight).ToList();
@@ -631,7 +631,7 @@ namespace BL
 				return true;//no need to continue
 			}
 			//no found a parcel in priority fast so go to the next priority
-			List<IDAL.DO.Parcel> parcelNormal = (List<IDAL.DO.Parcel>)dal.GetListOfParcelsNotAssignedToDrone();//removeByPriority(parcel, IDAL.DO.Priorities.Emergecey);//O(n)
+			List<IDAL.DO.Parcel> parcelNormal = (List<IDAL.DO.Parcel>)dal.GetListParcels(p => p.DroneId == 0);//removeByPriority(parcel, IDAL.DO.Priorities.Emergecey);//O(n)
 			parcelNormal.RemoveAll(item => (int)item.Priority != 1);
 			parcelNormal.RemoveAll(item => (int)item.Weight > (int)drone.MaxWeight);//(parcelEmrgency, (IDAL.DO.WeightCategories)drone.MaxWeight);
 			parcelNormal.OrderByDescending(item => (int)item.Weight).ToList();
@@ -659,16 +659,16 @@ namespace BL
 			IBL.BO.DroneToList drone = new IBL.BO.DroneToList();
 			drone = droneToList[searchDrone(droneId)];
 			IDAL.DO.Parcel parcel = new IDAL.DO.Parcel();
-			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
+			foreach (IDAL.DO.Parcel item in dal.GetListParcels(p => p.Id != 0))
 			{
 				if (item.DroneId == drone.Id)
 					parcel = item;	
 			}
 			if (parcel.DroneId != droneId)
 				throw new IBL.BO.NoParcelId();
-			if (parcel.PickedUp != DateTime.MinValue)//if parcel pick-up
+			if (parcel.PickedUp != null)//if parcel pick-up
 				throw new IBL.BO.AlreadyPickedUp();
-			if (parcel.Scheduled == DateTime.MinValue)// if parcel not associate to a drone 
+			if (parcel.Scheduled == null)// if parcel not associate to a drone 
 				throw new IBL.BO.NotScheduledYet();
 			parcel.PickedUp = DateTime.Now;
 			dal.UpdateParcel(parcel);
@@ -686,7 +686,7 @@ namespace BL
 			IBL.BO.DroneToList drone = new IBL.BO.DroneToList();
 			drone = droneToList[searchDrone(droneId)];
 			IDAL.DO.Parcel parcel = new IDAL.DO.Parcel();
-			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
+			foreach (IDAL.DO.Parcel item in dal.GetListParcels(p => p.Id != 0))
 			{
 				if (item.DroneId == drone.Id)
 				{
@@ -695,9 +695,9 @@ namespace BL
 			}
 			if (parcel.DroneId != droneId)
 				throw new IBL.BO.NoParcelId();
-			if (parcel.PickedUp == DateTime.MinValue) //if parcel not pick-up
+			if (parcel.PickedUp == null) //if parcel not pick-up
 				throw new IBL.BO.NotPickedUpYet();
-			if (parcel.Delivered != DateTime.MinValue) //if parcel was deliver
+			if (parcel.Delivered != null) //if parcel was deliver
 				throw new IBL.BO.AlreadyDelivered();
 			parcel.Delivered = DateTime.Now;
 			dal.UpdateParcel(parcel);
@@ -763,9 +763,9 @@ namespace BL
 			}
 			if (drone.Status == IBL.BO.DroneStatuses.Shipping)//if drone is in shipping searche who is the parcel
 			{
-				foreach (IDAL.DO.Parcel item in dal.GetListParcels())
+				foreach (IDAL.DO.Parcel item in dal.GetListParcels(p => p.Id != 0))
 				{
-					if (item.DroneId == drone.Id && item.PickedUp != DateTime.MinValue)
+					if (item.DroneId == drone.Id && item.PickedUp != null)
 					{ drone.InTransit = convertParcel(item, droneId); break; }
 				}
 			}
@@ -783,7 +783,7 @@ namespace BL
 			IBL.BO.CustomerInParcel sender = new IBL.BO.CustomerInParcel();
 
 			customer = getCustomer(customerId);
-			foreach (IDAL.DO.Parcel item in dal.GetListParcels())//add to the list parcel that the customer is the sender
+			foreach (IDAL.DO.Parcel item in dal.GetListParcels(p => p.Id != 0))//add to the list parcel that the customer is the sender
 			{
 				sender.Id = item.SenderId;//
 				sender.Name = getCustomer(item.SenderId).Name;
@@ -799,7 +799,7 @@ namespace BL
 					});
 				}
 			}
-			foreach (IDAL.DO.Parcel item in dal.GetListParcels())//add to the list parcel that the customer is the target
+			foreach (IDAL.DO.Parcel item in dal.GetListParcels(p => p.Id != 0))//add to the list parcel that the customer is the target
 			{
 				target.Id = item.TargetId;
 				target.Name = getCustomer(item.TargetId).Name;
@@ -866,10 +866,10 @@ namespace BL
 		/// the func return a list of base station
 		/// </summary>
 		/// <returns> a list of base station </returns>
-		public IEnumerable<IBL.BO.BaseToList> GetListOfBaseStations()
+		public IEnumerable<IBL.BO.BaseToList> GetListOfBaseStations(Predicate<IDAL.DO.BaseStation> f)
 		{
 			List<IBL.BO.BaseToList> baseS = new List<IBL.BO.BaseToList>();
-			foreach (IDAL.DO.BaseStation item in dal.GetListBaseStations())
+			foreach (IDAL.DO.BaseStation item in dal.GetListBaseStations(f))
 			{
 				IBL.BO.Location l = new() { Latitude = item.Latitude, Longitude = item.Longitude };
 				baseS.Add(new IBL.BO.BaseToList
@@ -916,10 +916,10 @@ namespace BL
 		/// the func return a list of parcel 
 		/// </summary>
 		/// <returns> list of parcel </returns>
-		public IEnumerable<IBL.BO.ParcelToList> GetListOfParcel()
+		public IEnumerable<IBL.BO.ParcelToList> GetListOfParcel(Predicate<IDAL.DO.Parcel> f)
 		{
 			List<IBL.BO.ParcelToList> parcel = new List<IBL.BO.ParcelToList>();
-			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
+			foreach (IDAL.DO.Parcel item in dal.GetListParcels(f))
 			{
 				parcel.Add(new IBL.BO.ParcelToList
 				{
@@ -932,52 +932,6 @@ namespace BL
 				});
 			}
 			return (IEnumerable<IBL.BO.ParcelToList>)parcel;
-		}
-		/// <summary>
-		/// the func return a list of parcel yet not associateed
-		/// </summary>
-		/// <returns> an list of parcel </returns>
-		public IEnumerable<IBL.BO.ParcelToList> GetListParcelNotAssignToDrone()
-		{
-			List<IBL.BO.ParcelToList> parcel = new List<IBL.BO.ParcelToList>();
-			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
-			{
-				if (item.DroneId == 0)
-				{
-					parcel.Add(new IBL.BO.ParcelToList
-					{
-						Id = item.Id,
-						NameSender = dal.GetCustomer(item.SenderId).Name,
-						NameTarget = dal.GetCustomer(item.TargetId).Name,
-						Weight = (IBL.BO.WeightCategories)item.Weight,
-						Priority = (IBL.BO.Priorities)item.Priority,
-						Status = getStatusOfParcel(item)
-					});
-				}
-			}
-			return (IEnumerable<IBL.BO.ParcelToList>)parcel;
-		}
-		/// <summary>
-		/// the func return a list of parcel the have a station of charge free
-		/// </summary>
-		/// <returns> an list of base station </returns>
-		public IEnumerable<IBL.BO.BaseToList> GetListBaseWithChargeSlot()
-		{
-			List<IBL.BO.BaseToList> baseS = new List<IBL.BO.BaseToList>();
-			foreach (IDAL.DO.BaseStation item in dal.GetListBaseStations())
-			{
-				IBL.BO.Location l = new IBL.BO.Location();
-				l.Latitude = item.Latitude; l.Longitude = item.Longitude;
-				if (item.ChargeSlots > 0)
-					baseS.Add(new IBL.BO.BaseToList
-					{
-						Id = item.Id,
-						Name = item.Name,
-						ChargeSlots = item.ChargeSlots,
-						ChargeBusy = howManyCharge(l)
-					});
-			}
-			return (IEnumerable<IBL.BO.BaseToList>)baseS;
 		}
 
 		//---------------------------------------------------------------------------------------------------------HELP FUNC--------------------------------------------------------------------
@@ -1022,7 +976,7 @@ namespace BL
 		/// <returns> the current base station </returns>
 		private IDAL.DO.BaseStation currentBase(double longi, double lati)
 		{
-			foreach (IDAL.DO.BaseStation item in dal.GetListBaseStations())
+			foreach (IDAL.DO.BaseStation item in dal.GetListBaseStations(b => b.Id != 0))
 				if (item.Longitude == longi && item.Latitude == lati) return item;
 
 			throw new IBL.BO.DroneNotInBase();
@@ -1056,7 +1010,7 @@ namespace BL
 		{
 			double disToBase = -1;
 			IDAL.DO.BaseStation baseStation = new IDAL.DO.BaseStation();
-			foreach (IDAL.DO.BaseStation b in dal.GetListBaseStations())
+			foreach (IDAL.DO.BaseStation b in dal.GetListBaseStations(b => b.Id != 0))
 			{
 				double dis = distanceBetweenTwoPoints(b.Latitude, b.Longitude, lati, longi);
 				if ((disToBase == -1 || dis < disToBase) && b.ChargeSlots > 0)//if "dis" that is calculate in the previous line is smaller than the "disToBase"= the smaller distanse right now so "disToBase = dis"
@@ -1105,11 +1059,11 @@ namespace BL
 		private IBL.BO.ParcelStatues getStatusOfParcel(IDAL.DO.Parcel p)
 		{
 			IBL.BO.ParcelStatues statues = IBL.BO.ParcelStatues.Defined;
-			if (p.Scheduled != DateTime.MinValue)
+			if (p.Scheduled != null)
 				statues = IBL.BO.ParcelStatues.Associated;
-			if (p.PickedUp != DateTime.MinValue)
+			if (p.PickedUp != null)
 				statues = IBL.BO.ParcelStatues.Collected;
-			if (p.Delivered != DateTime.MinValue)
+			if (p.Delivered != null)
 				statues = IBL.BO.ParcelStatues.Delivered;
 
 			return statues;
@@ -1122,9 +1076,9 @@ namespace BL
 		private int parcelWasDliver(int customerId)
 		{
 			int counter = 0;
-			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
+			foreach (IDAL.DO.Parcel item in dal.GetListParcels(p => p.Id != 0))
 			{
-				if (item.SenderId == customerId && item.Delivered != DateTime.MinValue)
+				if (item.SenderId == customerId && item.Delivered != null)
 					counter++;
 			}
 			return counter;
@@ -1137,9 +1091,9 @@ namespace BL
 		private int parcelSentNotDeliver(int customerId)
 		{
 			int counter = 0;
-			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
+			foreach (IDAL.DO.Parcel item in dal.GetListParcels(p => p.Id != 0))
 			{
-				if (item.SenderId == customerId && item.Delivered == DateTime.MinValue && item.PickedUp != DateTime.MinValue)
+				if (item.SenderId == customerId && item.Delivered == null && item.PickedUp != null)
 					counter++;
 			}
 			return counter;
@@ -1152,9 +1106,9 @@ namespace BL
 		private int parcelRecive(int customerId)
 		{
 			int counter = 0;
-			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
+			foreach (IDAL.DO.Parcel item in dal.GetListParcels(p => p.Id != 0))
 			{
-				if (item.TargetId == customerId && item.Delivered != DateTime.MinValue)
+				if (item.TargetId == customerId && item.Delivered != null)
 					counter++;
 			}
 			return counter;
@@ -1167,9 +1121,9 @@ namespace BL
 		private int parcelInTransit(int customerId)
 		{
 			int counter = 0;
-			foreach (IDAL.DO.Parcel item in dal.GetListParcels())
+			foreach (IDAL.DO.Parcel item in dal.GetListParcels(p => p.Id != 0))
 			{
-				if (item.TargetId == customerId && item.Delivered == DateTime.MinValue && item.PickedUp != DateTime.MinValue)
+				if (item.TargetId == customerId && item.Delivered == null && item.PickedUp != null)
 					counter++;
 			}
 			return counter;

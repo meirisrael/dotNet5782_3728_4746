@@ -28,14 +28,12 @@ namespace IDAL
 		public IDAL.DO.Parcel GetParcel(int parecel);
 
 		//method - return a IEnumerable list of object
-		public IEnumerable<IDAL.DO.Parcel> GetListOfParcelsNotAssignedToDrone();
-
-		public IEnumerable<IDAL.DO.BaseStation> GetListBaseStations();
+		public IEnumerable<IDAL.DO.BaseStation> GetListBaseStations(Predicate<IDAL.DO.BaseStation> f);
 		public IEnumerable<IDAL.DO.Drone> GetListDrones(); 
 		public IEnumerable<IDAL.DO.Customer> GetListCustomers();
-		public IEnumerable<IDAL.DO.Parcel> GetListParcels();
-		public IEnumerable<IDAL.DO.BaseStation> GetListBaseStationsCanCharge();
+		public IEnumerable<IDAL.DO.Parcel> GetListParcels(Predicate<IDAL.DO.Parcel> f);
 
+		//method - update data of an object
 		public void UpdateDrone(IDAL.DO.Drone drone);
 		public void UpdateBaseStation(IDAL.DO.BaseStation baseStation);
 		public void UpdateCustomer(IDAL.DO.Customer customer);
