@@ -45,7 +45,7 @@ namespace BL
 		/// </summary>
 		private void reqListOfDrone()
 		{
-			foreach (IDAL.DO.Drone d in dal.GetListDrones())
+			foreach (IDAL.DO.Drone d in dal.GetListDrones(d => true))
 			{
 				IBL.BO.Location l = new IBL.BO.Location();
 				l.Latitude = 0; l.Longitude = 0;
@@ -886,15 +886,25 @@ namespace BL
 		/// the func return an list of drone
 		/// </summary>
 		/// <returns> list of drone </returns>
-		public IEnumerable<IBL.BO.DroneToList> GetListOfDrone()
+		public IEnumerable<IBL.BO.DroneToList> GetListOfDrones(Predicate<IBL.BO.DroneToList> f)
 		{
-			return (IEnumerable<IBL.BO.DroneToList>)droneToList;
+			List<IBL.BO.DroneToList> drones = new();
+			foreach (IDAL.DO.Drone item in dal.GetListDrones(d=>true))
+			{
+				IBL.BO.Location l = new() { Latitude = droneToList.Find(d=>d.Id==item.Id).Loc.Latitude, Longitude = droneToList.Find(d => d.Id == item.Id).Loc.Longitude };
+				drones.Add(new()
+				{
+					Id = item.Id,Model = item.Model,MaxWeight = (IBL.BO.WeightCategories)item.MaxWeight,Battery = droneToList.Find(d => d.Id == item.Id).Battery,
+					Status=droneToList.Find(d=>d.Id==item.Id).Status,Loc=l,IdOfParcel=droneToList.Find(d=>d.Id==item.Id).IdOfParcel
+				});
+			}
+			return (IEnumerable<IBL.BO.DroneToList>)drones.FindAll(f);
 		}
 		/// <summary>
 		/// the func return an list of customer
 		/// </summary>
 		/// <returns> list of customer </returns>
-		public IEnumerable<IBL.BO.CustomerToList> GetListOfCustomer()
+		public IEnumerable<IBL.BO.CustomerToList> GetListOfCustomers()
 		{
 			List<IBL.BO.CustomerToList> customer = new List<IBL.BO.CustomerToList>();
 			foreach (IDAL.DO.Customer item in dal.GetListCustomers())
@@ -916,7 +926,7 @@ namespace BL
 		/// the func return a list of parcel 
 		/// </summary>
 		/// <returns> list of parcel </returns>
-		public IEnumerable<IBL.BO.ParcelToList> GetListOfParcel(Predicate<IDAL.DO.Parcel> f)
+		public IEnumerable<IBL.BO.ParcelToList> GetListOfParcels(Predicate<IDAL.DO.Parcel> f)
 		{
 			List<IBL.BO.ParcelToList> parcel = new List<IBL.BO.ParcelToList>();
 			foreach (IDAL.DO.Parcel item in dal.GetListParcels(f))

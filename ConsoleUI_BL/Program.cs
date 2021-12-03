@@ -278,27 +278,27 @@ namespace ConsoleUI_BL
                             switch (displayList)
                             {
                                 case IBL.BO.DisplayList.BaseStations:
-                                    foreach (IBL.BO.BaseToList item in ibl.GetListOfBaseStations(b => b.Id != 0))
+                                    foreach (IBL.BO.BaseToList item in ibl.GetListOfBaseStations(b => true))
                                     { Console.WriteLine(item.ToString()); }
                                     break;
 
                                 case IBL.BO.DisplayList.Drones:
-                                    foreach (IBL.BO.DroneToList item in ibl.GetListOfDrone())
+                                    foreach (IBL.BO.DroneToList item in ibl.GetListOfDrones())
                                     { Console.WriteLine(item.ToString()); }
                                     break;
 
                                 case IBL.BO.DisplayList.Customers:
-                                    foreach (IBL.BO.CustomerToList item in ibl.GetListOfCustomer())
+                                    foreach (IBL.BO.CustomerToList item in ibl.GetListOfCustomers())
                                     { Console.WriteLine(item.ToString()); }
                                     break;
 
                                 case IBL.BO.DisplayList.Parcels:
-                                    foreach (IBL.BO.ParcelToList item in ibl.GetListOfParcel(p => p.Id != 0))
+                                    foreach (IBL.BO.ParcelToList item in ibl.GetListOfParcels(p => true))
                                     { Console.WriteLine(item.ToString()); }
                                     break;
 
                                 case IBL.BO.DisplayList.ParcelsNotAssignedToDrone:
-                                    foreach (IBL.BO.ParcelToList item in ibl.GetListOfParcel(p => p.DroneId == 0))
+                                    foreach (IBL.BO.ParcelToList item in ibl.GetListOfParcels(p => p.DroneId == 0))
                                     { Console.WriteLine(item.ToString()); }
                                     break;
 

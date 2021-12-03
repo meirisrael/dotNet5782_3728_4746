@@ -27,10 +27,10 @@ namespace DalObject
 			if (latti > 90 || latti < -90) throw new IDAL.DO.InvalidLoc("LATITUDE","-90 TO 90");
 			if (longi > 180 || longi < -180) throw new IDAL.DO.InvalidLoc("LONGITUDE","-180 TO 180");
 
-			if(DataSource.baseStation.Exists(item => item.Id == id))
+			if(DataSource.baseStations.Exists(item => item.Id == id))
 				throw new IDAL.DO.IdExist("BASE-STATION");
 
-			DataSource.baseStation.Add(new IDAL.DO.BaseStation()
+			DataSource.baseStations.Add(new IDAL.DO.BaseStation()
 			{
 				Id = id,
 				Name = name,
@@ -50,10 +50,10 @@ namespace DalObject
 			if (id < 0 || id == 0) throw new IDAL.DO.InvalidId("DRONE");
 			if ((int)weight > 3 || (int)weight < 1) throw new IDAL.DO.InvalidCategory("WEIGHT");
 
-			if(DataSource.drone.Exists(item=>item.Id==id))
+			if(DataSource.drones.Exists(item=>item.Id==id))
 				throw new IDAL.DO.IdExist("DRONE");
 
-			DataSource.drone.Add(new IDAL.DO.Drone()
+			DataSource.drones.Add(new IDAL.DO.Drone()
 			{
 				Id = id,
 				Model = model,
@@ -143,7 +143,7 @@ namespace DalObject
 			IDAL.DO.Drone d = new IDAL.DO.Drone();
 			if(!DataSource.parcels.Exists(item => item.Id == parcelId))
 				throw new IDAL.DO.IdNotExist("PARCEL");
-			if(!DataSource.drone.Exists(item => item.Id == droneId))
+			if(!DataSource.drones.Exists(item => item.Id == droneId))
 				throw new IDAL.DO.IdNotExist("DRONE");
 				
 			foreach (IDAL.DO.Parcel item in DataSource.parcels)
@@ -154,7 +154,7 @@ namespace DalObject
 					break;
 				}
 			}
-			foreach (IDAL.DO.Drone item in DataSource.drone)
+			foreach (IDAL.DO.Drone item in DataSource.drones)
 			{
 				if (item.Id == droneId)
 				{
@@ -228,22 +228,22 @@ namespace DalObject
 		/// <param name="baseId"></param>
 		public void AssignDroneToBaseStation(int droneId, int baseId)
 		{
-			if(!DataSource.drone.Exists(item => item.Id == droneId)) 
+			if(!DataSource.drones.Exists(item => item.Id == droneId)) 
 				throw new IDAL.DO.IdNotExist("DRONE");
-			if(!DataSource.baseStation.Exists(item => item.Id == baseId)) 
+			if(!DataSource.baseStations.Exists(item => item.Id == baseId)) 
 				throw new IDAL.DO.IdNotExist("BASE-STATION");
 
-			for (int i = 0; i < DataSource.baseStation.Count; i++)
+			for (int i = 0; i < DataSource.baseStations.Count; i++)
 			{
-				if (DataSource.baseStation[i].Id == baseId)
+				if (DataSource.baseStations[i].Id == baseId)
 				{
-					IDAL.DO.BaseStation x = DataSource.baseStation[i];
+					IDAL.DO.BaseStation x = DataSource.baseStations[i];
 					x.ChargeSlots--;
-					DataSource.baseStation[i] = x;
+					DataSource.baseStations[i] = x;
 					break;
 				}
 			}
-			DataSource.droneCharge.Add(new IDAL.DO.DroneCharge { DroneId = droneId, StationId = baseId });
+			DataSource.droneCharges.Add(new IDAL.DO.DroneCharge { DroneId = droneId, StationId = baseId });
 		}
 		/// <summary>
 		/// change the status of a given drone to "free" and update the freed charge slot in the related basestation
@@ -252,26 +252,26 @@ namespace DalObject
 		/// <param name="baseId"></param>
 		public void DroneLeaveChargeStation(int droneId, int baseId)
 		{
-			if(!DataSource.drone.Exists(item => item.Id == droneId))
+			if(!DataSource.drones.Exists(item => item.Id == droneId))
 				throw new IDAL.DO.IdNotExist("DRONE");
-			if(!DataSource.baseStation.Exists(item => item.Id == baseId))
+			if(!DataSource.baseStations.Exists(item => item.Id == baseId))
 				throw new IDAL.DO.IdNotExist("BASE-STATION");
 
-			for (int i = 0; i < DataSource.baseStation.Count; i++)
+			for (int i = 0; i < DataSource.baseStations.Count; i++)
 			{
-				if (DataSource.baseStation[i].Id == baseId)
+				if (DataSource.baseStations[i].Id == baseId)
 				{
-					IDAL.DO.BaseStation x = DataSource.baseStation[i];
+					IDAL.DO.BaseStation x = DataSource.baseStations[i];
 					x.ChargeSlots++;
-					DataSource.baseStation[i] = x;
+					DataSource.baseStations[i] = x;
 					break;
 				}
 			}
-			for (int i  = 0; i < DataSource.droneCharge.Count(); i++)
+			for (int i  = 0; i < DataSource.droneCharges.Count(); i++)
 			{
-				if (DataSource.droneCharge[i].DroneId == droneId)
+				if (DataSource.droneCharges[i].DroneId == droneId)
 				{
-					DataSource.droneCharge.RemoveAt(i);
+					DataSource.droneCharges.RemoveAt(i);
 				}
 			}
 
@@ -285,7 +285,7 @@ namespace DalObject
 		/// <returns> an base station </returns>
 		public IDAL.DO.BaseStation GetBaseStation(int baseId)
 		{
-			foreach (IDAL.DO.BaseStation item in DataSource.baseStation)
+			foreach (IDAL.DO.BaseStation item in DataSource.baseStations)
 			{
 				if (item.Id == baseId)
 					return item;
@@ -299,7 +299,7 @@ namespace DalObject
 		/// <returns> an drone </returns>
 		public IDAL.DO.Drone GetDrone(int droneId)
 		{
-			foreach (IDAL.DO.Drone item in DataSource.drone)
+			foreach (IDAL.DO.Drone item in DataSource.drones)
 			{
 				if (item.Id == droneId)
 					return item;
@@ -342,15 +342,15 @@ namespace DalObject
 		/// <returns> list of Base-Station</returns>
 		public IEnumerable<IDAL.DO.BaseStation> GetListBaseStations(Predicate<IDAL.DO.BaseStation> f)
 		{
-			return DataSource.baseStation.FindAll(f);
+			return DataSource.baseStations.FindAll(f);
 		}
 		/// <summary>
 		/// display the details of all drones
 		/// </summary>
 		/// <returns> list of drones </returns>
-		public IEnumerable<IDAL.DO.Drone> GetListDrones()
+		public IEnumerable<IDAL.DO.Drone> GetListDrones(Predicate<IDAL.DO.Drone> f)
 		{
-			return DataSource.drone;
+			return DataSource.drones.FindAll(f);
 		}
 		/// <summary>
 		/// display the details of all customers
@@ -376,11 +376,11 @@ namespace DalObject
 		/// <param name="drone"></param>
 		public void UpdateDrone(IDAL.DO.Drone drone)
 		{
-			for (int i = 0; i < DataSource.drone.Count(); i++)
+			for (int i = 0; i < DataSource.drones.Count(); i++)
 			{
-				if (DataSource.drone[i].Id == drone.Id)
+				if (DataSource.drones[i].Id == drone.Id)
 				{	
-					DataSource.drone[i] = drone; break;
+					DataSource.drones[i] = drone; break;
 				}
 			}
 		}
@@ -390,11 +390,11 @@ namespace DalObject
 		/// <param name="baseStation"></param>
 		public void UpdateBaseStation(IDAL.DO.BaseStation baseStation)
 		{
-			for (int i = 0; i < DataSource.baseStation.Count(); i++)
+			for (int i = 0; i < DataSource.baseStations.Count(); i++)
 			{
-				if (DataSource.baseStation[i].Id == baseStation.Id)
+				if (DataSource.baseStations[i].Id == baseStation.Id)
 				{ 
-					DataSource.baseStation[i] = baseStation; break;
+					DataSource.baseStations[i] = baseStation; break;
 				}
 			}
 		}

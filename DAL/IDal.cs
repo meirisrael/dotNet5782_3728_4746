@@ -29,7 +29,7 @@ namespace IDAL
 
 		//method - return a IEnumerable list of object
 		public IEnumerable<IDAL.DO.BaseStation> GetListBaseStations(Predicate<IDAL.DO.BaseStation> f);
-		public IEnumerable<IDAL.DO.Drone> GetListDrones(); 
+		public IEnumerable<IDAL.DO.Drone> GetListDrones(Predicate<IDAL.DO.Drone> f); 
 		public IEnumerable<IDAL.DO.Customer> GetListCustomers();
 		public IEnumerable<IDAL.DO.Parcel> GetListParcels(Predicate<IDAL.DO.Parcel> f);
 

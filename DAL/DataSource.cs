@@ -12,11 +12,11 @@ namespace DalObject
 	/// </summary>
 	internal class DataSource
 	{
-		internal static List<IDAL.DO.Drone> drone = new List<IDAL.DO.Drone>();
-		internal static List<IDAL.DO.BaseStation> baseStation = new List<IDAL.DO.BaseStation>();
+		internal static List<IDAL.DO.Drone> drones = new List<IDAL.DO.Drone>();
+		internal static List<IDAL.DO.BaseStation> baseStations = new List<IDAL.DO.BaseStation>();
 		internal static List<IDAL.DO.Customer> customers = new List<IDAL.DO.Customer>();
 		internal static List<IDAL.DO.Parcel> parcels = new List<IDAL.DO.Parcel>();
-		internal static List<IDAL.DO.DroneCharge> droneCharge = new List<IDAL.DO.DroneCharge>();
+		internal static List<IDAL.DO.DroneCharge> droneCharges = new List<IDAL.DO.DroneCharge>();
 
 		public static Random r = new Random();
 
@@ -40,7 +40,7 @@ namespace DalObject
 			string[] name_ = new string[] { "Meir", "Lior", "Hilel", "Mendel", "Chimon", "David", "Loki", "Rephael", "levi", "Nathan" };
 			for (int i = 0; i < 2; i++)//for base station
 			{
-				baseStation.Add(new IDAL.DO.BaseStation()
+				baseStations.Add(new IDAL.DO.BaseStation()
 				{
 					Id = CounterBaseStation++,
 					Name = i,
@@ -51,7 +51,7 @@ namespace DalObject
 			}
 			for (int i = 0; i < 10; i++)//for the drone
 			{
-				drone.Add(new IDAL.DO.Drone()
+				drones.Add(new IDAL.DO.Drone()
 				{
 					Id = CounterDrones,
 					Model = "Fantome-" + i,

@@ -234,7 +234,7 @@ namespace ConsoleUI
                             switch (displayList)
                             {
                                 case IDAL.DO.DisplayList.BaseStations:
-                                    foreach (IDAL.DO.BaseStation item in dal.GetListBaseStations())
+                                    foreach (IDAL.DO.BaseStation item in dal.GetListBaseStations(b => true))
                                     { Console.WriteLine(item.ToString()); }
                                     break;
 
@@ -249,17 +249,17 @@ namespace ConsoleUI
                                     break;
 
                                 case IDAL.DO.DisplayList.Parcels:
-                                    foreach (IDAL.DO.Parcel item in dal.GetListParcels())
+                                    foreach (IDAL.DO.Parcel item in dal.GetListParcels(p => true))
                                     { Console.WriteLine(item.ToString()); }
                                     break;
 
                                 case IDAL.DO.DisplayList.ParcelsNotAssignedToDrone:
-                                    foreach (IDAL.DO.Parcel item in dal.GetListOfParcelsNotAssignedToDrone())
+                                    foreach (IDAL.DO.Parcel item in dal.GetListParcels(p => p.DroneId == 0))
                                     { Console.WriteLine(item.ToString()); }
                                     break;
 
                                 case IDAL.DO.DisplayList.BaseStationsCanCharge:
-                                    foreach (IDAL.DO.BaseStation item in dal.GetListBaseStationsCanCharge())
+                                    foreach (IDAL.DO.BaseStation item in dal.GetListBaseStations(b => b.ChargeSlots > 0))
                                     { Console.WriteLine(item.ToString()); }
                                     break;
                                 default:

@@ -1,0 +1,33 @@
+﻿<Window x:Class="PL.AddDrone"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL"
+        mc:Ignorable="d"
+        Title="AddDrone" Height="450" Width="800">
+	<Grid>
+		<Grid.Background>
+			<ImageBrush Stretch="None" ImageSource="C:\Users\meirs\source\repos\meirisrael\dotNet5782_3728_4746/drone.png" AlignmentY="Top" AlignmentX="Center"/>
+		</Grid.Background>
+		<ComboBox Name="WeightSelector" HorizontalAlignment="Left" Margin="168,165,0,0" VerticalAlignment="Top" Width="120"  SelectionChanged="WeightSelector_SelectionChanged"/>
+		<TextBox HorizontalAlignment="Left" Margin="168,68,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+		<TextBox HorizontalAlignment="Left" Margin="168,120,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="1.15,0.587"/>
+		<TextBlock HorizontalAlignment="Left" Margin="56,68,0,0" Text="Enter ID:" TextWrapping="Wrap" VerticalAlignment="Top"/>
+		<TextBlock Name="Model" HorizontalAlignment="Left" Margin="45,112,0,0" Text="Enter Model:" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="-0.245,0.535"/>
+		<TextBlock HorizontalAlignment="Left" Margin="23,165,0,0" Text="Choose Max-Weight:" TextWrapping="Wrap" VerticalAlignment="Top"/>
+		<TextBlock HorizontalAlignment="Left" Margin="10,217,0,0" Text="Choose ID Of Base-Staion:" TextWrapping="Wrap" VerticalAlignment="Top"/>
+		<ComboBox Name="BaseSelectore" HorizontalAlignment="Left" Margin="168,217,0,0" VerticalAlignment="Top" Width="120"/>
+		<ListView x:Name="BaseListView" Margin="382,107,84,195">
+			<ListView.View>
+				<GridView>
+					<GridViewColumn/>
+				</GridView>
+			</ListView.View>
+		</ListView>
+		<TextBlock HorizontalAlignment="Left" Margin="420,112,0,0" Text="All Base-station you can assigne the Drone" TextWrapping="Wrap" VerticalAlignment="Top" Height="13" Width="242"/>
+		<Button Content="ADD" HorizontalAlignment="Left" Margin="168,367,0,0" VerticalAlignment="Top" Width="120" Height="35" Background="LawnGreen" Click="Add_Click"
+				/>
+		<Button Content="Cancel" HorizontalAlignment="Left" Margin="541,367,0,0" VerticalAlignment="Top" Width="120" Height="35" Background="OrangeRed" Click="Cancel_Click"/>
+	</Grid>
+</Window>

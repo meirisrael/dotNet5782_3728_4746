@@ -32,8 +32,8 @@ namespace IBL
 		
 		//get all list - option 
 		public IEnumerable<BO.BaseToList> GetListOfBaseStations(Predicate<IDAL.DO.BaseStation> f);
-		public IEnumerable<BO.DroneToList> GetListOfDrone();
-		public IEnumerable<BO.CustomerToList> GetListOfCustomer();
-		public IEnumerable<BO.ParcelToList> GetListOfParcel(Predicate<IDAL.DO.Parcel> f);
+		public IEnumerable<BO.DroneToList> GetListOfDrones(Predicate<BO.DroneToList> f);
+		public IEnumerable<BO.CustomerToList> GetListOfCustomers();
+		public IEnumerable<BO.ParcelToList> GetListOfParcels(Predicate<IDAL.DO.Parcel> f);
 	}
 }
