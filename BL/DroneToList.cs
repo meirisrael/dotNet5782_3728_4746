@@ -22,9 +22,9 @@ namespace IBL
 			public override string ToString()
 			{
 				string idParcel="Not in shipping";
-				if (IdOfParcel != null)
+				if (this.Status==DroneStatuses.Shipping)
 					idParcel = this.IdOfParcel.ToString();
-				return $"Drone To List:\n" +
+				return $"Drone\n" +
 					$" Id: {this.Id}\n" +
 					$" Model: {this.Model}\n" +
 					$" MaxWeight: {this.MaxWeight }\n" +

@@ -19,7 +19,7 @@ namespace IBL
 
 			public override string ToString()
 			{
-				return $"Parcel to list:\n" +
+				return $"Parcel\n" +
 					$" Id: { this.Id}\n" +
 					$" Name of sender: {this.NameSender}\n" +
 					$" Name of Target: {this.NameTarget}\n" +

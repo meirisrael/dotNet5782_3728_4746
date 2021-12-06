@@ -14,8 +14,8 @@ namespace ConsoleUI_BL
             IBL.BO.Choice choice = 0;
             bool res;
             IBL.BO.Location loc = new();
-            IDAL.DO.WeightCategories weight;
-            IDAL.DO.Priorities priorities;
+            IBL.BO.WeightCategories weight;
+            IBL.BO.Priorities priorities;
             int intA, intB, intC, intD;
             double doubA, doubB;
             string stringA, stringB;
@@ -81,7 +81,7 @@ namespace ConsoleUI_BL
                                         "   1.Light\n" +
                                         "   2.Medium\n" +
                                         "   3.Heavy");
-                                    Enum.TryParse<IDAL.DO.WeightCategories>(Console.ReadLine(), out weight);
+                                    Enum.TryParse<IBL.BO.WeightCategories>(Console.ReadLine(), out weight);
                                     Console.WriteLine("Choose first Base Id:");
                                     foreach (IBL.BO.BaseToList item in ibl.GetListOfBaseStations(b => b.ChargeSlots > 0))
                                     { Console.WriteLine(item.ToString()); }
@@ -118,12 +118,12 @@ namespace ConsoleUI_BL
                                         "   1.Light\n" +
                                         "   2.Medium\n" +
                                         "   3.Heavy\n");
-                                    Enum.TryParse<IDAL.DO.WeightCategories>(Console.ReadLine(), out weight);
+                                    Enum.TryParse<IBL.BO.WeightCategories>(Console.ReadLine(), out weight);
                                     Console.WriteLine("Priority:\n" +
                                         "   1.Normal\n" +
                                         "   2.Fast\n" +
                                         "   3.Emergecey");
-                                    Enum.TryParse<IDAL.DO.Priorities>(Console.ReadLine(), out priorities);
+                                    Enum.TryParse<IBL.BO.Priorities>(Console.ReadLine(), out priorities);
                                     ibl.AddParcel(intA, intB, intC, weight, priorities);
                                     Console.WriteLine("Successfuly added.");
                                     break;
@@ -283,7 +283,7 @@ namespace ConsoleUI_BL
                                     break;
 
                                 case IBL.BO.DisplayList.Drones:
-                                    foreach (IBL.BO.DroneToList item in ibl.GetListOfDrones())
+                                    foreach (IBL.BO.DroneToList item in ibl.GetListOfDrones(d => true))
                                     { Console.WriteLine(item.ToString()); }
                                     break;
 

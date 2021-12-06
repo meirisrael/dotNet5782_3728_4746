@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="displayListOfDrones" Height="640" Width="800">
+        Title="displayListOfDrones" Height="640" Width="800" Loaded="Window_Loaded">
 	<Grid Name="MainGride">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="25*"/>
@@ -15,13 +15,16 @@
 			<RowDefinition Height="50*"/>
 			<RowDefinition Height="400*"/>
 		</Grid.RowDefinitions>
-		<Grid Name="UpGrid" Height="auto" Grid.Row="0" Width="auto" Grid.ColumnSpan="2">
+		<Grid Name="UpGrid" Height="auto" Grid.Row="0" Width="auto" Grid.ColumnSpan="2" Background="Tan">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions >
+			<StatusBar Margin="79,26,0,0" Grid.Column="3" Background="Tan">
+				<TextBlock x:FieldModifier="private" x:Name="myDateTime" Background="Tan"/>
+			</StatusBar>
 			<TextBox HorizontalAlignment="Stretch" Margin="10,0,10,0" Text="" TextWrapping="Wrap" VerticalAlignment="Center" />
 			<ComboBox Name="StatusSelector" Grid.Column="1" VerticalAlignment="Top" Margin="0,10,36,0"	
 					 SelectionChanged="StatusSelector_SelectionChanged"/>
@@ -39,6 +42,7 @@
 				</GridView>
 			</ListView.View>
 		</ListView>
+
 
 	</Grid>
 </Window>

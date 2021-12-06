@@ -10,7 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PL
 {
@@ -77,9 +77,17 @@ namespace PL
 		private void Add_Click(object sender, RoutedEventArgs e)
 		{
 			new AddDrone(bl).Show();
+			drones = bl.GetListOfDrones(d => true);
+			DroneListView.ItemsSource = drones;
 		}
 		private void Close_Click(object sender, RoutedEventArgs e) => Close();
-		
-		
+		private void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			DispatcherTimer timer = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Normal, (object s, EventArgs ev) =>
+			{
+				this.myDateTime.Text = DateTime.Now.ToString("  hh:mm:ss\ndd/MM/yyyy ");
+			}, this.Dispatcher);
+			timer.Start();
+		}
 	}
 }

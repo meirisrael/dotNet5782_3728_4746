@@ -32,7 +32,7 @@ namespace IBL
 					$"		Target:		{this.Target.ToString()}\n" +
 					$"		Location of PickedUp:	{this.LocPickedUp.ToString()}\n" +
 					$"		Location of Delivered:	{this.LocDelivered.ToString()}\n" +
-					$"		The distance of delivery: {this.DistanceDelivery} KM"
+					$"		The distance of delivery: {Math.Round(this.DistanceDelivery,3)} KM"
 					;
 			}
 		}

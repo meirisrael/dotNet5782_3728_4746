@@ -21,30 +21,21 @@ namespace IBL
 			public Drone() : base() { Loc = new(); InTransit = new(); }
 			public override string ToString()
 			{
-				string total = "";
-				if (InTransit.Id == null)
-				{
-					return $"Drone:\n" +
-						  $" Id: {this.Id}\n" +
-						  $" Model: {this.Model}\n" +
-						  $" MaxWeight: {this.MaxWeight }\n" +
-						  $" Drone Statut: {this.Status}\n" +
-						  $" Battery percent: {this.Battery}%\n" +
-						  $" Location: {this.Loc.ToString()}\n" +
-						  $" Parcel in transit now: none ";
-				}
+				string transit = "";
+				if (InTransit == null)
+					transit = "none";
 				else
-				{
-					return $"Drone:\n" +
-						  $" Id: {this.Id}\n" +
-						  $" Model: {this.Model}\n" +
-						  $" MaxWeight: {this.MaxWeight }\n" +
-						  $" Drone Statut: {this.Status}\n" +
-						  $" Battery percent: {this.Battery}%\n" +
-						  $" Location: {this.Loc.ToString()}\n" +
-						  $" Parcel in transit now: {this.InTransit.ToString()}"
-						  ;
-				}
+					transit = this.InTransit.ToString();
+				return $"Drone:\n" +
+						 $" Id: {this.Id}\n" +
+						 $" Model: {this.Model}\n" +
+						 $" MaxWeight: {this.MaxWeight }\n" +
+					     $" Drone Statut: {this.Status}\n" +
+						 $" Battery percent: {this.Battery}%\n" +
+						 $" Location: {this.Loc.ToString()}\n" +
+						 $" Parcel in transit now: {transit}"
+						 ;
+				
 			}
 		}
 	}

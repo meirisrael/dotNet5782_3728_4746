@@ -10,9 +10,9 @@ namespace IBL
 	{
 		//add - option
 		public void AddBaseStation(int id, int name, int chargeSlots, BO.Location location);
-		public void AddDrone(int id, string model, IDAL.DO.WeightCategories weight, int firstBaseStation);
+		public void AddDrone(int id, string model, BO.WeightCategories weight, int firstBaseStation);
 		public void AddCustomer(int id, string name, string phone, BO.Location location);
-		public void AddParcel(int id, int senderId, int targetId, IDAL.DO.WeightCategories weight, IDAL.DO.Priorities priorities);
+		public void AddParcel(int id, int senderId, int targetId, BO.WeightCategories weight, BO.Priorities priorities);
 
 		//update data - option
 		public void UpdateDrone(int droneId, string model);

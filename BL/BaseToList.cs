@@ -17,7 +17,7 @@ namespace IBL
 
 			public override string ToString()
 			{
-				return $"Base For List:\n" +
+				return $"Base-Station\n" +
 					$" Id: {this.Id}\n" +
 					$" Name: {this.Name}\n" +
 					$" Nums of charge that are availble: {this.ChargeSlots}\n" +
