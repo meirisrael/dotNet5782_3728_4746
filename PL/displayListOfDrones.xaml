@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="displayListOfDrones" Height="640" Width="800" Loaded="Window_Loaded">
+        Title="displayListOfDrones" Height="640" Width="800">
 	<Grid Name="MainGride">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="25*"/>
@@ -22,20 +22,20 @@
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions >
-			<StatusBar Margin="79,26,0,0" Grid.Column="3" Background="Tan">
-				<TextBlock x:FieldModifier="private" x:Name="myDateTime" Background="Tan"/>
-			</StatusBar>
-			<TextBox HorizontalAlignment="Stretch" Margin="10,0,10,0" Text="" TextWrapping="Wrap" VerticalAlignment="Center" />
 			<ComboBox Name="StatusSelector" Grid.Column="1" VerticalAlignment="Top" Margin="0,10,36,0"	
 					 SelectionChanged="StatusSelector_SelectionChanged"/>
 			<ComboBox Name="WeightSelector" Grid.Column="1" VerticalAlignment="Bottom" Margin="0,0,36,10"
 					  SelectionChanged="WeightSelector_SelectionChanged" />
-			<Button Content="Clear" Grid.Column="1" HorizontalAlignment="Right"  VerticalAlignment="Bottom" Margin="0,0,0,11" Click="ClearWeight_Click" Background="red"/>
-			<Button Content="Clear" Grid.Column="1" HorizontalAlignment="Right"  VerticalAlignment="Top" Margin="0,11,0,0" Click="ClearStatus_Click" Background="red"/>
-			<Button Content="ADD Drone" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Background="green" Width="133" Height="25" Click="Add_Click"/>
-			<Button Content="Close" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Gold" Margin="166,0,0,0" Height="21" Width="34" Click="Close_Click"/>
+			<Button Content="Clear" Grid.Column="1" HorizontalAlignment="Right"  VerticalAlignment="Bottom" Margin="0,0,0,11" Click="ClearWeight_Click" Background="red" BorderBrush="Black" BorderThickness="1"/>
+			<Button Content="Clear" Grid.Column="1" HorizontalAlignment="Right"  VerticalAlignment="Top" Margin="0,11,0,0" Click="ClearStatus_Click" Background="red" BorderBrush="Black" BorderThickness="1"/>
+			<Button Content="ADD Drone" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Background="green" Width="133" Height="25" Click="Add_Click" BorderBrush="Black" BorderThickness="1"/>
+			<Button Content="Close" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Gold" Margin="166,0,0,0" Height="21" Width="34" Click="Close_Click" BorderBrush="Black" BorderThickness="1"/>
+			<TextBlock HorizontalAlignment="Left" Margin="94,13,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="96"/>
+			<TextBlock HorizontalAlignment="Left" Margin="94,40,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="106" RenderTransformOrigin="1.094,0.566"/>
+			<Label Content="Filter by Status : " HorizontalAlignment="Left" VerticalAlignment="Top" Width="106" Height="35" Margin="94,4,0,0"/>
+			<Label Content="Filter by Weight : " HorizontalAlignment="Left" VerticalAlignment="Top" Width="106" Height="35" Margin="94,35,0,0"/>
 		</Grid>
-		<ListView x:Name="DroneListView" Grid.ColumnSpan="2" Margin="0,69,0,0" Grid.RowSpan="2">
+		<ListView x:Name="DroneListView" Grid.ColumnSpan="2" Margin="0,69,0,0" Grid.RowSpan="2" MouseDoubleClick="DroneListView_MouseDoubleClick" >
 			<ListView.View>
 				<GridView>
 					<GridViewColumn/>

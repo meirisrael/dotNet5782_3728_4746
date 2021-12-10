@@ -23,9 +23,14 @@ namespace IBL
 			public ParcelInTransit() : base() { Sender = new(); Target = new(); LocPickedUp = new(); LocDelivered = new(); }
 			public override string ToString()
 			{
+				string status = "";
+				if (this.Status == true)
+					status = "on the way";
+				else
+					status = "waiting for collection";
 				return $"\n	Parcel In Transit -\n" +
 					$"		Id: {this.Id}\n" +
-					$"		Parcel Statut: {this.Status}\n" +
+					$"		Parcel Statut: {status}\n" +
 					$"		Weight: {this.Weight}\n" +
 					$"		Priority: {this.Priority}\n" +
 					$"		Sender:		{this.Sender.ToString()}\n" +

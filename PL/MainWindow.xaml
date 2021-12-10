@@ -5,12 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Main window" Height="450" Width="800" Loaded="Window_Loaded" >
 	<Grid>
+		<StatusBar Margin="346,0,346,360" Background="White">
+			<TextBlock x:FieldModifier="private" x:Name="myDateTime" Background="White"/>
+		</StatusBar>
 		<Button Content="Drone" HorizontalAlignment="Left" Margin="614,35,0,0" FontStyle="Italic" FontWeight="ExtraBlack" Background="OliveDrab" FontFamily="arial"
-				VerticalAlignment="Top" Click="DronesButton_Click" Height="52" Width="137" />
+				VerticalAlignment="Top" Click="DronesButton_Click" Height="52" Width="137" BorderBrush="Black" BorderThickness="3" />
 		<Grid.Background>
-			<ImageBrush Stretch="Fill" ImageSource="C:\Users\meirs\source\repos\meirisrael\dotNet5782_3728_4746\picture\welcome.png" AlignmentY="Top" AlignmentX="Center"/>
+			<ImageBrush Stretch="Fill" ImageSource="C:\Users\meirs\source\repos\meirisrael\dotNet5782_3728_4746\PL\picture\welcome.png" AlignmentY="Top" AlignmentX="Center"/>
 		</Grid.Background>
+		
 	</Grid>
 </Window>

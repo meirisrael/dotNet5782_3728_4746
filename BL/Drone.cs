@@ -22,7 +22,7 @@ namespace IBL
 			public override string ToString()
 			{
 				string transit = "";
-				if (InTransit == null)
+				if (InTransit.Id==0)
 					transit = "none";
 				else
 					transit = this.InTransit.ToString();

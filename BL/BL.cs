@@ -531,6 +531,7 @@ namespace BL
 			if (drone.Battery < calcBatteryToCloserBase(drone.Loc.Longitude, drone.Loc.Latitude))//no enough battery to go to charge station
 				throw new IBL.BO.NotEnoughBattery();
 			drone.Battery -= calcBatteryToCloserBase(drone.Loc.Longitude, drone.Loc.Latitude);
+			drone.whenInCharge = DateTime.Now;
 
 			IDAL.DO.BaseStation baseStation = new IDAL.DO.BaseStation();
 			baseStation = CloserBase(drone.Loc.Longitude, drone.Loc.Latitude);//search the closer base 
@@ -552,14 +553,16 @@ namespace BL
 		/// </summary>
 		/// <param name="droneId"></param>
 		/// <param name="time"></param>
-		public void DroneLeaveCharge(int droneId, int time)
+		public void DroneLeaveCharge(int droneId)
 		{
 			IBL.BO.DroneToList drone = new IBL.BO.DroneToList();
 			drone = droneToList[searchDrone(droneId)];
 			if (drone.Status != IBL.BO.DroneStatuses.Maintenance)//if the drone id of drone that the user gave is not in Maintenance so need to throw that
 				throw new IBL.BO.DroneNotInCharge();
 			drone.Status = IBL.BO.DroneStatuses.free;
-			drone.Battery += (time / 60) * _chargingRate;//get time in minuts
+			double timeChargeing = (DateTime.Now.Subtract(drone.whenInCharge).TotalSeconds) / 3600;
+			drone.Battery += (timeChargeing) * _chargingRate;
+			drone.Battery = Math.Round(drone.Battery, 3);
 			if (drone.Battery > 100)
 				drone.Battery = 100;
 			IDAL.DO.BaseStation baseStation = new IDAL.DO.BaseStation();
@@ -1018,7 +1021,10 @@ namespace BL
 			IBL.BO.CustomerInParcel customerT = new IBL.BO.CustomerInParcel();
 
 			parcel.Id = p.Id;
-			parcel.Status = true;
+			if(GetParcel(p.Id).PickedUp==null)
+				parcel.Status = false;
+			else
+				parcel.Status = true;
 			parcel.Weight = (IBL.BO.WeightCategories)p.Weight;
 			parcel.Priority = (IBL.BO.Priorities)p.Priority;
 			parcel.LocPickedUp.Longitude = getCustomerInIBL(p.SenderId).Loc.Longitude;

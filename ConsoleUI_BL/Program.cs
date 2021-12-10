@@ -23,7 +23,6 @@ namespace ConsoleUI_BL
             {
                 do
                 {
-
                     Console.WriteLine
                         ("Enter\n" +
                         " 1 for add options \n" +
@@ -192,9 +191,7 @@ namespace ConsoleUI_BL
                                 case IBL.BO.Update.DroneLeaveChargeStation:
                                     Console.WriteLine("DroneId:");
                                     int.TryParse(Console.ReadLine(), out intA);
-                                    Console.WriteLine("Time(in minutes):");
-                                    int.TryParse(Console.ReadLine(), out intB);
-                                    ibl.DroneLeaveCharge(intA, intB);
+                                    ibl.DroneLeaveCharge(intA);
                                     Console.WriteLine("Drone was leav the charging-station.");
                                     break;
                                 case IBL.BO.Update.AffectParcel:
