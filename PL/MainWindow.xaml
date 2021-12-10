@@ -12,6 +12,7 @@
 		</StatusBar>
 		<Button Content="Drone" HorizontalAlignment="Left" Margin="614,35,0,0" FontStyle="Italic" FontWeight="ExtraBlack" Background="OliveDrab" FontFamily="arial"
 				VerticalAlignment="Top" Click="DronesButton_Click" Height="52" Width="137" BorderBrush="Black" BorderThickness="3" />
+		<Image Source="C:\Users\meirs\source\repos\meirisrael\dotNet5782_3728_4746\PL\picture\logo_drone.png" />
 		<Grid.Background>
 			<ImageBrush Stretch="Fill" ImageSource="C:\Users\meirs\source\repos\meirisrael\dotNet5782_3728_4746\PL\picture\welcome.png" AlignmentY="Top" AlignmentX="Center"/>
 		</Grid.Background>
