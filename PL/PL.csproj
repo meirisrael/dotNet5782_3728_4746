@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <Resource Include="icon\logo_company.ico" />
-    <Resource Include="logo_company.ico" />
     <Resource Include="picture\drone.png" />
     <Resource Include="picture\logo_company.jpg" />
     <Resource Include="picture\logo_drone.jpg" />
