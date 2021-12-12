@@ -239,7 +239,7 @@ namespace ConsoleUI
                                     break;
 
                                 case IDAL.DO.DisplayList.Drones:
-                                    foreach (IDAL.DO.Drone item in dal.GetListDrones())
+                                    foreach (IDAL.DO.Drone item in dal.GetListDrones(d=>true))
                                     { Console.WriteLine(item.ToString()); }
                                     break;
 
