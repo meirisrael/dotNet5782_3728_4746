@@ -144,7 +144,7 @@ namespace PL
 			return;
 
 
-		}
+		}///jhbhbn
 		/// <summary>
 		/// if the user press the button "update" so update the model of the drone
 		/// </summary>
