@@ -93,7 +93,7 @@ namespace PL
 		/// <param name="e"></param>
 		private void WeightSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if (BaseSelectore.SelectedItem != null)
+			if (BaseSelectore.SelectedItem != null && IdBox.Text != "" && ModelBox.Text != "")
 				add_button.IsEnabled = true;
 		}
 		/// <summary>
@@ -103,7 +103,7 @@ namespace PL
 		/// <param name="e"></param>
 		private void BaseSelectore_SelectionChanged(object sender, SelectionChangedEventArgs e) 
 		{
-			if(WeightSelector.SelectedItem != null)
+			if(WeightSelector.SelectedItem != null && IdBox.Text != "" && ModelBox.Text != "")
 				add_button.IsEnabled = true;
 		}
 
@@ -120,6 +120,7 @@ namespace PL
 			if (!int.TryParse(id, out droneId))
 			{
 				MessageBox.Show("Drone ID most be an intenger", "ERROR");
+				IdBox.Background = Brushes.Salmon;
 				return;
 			}
 			else
@@ -317,6 +318,8 @@ namespace PL
 		{
 			if (UpdateModelBox.Text != null)
 				Update_button.IsEnabled = true;
+			else
+				Update_button.IsEnabled = false;
 		}
 		/// <summary>
 		/// get the id from the box for add a new drone
@@ -326,6 +329,10 @@ namespace PL
 		private void IdBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			IdBox.Background = null;
+			if (BaseSelectore.SelectedItem != null && WeightSelector.SelectedItem != null && ModelBox.Text != "" && IdBox.Text != "")
+				add_button.IsEnabled = true;
+			else
+				add_button.IsEnabled = false;
 		}
 		/// <summary>
 		/// get the model of drone from the box for add a new drone
@@ -335,6 +342,10 @@ namespace PL
 		private void ModelBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			ModelBox.Background = null;
+			if (BaseSelectore.SelectedItem != null && WeightSelector.SelectedItem != null && IdBox.Text != "" && ModelBox.Text != "")
+				add_button.IsEnabled = true;
+			else
+				add_button.IsEnabled = false;
 		}
 
 		/// <summary>

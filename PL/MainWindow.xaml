@@ -10,7 +10,7 @@
 		<StatusBar HorizontalAlignment="Center" VerticalAlignment="Top" Background="White" Height="auto" Width="auto">
 			<TextBlock x:FieldModifier="private" x:Name="myDateTime" Background="White"/>
 		</StatusBar>
-		<Button Content="Drone" HorizontalAlignment="Right" FontStyle="Italic" FontWeight="ExtraBlack" Background="OliveDrab" FontFamily="arial"
+		<Button Content="Drone" HorizontalAlignment="Right" FontStyle="Italic" FontWeight="ExtraBlack" Background="OliveDrab" FontFamily="Comic Sans MS"
 				VerticalAlignment="Top" Click="DronesButton_Click" Height="52" Width="137" BorderBrush="Black" BorderThickness="3" Margin="0,35,49,0" />
         <Image Source="/picture/logo_drone.jpg" Margin="529,21,191,333" Height="80" Width="80"
 			 VerticalAlignment="Top" HorizontalAlignment="Right" />
