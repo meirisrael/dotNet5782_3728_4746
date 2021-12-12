@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="drone Window" Height="600" Width="800" Icon="logo_company.ico">
+        Title="drone Window" Height="600" Width="800" Icon="icon\logo_company.ico">
 	<Grid x:Name="MainGride">
 		<Grid x:Name="add_drone_Grid" Visibility="Hidden">
 			<Grid.Background>
@@ -36,7 +36,7 @@
 
 		<Grid x:Name="action_drone_Grid" Visibility="Hidden">
 			<Grid.Background>
-				<ImageBrush Stretch="Fill" ImageSource="C:\Users\meirs\source\repos\meirisrael\dotNet5782_3728_4746\PL\picture\mavic_pro.png" AlignmentY="Top" AlignmentX="Center"/>
+				<ImageBrush Stretch="Fill" ImageSource="picture\mavic_pro.png" AlignmentY="Top" AlignmentX="Center"/>
 			</Grid.Background>
 			<TextBlock HorizontalAlignment="Left" Text="To change the Model:" TextWrapping="Wrap" VerticalAlignment="Top" Width="117" Margin="40,63,0,0"/>
 			<TextBox x:Name="UpdateModelBox" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="138" TextChanged="UpdateModel_TextChanged" Margin="179,64,0,0"/>
