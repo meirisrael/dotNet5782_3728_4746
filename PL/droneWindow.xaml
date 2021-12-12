@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="drone Window" Height="600" Width="800" Icon="C:\Users\meirs\source\repos\meirisrael\dotNet5782_3728_4746\PL\logo_company.ico">
+        Title="drone Window" Height="600" Width="800" Icon="logo_company.ico">
 	<Grid x:Name="MainGride">
 		<Grid x:Name="add_drone_Grid" Visibility="Hidden">
 			<Grid.Background>
-				<ImageBrush Stretch="Fill" ImageSource="C:\Users\meirs\source\repos\meirisrael\dotNet5782_3728_4746\PL\picture\drone.png" AlignmentY="Top" AlignmentX="Center"/>
+				<ImageBrush Stretch="Fill" ImageSource="picture\drone.png" AlignmentY="Top" AlignmentX="Center"/>
 			</Grid.Background>
 			<ComboBox Name="WeightSelector" HorizontalAlignment="Left" Margin="168,165,0,0" VerticalAlignment="Top" Width="120"  SelectionChanged="WeightSelector_SelectionChanged"/>
 			<TextBox x:Name="IdBox" HorizontalAlignment="Left" Margin="168,68,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
@@ -34,7 +34,7 @@
 			<Button Content="Cancel" HorizontalAlignment="Left" Margin="541,367,0,0" VerticalAlignment="Top" Width="120" Height="35" Background="OrangeRed" Click="Cancel_Click"/>
 		</Grid>
 
-		<Grid x:Name="action_drone_Grid" Visibility="Visible">
+		<Grid x:Name="action_drone_Grid" Visibility="Hidden">
 			<Grid.Background>
 				<ImageBrush Stretch="Fill" ImageSource="C:\Users\meirs\source\repos\meirisrael\dotNet5782_3728_4746\PL\picture\mavic_pro.png" AlignmentY="Top" AlignmentX="Center"/>
 			</Grid.Background>
