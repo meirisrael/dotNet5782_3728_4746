@@ -7,7 +7,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="picture\drone.png" />
+    <None Remove="picture\logo_company.jpg" />
+    <None Remove="picture\logo_drone.jpg" />
+    <None Remove="picture\mavic_pro.png" />
+    <None Remove="picture\welcome.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BL\BL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="picture\drone.png" />
+    <Resource Include="picture\logo_company.jpg" />
+    <Resource Include="picture\logo_drone.jpg" />
+    <Resource Include="picture\mavic_pro.png" />
+    <Resource Include="picture\welcome.png" />
   </ItemGroup>
 
 </Project>
