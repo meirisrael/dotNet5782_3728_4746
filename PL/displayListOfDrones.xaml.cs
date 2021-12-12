@@ -128,7 +128,9 @@ namespace PL
 			int index = DroneListView.SelectedIndex;//the index of drone that the user choose
 			try
 			{
-				new droneWindow(bl,drones.ToList()[index],DroneListView).Show();
+				new droneWindow(bl,drones.ToList()[index],DroneListView).ShowDialog();
+				filterByStatus();
+				filterByWeight();
 			}
 			catch (Exception ex)
 			{
