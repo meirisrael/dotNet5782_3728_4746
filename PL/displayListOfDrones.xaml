@@ -5,17 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="displayListOfDrones" Height="640" Width="800">
+        Title="List Of Drones" Height="640" Width="800" Icon="C:\Users\meirs\source\repos\meirisrael\dotNet5782_3728_4746\PL\logo_company.ico">
 	<Grid Name="MainGride">
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="25*"/>
-			<ColumnDefinition Width="7*"/>
-		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="50*"/>
 			<RowDefinition Height="400*"/>
 		</Grid.RowDefinitions>
-		<Grid Name="UpGrid" Height="auto" Grid.Row="0" Width="auto" Grid.ColumnSpan="2" Background="Tan">
+		<Grid Name="UpGrid" Height="auto" Grid.Row="0" Width="auto" Background="Tan">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="*"/>
@@ -29,18 +25,13 @@
 			<Button Content="Clear" Grid.Column="1" HorizontalAlignment="Right"  VerticalAlignment="Bottom" Margin="0,0,0,11" Click="ClearWeight_Click" Background="red" BorderBrush="Black" BorderThickness="1"/>
 			<Button Content="Clear" Grid.Column="1" HorizontalAlignment="Right"  VerticalAlignment="Top" Margin="0,11,0,0" Click="ClearStatus_Click" Background="red" BorderBrush="Black" BorderThickness="1"/>
 			<Button Content="ADD Drone" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Background="green" Width="133" Height="25" Click="Add_Click" BorderBrush="Black" BorderThickness="1"/>
-			<Button Content="Close" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Gold" Margin="166,0,0,0" Height="21" Width="34" Click="Close_Click" BorderBrush="Black" BorderThickness="1"/>
+			<Button Content="Close" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Gold" Height="35" Width="35" Click="Close_Click" BorderBrush="Black" BorderThickness="1"/>
 			<TextBlock HorizontalAlignment="Left" Margin="94,13,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="96"/>
 			<TextBlock HorizontalAlignment="Left" Margin="94,40,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="106" RenderTransformOrigin="1.094,0.566"/>
 			<Label Content="Filter by Status : " HorizontalAlignment="Left" VerticalAlignment="Top" Width="106" Height="35" Margin="94,4,0,0"/>
-			<Label Content="Filter by Weight : " HorizontalAlignment="Left" VerticalAlignment="Top" Width="106" Height="35" Margin="94,35,0,0"/>
+			<Label Content="Filter by Weight : " HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="106" Height="35" Margin="94,35,0,0"/>
 		</Grid>
-		<ListView x:Name="DroneListView" Grid.ColumnSpan="2" Margin="0,69,0,0" Grid.RowSpan="2" MouseDoubleClick="DroneListView_MouseDoubleClick" >
-			<ListView.View>
-				<GridView>
-					<GridViewColumn/>
-				</GridView>
-			</ListView.View>
+		<ListView x:Name="DroneListView" MouseDoubleClick="DroneListView_MouseDoubleClick" Grid.Row="1" >
 		</ListView>
 
 

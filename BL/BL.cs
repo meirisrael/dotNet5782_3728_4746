@@ -339,6 +339,9 @@ namespace BL
 			catch (IDAL.DO.InvalidId ex)//base
 			{ throw new IBL.BO.InvalidId(ex.Message, ex._type); }
 
+			catch (IDAL.DO.EmptyValue ex)//name
+			{ throw new IBL.BO.EmptyValue(ex.Message, ex._type); }
+
 			catch (IDAL.DO.InvalidChargeSlot ex)
 			{ throw new IBL.BO.InvalidChargeSlot(ex.Message); }
 
@@ -369,6 +372,9 @@ namespace BL
 
 			catch (IDAL.DO.IdExist ex)//drone
 			{ throw new IBL.BO.IdExist(ex.Message, ex._type); }
+
+			catch (IDAL.DO.EmptyValue ex)//model
+			{ throw new IBL.BO.EmptyValue(ex.Message,ex._type); }
 
 			try
 			{
@@ -412,6 +418,9 @@ namespace BL
 
 			catch (IDAL.DO.IdExist ex)//customer
 			{ throw new IBL.BO.IdExist(ex.Message, ex._type); }
+
+			catch (IDAL.DO.EmptyValue ex)//name or phone
+			{ throw new IBL.BO.EmptyValue(ex.Message, ex._type); }
 		}
 		/// <summary>
 		/// the fun add an new parcel to the data base

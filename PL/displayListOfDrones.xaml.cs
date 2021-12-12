@@ -136,7 +136,7 @@ namespace PL
 		/// <param name="e"></param>
 		private void Add_Click(object sender, RoutedEventArgs e)
 		{
-			new droneWindow(bl).Show();
+			new droneWindow(bl,DroneListView).Show();
 		}
 		/// <summary>
 		/// if the user do a double click on the drone list view
@@ -148,7 +148,7 @@ namespace PL
 			int index = DroneListView.SelectedIndex;//the index of drone that the user choose
 			try
 			{
-				new droneWindow(bl,drones.ToList()[index]).Show();
+				new droneWindow(bl,drones.ToList()[index],DroneListView).Show();
 			}
 			catch (Exception ex)
 			{

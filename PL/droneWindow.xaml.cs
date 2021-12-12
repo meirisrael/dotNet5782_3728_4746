@@ -23,6 +23,7 @@ namespace PL
 	{
 		private IBL.IBL bl;
 		private IBL.BO.Drone drone;
+		private ListView listOfDrone;
 		//------------------------------------------------------------------ FUNC AND CONST VARIABL --------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
 		private const uint MF_BYCOMMAND = 0x00000000;
@@ -52,9 +53,10 @@ namespace PL
 		/// if the ctor get only one param so need do open the add window
 		/// </summary>
 		/// <param name="ibl"></param>
-		public droneWindow(IBL.IBL ibl)
+		public droneWindow(IBL.IBL ibl,ListView list)
 		{
 			bl = ibl;
+			listOfDrone = list;
 			InitializeComponent();
 			add_drone_Gride.Visibility = Visibility.Visible;
 			WeightSelector.ItemsSource = Enum.GetValues(typeof(IBL.BO.WeightCategories));
@@ -71,9 +73,10 @@ namespace PL
 		/// </summary>
 		/// <param name="ibl"></param>
 		/// <param name="d"></param>
-		public droneWindow(IBL.IBL ibl, IBL.BO.DroneToList d)
+		public droneWindow(IBL.IBL ibl, IBL.BO.DroneToList d, ListView list)
 		{
 			bl = ibl;
+			listOfDrone = list;
 			InitializeComponent();
 			action_drone_Gride.Visibility = Visibility.Visible;
 			drone = bl.GetDrone(d.Id);
@@ -88,13 +91,21 @@ namespace PL
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void WeightSelector_SelectionChanged(object sender, SelectionChangedEventArgs e) { }
+		private void WeightSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (BaseSelectore.SelectedItem != null)
+				add_button.IsEnabled = true;
+		}
 		/// <summary>
 		/// when the user selcte a object in the selector
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void BaseSelectore_SelectionChanged(object sender, SelectionChangedEventArgs e) { }
+		private void BaseSelectore_SelectionChanged(object sender, SelectionChangedEventArgs e) 
+		{
+			if(WeightSelector.SelectedItem != null)
+				add_button.IsEnabled = true;
+		}
 
 		/// <summary>
 		/// if the user press the button "add" so add a new drone to the data base
@@ -117,13 +128,18 @@ namespace PL
 			{
 				bl.AddDrone(droneId, ModelBox.Text, (IBL.BO.WeightCategories)WeightSelector.SelectedItem, firstBase);
 				MessageBox.Show("Successfuly added", "Successfull");
+				listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
 				Close();
 			}
-			catch (Exception ex)
+			catch (IBL.BO.IdExist)
 			{
-				MessageBox.Show(ex.Message, "ERROR");
+				MessageBox.Show("ID alredy exist", "ERROR");
 				IdBox.Background = Brushes.Salmon;
-
+			}
+			catch (IBL.BO.EmptyValue)
+			{
+				MessageBox.Show("You must be give an name of model", "ERROR");
+				ModelBox.Background = Brushes.Salmon;
 			}
 			return;
 
@@ -139,7 +155,9 @@ namespace PL
 			try
 			{
 				bl.UpdateDrone(drone.Id, UpdateModelBox.Text);
-				MessageBox.Show("Successfuly added", "Successfull");
+				MessageBox.Show("Successfuly update", "Successfull");
+				listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
+				listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
 			}
 			catch (Exception ex)
 			{
@@ -158,6 +176,8 @@ namespace PL
 			{
 				bl.DroneToCharge(drone.Id);
 				MessageBox.Show("Successfuly sent to charge", "Successfull");
+				listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
+				InitializeComponent();
 			}
 			catch (Exception ex)
 			{
@@ -175,6 +195,7 @@ namespace PL
 			{
 				bl.DroneLeaveCharge(drone.Id);
 				MessageBox.Show("Successfuly release frome charge", "Successfull");
+				listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
 			}
 			catch (Exception ex)
 			{
@@ -192,6 +213,7 @@ namespace PL
 			{
 				bl.AffectParcelToDrone(drone.Id);
 				MessageBox.Show("Successfuly associated to an parcel", "Successfull");
+				listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
 			}
 			catch (Exception ex)
 			{
@@ -210,6 +232,7 @@ namespace PL
 			{
 				bl.ParcelCollection(drone.Id);
 				MessageBox.Show("Successfuly collected", "Successfull");
+				listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
 			}
 			catch (Exception ex)
 			{
@@ -227,6 +250,7 @@ namespace PL
 			{
 				bl.ParcelDeliverd(drone.Id);
 				MessageBox.Show("Successfuly deliverd", "Successfull");
+				listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
 			}
 			catch (Exception ex)
 			{
@@ -281,6 +305,15 @@ namespace PL
 		private void IdBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			IdBox.Background = null;
+		}
+		/// <summary>
+		/// get the model of drone from the box for add a new drone
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void ModelBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			ModelBox.Background = null;
 		}
 
 		/// <summary>

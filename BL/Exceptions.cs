@@ -32,6 +32,13 @@ namespace IBL
 			public InvalidLoc(string ms, string type_, string range) : base($"{ms}\nIBL-ERROR: {type_} NEED TO BE BEHTWEEN {range}\n") { }
 		}
 
+		//the user not give a value for name.....
+		public class EmptyValue : Exception
+		{
+			public EmptyValue(string ms,string type_) : base($"{ms}\nDAL-ERORR: YOU MUST BE GIVE A VALUE FOR {type_}\n") { this._type = type_; }
+			public string _type;
+		}
+
 		// exceptions - problem with Categories
 		public class InvalidCategory : Exception//WEIGHT PRIORITIES
 		{

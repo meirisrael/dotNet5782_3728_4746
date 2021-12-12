@@ -5,17 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="Main window" Height="450" Width="800" Loaded="Window_Loaded" >
+        Title="Main window" Height="450" Width="800" Loaded="Window_Loaded" Icon="C:\Users\meirs\source\repos\meirisrael\dotNet5782_3728_4746\PL\logo_company.ico" >
 	<Grid>
-		<StatusBar Margin="346,0,346,360" Background="White">
+		<StatusBar HorizontalAlignment="Center" VerticalAlignment="Top" Background="White" Height="auto" Width="auto">
 			<TextBlock x:FieldModifier="private" x:Name="myDateTime" Background="White"/>
 		</StatusBar>
-		<Button Content="Drone" HorizontalAlignment="Left" Margin="614,35,0,0" FontStyle="Italic" FontWeight="ExtraBlack" Background="OliveDrab" FontFamily="arial"
-				VerticalAlignment="Top" Click="DronesButton_Click" Height="52" Width="137" BorderBrush="Black" BorderThickness="3" />
-		<Image Source="C:\Users\meirs\source\repos\meirisrael\dotNet5782_3728_4746\PL\picture\logo_drone.png" />
+		<Button Content="Drone" HorizontalAlignment="Right" FontStyle="Italic" FontWeight="ExtraBlack" Background="OliveDrab" FontFamily="arial"
+				VerticalAlignment="Top" Click="DronesButton_Click" Height="52" Width="137" BorderBrush="Black" BorderThickness="3" Margin="0,35,49,0" />
+		<Image Source="C:\Users\meirs\source\repos\meirisrael\dotNet5782_3728_4746\PL\picture\logo_drone.jpg" Margin="529,21,191,333" Height="80" Width="80"
+			 VerticalAlignment="Top" HorizontalAlignment="Right" />
+		<Label Content="Designed by  M.I.A." HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="94" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Gabriola" FontWeight="Bold" FontStyle="Italic" FontSize="10" Foreground="#FF857114" Background="Transparent" Margin="0,0,-2,-1" />
 		<Grid.Background>
 			<ImageBrush Stretch="Fill" ImageSource="C:\Users\meirs\source\repos\meirisrael\dotNet5782_3728_4746\PL\picture\welcome.png" AlignmentY="Top" AlignmentX="Center"/>
 		</Grid.Background>
-		
+
 	</Grid>
 </Window>

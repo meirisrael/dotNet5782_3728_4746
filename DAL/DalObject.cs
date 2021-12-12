@@ -23,6 +23,7 @@ namespace DalObject
 		public void AddBaseStation(int id, int name, int chargeSlots, double longi, double latti)
 		{
 			if (id < 0 || id == 0) throw new IDAL.DO.InvalidId("BASE-STATION");
+			if (name < 0 || name == 0) throw new IDAL.DO.EmptyValue("BASE-STATION BIGGER THAN 0");
 			if (chargeSlots < 0) throw new IDAL.DO.InvalidChargeSlot();
 			if (latti > 90 || latti < -90) throw new IDAL.DO.InvalidLoc("LATITUDE","-90 TO 90");
 			if (longi > 180 || longi < -180) throw new IDAL.DO.InvalidLoc("LONGITUDE","-180 TO 180");
@@ -49,6 +50,7 @@ namespace DalObject
 		{
 			if (id < 0 || id == 0) throw new IDAL.DO.InvalidId("DRONE");
 			if ((int)weight > 3 || (int)weight < 1) throw new IDAL.DO.InvalidCategory("WEIGHT");
+			if (model == "") throw new IDAL.DO.EmptyValue("MODEL");
 
 			if(DataSource.drones.Exists(item=>item.Id==id))
 				throw new IDAL.DO.IdExist("DRONE");
@@ -71,6 +73,8 @@ namespace DalObject
 		public void AddCustomer(int id, string name, string phone, double longi, double latti)
 		{
 			if (id < 0 || id == 0) throw new IDAL.DO.InvalidId("CUSTOMER");
+			if (name == "") throw new IDAL.DO.EmptyValue("NAME");
+			if (phone == "") throw new IDAL.DO.EmptyValue("PHONE");
 			if (latti > 90 || latti < -90) throw new IDAL.DO.InvalidLoc("LATITUDE", "-90 TO 90");
 			if (longi > 180 || longi < -180) throw new IDAL.DO.InvalidLoc("LONGITUDE", "-180 TO 180");
 

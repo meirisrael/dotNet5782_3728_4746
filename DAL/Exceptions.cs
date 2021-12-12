@@ -34,6 +34,13 @@ namespace IDAL
 			public string range;
 		}
 
+		//the user not give a value for name.....
+		public class EmptyValue : Exception
+		{
+			public EmptyValue(string type_) : base($"DAL-ERORR: YOU MUST BE GIVE A VALUE FOR {type_}\n") { this._type = type_; }
+			public string _type;
+		}
+
 		// exceptions - problem with Categories
 		public class InvalidCategory : Exception//WEIGHT PRIORITIES
 		{
