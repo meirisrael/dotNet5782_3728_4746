@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="Main window" Height="450" Width="800" Loaded="Window_Loaded" Icon="\logo_company.ico" >
+        Title="Main window" Height="450" Width="800" Loaded="Window_Loaded" Icon="\icon\logo_company.ico" >
 	<Grid>
 		<StatusBar HorizontalAlignment="Center" VerticalAlignment="Top" Background="White" Height="auto" Width="auto">
 			<TextBlock x:FieldModifier="private" x:Name="myDateTime" Background="White"/>
@@ -18,6 +18,5 @@
 		<Grid.Background>
 			<ImageBrush Stretch="Fill" ImageSource="\picture\welcome.png" AlignmentY="Top" AlignmentX="Center"/>
 		</Grid.Background>
-
 	</Grid>
 </Window>

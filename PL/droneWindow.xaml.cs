@@ -58,7 +58,7 @@ namespace PL
 			bl = ibl;
 			listOfDrone = list;
 			InitializeComponent();
-			add_drone_Gride.Visibility = Visibility.Visible;
+			add_drone_Grid.Visibility = Visibility.Visible;
 			WeightSelector.ItemsSource = Enum.GetValues(typeof(IBL.BO.WeightCategories));
 			BaseListView.ItemsSource = bl.GetListOfBaseStations(b => b.ChargeSlots > 0);
 			for (int i = 0; i < bl.GetListOfBaseStations(b => b.ChargeSlots > 0).Count(); ++i)
@@ -78,7 +78,7 @@ namespace PL
 			bl = ibl;
 			listOfDrone = list;
 			InitializeComponent();
-			action_drone_Gride.Visibility = Visibility.Visible;
+			action_drone_Grid.Visibility = Visibility.Visible;
 			drone = bl.GetDrone(d.Id);
 			Drone_label.Content = drone.ToString();
 			charging_button();
@@ -156,7 +156,8 @@ namespace PL
 			{
 				bl.UpdateDrone(drone.Id, UpdateModelBox.Text);
 				MessageBox.Show("Successfuly update", "Successfull");
-				listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
+				drone = bl.GetDrone(drone.Id);
+				Drone_label.Content = drone.ToString();
 				listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
 			}
 			catch (Exception ex)
@@ -176,8 +177,11 @@ namespace PL
 			{
 				bl.DroneToCharge(drone.Id);
 				MessageBox.Show("Successfuly sent to charge", "Successfull");
+				drone = bl.GetDrone(drone.Id);
+				Drone_label.Content = drone.ToString();
+				charging_button();
+				shipping_button();
 				listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
-				InitializeComponent();
 			}
 			catch (Exception ex)
 			{
@@ -195,6 +199,10 @@ namespace PL
 			{
 				bl.DroneLeaveCharge(drone.Id);
 				MessageBox.Show("Successfuly release frome charge", "Successfull");
+				drone = bl.GetDrone(drone.Id);
+				Drone_label.Content = drone.ToString();
+				charging_button();
+				shipping_button();
 				listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
 			}
 			catch (Exception ex)
@@ -213,6 +221,9 @@ namespace PL
 			{
 				bl.AffectParcelToDrone(drone.Id);
 				MessageBox.Show("Successfuly associated to an parcel", "Successfull");
+				drone = bl.GetDrone(drone.Id);
+				Drone_label.Content = drone.ToString();
+				shipping_button();
 				listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
 			}
 			catch (Exception ex)
@@ -232,6 +243,9 @@ namespace PL
 			{
 				bl.ParcelCollection(drone.Id);
 				MessageBox.Show("Successfuly collected", "Successfull");
+				drone = bl.GetDrone(drone.Id);
+				Drone_label.Content = drone.ToString();
+				shipping_button();
 				listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
 			}
 			catch (Exception ex)
@@ -250,6 +264,10 @@ namespace PL
 			{
 				bl.ParcelDeliverd(drone.Id);
 				MessageBox.Show("Successfuly deliverd", "Successfull");
+				drone = bl.GetDrone(drone.Id);
+				Drone_label.Content = drone.ToString();
+				shipping_button();
+				charging_button();
 				listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
 			}
 			catch (Exception ex)
@@ -265,11 +283,12 @@ namespace PL
 		private void charging_button()
 		{
 			if (drone.Status == IBL.BO.DroneStatuses.free)
-				sentCharge_button.Visibility = Visibility.Visible;
+			{
+				sentCharge_button.Visibility = Visibility.Visible;releaseCharge_button.Visibility = Visibility.Hidden; messege_label_charge.Visibility = Visibility.Hidden; }
 			else if (drone.Status == IBL.BO.DroneStatuses.Maintenance)
-				releaseCharge_button.Visibility = Visibility.Visible;
+			{ releaseCharge_button.Visibility = Visibility.Visible; sentCharge_button.Visibility = Visibility.Hidden; messege_label_charge.Visibility = Visibility.Hidden; }
 			else
-				messege_label.Visibility = Visibility.Visible;
+				messege_label_charge.Visibility = Visibility.Visible;
 		}
 		/// <summary>
 		/// choose which button visible to the user
@@ -279,12 +298,14 @@ namespace PL
 			if (drone.Status == IBL.BO.DroneStatuses.Shipping)
 			{
 				if (drone.InTransit.Status == false)// if not pick-up 
-					collectParcel_button.Visibility = Visibility.Visible;
+				{ collectParcel_button.Visibility = Visibility.Visible; deliverParcel_button.Visibility = Visibility.Hidden; }
 				else if (drone.InTransit.Status == true)
-					deliverParcel_button.Visibility = Visibility.Visible;
+				{ deliverParcel_button.Visibility = Visibility.Visible; collectParcel_button.Visibility = Visibility.Hidden; }
 			}
 			else if (drone.Status == IBL.BO.DroneStatuses.free)
-				sentShipping_button.Visibility = Visibility.Visible;
+			{ sentShipping_button.Visibility = Visibility.Visible; collectParcel_button.Visibility = Visibility.Hidden; deliverParcel_button.Visibility = Visibility.Hidden; messege_label_shipp.Visibility = Visibility.Hidden; }
+			else
+				messege_label_shipp.Visibility = Visibility.Visible;
 		}
 
 		/// <summary>
