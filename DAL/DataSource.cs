@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IDAL;
 
 namespace DalObject
 {
@@ -12,11 +11,11 @@ namespace DalObject
 	/// </summary>
 	internal class DataSource
 	{
-		internal static List<IDAL.DO.Drone> drones = new List<IDAL.DO.Drone>();
-		internal static List<IDAL.DO.BaseStation> baseStations = new List<IDAL.DO.BaseStation>();
-		internal static List<IDAL.DO.Customer> customers = new List<IDAL.DO.Customer>();
-		internal static List<IDAL.DO.Parcel> parcels = new List<IDAL.DO.Parcel>();
-		internal static List<IDAL.DO.DroneCharge> droneCharges = new List<IDAL.DO.DroneCharge>();
+		internal static List<DO.Drone> drones = new List<DO.Drone>();
+		internal static List<DO.BaseStation> baseStations = new List<DO.BaseStation>();
+		internal static List<DO.Customer> customers = new List<DO.Customer>();
+		internal static List<DO.Parcel> parcels = new List<DO.Parcel>();
+		internal static List<DO.DroneCharge> droneCharges = new List<DO.DroneCharge>();
 
 		public static Random r = new Random();
 
@@ -40,7 +39,7 @@ namespace DalObject
 			string[] name_ = new string[] { "Meir", "Lior", "Hilel", "Mendel", "Chimon", "David", "Loki", "Rephael", "levi", "Nathan" };
 			for (int i = 0; i < 2; i++)//for base station
 			{
-				baseStations.Add(new IDAL.DO.BaseStation()
+				baseStations.Add(new DO.BaseStation()
 				{
 					Id = CounterBaseStation++,
 					Name = i,
@@ -51,18 +50,18 @@ namespace DalObject
 			}
 			for (int i = 0; i < 10; i++)//for the drone
 			{
-				drones.Add(new IDAL.DO.Drone()
+				drones.Add(new DO.Drone()
 				{
 					Id = CounterDrones,
-					Model = "Fantome-" + i,
-					MaxWeight = (IDAL.DO.WeightCategories)3
+					Model = "Fantome-" + r.Next(4,6),
+					MaxWeight = (DO.WeightCategories)3
 				});
 				if (i < 9)
 					CounterDrones++;
 			}
 			for (int i = 0; i < 10; i++)//for customer
 			{
-				customers.Add(new IDAL.DO.Customer()
+				customers.Add(new DO.Customer()
 				{
 					Id = CounterCustomer,
 					Name = name_[i],
@@ -78,21 +77,20 @@ namespace DalObject
 				DateTime? x,z;
 				if (i % 3 == 0) { x = DateTime.Now.AddHours(2); z =x.Value.AddHours(1) ; }
 				else { x = null; z = null; }
-				parcels.Add(new IDAL.DO.Parcel()
+				parcels.Add(new DO.Parcel()
 				{
 					Id = CounterParcel++,
 					SenderId = i+3000-1,
 					TargetId = CounterCustomer--,
-					Weight = (IDAL.DO.WeightCategories)(r.Next(1, 4)),
-					Priority = (IDAL.DO.Priorities)(r.Next(1, 4)),
+					Weight = (DO.WeightCategories)(r.Next(1, 4)),
+					Priority = (DO.Priorities)(r.Next(1, 4)),
 					DroneId = CounterDrones,
 					Requested = DateTime.Now,
 					Scheduled = DateTime.Now.AddSeconds(5),
 					PickedUp = x,
 					Delivered = z
 				});
-					CounterDrones--;
-				
+				CounterDrones--;
 			}
 		}
 	}

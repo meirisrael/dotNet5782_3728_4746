@@ -6,20 +6,20 @@ namespace ConsoleUI_BL
     {
         static void Main(string[] args)
         {
-            IBL.IBL ibl = BL.BL.GetInstance();
+            BlApi.IBL ibl = BL.BlFactory.GetBl();
             MenuWindow(ibl);
         }
-        static void MenuWindow(IBL.IBL ibl)
+        static void MenuWindow(BlApi.IBL ibl)
         {
-            IBL.BO.Choice choice = 0;
+            BO.Choice choice = 0;
             bool res;
-            IBL.BO.Location loc = new();
-            IBL.BO.WeightCategories weight;
-            IBL.BO.Priorities priorities;
+            BO.Location loc = new();
+            BO.WeightCategories weight;
+            BO.Priorities priorities;
             int intA, intB, intC, intD;
             double doubA, doubB;
             string stringA, stringB;
-            while (choice != IBL.BO.Choice.Exit)//only if the user want to leav the program
+            while (choice != BO.Choice.Exit)//only if the user want to leav the program
             {
                 do
                 {
@@ -30,15 +30,15 @@ namespace ConsoleUI_BL
                         " 3 for display options \n" +
                         " 4 for list display options\n" +
                         " 5 to Exit");
-                    res = Enum.TryParse<IBL.BO.Choice>(Console.ReadLine(), out choice);
+                    res = Enum.TryParse<BO.Choice>(Console.ReadLine(), out choice);
                     if (!res) Console.WriteLine("Wrong input");
                 } while (!res);
                 try
                 {
                     switch (choice)
                     {
-                        case IBL.BO.Choice.Add:
-                            IBL.BO.Add add;
+                        case BO.Choice.Add:
+                            BO.Add add;
                             do
                             {
                                 Console.WriteLine("Enter\n" +
@@ -46,13 +46,13 @@ namespace ConsoleUI_BL
                                     " 2 to add a drone \n" +
                                     " 3 to register as a new customer\n" +
                                     " 4 to send a parcel");
-                                res = Enum.TryParse<IBL.BO.Add>(Console.ReadLine(), out add);
+                                res = Enum.TryParse<BO.Add>(Console.ReadLine(), out add);
                                 if (!res) Console.WriteLine("Wrong input");
                             } while (!res);
                             switch (add)
                             {
 
-                                case IBL.BO.Add.AddBaseStation:
+                                case BO.Add.AddBaseStation:
                                     Console.WriteLine("Id:");
                                     int.TryParse(Console.ReadLine(), out intA);
                                     Console.WriteLine("Name:");
@@ -71,7 +71,7 @@ namespace ConsoleUI_BL
                                     break;
 
 
-                                case IBL.BO.Add.AddDrone:
+                                case BO.Add.AddDrone:
                                     Console.WriteLine("Id:");
                                     int.TryParse(Console.ReadLine(), out intA);
                                     Console.WriteLine("Model:");
@@ -80,16 +80,16 @@ namespace ConsoleUI_BL
                                         "   1.Light\n" +
                                         "   2.Medium\n" +
                                         "   3.Heavy");
-                                    Enum.TryParse<IBL.BO.WeightCategories>(Console.ReadLine(), out weight);
+                                    Enum.TryParse<BO.WeightCategories>(Console.ReadLine(), out weight);
                                     Console.WriteLine("Choose first Base Id:");
-                                    foreach (IBL.BO.BaseToList item in ibl.GetListOfBaseStations(b => b.ChargeSlots > 0))
+                                    foreach (BO.BaseToList item in ibl.GetListOfBaseStations(b => b.ChargeSlots > 0))
                                     { Console.WriteLine(item.ToString()); }
                                     int.TryParse(Console.ReadLine(), out intB);
                                     ibl.AddDrone(intA, stringA, weight, intB);
                                     Console.WriteLine("Successfuly added.");
 
                                     break;
-                                case IBL.BO.Add.AddCustomer:
+                                case BO.Add.AddCustomer:
                                     Console.WriteLine("Id:");
                                     int.TryParse(Console.ReadLine(), out intA);
                                     Console.WriteLine("Name:");
@@ -106,7 +106,7 @@ namespace ConsoleUI_BL
                                     Console.WriteLine("Successfuly added.");
                                     break;
 
-                                case IBL.BO.Add.AddParcel:
+                                case BO.Add.AddParcel:
                                     Console.WriteLine("Id:");
                                     int.TryParse(Console.ReadLine(), out intA);
                                     Console.WriteLine("SenderId:");
@@ -117,12 +117,12 @@ namespace ConsoleUI_BL
                                         "   1.Light\n" +
                                         "   2.Medium\n" +
                                         "   3.Heavy\n");
-                                    Enum.TryParse<IBL.BO.WeightCategories>(Console.ReadLine(), out weight);
+                                    Enum.TryParse<BO.WeightCategories>(Console.ReadLine(), out weight);
                                     Console.WriteLine("Priority:\n" +
                                         "   1.Normal\n" +
                                         "   2.Fast\n" +
                                         "   3.Emergecey");
-                                    Enum.TryParse<IBL.BO.Priorities>(Console.ReadLine(), out priorities);
+                                    Enum.TryParse<BO.Priorities>(Console.ReadLine(), out priorities);
                                     ibl.AddParcel(intA, intB, intC, weight, priorities);
                                     Console.WriteLine("Successfuly added.");
                                     break;
@@ -131,8 +131,8 @@ namespace ConsoleUI_BL
                                     break;
                             }
                             break;
-                        case IBL.BO.Choice.Update:
-                            IBL.BO.Update update;
+                        case BO.Choice.Update:
+                            BO.Update update;
                             do
                             {
                                 Console.WriteLine("Enter\n" +
@@ -145,12 +145,12 @@ namespace ConsoleUI_BL
                                     " 7 to make a drone collect his affected parcel\n" +
                                     " 8 to make a drone deliver his affected parcel");
 
-                                res = Enum.TryParse<IBL.BO.Update>(Console.ReadLine(), out update);
+                                res = Enum.TryParse<BO.Update>(Console.ReadLine(), out update);
                                 if (!res) Console.WriteLine("Wrong input");
                             } while (!res);
                             switch (update)
                             {
-                                case IBL.BO.Update.UpdateDrone:
+                                case BO.Update.UpdateDrone:
                                     Console.WriteLine("DroneId:");
                                     int.TryParse(Console.ReadLine(), out intA);
                                     Console.WriteLine("Model:");
@@ -159,7 +159,7 @@ namespace ConsoleUI_BL
                                     Console.WriteLine("Successfuly updated.");
                                     break;
 
-                                case IBL.BO.Update.UpdateBase:
+                                case BO.Update.UpdateBase:
                                     Console.WriteLine("BaseId:");
                                     int.TryParse(Console.ReadLine(), out intA);
                                     Console.WriteLine("Name:");
@@ -170,7 +170,7 @@ namespace ConsoleUI_BL
                                     Console.WriteLine("Successfuly updated.");
                                     break;
 
-                                case IBL.BO.Update.UpdateCustomer:
+                                case BO.Update.UpdateCustomer:
                                     Console.WriteLine("CustomerId:");
                                     int.TryParse(Console.ReadLine(), out intA);
                                     Console.WriteLine("Name:");
@@ -181,32 +181,32 @@ namespace ConsoleUI_BL
                                     Console.WriteLine("Successfuly updated.");
                                     break;
 
-                                case IBL.BO.Update.DroneToCharge:
+                                case BO.Update.DroneToCharge:
                                     Console.WriteLine("DroneId:");
                                     int.TryParse(Console.ReadLine(), out intA);
                                     ibl.DroneToCharge(intA);
                                     Console.WriteLine("Drone was sent to charging.");
                                     break;
 
-                                case IBL.BO.Update.DroneLeaveChargeStation:
+                                case BO.Update.DroneLeaveChargeStation:
                                     Console.WriteLine("DroneId:");
                                     int.TryParse(Console.ReadLine(), out intA);
                                     ibl.DroneLeaveCharge(intA);
                                     Console.WriteLine("Drone was leav the charging-station.");
                                     break;
-                                case IBL.BO.Update.AffectParcel:
+                                case BO.Update.AffectParcel:
                                     Console.WriteLine("DroneId:");
                                     int.TryParse(Console.ReadLine(), out intA);
                                     ibl.AffectParcelToDrone(intA);
                                     Console.WriteLine("Drone was affected to a parcel successfuly.");
                                     break;
-                                case IBL.BO.Update.ParcelCollection:
+                                case BO.Update.ParcelCollection:
                                     Console.WriteLine("DroneId:");
                                     int.TryParse(Console.ReadLine(), out intA);
                                     ibl.ParcelCollection(intA);
                                     Console.WriteLine("Drone was collect the parcel parcel successfuly.");
                                     break;
-                                case IBL.BO.Update.ParcelDelivery:
+                                case BO.Update.ParcelDelivery:
                                     Console.WriteLine("DroneId:");
                                     int.TryParse(Console.ReadLine(), out intA);
                                     ibl.ParcelDeliverd(intA);
@@ -217,8 +217,8 @@ namespace ConsoleUI_BL
                                     break;
                             }
                             break;
-                        case IBL.BO.Choice.Display:
-                            IBL.BO.Display display;
+                        case BO.Choice.Display:
+                            BO.Display display;
                             do
                             {
                                 Console.WriteLine("To show details enter \n" +
@@ -226,30 +226,30 @@ namespace ConsoleUI_BL
                                     " 2 for a drone \n" +
                                     " 3 for a customer \n" +
                                     " 4 for a parcel");
-                                res = Enum.TryParse<IBL.BO.Display>(Console.ReadLine(), out display);
+                                res = Enum.TryParse<BO.Display>(Console.ReadLine(), out display);
                                 if (!res) Console.WriteLine("Wrong input");
                             } while (!res);
                             switch (display)
                             {
-                                case IBL.BO.Display.BaseStation:
+                                case BO.Display.BaseStation:
                                     Console.WriteLine("Enter Id:");
                                     int.TryParse(Console.ReadLine(), out intA);
                                     Console.WriteLine((ibl.GetBaseStation(intA)).ToString());
                                     break;
 
-                                case IBL.BO.Display.Drone:
+                                case BO.Display.Drone:
                                     Console.WriteLine("Enter Id:");
                                     int.TryParse(Console.ReadLine(), out intA);
                                     Console.WriteLine((ibl.GetDrone(intA)).ToString());
                                     break;
 
-                                case IBL.BO.Display.Customer:
+                                case BO.Display.Customer:
                                     Console.WriteLine("Enter Id:");
                                     int.TryParse(Console.ReadLine(), out intA);
                                     Console.WriteLine((ibl.GetCustomer(intA)).ToString());
                                     break;
 
-                                case IBL.BO.Display.Parcel:
+                                case BO.Display.Parcel:
                                     Console.WriteLine("Enter Id:");
                                     int.TryParse(Console.ReadLine(), out intA);
                                     Console.WriteLine((ibl.GetParcel(intA)).ToString());
@@ -259,8 +259,8 @@ namespace ConsoleUI_BL
                                     break;
                             }
                             break;
-                        case IBL.BO.Choice.View_List:
-                            IBL.BO.DisplayList displayList;
+                        case BO.Choice.View_List:
+                            BO.DisplayList displayList;
                             do
                             {
                                 Console.WriteLine("To show a list enter \n" +
@@ -269,38 +269,38 @@ namespace ConsoleUI_BL
                                     " 3 for customers \n" +
                                     " 4 for parcels \n" +
                                     " 5 for parcels not assigned to a drone \n 6 for base stations with free battery reload places");
-                                res = Enum.TryParse<IBL.BO.DisplayList>(Console.ReadLine(), out displayList);
+                                res = Enum.TryParse<BO.DisplayList>(Console.ReadLine(), out displayList);
                                 if (!res) Console.WriteLine("Wrong input");
                             } while (!res);
                             switch (displayList)
                             {
-                                case IBL.BO.DisplayList.BaseStations:
-                                    foreach (IBL.BO.BaseToList item in ibl.GetListOfBaseStations(b => true))
+                                case BO.DisplayList.BaseStations:
+                                    foreach (BO.BaseToList item in ibl.GetListOfBaseStations(b => true))
                                     { Console.WriteLine(item.ToString()); }
                                     break;
 
-                                case IBL.BO.DisplayList.Drones:
-                                    foreach (IBL.BO.DroneToList item in ibl.GetListOfDrones(d => true))
+                                case BO.DisplayList.Drones:
+                                    foreach (BO.DroneToList item in ibl.GetListOfDrones(d => true))
                                     { Console.WriteLine(item.ToString()); }
                                     break;
 
-                                case IBL.BO.DisplayList.Customers:
-                                    foreach (IBL.BO.CustomerToList item in ibl.GetListOfCustomers())
+                                case BO.DisplayList.Customers:
+                                    foreach (BO.CustomerToList item in ibl.GetListOfCustomers())
                                     { Console.WriteLine(item.ToString()); }
                                     break;
 
-                                case IBL.BO.DisplayList.Parcels:
-                                    foreach (IBL.BO.ParcelToList item in ibl.GetListOfParcels(p => true))
+                                case BO.DisplayList.Parcels:
+                                    foreach (BO.ParcelToList item in ibl.GetListOfParcels(p => true))
                                     { Console.WriteLine(item.ToString()); }
                                     break;
 
-                                case IBL.BO.DisplayList.ParcelsNotAssignedToDrone:
-                                    foreach (IBL.BO.ParcelToList item in ibl.GetListOfParcels(p => p.DroneId == 0))
+                                case BO.DisplayList.ParcelsNotAssignedToDrone:
+                                    foreach (BO.ParcelToList item in ibl.GetListOfParcels(p => p.DroneId == 0))
                                     { Console.WriteLine(item.ToString()); }
                                     break;
 
-                                case IBL.BO.DisplayList.BaseStationsCanCharge:
-                                    foreach (IBL.BO.BaseToList item in ibl.GetListOfBaseStations(b => b.ChargeSlots > 0))
+                                case BO.DisplayList.BaseStationsCanCharge:
+                                    foreach (BO.BaseToList item in ibl.GetListOfBaseStations(b => b.ChargeSlots > 0))
                                     { Console.WriteLine(item.ToString()); }
                                     break;
                                 default:

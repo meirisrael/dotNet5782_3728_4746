@@ -21,8 +21,8 @@ namespace PL
 	/// </summary>
 	public partial class droneWindow : Window
 	{
-		private IBL.IBL bl;
-		private IBL.BO.Drone drone;
+		private BlApi.IBL bl;
+		private BO.Drone drone;
 		private ListView listOfDrone;
 		//------------------------------------------------------------------ FUNC AND CONST VARIABL --------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
@@ -53,13 +53,13 @@ namespace PL
 		/// if the ctor get only one param so need do open the add window
 		/// </summary>
 		/// <param name="ibl"></param>
-		public droneWindow(IBL.IBL ibl,ListView list)
+		public droneWindow(BlApi.IBL ibl,ListView list)
 		{
 			bl = ibl;
 			listOfDrone = list;
 			InitializeComponent();
 			add_drone_Grid.Visibility = Visibility.Visible;
-			WeightSelector.ItemsSource = Enum.GetValues(typeof(IBL.BO.WeightCategories));
+			WeightSelector.ItemsSource = Enum.GetValues(typeof(BO.WeightCategories));
 			BaseListView.ItemsSource = bl.GetListOfBaseStations(b => b.ChargeSlots > 0);
 			for (int i = 0; i < bl.GetListOfBaseStations(b => b.ChargeSlots > 0).Count(); ++i)
 			{
@@ -73,7 +73,7 @@ namespace PL
 		/// </summary>
 		/// <param name="ibl"></param>
 		/// <param name="d"></param>
-		public droneWindow(IBL.IBL ibl, IBL.BO.DroneToList d, ListView list)
+		public droneWindow(BlApi.IBL ibl, BO.DroneToList d, ListView list)
 		{
 			bl = ibl;
 			listOfDrone = list;
@@ -127,17 +127,17 @@ namespace PL
 				droneId = int.Parse(id);
 			try
 			{
-				bl.AddDrone(droneId, ModelBox.Text, (IBL.BO.WeightCategories)WeightSelector.SelectedItem, firstBase);
+				bl.AddDrone(droneId, ModelBox.Text, (BO.WeightCategories)WeightSelector.SelectedItem, firstBase);
 				MessageBox.Show("Successfuly added", "Successfull");
 				listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
 				Close();
 			}
-			catch (IBL.BO.IdExist)
+			catch (BO.IdExist)
 			{
 				MessageBox.Show("ID alredy exist", "ERROR");
 				IdBox.Background = Brushes.Salmon;
 			}
-			catch (IBL.BO.EmptyValue)
+			catch (BO.EmptyValue)
 			{
 				MessageBox.Show("You must be give an name of model", "ERROR");
 				ModelBox.Background = Brushes.Salmon;
@@ -283,10 +283,10 @@ namespace PL
 		/// </summary>
 		private void charging_button()
 		{
-			if (drone.Status == IBL.BO.DroneStatuses.free)
+			if (drone.Status == BO.DroneStatuses.free)
 			{
 				sentCharge_button.Visibility = Visibility.Visible;releaseCharge_button.Visibility = Visibility.Hidden; messege_label_charge.Visibility = Visibility.Hidden; }
-			else if (drone.Status == IBL.BO.DroneStatuses.Maintenance)
+			else if (drone.Status == BO.DroneStatuses.Maintenance)
 			{ releaseCharge_button.Visibility = Visibility.Visible; sentCharge_button.Visibility = Visibility.Hidden; messege_label_charge.Visibility = Visibility.Hidden; }
 			else
 				messege_label_charge.Visibility = Visibility.Visible;
@@ -296,14 +296,14 @@ namespace PL
 		/// </summary>
 		private void shipping_button()
 		{
-			if (drone.Status == IBL.BO.DroneStatuses.Shipping)
+			if (drone.Status == BO.DroneStatuses.Shipping)
 			{
 				if (drone.InTransit.Status == false)// if not pick-up 
 				{ collectParcel_button.Visibility = Visibility.Visible; deliverParcel_button.Visibility = Visibility.Hidden; }
 				else if (drone.InTransit.Status == true)
 				{ deliverParcel_button.Visibility = Visibility.Visible; collectParcel_button.Visibility = Visibility.Hidden; }
 			}
-			else if (drone.Status == IBL.BO.DroneStatuses.free)
+			else if (drone.Status == BO.DroneStatuses.free)
 			{ sentShipping_button.Visibility = Visibility.Visible; collectParcel_button.Visibility = Visibility.Hidden; deliverParcel_button.Visibility = Visibility.Hidden; messege_label_shipp.Visibility = Visibility.Hidden; }
 			else
 				messege_label_shipp.Visibility = Visibility.Visible;

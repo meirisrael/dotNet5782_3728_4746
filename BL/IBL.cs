@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IBL
+namespace BlApi
 {
 	public interface IBL
 	{
@@ -31,9 +31,9 @@ namespace IBL
 		public BO.Parcel GetParcel(int parcelId);
 		
 		//get all list - option 
-		public IEnumerable<BO.BaseToList> GetListOfBaseStations(Predicate<IDAL.DO.BaseStation> f);
+		public IEnumerable<BO.BaseToList> GetListOfBaseStations(Predicate<DO.BaseStation> f);
 		public IEnumerable<BO.DroneToList> GetListOfDrones(Predicate<BO.DroneToList> f);
 		public IEnumerable<BO.CustomerToList> GetListOfCustomers();
-		public IEnumerable<BO.ParcelToList> GetListOfParcels(Predicate<IDAL.DO.Parcel> f);
+		public IEnumerable<BO.ParcelToList> GetListOfParcels(Predicate<DO.Parcel> f);
 	}
 }
