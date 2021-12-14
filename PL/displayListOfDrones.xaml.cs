@@ -105,7 +105,6 @@ namespace PL
 			DroneListView.ItemsSource = drones;
 		}
 		
-		
 
 		/// <summary>
 		/// if the user press the button "add drone" so open a new window for add

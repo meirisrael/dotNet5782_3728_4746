@@ -9,11 +9,16 @@
   <ItemGroup>
     <None Remove="icon\logo_company.ico" />
     <None Remove="logo_company.ico" />
+    <None Remove="picture\background.png" />
     <None Remove="picture\drone.png" />
     <None Remove="picture\logo_company.jpg" />
     <None Remove="picture\logo_drone.jpg" />
     <None Remove="picture\mavic_pro.png" />
     <None Remove="picture\welcome.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="picture\background.png" />
   </ItemGroup>
 
   <ItemGroup>

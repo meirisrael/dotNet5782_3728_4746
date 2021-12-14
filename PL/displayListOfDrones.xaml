@@ -32,7 +32,9 @@
 			<Label Content="Filter by Weight : " HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="106" Height="35" Margin="94,35,0,0" FontFamily="Comic Sans MS"/>
 		</Grid>
 		<ListView x:Name="DroneListView" MouseDoubleClick="DroneListView_MouseDoubleClick" Grid.Row="1" FontFamily="David" FontWeight="DemiBold">
-			<ImageBrush ImageSource="\picture\background.png" Stretch="Fill" />
+			<ListView.Background>
+				<ImageBrush ImageSource="\picture\background.png" AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="Fill" />
+			</ListView.Background>
 		</ListView>
 	</Grid>
 </Window>
