@@ -18,6 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="picture\background.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BL\BL.csproj" />
   </ItemGroup>
 

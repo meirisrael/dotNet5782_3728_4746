@@ -21,8 +21,8 @@ namespace PL
 	/// </summary>
 	public partial class displayListOfDrones : Window
 	{
-		private IBL.IBL bl;
-		IEnumerable<IBL.BO.DroneToList> drones = new List<IBL.BO.DroneToList>();
+		private BlApi.IBL bl;
+		IEnumerable<BO.DroneToList> drones = new List<BO.DroneToList>();
 		//-------------------------------------------------------------- FUNC AND CONST VARIABL -------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
 		private const uint MF_BYCOMMAND = 0x00000000;
@@ -51,14 +51,14 @@ namespace PL
 		/// CTOR 
 		/// </summary>
 		/// <param name="ibl"></param>
-		public displayListOfDrones(IBL.IBL ibl)
+		public displayListOfDrones(BlApi.IBL ibl)
 		{
 			InitializeComponent();
 			bl = ibl;
 			drones = bl.GetListOfDrones(d => true);
 			DroneListView.ItemsSource = drones;
-			StatusSelector.ItemsSource = Enum.GetValues(typeof(IBL.BO.DroneStatuses));
-			WeightSelector.ItemsSource = Enum.GetValues(typeof(IBL.BO.WeightCategories));
+			StatusSelector.ItemsSource = Enum.GetValues(typeof(BO.DroneStatuses));
+			WeightSelector.ItemsSource = Enum.GetValues(typeof(BO.WeightCategories));
 		}
 
 		/// <summary>
@@ -87,7 +87,7 @@ namespace PL
 			if (WeightSelector.SelectedItem == null)
 				drones = bl.GetListOfDrones(d => true);
 			else
-				drones = bl.GetListOfDrones(d => d.MaxWeight == (IBL.BO.WeightCategories)WeightSelector.SelectedItem);
+				drones = bl.GetListOfDrones(d => d.MaxWeight == (BO.WeightCategories)WeightSelector.SelectedItem);
 			DroneListView.ItemsSource = drones;
 		}
 		/// <summary>
@@ -101,10 +101,9 @@ namespace PL
 			if(StatusSelector.SelectedItem == null)
 				drones = bl.GetListOfDrones(d => true);
 			else
-				drones = bl.GetListOfDrones(d => d.Status == (IBL.BO.DroneStatuses)StatusSelector.SelectedItem);
+				drones = bl.GetListOfDrones(d => d.Status == (BO.DroneStatuses)StatusSelector.SelectedItem);
 			DroneListView.ItemsSource = drones;
 		}
-		
 		
 
 		/// <summary>
@@ -148,9 +147,9 @@ namespace PL
 			if (StatusSelector.SelectedItem == null && WeightSelector.ItemsSource == null)
 				drones = drones;
 			else if (StatusSelector.SelectedItem != null && WeightSelector.SelectedItem == null)
-				drones = bl.GetListOfDrones(d => d.Status == (IBL.BO.DroneStatuses)StatusSelector.SelectedItem);
+				drones = bl.GetListOfDrones(d => d.Status == (BO.DroneStatuses)StatusSelector.SelectedItem);
 			else if (StatusSelector.SelectedItem != null && WeightSelector.SelectedItem != null)
-				drones = bl.GetListOfDrones(d => d.Status == (IBL.BO.DroneStatuses)StatusSelector.SelectedItem && d.MaxWeight == (IBL.BO.WeightCategories)WeightSelector.SelectedItem);
+				drones = bl.GetListOfDrones(d => d.Status == (BO.DroneStatuses)StatusSelector.SelectedItem && d.MaxWeight == (BO.WeightCategories)WeightSelector.SelectedItem);
 			else
 				drones = bl.GetListOfDrones(d => true);
 
@@ -165,11 +164,11 @@ namespace PL
 			if (WeightSelector.SelectedItem == null && StatusSelector.SelectedItem == null)
 				drones = drones;
 			else if (WeightSelector.SelectedItem != null && StatusSelector.SelectedItem == null)
-				drones = bl.GetListOfDrones(d => d.MaxWeight == (IBL.BO.WeightCategories)WeightSelector.SelectedItem);
+				drones = bl.GetListOfDrones(d => d.MaxWeight == (BO.WeightCategories)WeightSelector.SelectedItem);
 			else if (WeightSelector.SelectedItem != null && StatusSelector.SelectedItem != null)
-				drones = bl.GetListOfDrones(d => d.Status == (IBL.BO.DroneStatuses)StatusSelector.SelectedItem && d.MaxWeight == (IBL.BO.WeightCategories)WeightSelector.SelectedItem);
+				drones = bl.GetListOfDrones(d => d.Status == (BO.DroneStatuses)StatusSelector.SelectedItem && d.MaxWeight == (BO.WeightCategories)WeightSelector.SelectedItem);
 			else
-				drones = bl.GetListOfDrones(d => d.Status == (IBL.BO.DroneStatuses)StatusSelector.SelectedItem);
+				drones = bl.GetListOfDrones(d => d.Status == (BO.DroneStatuses)StatusSelector.SelectedItem);
 
 			DroneListView.ItemsSource = drones;
 		}

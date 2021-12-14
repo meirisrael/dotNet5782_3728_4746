@@ -4,26 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IBL
+namespace BO
 {
-	namespace BO
+	public class BaseToList
 	{
-		public class BaseToList
-		{
-			public int Id { get; set; }
-			public int Name { get; set; }
-			public int ChargeSlots { get; set; }
-			public int ChargeBusy { get; set; }
+		public int Id { get; set; }
+		public int Name { get; set; }
+		public int ChargeSlots { get; set; }
+		public int ChargeBusy { get; set; }
 
-			public override string ToString()
-			{
-				return $"Base-Station\n" +
-					$" Id: {this.Id}\n" +
-					$" Name: {this.Name}\n" +
-					$" Nums of charge that are availble: {this.ChargeSlots}\n" +
-					$" Nums of charge that are busy: {this.ChargeBusy}"
-					;
-			}
+		public override string ToString()
+		{
+			return $"Base-Station\n" +
+				$" Id: {this.Id}\n" +
+				$" Name: {this.Name}\n" +
+				$" Nums of charge that are availble: {this.ChargeSlots}\n" +
+				$" Nums of charge that are busy: {this.ChargeBusy}"
+				;
 		}
 	}
 }

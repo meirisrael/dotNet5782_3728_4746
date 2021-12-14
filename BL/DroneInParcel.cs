@@ -4,26 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IBL
+namespace BO
 {
-	namespace BO
+	public class DroneInParcel
 	{
-		public class DroneInParcel
-		{
-			public int Id { get; set; }
-			public double Battery { get; set; }
-			public Location Loc { get; set; }
+		public int Id { get; set; }
+		public double Battery { get; set; }
+		public Location Loc { get; set; }
 
-			public DroneInParcel() : base(){ Loc = new(); }
-			public override string ToString()
-			{
-				return $"\n	Drone In Parcel:\n" +
-					$"	Id: {this.Id}\n" +
-					$"	Battery percent: {this.Battery}%\n" +
-					$"	Location: {this.Loc.ToString()}"
-					;
-			}
+		public DroneInParcel() : base(){ Loc = new(); }
+		public override string ToString()
+		{
+			return $"\n	Drone In Parcel:\n" +
+				$"	Id: {this.Id}\n" +
+				$"	Battery percent: {this.Battery}%\n" +
+				$"	Location: {this.Loc.ToString()}"
+				;
 		}
 	}
-
 }
