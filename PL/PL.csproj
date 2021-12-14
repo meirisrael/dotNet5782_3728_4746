@@ -9,6 +9,7 @@
   <ItemGroup>
     <None Remove="icon\logo_company.ico" />
     <None Remove="logo_company.ico" />
+    <None Remove="picture\background.png" />
     <None Remove="picture\drone.png" />
     <None Remove="picture\logo_company.jpg" />
     <None Remove="picture\logo_drone.jpg" />
@@ -22,6 +23,7 @@
 
   <ItemGroup>
     <Resource Include="icon\logo_company.ico" />
+    <Resource Include="picture\background.png" />
     <Resource Include="picture\drone.png" />
     <Resource Include="picture\logo_company.jpg" />
     <Resource Include="picture\logo_drone.jpg" />
