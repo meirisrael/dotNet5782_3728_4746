@@ -8,20 +8,15 @@ namespace DalObject
 {
 	class DalObject : DalApi.IDal
 	{
-		//public class LazySingleton
-		//{
-		//	private static readonly Lazy<LazySingleton> _instance =new Lazy<LazySingleton>(() => new LazySingleton())
+		internal static readonly Lazy<DalApi.IDal> _instance = new Lazy<DalApi.IDal>(() => new DalObject());
+		public static DalApi.IDal GetInstance
+		{
+			get { return _instance.Value; }
+		}
 
-		//	public static LazySingleton Instance
-		//	{
-		//		get { return _instance.Value; }
-		//	}
+		//internal static DalObject _instance = null;
+		//public static DalObject GetInstance() => _instance ?? (_instance = new DalObject());
 
-		//	private LazySingleton() { }
-		//}
-		internal static DalObject _instance = null;
-		public static DalObject GetInstance() => _instance ?? (_instance = new DalObject());
-		
 		public DalObject()
 		{ DataSource.Initialize(); }
 

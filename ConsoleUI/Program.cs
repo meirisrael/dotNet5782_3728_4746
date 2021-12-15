@@ -2,7 +2,6 @@
 
 namespace ConsoleUI
 {
-	
     class Program
     {
         /// <summary>

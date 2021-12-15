@@ -106,7 +106,7 @@ namespace PL
 			if(WeightSelector.SelectedItem != null && IdBox.Text != "" && ModelBox.Text != "")
 				add_button.IsEnabled = true;
 		}
-
+		
 		/// <summary>
 		/// if the user press the button "add" so add a new drone to the data base
 		/// </summary>
@@ -145,7 +145,7 @@ namespace PL
 			return;
 
 
-		}///jhbhbn
+		}
 		/// <summary>
 		/// if the user press the button "update" so update the model of the drone
 		/// </summary>

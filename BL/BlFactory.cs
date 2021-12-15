@@ -8,10 +8,15 @@ namespace BL
 {
 	public class BlFactory
 	{
+		private static readonly object LockObj = new object();
 		public static BlApi.IBL GetBl()
 		{
+			lock (LockObj)
+			{
+				return BL.GetInstance;
+			}
 			//return (IDal)DalObject.DalObject.LazySingleton.Instance;
-			return BL.GetInstance();
+			//return BL.GetInstance();
 		}
 	}
 }

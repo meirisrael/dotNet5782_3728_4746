@@ -8,15 +8,18 @@ namespace DAL
 {
 	public class DalFactory
 	{
+		private static readonly object LockObj = new object();
 		public static DalApi.IDal GetDal(string typeDL)
 		{
 			switch (typeDL)
 			{
 				case "List":
-					//return (IDal)DalObject.DalObject.LazySingleton.Instance;
-					return DalObject.DalObject.GetInstance();
+					lock (LockObj)
+					{
+						return DalObject.DalObject.GetInstance;
+					}
 					break;
-				//case "XML":
+				case "XML":
 				//	return;
 				//	break;
 				default:
