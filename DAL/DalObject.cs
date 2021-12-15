@@ -15,7 +15,7 @@ namespace DalObject
 		/// <summary>
 		/// return instance value
 		/// </summary>
-		public static DalApi.IDal GetInstance { get { return _instance.Value; } }
+		public static DalApi.IDal GetInstance  { get { return _instance.Value; } }
 
 		//internal static DalObject _instance = null;
 		//public static DalObject GetInstance() => _instance ?? (_instance = new DalObject());
