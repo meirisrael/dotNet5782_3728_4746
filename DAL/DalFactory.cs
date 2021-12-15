@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace DAL
 {
+	/// <summary>
+	/// choose which type return dal with list or dal with xml
+	/// </summary>
 	public class DalFactory
 	{
 		private static readonly object LockObj = new object();
@@ -13,15 +16,13 @@ namespace DAL
 		{
 			switch (typeDL)
 			{
-				case "List":
-					lock (LockObj)
+				case "List"://if type is list
+					lock (LockObj)//thread safe
 					{
-						return DalObject.DalObject.GetInstance;
+						return DalObject.DalObject.GetInstance;//singeltone
 					}
-					break;
-				case "XML":
+				case "XML"://if type is XML
 				//	return;
-				//	break;
 				default:
 					throw new DO.FactoryError();
 			}
