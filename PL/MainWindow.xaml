@@ -16,7 +16,7 @@
 			 VerticalAlignment="Top" HorizontalAlignment="Right" />
 		<Label Content="Designed by  M.I.A." HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="94" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Gabriola" FontWeight="Bold" FontStyle="Italic" FontSize="10" Foreground="#FF857114" Background="Transparent" Margin="0,0,-2,-1" />
 		<Grid.Background>
-			<ImageBrush ImageSource="picture\bla.png" AlignmentY="Top" AlignmentX="Center" Stretch="Fill"/>
+			<ImageBrush ImageSource="\picture\welcome_window.png" AlignmentY="Top" AlignmentX="Center" Stretch="Fill"/>
 		</Grid.Background>
 	</Grid>
 </Window>
