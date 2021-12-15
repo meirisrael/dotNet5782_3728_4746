@@ -14,6 +14,7 @@
     <None Remove="picture\logo_drone.jpg" />
     <None Remove="picture\mavic_pro.png" />
     <None Remove="picture\welcome.png" />
+    <None Remove="picture\welcome_window.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,7 +31,7 @@
     <Resource Include="picture\logo_company.jpg" />
     <Resource Include="picture\logo_drone.jpg" />
     <Resource Include="picture\mavic_pro.png" />
-    <Resource Include="picture\welcome.png" />
+    <Resource Include="picture\welcome_window.png" />
   </ItemGroup>
 
 </Project>
