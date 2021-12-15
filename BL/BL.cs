@@ -6,9 +6,18 @@ namespace BL
 {
 	public class BL : BlApi.IBL
 	{
-		private DalApi.IDal dal;//= new DalObject.DalObject();
-		internal static BL _instance = null;
-		public static BL GetInstance() => _instance ?? (_instance = new BL());
+		private DalApi.IDal dal;
+		/// <summary>
+		/// lazy initialization
+		/// </summary>
+		internal static readonly Lazy<BlApi.IBL> _instance = new Lazy<BlApi.IBL>(() => new BL());
+		/// <summary>
+		/// return instance value
+		/// </summary>
+		public static BlApi.IBL GetInstance{ get { return _instance.Value; } }
+
+		//internal static BL _instance = null;
+		//public static BL GetInstance() => _instance ?? (_instance = new BL());
 
 		private double _useWhenFree;
 		private double _useWhenLightly;
@@ -19,10 +28,7 @@ namespace BL
 		//ctor
 		private BL()
 		{
-			try
-			{ dal = DAL.DalFactory.GetDal("List"); }
-			catch(DO.FactoryError ex)
-			{ throw new BO.FactoryError(ex.Message); }
+			dal = DAL.DalFactory.GetDal("List");
 			getDataCharge();
 			reqListOfDrone();
 			settingDroneByParcel();
@@ -84,7 +90,7 @@ namespace BL
 			}
 			for (int i = 0; i < parcelToList.Count(); i++)
 			{
-				int droneIdAssigneToParcel = dal.GetListParcels(b => true).ToList().Find(item => item.Id==parcelToList[i].Id).DroneId;//search drone that assigne to this parcel
+				int droneIdAssigneToParcel = dal.GetListParcels(b => true).ToList().Find(item => item.Id == parcelToList[i].Id).DroneId;//search drone that assigne to this parcel
 				if (parcelToList[i].Status < BO.ParcelStatues.Delivered && droneIdAssigneToParcel > 0)//if the parcel was not deliver and the parcel he has a drone ,need to the shipping
 				{
 					droneToList[searchDrone(droneIdAssigneToParcel)].Status = BO.DroneStatuses.Shipping;
@@ -218,7 +224,7 @@ namespace BL
 			double disToBase = disToCloserBase(longi, lati);
 			double batteryToBase = _useWhenFree * disToBase;
 			return ((int)(Math.Ceiling(batteryToBase)));
-		}	
+		}
 		/// <summary>
 		/// the func search a drone by her id in the "DroneToList" and return the index of the drone in drone list
 		/// </summary>
@@ -348,7 +354,7 @@ namespace BL
 			{ throw new BO.InvalidChargeSlot(ex.Message); }
 
 			catch (DO.InvalidLoc ex)
-			{ throw new BO.InvalidLoc(ex.Message, ex._type,ex.range); }
+			{ throw new BO.InvalidLoc(ex.Message, ex._type, ex.range); }
 
 			catch (DO.IdExist ex)
 			{ throw new BO.IdExist(ex.Message, ex._type); }
@@ -376,7 +382,7 @@ namespace BL
 			{ throw new BO.IdExist(ex.Message, ex._type); }
 
 			catch (DO.EmptyValue ex)//model
-			{ throw new BO.EmptyValue(ex.Message,ex._type); }
+			{ throw new BO.EmptyValue(ex.Message, ex._type); }
 
 			try
 			{
@@ -416,7 +422,7 @@ namespace BL
 			{ throw new BO.InvalidId(ex.Message, ex._type); }
 
 			catch (DO.InvalidLoc ex)
-			{ throw new BO.InvalidLoc(ex.Message, ex._type,ex.range); }
+			{ throw new BO.InvalidLoc(ex.Message, ex._type, ex.range); }
 
 			catch (DO.IdExist ex)//customer
 			{ throw new BO.IdExist(ex.Message, ex._type); }
@@ -469,7 +475,7 @@ namespace BL
 				drone.Model = model;
 				dal.UpdateDrone(drone);
 				for (int i = 0; i < droneToList.Count(); i++)
-				{if (droneToList[i].Id == droneId) droneToList[i].Model = model;}
+				{ if (droneToList[i].Id == droneId) droneToList[i].Model = model; }
 			}
 			catch (DO.IdNotExist ex)//drone
 			{ throw new BO.IdNotExist(ex.Message, ex._type); }
@@ -593,12 +599,12 @@ namespace BL
 				throw new BO.DroneNotFree();
 
 			DO.Parcel p = new DO.Parcel();
-			List<DO.Parcel> parcel_ = (List<DO.Parcel>)dal.GetListParcels(p=>p.DroneId==0);//new List<DO.Parcel>();
+			List<DO.Parcel> parcel_ = (List<DO.Parcel>)dal.GetListParcels(p => p.DroneId == 0);//new List<DO.Parcel>();
 			if (parcel_.Count() == 0)
 				throw new BO.AllParcelAssoc();
 			List<DO.Parcel> parcelEmrgency = (List<DO.Parcel>)dal.GetListParcels(p => p.DroneId == 0);//removeByPriority(parcel, DO.Priorities.Emergecey);//O(n)
 			parcelEmrgency.RemoveAll(item => (int)item.Priority != 3);
-			parcelEmrgency.RemoveAll(item=>(int)item.Weight>(int)drone.MaxWeight);//(parcelEmrgency, (DO.WeightCategories)drone.MaxWeight);
+			parcelEmrgency.RemoveAll(item => (int)item.Weight > (int)drone.MaxWeight);//(parcelEmrgency, (DO.WeightCategories)drone.MaxWeight);
 			parcelEmrgency.OrderByDescending(item => (int)item.Weight).ToList();
 			parcelId = chooseParcel(parcelEmrgency, drone);
 			if (parcelId != -1)
@@ -661,7 +667,7 @@ namespace BL
 			foreach (DO.Parcel item in dal.GetListParcels(p => p.Id != 0))
 			{
 				if (item.DroneId == drone.Id)
-					parcel = item;	
+					parcel = item;
 			}
 			if (parcel.DroneId != droneId)
 				throw new BO.NoParcelId();
@@ -877,7 +883,7 @@ namespace BL
 					Name = item.Name,
 					ChargeSlots = item.ChargeSlots,
 					ChargeBusy = howManyCharge(l)
-				}) ;
+				});
 			}
 			return (IEnumerable<BO.BaseToList>)baseS;
 		}
@@ -888,13 +894,18 @@ namespace BL
 		public IEnumerable<BO.DroneToList> GetListOfDrones(Predicate<BO.DroneToList> f)
 		{
 			List<BO.DroneToList> drones = new();
-			foreach (DO.Drone item in dal.GetListDrones(d=>true))
+			foreach (DO.Drone item in dal.GetListDrones(d => true))
 			{
-				BO.Location l = new() { Latitude = droneToList.Find(d=>d.Id==item.Id).Loc.Latitude, Longitude = droneToList.Find(d => d.Id == item.Id).Loc.Longitude };
+				BO.Location l = new() { Latitude = droneToList.Find(d => d.Id == item.Id).Loc.Latitude, Longitude = droneToList.Find(d => d.Id == item.Id).Loc.Longitude };
 				drones.Add(new()
 				{
-					Id = item.Id,Model = item.Model,MaxWeight = (BO.WeightCategories)item.MaxWeight,Battery = droneToList.Find(d => d.Id == item.Id).Battery,
-					Status=droneToList.Find(d=>d.Id==item.Id).Status,Loc=l,IdOfParcel=droneToList.Find(d=>d.Id==item.Id).IdOfParcel
+					Id = item.Id,
+					Model = item.Model,
+					MaxWeight = (BO.WeightCategories)item.MaxWeight,
+					Battery = droneToList.Find(d => d.Id == item.Id).Battery,
+					Status = droneToList.Find(d => d.Id == item.Id).Status,
+					Loc = l,
+					IdOfParcel = droneToList.Find(d => d.Id == item.Id).IdOfParcel
 				});
 			}
 			return (IEnumerable<BO.DroneToList>)drones.FindAll(f);
@@ -1032,7 +1043,7 @@ namespace BL
 			BO.CustomerInParcel customerT = new BO.CustomerInParcel();
 
 			parcel.Id = p.Id;
-			if(GetParcel(p.Id).PickedUp==null)
+			if (GetParcel(p.Id).PickedUp == null)
 				parcel.Status = false;
 			else
 				parcel.Status = true;
