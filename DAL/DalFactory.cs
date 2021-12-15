@@ -12,17 +12,18 @@ namespace DAL
 	public class DalFactory
 	{
 		private static readonly object LockObj = new object();
+		
 		public static DalApi.IDal GetDal(string typeDL)
 		{
 			switch (typeDL)
 			{
-				case "List"://if type is list
+				case "List"://if list type
 					lock (LockObj)//thread safe
 					{
 						return DalObject.DalObject.GetInstance;//singeltone
 					}
-				case "XML"://if type is XML
-				//	return;
+				case "XML"://if XML type
+
 				default:
 					throw new DO.FactoryError();
 			}
