@@ -8,11 +8,11 @@ namespace BL
 	{
 		private DalApi.IDal dal;
 		/// <summary>
-		/// lazy initialization
+		/// lazy initialization 
 		/// </summary>
 		internal static readonly Lazy<BlApi.IBL> _instance = new Lazy<BlApi.IBL>(() => new BL());
 		/// <summary>
-		/// return instance value
+		/// return instance value 
 		/// </summary>
 		public static BlApi.IBL GetInstance{ get { return _instance.Value; } }
 
