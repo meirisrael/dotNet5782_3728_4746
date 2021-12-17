@@ -1,0 +1,22 @@
+﻿<Window x:Class="PL.displayBaseList"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL"
+        mc:Ignorable="d"
+        Title="displayBaseList" Height="450" Width="800">
+	<Grid>
+		
+		<ListView x:Name="DroneListView" MouseDoubleClick="DroneListView_MouseDoubleClick" FontFamily="David" FontWeight="DemiBold" Height="251" Width="256" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="41,14,0,0">
+			<ListView.Background>
+				<ImageBrush ImageSource="\picture\baseDroneSnip.png" AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="Fill" />
+			</ListView.Background>
+		</ListView>
+		<Button Content="Close" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="134" Height="34" Background="Red"  FontFamily="Comic Sans MS" FontWeight="DemiBold" Margin="0,0,0,15"
+				Click="Close_Click"/>
+		<Grid.Background>
+			<ImageBrush ImageSource="\picture\baseDrone.png" AlignmentY="Top" AlignmentX="Center" Stretch="Fill"/>
+		</Grid.Background>
+	</Grid>
+</Window>

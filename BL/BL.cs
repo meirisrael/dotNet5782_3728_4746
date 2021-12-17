@@ -55,6 +55,10 @@ namespace BL
 		{
 			foreach (DO.Drone d in dal.GetListDrones(d => true))
 			{
+				DateTime? isDeliverd = dal.GetListParcels(b => true).ToList().Find(item => item.DroneId == d.Id).Delivered;
+				int idParcel =  dal.GetListParcels(b => true).ToList().Find(item => item.DroneId == d.Id).Id;//return id of parcel that the drone is associated;
+				if (isDeliverd != null || isDeliverd == DateTime.MinValue)//check if the parcel is not in transit
+					idParcel = 0;
 				BO.Location l = new BO.Location();
 				l.Latitude = 0; l.Longitude = 0;
 				droneToList.Add(new BO.DroneToList
@@ -65,7 +69,7 @@ namespace BL
 					Battery = 0,
 					Status = BO.DroneStatuses.free,
 					Loc = l,
-					IdOfParcel = dal.GetListParcels(b => true).ToList().Find(item => item.DroneId == d.Id).Id//return id of parcel that the drone is associated
+					IdOfParcel=idParcel
 				});
 			}
 		}
@@ -610,12 +614,12 @@ namespace BL
 			if (parcelId != -1)
 			{
 				drone.Status = BO.DroneStatuses.Shipping;//change status of drone 
+				drone.IdOfParcel = parcelId;
 				updateDroneList(drone);//update drone in data base
 				p = parcel_.Find(item => (item.Id == parcelId));//find parcel from the list of parcel by id
 				p.DroneId = drone.Id;
 				p.Scheduled = DateTime.Now;//update time of 
 				dal.UpdateParcel(p);
-				droneToList[searchDrone(droneId)].IdOfParcel = parcelId;
 				return true;//no need to continue
 			}
 			//no found a parcel in priority emergency so go to the next priority
@@ -627,12 +631,12 @@ namespace BL
 			if (parcelId != -1)
 			{
 				drone.Status = BO.DroneStatuses.Shipping;//change status of drone 
+				drone.IdOfParcel = parcelId;
 				updateDroneList(drone);//update drone in data base
 				p = parcel_.Find(item => (item.Id == parcelId));//find parcel from the list of parcel by id
 				p.DroneId = drone.Id;
 				p.Scheduled = DateTime.Now;//update time of 
 				dal.UpdateParcel(p);
-				droneToList[searchDrone(droneId)].IdOfParcel = parcelId;
 				return true;//no need to continue
 			}
 			//no found a parcel in priority fast so go to the next priority
@@ -644,12 +648,12 @@ namespace BL
 			if (parcelId != -1)
 			{
 				drone.Status = BO.DroneStatuses.Shipping;//change status of drone 
+				drone.IdOfParcel = parcelId;
 				updateDroneList(drone);//update drone in data base
 				p = parcel_.Find(item => (item.Id == parcelId));//find parcel from the list of parcel by id
 				p.DroneId = drone.Id;
 				p.Scheduled = DateTime.Now;//update time of 
 				dal.UpdateParcel(p);
-				droneToList[searchDrone(droneId)].IdOfParcel = parcelId;
 				return true;//no need to continue
 			}
 			throw new BO.NoDroneCanParcel();//the drone can't take any parcel
@@ -710,6 +714,7 @@ namespace BL
 			drone.Loc.Longitude = getCustomerLocation(parcel.TargetId).Longitude;//update the location to the target
 			drone.Loc.Latitude = getCustomerLocation(parcel.TargetId).Latitude;
 			drone.Status = BO.DroneStatuses.free;
+			drone.IdOfParcel = null;
 			updateDroneList(drone);
 		}
 
@@ -764,13 +769,15 @@ namespace BL
 					drone.Battery = droneToList[i].Battery;
 					drone.Loc.Longitude = droneToList[i].Loc.Longitude;
 					drone.Loc.Latitude = droneToList[i].Loc.Latitude;
+					break;
 				}
 			}
 			if (drone.Status == BO.DroneStatuses.Shipping)//if drone is in shipping searche who is the parcel
 			{
+				BO.DroneToList d = droneToList.Find(d => d.Id == drone.Id);
 				foreach (DO.Parcel item in dal.GetListParcels(p => true))
 				{
-					if (item.DroneId == drone.Id)
+					if (item.DroneId == d.Id && (item.Delivered == DateTime.MinValue || item.Delivered==null))
 					{ drone.InTransit = convertParcel(item, droneId); break; }
 				}
 			}

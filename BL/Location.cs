@@ -24,9 +24,9 @@ namespace BO
 			else
 				longi += 'N';
 
-			return $"\n" +
-				$"	Longitude - {longi}\n"+
-				$"	Latitude - {lati}"
+			return $"" +
+				$"Longitude - {longi}\n"+
+				$"Latitude - {lati}"
 				;
 		}
 	}

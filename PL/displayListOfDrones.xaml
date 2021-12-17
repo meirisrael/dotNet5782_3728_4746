@@ -28,10 +28,53 @@
 			<Button Content="Close" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Gold" Height="35" Width="35" Click="Close_Click" BorderBrush="Black" BorderThickness="1" FontFamily="Comic Sans MS"  FontWeight="DemiBold"/>
 			<TextBlock HorizontalAlignment="Left" Margin="94,13,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="96"/>
 			<TextBlock HorizontalAlignment="Left" Margin="94,40,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="106" RenderTransformOrigin="1.094,0.566"/>
-			<Label Content="Filter by Status : " HorizontalAlignment="Left" VerticalAlignment="Top" Width="106" Height="35" Margin="94,4,0,0" FontFamily="Comic Sans MS"/>
-			<Label Content="Filter by Weight : " HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="106" Height="35" Margin="94,35,0,0" FontFamily="Comic Sans MS"/>
+			<Label Content="Filter by Status " HorizontalAlignment="Left" VerticalAlignment="Top" Width="106" Height="35" Margin="91,6,0,0" FontFamily="Comic Sans MS"/>
+			<Label Content="Filter by Weight " HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="111" Height="28" Margin="91,0,0,8" FontFamily="Comic Sans MS" Grid.ColumnSpan="2"/>
+			<Button x:Name="groopButton" Content="Groop the List" HorizontalAlignment="Left" Margin="7,0,0,0" VerticalAlignment="Center" Click="Groop_Click" Background="DarkMagenta" Height="25"/>
 		</Grid>
-		<ListView x:Name="DroneListView" MouseDoubleClick="DroneListView_MouseDoubleClick" Grid.Row="1" FontFamily="David" FontWeight="DemiBold">
+		<ListView x:Name="DroneListView" MouseDoubleClick="DroneListView_MouseDoubleClick" Grid.Row="1" FontFamily="David" FontWeight="DemiBold" Visibility="Visible">
+			<ListView.Background>
+				<ImageBrush ImageSource="\picture\background.png" AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="Fill" />
+			</ListView.Background>
+
+		</ListView>
+		<ListView x:Name="DroneListViewGrouping" MouseDoubleClick="DroneListView_MouseDoubleClick" Grid.Row="1" FontFamily="David" FontWeight="DemiBold" Visibility="Hidden">
+			<ListView.View>
+				<GridView>
+					<GridViewColumn Header="Id" Width="60" DisplayMemberBinding="{Binding Id}" />
+					<GridViewColumn Header="Model" Width="110" DisplayMemberBinding="{Binding Model }"/>
+					<GridViewColumn Header="Max Weight" Width="110" DisplayMemberBinding="{Binding MaxWeight}"/>
+					<GridViewColumn Header="Battery" Width="60" DisplayMemberBinding="{Binding Battery}"/>
+					<GridViewColumn Header="Status" Width="110" DisplayMemberBinding="{Binding Status}"/>
+					<GridViewColumn Header="Location" Width="160" DisplayMemberBinding="{Binding Loc}"/>
+					<GridViewColumn Header="Id Of Parcel" Width="135" DisplayMemberBinding="{Binding IdOfParcel}"/>
+
+				</GridView>
+			</ListView.View>
+			<ListView.GroupStyle>
+				<GroupStyle>
+					<GroupStyle.ContainerStyle>
+						<Style TargetType="{x:Type GroupItem}">
+							<Setter Property="Template">
+								<Setter.Value>
+									<ControlTemplate>
+										<Expander IsExpanded="False">
+											<Expander.Header>
+												<StackPanel Orientation="Horizontal">
+													<TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="Green" FontSize="22" VerticalAlignment="Bottom" />
+													<TextBlock Text="{Binding ItemCount}" FontSize="22" Foreground="Green" FontWeight="Bold" FontStyle="Italic" Margin="10,0,0,0" VerticalAlignment="Bottom" />
+													<TextBlock Text=" item(s)" FontSize="22" Foreground="Silver" FontStyle="Italic" VerticalAlignment="Bottom" />
+												</StackPanel>
+											</Expander.Header>
+											<ItemsPresenter />
+										</Expander>
+									</ControlTemplate>
+								</Setter.Value>
+							</Setter>
+						</Style>
+					</GroupStyle.ContainerStyle>
+				</GroupStyle>
+			</ListView.GroupStyle>
 			<ListView.Background>
 				<ImageBrush ImageSource="\picture\background.png" AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="Fill" />
 			</ListView.Background>

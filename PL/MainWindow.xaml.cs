@@ -37,6 +37,17 @@ namespace PL
 			new displayListOfDrones(ibl).Show();
 		}
 		/// <summary>
+		/// if the user ant to open the base station window
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"> press button</param>
+		private void BaseButton_Click(object sender, RoutedEventArgs e)
+		{
+			new displayBaseList(ibl).Show();
+		}
+
+
+		/// <summary>
 		/// when the window was in loaded set the box time
 		/// </summary>
 		/// <param name="sender"></param>

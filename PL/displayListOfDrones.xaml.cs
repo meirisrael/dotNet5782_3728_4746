@@ -23,6 +23,7 @@ namespace PL
 	{
 		private BlApi.IBL bl;
 		IEnumerable<BO.DroneToList> drones = new List<BO.DroneToList>();
+
 		//-------------------------------------------------------------- FUNC AND CONST VARIABL -------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
 		private const uint MF_BYCOMMAND = 0x00000000;
@@ -57,6 +58,7 @@ namespace PL
 			bl = ibl;
 			drones = bl.GetListOfDrones(d => true);
 			DroneListView.ItemsSource = drones;
+			
 			StatusSelector.ItemsSource = Enum.GetValues(typeof(BO.DroneStatuses));
 			WeightSelector.ItemsSource = Enum.GetValues(typeof(BO.WeightCategories));
 		}
@@ -134,7 +136,7 @@ namespace PL
 			catch (Exception ex)
 			{
 
-				MessageBox.Show("This is not a drone", "ERROR");
+				MessageBox.Show("Choose a drone !!", "ERROR");
 			}
 			
 		}
@@ -178,5 +180,28 @@ namespace PL
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void Close_Click(object sender, RoutedEventArgs e) => Close();
+
+		private void Groop_Click(object sender, RoutedEventArgs e)
+		{
+			if (groopButton.Content.ToString() == "Groop the List")
+			{
+				DroneListViewGrouping.ItemsSource = drones;
+				CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(DroneListViewGrouping.ItemsSource);
+				PropertyGroupDescription groupDescription = new PropertyGroupDescription("Status");
+				view.GroupDescriptions.Add(groupDescription);
+				DroneListViewGrouping.Visibility = Visibility.Visible;
+				DroneListView.Visibility = Visibility.Hidden;
+				groopButton.Content = "Default display";
+				
+			}
+			else if (groopButton.Content.ToString() == "Default display")
+			{
+				DroneListViewGrouping.Visibility = Visibility.Hidden;
+				DroneListView.Visibility = Visibility.Visible;
+				groopButton.Content = "Groop the List";
+				drones = bl.GetListOfDrones(d => true);
+				DroneListView.ItemsSource = drones;
+			}
+		}
 	}
 }

@@ -168,114 +168,82 @@ namespace PL
 			
 		}
 		/// <summary>
-		/// if the user press the button  "sent to charge" so assigne the drone to a base station to cahrge
+		/// if the user press the button for charge so assigne the drone to a base station to charge or release him 
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void sentCharge_button_Click(object sender, RoutedEventArgs e)
+		private void charge_button_Click(object sender, RoutedEventArgs e)
 		{
-			try
+			if (charge_button.Content.ToString() == "Sent to charge")
 			{
-				bl.DroneToCharge(drone.Id);
-				MessageBox.Show("Successfuly sent to charge", "Successfull");
-				drone = bl.GetDrone(drone.Id);
-				Drone_label.Content = drone.ToString();
-				charging_button();
-				shipping_button();
-				listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
+				try
+				{
+					bl.DroneToCharge(drone.Id);
+					MessageBox.Show("Successfuly sent to charge", "Successfull");
+				}
+				catch (Exception ex)
+				{ MessageBox.Show("Drone can't assigne to charge beacause is not free", "ERROR"); }
 			}
-			catch (Exception ex)
+			else if (charge_button.Content.ToString() == "Release drone from charge")
 			{
-				MessageBox.Show(ex.Message, "ERROR");
+				try
+				{
+					bl.DroneLeaveCharge(drone.Id);
+					MessageBox.Show("Successfuly release frome charge", "Successfull");
+				}
+				catch (Exception ex)
+				{ MessageBox.Show("Drone can't release from charge because is not in charge", "ERROR"); }
 			}
+			else { }
+			drone = bl.GetDrone(drone.Id);
+			Drone_label.Content = drone.ToString();
+			charging_button();
+			shipping_button();
+			listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
 		}
 		/// <summary>
-		/// if the user press the button " release drone from charge" so need to release the drone from charge
+		/// if the user press the button for shipping need to affect/collect/delive the parcel
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void releaseCharge_button_Click(object sender, RoutedEventArgs e)
+		private void parcel_button_Click(object sender, RoutedEventArgs e)
 		{
-			try
+			if (parcel_button.Content.ToString() == "Sent to shipping")
 			{
-				bl.DroneLeaveCharge(drone.Id);
-				MessageBox.Show("Successfuly release frome charge", "Successfull");
-				drone = bl.GetDrone(drone.Id);
-				Drone_label.Content = drone.ToString();
-				charging_button();
-				shipping_button();
-				listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
+				try
+				{
+					bl.AffectParcelToDrone(drone.Id);
+					MessageBox.Show("Successfuly associated to an parcel", "Successfull");
+				}
+				catch (Exception ex)
+				{ MessageBox.Show("Drone can't be affected to a parcel", "ERROR"); }
 			}
-			catch (Exception ex)
+			else if (parcel_button.Content.ToString() == "Collecte parcel")
 			{
-				MessageBox.Show(ex.Message, "ERROR");
+				try
+				{
+					bl.ParcelCollection(drone.Id);
+					MessageBox.Show("Successfuly collected", "Successfull");
+				}
+				catch (Exception ex)
+				{ MessageBox.Show("Parcel can't be collected", "ERROR"); }
 			}
-		}
-		/// <summary>
-		/// if the user press the button "sent the drone to shipping" need to affect the drone to a parcel
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void sentShipping_button_Click(object sender, RoutedEventArgs e)
-		{
-			try
+			else if (parcel_button.Content.ToString() == "Deliverd parcel")
 			{
-				bl.AffectParcelToDrone(drone.Id);
-				MessageBox.Show("Successfuly associated to an parcel", "Successfull");
-				drone = bl.GetDrone(drone.Id);
-				Drone_label.Content = drone.ToString();
-				shipping_button();
-				listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
+				try
+				{
+					bl.ParcelDeliverd(drone.Id);
+					MessageBox.Show("Successfuly deliverd", "Successfull");
+					charging_button();
+				}
+				catch (Exception ex)
+				{ MessageBox.Show("Parcel can't be deliverd", "ERROR"); }
 			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message, "ERROR");
-			}
-
-		}
-		/// <summary>
-		/// if the user press the button "collect the parcel" so sent the drone collect the parcel from the sender 
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"> click </param>
-		private void collectParcel_button_Click(object sender, RoutedEventArgs e)
-		{
-			try
-			{
-				bl.ParcelCollection(drone.Id);
-				MessageBox.Show("Successfuly collected", "Successfull");
-				drone = bl.GetDrone(drone.Id);
-				Drone_label.Content = drone.ToString();
-				shipping_button();
-				listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message, "ERROR");
-			}
-		}
-		/// <summary>
-		/// if the user press the button "deliver the parcel" so drone deliver the parcel to the target customer
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"> click </param>
-		private void deliverParcel_button_Click(object sender, RoutedEventArgs e)
-		{
-			try
-			{
-				bl.ParcelDeliverd(drone.Id);
-				MessageBox.Show("Successfuly deliverd", "Successfull");
-				drone = bl.GetDrone(drone.Id);
-				Drone_label.Content = drone.ToString();
-				shipping_button();
-				charging_button();
-				listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message, "ERROR");
-			}
-
+			else { }
+			drone = bl.GetDrone(drone.Id);
+			Drone_label.Content = drone.ToString();
+			shipping_button();
+			listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
 		}
 
 		/// <summary>
@@ -284,12 +252,11 @@ namespace PL
 		private void charging_button()
 		{
 			if (drone.Status == BO.DroneStatuses.free)
-			{
-				sentCharge_button.Visibility = Visibility.Visible;releaseCharge_button.Visibility = Visibility.Hidden; messege_label_charge.Visibility = Visibility.Hidden; }
+				charge_button.Content = "Sent to charge";
 			else if (drone.Status == BO.DroneStatuses.Maintenance)
-			{ releaseCharge_button.Visibility = Visibility.Visible; sentCharge_button.Visibility = Visibility.Hidden; messege_label_charge.Visibility = Visibility.Hidden; }
+				charge_button.Content = "Release drone from charge";
 			else
-				messege_label_charge.Visibility = Visibility.Visible;
+			{ charge_button.Content = "Can't charging now"; charge_button.FontWeight = new FontWeight(); }
 		}
 		/// <summary>
 		/// choose which button visible to the user
@@ -299,14 +266,14 @@ namespace PL
 			if (drone.Status == BO.DroneStatuses.Shipping)
 			{
 				if (drone.InTransit.Status == false)// if not pick-up 
-				{ collectParcel_button.Visibility = Visibility.Visible; deliverParcel_button.Visibility = Visibility.Hidden; }
+					parcel_button.Content = "Collecte parcel";
 				else if (drone.InTransit.Status == true)
-				{ deliverParcel_button.Visibility = Visibility.Visible; collectParcel_button.Visibility = Visibility.Hidden; }
+					parcel_button.Content = "Deliverd parcel";
 			}
 			else if (drone.Status == BO.DroneStatuses.free)
-			{ sentShipping_button.Visibility = Visibility.Visible; collectParcel_button.Visibility = Visibility.Hidden; deliverParcel_button.Visibility = Visibility.Hidden; messege_label_shipp.Visibility = Visibility.Hidden; }
+				parcel_button.Content = "Sent to shipping";
 			else
-				messege_label_shipp.Visibility = Visibility.Visible;
+			{ parcel_button.Content = "Can't do a shipping now"; parcel_button.FontWeight = new FontWeight(); }
 		}
 
 		/// <summary>
