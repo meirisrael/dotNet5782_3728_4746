@@ -133,12 +133,29 @@ namespace PL
 				filterByStatus();
 				filterByWeight();
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 
 				MessageBox.Show("Choose a drone !!", "ERROR");
 			}
 			
+		}
+		private void DroneListViewGrouping_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			BO.DroneToList d = new();
+			try
+			{
+				d = drones.ToList().Find(d => d.ToString() == DroneListViewGrouping.SelectedItem.ToString());
+				new droneWindow(bl, d, DroneListView).ShowDialog();
+				filterByStatus();
+				filterByWeight();
+			}
+			catch (Exception)
+			{
+
+				MessageBox.Show("Choose a drone !!", "ERROR");
+			}
+
 		}
 
 		/// <summary>
@@ -147,7 +164,7 @@ namespace PL
 		private void filterByStatus()
 		{
 			if (StatusSelector.SelectedItem == null && WeightSelector.ItemsSource == null)
-				drones = drones;
+				return;
 			else if (StatusSelector.SelectedItem != null && WeightSelector.SelectedItem == null)
 				drones = bl.GetListOfDrones(d => d.Status == (BO.DroneStatuses)StatusSelector.SelectedItem);
 			else if (StatusSelector.SelectedItem != null && WeightSelector.SelectedItem != null)
@@ -162,9 +179,8 @@ namespace PL
 		/// </summary>
 		private void filterByWeight()
 		{
-
 			if (WeightSelector.SelectedItem == null && StatusSelector.SelectedItem == null)
-				drones = drones;
+				return;
 			else if (WeightSelector.SelectedItem != null && StatusSelector.SelectedItem == null)
 				drones = bl.GetListOfDrones(d => d.MaxWeight == (BO.WeightCategories)WeightSelector.SelectedItem);
 			else if (WeightSelector.SelectedItem != null && StatusSelector.SelectedItem != null)

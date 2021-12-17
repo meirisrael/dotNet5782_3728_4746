@@ -38,7 +38,7 @@
 			</ListView.Background>
 
 		</ListView>
-		<ListView x:Name="DroneListViewGrouping" MouseDoubleClick="DroneListView_MouseDoubleClick" Grid.Row="1" FontFamily="David" FontWeight="DemiBold" Visibility="Hidden">
+		<ListView x:Name="DroneListViewGrouping" MouseDoubleClick="DroneListViewGrouping_MouseDoubleClick" Grid.Row="1" FontFamily="David" FontWeight="DemiBold" Visibility="Hidden">
 			<ListView.View>
 				<GridView>
 					<GridViewColumn Header="Id" Width="60" DisplayMemberBinding="{Binding Id}" />
