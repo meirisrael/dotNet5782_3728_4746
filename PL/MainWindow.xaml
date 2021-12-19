@@ -10,10 +10,12 @@
 		<StatusBar HorizontalAlignment="Center" VerticalAlignment="Top" Background="White" Height="auto" Width="auto">
 			<TextBlock x:FieldModifier="private" x:Name="myDateTime" Background="White"/>
 		</StatusBar>
-		<Button Content="Drone" HorizontalAlignment="Right" FontStyle="Italic" FontWeight="ExtraBlack" Background="OliveDrab" FontFamily="Comic Sans MS"
+		<Button Content="Drone's" HorizontalAlignment="Right" FontStyle="Italic" FontWeight="ExtraBlack" Background="OliveDrab" FontFamily="Comic Sans MS"
 				VerticalAlignment="Top" Click="DronesButton_Click" Height="52" Width="137" BorderBrush="Black" BorderThickness="3" Margin="0,35,50,0" />
 		<Button Content="Base-Stations" HorizontalAlignment="Left" FontStyle="Italic" FontWeight="ExtraBlack" Background="OliveDrab" FontFamily="Comic Sans MS"
 				VerticalAlignment="Top" Click="BaseButton_Click" Height="52" Width="137" BorderBrush="Black" BorderThickness="3" Margin="35,35,0,0"  />
+		<Button Content="Customer's" HorizontalAlignment="Right" FontStyle="Italic" FontWeight="ExtraBlack" Background="OliveDrab" FontFamily="Comic Sans MS"
+				VerticalAlignment="Bottom" Click="Customers_Click" Height="52" Width="137" BorderBrush="Black" BorderThickness="3" Margin="0,0,50,35" />
 		<Image Source="/picture/logo_drone.jpg" Margin="529,21,191,333" Height="80" Width="80"
 			 VerticalAlignment="Top" HorizontalAlignment="Right" />
 		<Label Content="Designed by  M.I.A." HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="94" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Gabriola" FontWeight="Bold" FontStyle="Italic" FontSize="10" Foreground="#FF857114" Background="Transparent" Margin="0,0,-2,-1" />

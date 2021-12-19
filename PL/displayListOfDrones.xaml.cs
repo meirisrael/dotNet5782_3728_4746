@@ -126,10 +126,9 @@ namespace PL
 		/// <param name="e"></param>
 		private void DroneListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
-			int index = DroneListView.SelectedIndex;//the index of drone that the user choose
 			try
 			{
-				new droneWindow(bl,drones.ToList()[index],DroneListView).ShowDialog();
+				new droneWindow(bl,(BO.DroneToList)DroneListView.SelectedItem,DroneListView).ShowDialog();
 				filterByStatus();
 				filterByWeight();
 			}
@@ -142,11 +141,9 @@ namespace PL
 		}
 		private void DroneListViewGrouping_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
-			BO.DroneToList d = new();
 			try
 			{
-				d = drones.ToList().Find(d => d.ToString() == DroneListViewGrouping.SelectedItem.ToString());
-				new droneWindow(bl, d, DroneListView).ShowDialog();
+				new droneWindow(bl, (BO.DroneToList)DroneListViewGrouping.SelectedItem, DroneListView).ShowDialog();
 				filterByStatus();
 				filterByWeight();
 			}

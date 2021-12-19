@@ -32,7 +32,7 @@
 			<Label Content="Filter by Weight " HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="111" Height="28" Margin="91,0,0,8" FontFamily="Comic Sans MS" Grid.ColumnSpan="2"/>
 			<Button x:Name="groupButton" Content="Group the List" HorizontalAlignment="Left" Margin="7,0,0,0" VerticalAlignment="Center" Click="group_Click" Background="DarkMagenta" Height="25"/>
 		</Grid>
-		<ListView x:Name="DroneListView" MouseDoubleClick="DroneListView_MouseDoubleClick" Grid.Row="1" FontFamily="David" FontWeight="DemiBold" Visibility="Visible" Foreground="WhiteSmoke">
+		<ListView x:Name="DroneListView" MouseDoubleClick="DroneListView_MouseDoubleClick" Grid.Row="1" FontFamily="David" FontWeight="DemiBold" Visibility="Visible" Foreground="WhiteSmoke" >
 			<ListView.Background>
 				<ImageBrush ImageSource="\picture\background.png" AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="Fill" />
 			</ListView.Background>
@@ -40,7 +40,7 @@
 		<ListView x:Name="DroneListViewGrouping" MouseDoubleClick="DroneListViewGrouping_MouseDoubleClick" Grid.Row="1" FontFamily="David" FontWeight="DemiBold" Visibility="Hidden">
 			<ListView.View >
 				<GridView>
-					<GridViewColumn Header="Id" Width="60" DisplayMemberBinding="{Binding Id}" />
+					<GridViewColumn Header="Id" Width="60" DisplayMemberBinding="{Binding Id}"/>
 					<GridViewColumn Header="Model" Width="110" DisplayMemberBinding="{Binding Model }"/>
 					<GridViewColumn Header="Max Weight" Width="110" DisplayMemberBinding="{Binding MaxWeight}"/>
 					<GridViewColumn Header="Battery" Width="60" DisplayMemberBinding="{Binding Battery}"/>

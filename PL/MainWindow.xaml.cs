@@ -60,5 +60,10 @@ namespace PL
 			}, this.Dispatcher);
 			timer.Start();
 		}
+
+		private void Customers_Click(object sender, RoutedEventArgs e)
+		{
+			new displayCustomersList(ibl).Show();
+		}
 	}
 }
