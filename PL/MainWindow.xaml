@@ -17,7 +17,7 @@
 		<Button Content="Customer's" HorizontalAlignment="Right" FontStyle="Italic" FontWeight="ExtraBlack" Background="OliveDrab" FontFamily="Comic Sans MS"
 				VerticalAlignment="Bottom" Click="Customers_Click" Height="52" Width="137" BorderBrush="Black" BorderThickness="3" Margin="0,0,50,35" />
 		<Button Content="Parcel's" HorizontalAlignment="Left" FontStyle="Italic" FontWeight="ExtraBlack" Background="OliveDrab" FontFamily="Comic Sans MS"
-				VerticalAlignment="Bottom" Click="Customers_Click" Height="52" Width="137" BorderBrush="Black" BorderThickness="3" Margin="50,0,0,35" />
+				VerticalAlignment="Bottom" Click="Parcels_Click" Height="52" Width="137" BorderBrush="Black" BorderThickness="3" Margin="50,0,0,35" />
 		<Image Source="/picture/logo_base.jpg" Height="75" Width="80"
 			 VerticalAlignment="Top" HorizontalAlignment="Left" Margin="190,30,0,0" />
 		<Image Source="/picture/logo_drone.jpg" Margin="0,21,191,0" Height="80" Width="80"

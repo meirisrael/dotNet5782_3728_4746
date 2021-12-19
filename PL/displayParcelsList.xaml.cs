@@ -14,13 +14,12 @@ using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
 
-
 namespace PL
 {
 	/// <summary>
-	/// Interaction logic for displayCustomersList.xaml
+	/// Interaction logic for displayParcelsList.xaml
 	/// </summary>
-	public partial class displayCustomersList : Window
+	public partial class displayParcelsList : Window
 	{
 		private BlApi.IBL bl;
 		//-------------------------------------------------------------- FUNC AND CONST VARIABL -------------------------------------------------------------------------------------------------
@@ -47,7 +46,7 @@ namespace PL
 			RemoveMenu(hMenu, SC_CLOSE, MF_BYCOMMAND);
 		}
 		//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-		public displayCustomersList(BlApi.IBL bl)
+		public displayParcelsList(BlApi.IBL ibl)
 		{
 			InitializeComponent();
 		}
