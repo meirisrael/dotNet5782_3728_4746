@@ -15,7 +15,7 @@ namespace BO
 		public DroneStatuses Status { get; set; }
 		public Location Loc { get; set; }
 		public int? IdOfParcel { get; set; }
-		public DateTime whenInCharge { get; set; }
+		public DateTime WhenInCharge { get; set; }
 
 		public DroneToList() : base() { Loc = new(); }
 		public override string ToString()

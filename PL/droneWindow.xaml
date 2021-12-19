@@ -27,7 +27,7 @@
 			<Button Content="Cancel" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Height="35" Background="OrangeRed" Click="Cancel_Click" Margin="0,0,170,90" FontFamily="Comic Sans MS"  FontWeight="DemiBold"/>
 		</Grid>
 
-		<Grid x:Name="action_drone_Grid" Visibility="Visible">
+		<Grid x:Name="action_drone_Grid" Visibility="Hidden">
 			<Grid.Background>
 				<ImageBrush Stretch="Fill" ImageSource="picture\mavic_pro.png" AlignmentY="Top" AlignmentX="Center"/>
 			</Grid.Background>

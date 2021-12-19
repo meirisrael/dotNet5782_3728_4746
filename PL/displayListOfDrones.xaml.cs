@@ -190,6 +190,7 @@ namespace PL
 
 			DroneListView.ItemsSource = drones;
 		}
+
 		/// <summary>
 		/// if the user press the button close so close the window
 		/// </summary>
@@ -197,9 +198,14 @@ namespace PL
 		/// <param name="e"></param>
 		private void Close_Click(object sender, RoutedEventArgs e) => Close();
 
-		private void Groop_Click(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// groop all drone by her status
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void group_Click(object sender, RoutedEventArgs e)
 		{
-			if (groopButton.Content.ToString() == "Groop the List")
+			if (groupButton.Content.ToString() == "Group the List")
 			{
 				DroneListViewGrouping.ItemsSource = drones;
 				CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(DroneListViewGrouping.ItemsSource);
@@ -207,16 +213,19 @@ namespace PL
 				view.GroupDescriptions.Add(groupDescription);
 				DroneListViewGrouping.Visibility = Visibility.Visible;
 				DroneListView.Visibility = Visibility.Hidden;
-				groopButton.Content = "Default display";
-				
+				groupButton.Content = "Default display";
+				StatusSelector.IsEnabled = false;
+				WeightSelector.IsEnabled = false;
 			}
-			else if (groopButton.Content.ToString() == "Default display")
+			else if (groupButton.Content.ToString() == "Default display")
 			{
 				DroneListViewGrouping.Visibility = Visibility.Hidden;
 				DroneListView.Visibility = Visibility.Visible;
-				groopButton.Content = "Groop the List";
+				groupButton.Content = "Group the List";
 				drones = bl.GetListOfDrones(d => true);
 				DroneListView.ItemsSource = drones;
+				StatusSelector.IsEnabled = true;
+				WeightSelector.IsEnabled = true;
 			}
 		}
 	}

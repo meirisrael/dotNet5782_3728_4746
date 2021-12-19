@@ -9,6 +9,7 @@
   <ItemGroup>
     <None Remove="icon\logo_company.ico" />
     <None Remove="logo_company.ico" />
+    <None Remove="picture\background.png" />
     <None Remove="picture\baseDrone.png" />
     <None Remove="picture\baseDroneSnip.png" />
     <None Remove="picture\bla.png" />
@@ -21,15 +22,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="picture\background.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\BL\BL.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="icon\logo_company.ico" />
+    <Resource Include="picture\background.png" />
     <Resource Include="picture\baseDrone.png" />
     <Resource Include="picture\baseDroneSnip.png" />
     <Resource Include="picture\bla.png" />

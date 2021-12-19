@@ -52,7 +52,7 @@ namespace PL
 			InitializeComponent();
 			bl = ibl;
 			baseStations = bl.GetListOfBaseStations(b => true);
-			DroneListView.ItemsSource = baseStations;
+			BaseListView.ItemsSource = baseStations;
 		}
 
 		private void DroneListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -60,9 +60,38 @@ namespace PL
 			new baseWindow().ShowDialog();
 		}
 
-		private void Close_Click(object sender, RoutedEventArgs e)
+		private void Close_Click(object sender, RoutedEventArgs e)=> Close();
+
+		private void BaseListViewGrouping_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
-			Close();
+			new baseWindow().ShowDialog();
+		}
+
+		private void groupButton_Click(object sender, RoutedEventArgs e)
+		{
+			if (groupButton.Content.ToString() == "Group the List")
+			{
+				BaseListViewGrouping.ItemsSource = baseStations;
+				CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(BaseListViewGrouping.ItemsSource);
+				PropertyGroupDescription groupDescription = new PropertyGroupDescription("ChargeSlots");
+				view.GroupDescriptions.Add(groupDescription);
+				BaseListViewGrouping.Visibility = Visibility.Visible;
+				BaseListView.Visibility = Visibility.Hidden;
+				groupButton.Content = "Default display";
+			}
+			else if (groupButton.Content.ToString() == "Default display")
+			{
+				BaseListViewGrouping.Visibility = Visibility.Hidden;
+				BaseListView.Visibility = Visibility.Visible;
+				groupButton.Content = "Group the List";
+				baseStations = bl.GetListOfBaseStations(d => true);
+				BaseListViewGrouping.ItemsSource = baseStations;
+			}
+		}
+
+		private void BaseListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+
 		}
 	}
 }

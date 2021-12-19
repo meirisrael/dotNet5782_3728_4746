@@ -406,7 +406,8 @@ namespace BL
 				Battery = battery,
 				Status = BO.DroneStatuses.Maintenance,
 				Loc = l,
-				IdOfParcel = 0
+				IdOfParcel = 0,
+				WhenInCharge = DateTime.Now
 			});
 		}
 		/// <summary>
@@ -415,7 +416,7 @@ namespace BL
 		/// <param name="id"></param>
 		/// <param name="name"></param>
 		/// <param name="phone"></param>
-		/// <param name="location"></param>
+		/// <param name="location"></param>ff
 		public void AddCustomer(int id, string name, string phone, BO.Location location)
 		{
 			try
@@ -552,7 +553,7 @@ namespace BL
 			if (drone.Battery < calcBatteryToCloserBase(drone.Loc.Longitude, drone.Loc.Latitude))//no enough battery to go to charge station
 				throw new BO.NotEnoughBattery();
 			drone.Battery -= calcBatteryToCloserBase(drone.Loc.Longitude, drone.Loc.Latitude);
-			drone.whenInCharge = DateTime.Now;
+			drone.WhenInCharge = DateTime.Now;
 
 			DO.BaseStation baseStation = new DO.BaseStation();
 			baseStation = CloserBase(drone.Loc.Longitude, drone.Loc.Latitude);//search the closer base 
@@ -581,7 +582,7 @@ namespace BL
 			if (drone.Status != BO.DroneStatuses.Maintenance)//if the drone id of drone that the user gave is not in Maintenance so need to throw that
 				throw new BO.DroneNotInCharge();
 			drone.Status = BO.DroneStatuses.free;
-			double timeChargeing = (DateTime.Now.Subtract(drone.whenInCharge).TotalSeconds) / 3600;
+			double timeChargeing = (DateTime.Now.Subtract(drone.WhenInCharge).TotalSeconds) / 3600;
 			drone.Battery += (timeChargeing) * _chargingRate;
 			drone.Battery = Math.Round(drone.Battery, 3);
 			if (drone.Battery > 100)

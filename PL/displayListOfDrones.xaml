@@ -30,16 +30,15 @@
 			<TextBlock HorizontalAlignment="Left" Margin="94,40,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="106" RenderTransformOrigin="1.094,0.566"/>
 			<Label Content="Filter by Status " HorizontalAlignment="Left" VerticalAlignment="Top" Width="106" Height="35" Margin="91,6,0,0" FontFamily="Comic Sans MS"/>
 			<Label Content="Filter by Weight " HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="111" Height="28" Margin="91,0,0,8" FontFamily="Comic Sans MS" Grid.ColumnSpan="2"/>
-			<Button x:Name="groopButton" Content="Groop the List" HorizontalAlignment="Left" Margin="7,0,0,0" VerticalAlignment="Center" Click="Groop_Click" Background="DarkMagenta" Height="25"/>
+			<Button x:Name="groupButton" Content="Group the List" HorizontalAlignment="Left" Margin="7,0,0,0" VerticalAlignment="Center" Click="group_Click" Background="DarkMagenta" Height="25"/>
 		</Grid>
-		<ListView x:Name="DroneListView" MouseDoubleClick="DroneListView_MouseDoubleClick" Grid.Row="1" FontFamily="David" FontWeight="DemiBold" Visibility="Visible">
+		<ListView x:Name="DroneListView" MouseDoubleClick="DroneListView_MouseDoubleClick" Grid.Row="1" FontFamily="David" FontWeight="DemiBold" Visibility="Visible" Foreground="WhiteSmoke">
 			<ListView.Background>
 				<ImageBrush ImageSource="\picture\background.png" AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="Fill" />
 			</ListView.Background>
-
 		</ListView>
 		<ListView x:Name="DroneListViewGrouping" MouseDoubleClick="DroneListViewGrouping_MouseDoubleClick" Grid.Row="1" FontFamily="David" FontWeight="DemiBold" Visibility="Hidden">
-			<ListView.View>
+			<ListView.View >
 				<GridView>
 					<GridViewColumn Header="Id" Width="60" DisplayMemberBinding="{Binding Id}" />
 					<GridViewColumn Header="Model" Width="110" DisplayMemberBinding="{Binding Model }"/>
@@ -51,7 +50,7 @@
 
 				</GridView>
 			</ListView.View>
-			<ListView.GroupStyle>
+			<ListView.GroupStyle >
 				<GroupStyle>
 					<GroupStyle.ContainerStyle>
 						<Style TargetType="{x:Type GroupItem}">
@@ -60,7 +59,7 @@
 									<ControlTemplate>
 										<Expander IsExpanded="False">
 											<Expander.Header>
-												<StackPanel Orientation="Horizontal">
+												<StackPanel Orientation="Horizontal" >
 													<TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="Green" FontSize="22" VerticalAlignment="Bottom" />
 													<TextBlock Text="{Binding ItemCount}" FontSize="22" Foreground="Green" FontWeight="Bold" FontStyle="Italic" Margin="10,0,0,0" VerticalAlignment="Bottom" />
 													<TextBlock Text=" item(s)" FontSize="22" Foreground="Silver" FontStyle="Italic" VerticalAlignment="Bottom" />
