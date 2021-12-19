@@ -35,12 +35,11 @@ namespace DalObject
 		public void AddBaseStation(int id, int name, int chargeSlots, double longi, double latti)
 		{
 			if (id < 0 || id == 0) throw new DO.InvalidId("BASE-STATION");
-			if (name < 0 || name == 0) throw new DO.EmptyValue("BASE-STATION BIGGER THAN 0");
 			if (chargeSlots < 0) throw new DO.InvalidChargeSlot();
-			if (latti > 90 || latti < -90) throw new DO.InvalidLoc("LATITUDE","-90 TO 90");
 			if (longi > 180 || longi < -180) throw new DO.InvalidLoc("LONGITUDE","-180 TO 180");
+			if (latti > 90 || latti < -90) throw new DO.InvalidLoc("LATITUDE", "-90 TO 90");
 
-			if(DataSource.baseStations.Exists(item => item.Id == id))
+			if (DataSource.baseStations.Exists(item => item.Id == id))
 				throw new DO.IdExist("BASE-STATION");
 
 			DataSource.baseStations.Add(new DO.BaseStation()
@@ -62,7 +61,6 @@ namespace DalObject
 		{
 			if (id < 0 || id == 0) throw new DO.InvalidId("DRONE");
 			if ((int)weight > 3 || (int)weight < 1) throw new DO.InvalidCategory("WEIGHT");
-			if (model == "") throw new DO.EmptyValue("MODEL");
 
 			if(DataSource.drones.Exists(item=>item.Id==id))
 				throw new DO.IdExist("DRONE");
@@ -85,8 +83,6 @@ namespace DalObject
 		public void AddCustomer(int id, string name, string phone, double longi, double latti)
 		{
 			if (id < 0 || id == 0) throw new DO.InvalidId("CUSTOMER");
-			if (name == "") throw new DO.EmptyValue("NAME");
-			if (phone == "") throw new DO.EmptyValue("PHONE");
 			if (latti > 90 || latti < -90) throw new DO.InvalidLoc("LATITUDE", "-90 TO 90");
 			if (longi > 180 || longi < -180) throw new DO.InvalidLoc("LONGITUDE", "-180 TO 180");
 

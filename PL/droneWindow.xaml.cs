@@ -132,15 +132,15 @@ namespace PL
 				listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
 				Close();
 			}
+			catch (BO.InvalidId)//drone id
+			{
+				MessageBox.Show("ID need to be bigger than zero", "ERROR");
+				IdBox.Background = Brushes.Salmon;
+			}
 			catch (BO.IdExist)
 			{
 				MessageBox.Show("ID alredy exist", "ERROR");
 				IdBox.Background = Brushes.Salmon;
-			}
-			catch (BO.EmptyValue)
-			{
-				MessageBox.Show("You must be give an name of model", "ERROR");
-				ModelBox.Background = Brushes.Salmon;
 			}
 			return;
 
@@ -181,7 +181,7 @@ namespace PL
 					bl.DroneToCharge(drone.Id);
 					MessageBox.Show("Successfuly sent to charge", "Successfull");
 				}
-				catch (Exception ex)
+				catch (Exception)
 				{ MessageBox.Show("Drone can't assigne to charge beacause is not free", "ERROR"); }
 			}
 			else if (charge_button.Content.ToString() == "Release drone from charge")
@@ -191,7 +191,7 @@ namespace PL
 					bl.DroneLeaveCharge(drone.Id);
 					MessageBox.Show("Successfuly release frome charge", "Successfull");
 				}
-				catch (Exception ex)
+				catch (Exception)
 				{ MessageBox.Show("Drone can't release from charge because is not in charge", "ERROR"); }
 			}
 			else { }
@@ -215,7 +215,7 @@ namespace PL
 					bl.AffectParcelToDrone(drone.Id);
 					MessageBox.Show("Successfuly associated to an parcel", "Successfull");
 				}
-				catch (Exception ex)
+				catch (Exception)
 				{ MessageBox.Show("Drone can't be affected to a parcel", "ERROR"); }
 			}
 			else if (parcel_button.Content.ToString() == "Collecte parcel")
@@ -225,7 +225,7 @@ namespace PL
 					bl.ParcelCollection(drone.Id);
 					MessageBox.Show("Successfuly collected", "Successfull");
 				}
-				catch (Exception ex)
+				catch (Exception)
 				{ MessageBox.Show("Parcel can't be collected", "ERROR"); }
 			}
 			else if (parcel_button.Content.ToString() == "Deliverd parcel")
@@ -236,7 +236,7 @@ namespace PL
 					MessageBox.Show("Successfuly deliverd", "Successfull");
 					charging_button();
 				}
-				catch (Exception ex)
+				catch (Exception)
 				{ MessageBox.Show("Parcel can't be deliverd", "ERROR"); }
 			}
 			else { }

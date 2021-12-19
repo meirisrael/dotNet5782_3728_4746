@@ -57,14 +57,14 @@ namespace PL
 
 		private void DroneListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
-			new baseWindow().ShowDialog();
+			new baseWindow(bl).ShowDialog();
 		}
 
 		private void Close_Click(object sender, RoutedEventArgs e)=> Close();
 
 		private void BaseListViewGrouping_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
-			new baseWindow().ShowDialog();
+			new baseWindow(bl).ShowDialog();
 		}
 
 		private void groupButton_Click(object sender, RoutedEventArgs e)
@@ -91,7 +91,12 @@ namespace PL
 
 		private void BaseListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
+			new baseWindow(bl).ShowDialog();
+		}
 
+		private void Add_Click(object sender, RoutedEventArgs e)
+		{
+			new baseWindow(bl).ShowDialog();
 		}
 	}
 }

@@ -30,7 +30,7 @@
 			<TextBlock HorizontalAlignment="Left" Margin="94,40,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="106" RenderTransformOrigin="1.094,0.566"/>
 			<Label Content="Filter by Status " HorizontalAlignment="Left" VerticalAlignment="Top" Width="106" Height="35" Margin="91,6,0,0" FontFamily="Comic Sans MS"/>
 			<Label Content="Filter by Weight " HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="111" Height="28" Margin="91,0,0,8" FontFamily="Comic Sans MS" Grid.ColumnSpan="2"/>
-			<Button x:Name="groupButton" Content="Group the List" HorizontalAlignment="Left" Margin="7,0,0,0" VerticalAlignment="Center" Click="group_Click" Background="DarkMagenta" Height="25"/>
+			<Button x:Name="groupButton" Content="Group the List" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Click="group_Click" Background="DarkMagenta" Height="25" BorderBrush="Black" BorderThickness="1" FontFamily="Comic Sans MS"  FontWeight="DemiBold"/>
 		</Grid>
 		<ListView x:Name="DroneListView" MouseDoubleClick="DroneListView_MouseDoubleClick" Grid.Row="1" FontFamily="David" FontWeight="DemiBold" Visibility="Visible" Foreground="WhiteSmoke" >
 			<ListView.Background>

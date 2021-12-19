@@ -351,9 +351,6 @@ namespace BL
 			catch (DO.InvalidId ex)//base
 			{ throw new BO.InvalidId(ex.Message, ex._type); }
 
-			catch (DO.EmptyValue ex)//name
-			{ throw new BO.EmptyValue(ex.Message, ex._type); }
-
 			catch (DO.InvalidChargeSlot ex)
 			{ throw new BO.InvalidChargeSlot(ex.Message); }
 
@@ -384,9 +381,6 @@ namespace BL
 
 			catch (DO.IdExist ex)//drone
 			{ throw new BO.IdExist(ex.Message, ex._type); }
-
-			catch (DO.EmptyValue ex)//model
-			{ throw new BO.EmptyValue(ex.Message, ex._type); }
 
 			try
 			{
@@ -431,9 +425,6 @@ namespace BL
 
 			catch (DO.IdExist ex)//customer
 			{ throw new BO.IdExist(ex.Message, ex._type); }
-
-			catch (DO.EmptyValue ex)//name or phone
-			{ throw new BO.EmptyValue(ex.Message, ex._type); }
 		}
 		/// <summary>
 		/// the fun add an new parcel to the data base
