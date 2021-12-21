@@ -5,8 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="displayCustomersList" Height="450" Width="800">
+        Title="displayCustomersList" Height="450" Width="633">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25*"/>
+            <RowDefinition Height="192*"/>
+        </Grid.RowDefinitions>
+        <ListView x:Name="listView" Opacity="0.8" Grid.Row="1">
+            <ListView.Background>
+                <ImageBrush ImageSource="/picture/customer.jpg"/>
+            </ListView.Background>
+        </ListView>
+        <Grid Background="#FF97A0B7">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="159*"/>
+                <ColumnDefinition Width="52*"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="Close" Content="Close" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFFC1C1C" FontFamily="Comic Sans MS" FontWeight="Bold" Click="Close_Click" Foreground="Black" Width="56" FontStyle="Normal" Height="30"/>
+        </Grid>
     </Grid>
 </Window>
