@@ -123,7 +123,7 @@ namespace BL
 
 			for (int i = 0; i < droneToList.Count(); i++)
 			{
-				if (droneToList[i].Status != BO.DroneStatuses.Shipping)//if the drone is not in shipping choos random status
+				if (droneToList[i].Status != BO.DroneStatuses.Shipping)//if the drone is not in shipping choose random status
 				{
 					int r = new Random().Next(1, 3);
 					if (r == 1)
@@ -138,6 +138,7 @@ namespace BL
 					droneToList[i].Loc.Latitude = baseS[r].Loc.Latitude;
 					r = new Random().Next(0, 21);//choose random percent of battery between 0to20%
 					droneToList[i].Battery = r;
+					droneToList[i].WhenInCharge = DateTime.Now;
 				}
 				else if (droneToList[i].Status == BO.DroneStatuses.free)//according to the previous "if" now-if the random choose that the drone is free
 				{
@@ -351,9 +352,6 @@ namespace BL
 			catch (DO.InvalidId ex)//base
 			{ throw new BO.InvalidId(ex.Message, ex._type); }
 
-			catch (DO.EmptyValue ex)//name
-			{ throw new BO.EmptyValue(ex.Message, ex._type); }
-
 			catch (DO.InvalidChargeSlot ex)
 			{ throw new BO.InvalidChargeSlot(ex.Message); }
 
@@ -384,9 +382,6 @@ namespace BL
 
 			catch (DO.IdExist ex)//drone
 			{ throw new BO.IdExist(ex.Message, ex._type); }
-
-			catch (DO.EmptyValue ex)//model
-			{ throw new BO.EmptyValue(ex.Message, ex._type); }
 
 			try
 			{
@@ -431,9 +426,6 @@ namespace BL
 
 			catch (DO.IdExist ex)//customer
 			{ throw new BO.IdExist(ex.Message, ex._type); }
-
-			catch (DO.EmptyValue ex)//name or phone
-			{ throw new BO.EmptyValue(ex.Message, ex._type); }
 		}
 		/// <summary>
 		/// the fun add an new parcel to the data base
@@ -582,8 +574,8 @@ namespace BL
 			if (drone.Status != BO.DroneStatuses.Maintenance)//if the drone id of drone that the user gave is not in Maintenance so need to throw that
 				throw new BO.DroneNotInCharge();
 			drone.Status = BO.DroneStatuses.free;
-			double timeChargeing = (DateTime.Now.Subtract(drone.WhenInCharge).TotalSeconds) / 3600;
-			drone.Battery += (timeChargeing) * _chargingRate;
+			double timeCharging = (DateTime.Now.Subtract(drone.WhenInCharge).TotalSeconds) / 3600;
+			drone.Battery += (timeCharging) * _chargingRate;
 			drone.Battery = Math.Round(drone.Battery, 3);
 			if (drone.Battery > 100)
 				drone.Battery = 100;

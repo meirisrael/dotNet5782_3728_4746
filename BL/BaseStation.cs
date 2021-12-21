@@ -20,6 +20,7 @@ namespace BO
 			string charge="none";
 			if (this.DroneInCharge != null)
 			{
+				charge = "";
 				foreach (DroneCharge item in DroneInCharge)
 				{
 					charge += item.ToString();

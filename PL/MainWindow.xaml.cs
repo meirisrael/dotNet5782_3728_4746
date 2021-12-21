@@ -45,7 +45,24 @@ namespace PL
 		{
 			new displayBaseList(ibl).Show();
 		}
-
+		/// <summary>
+		/// if the user want to see all customers and to add or upsate one
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void Customers_Click(object sender, RoutedEventArgs e)
+		{
+			new displayCustomersList(ibl).Show();
+		}
+		/// <summary>
+		/// if the user want to see all parcels and to add or update one
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void Parcels_Click(object sender, RoutedEventArgs e)
+		{
+			new displayParcelsList(ibl).Show();
+		}
 
 		/// <summary>
 		/// when the window was in loaded set the box time
@@ -60,10 +77,6 @@ namespace PL
 			}, this.Dispatcher);
 			timer.Start();
 		}
-
-		private void Customers_Click(object sender, RoutedEventArgs e)
-		{
-			new displayCustomersList(ibl).Show();
-		}
+		
 	}
 }

@@ -5,8 +5,43 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="baseWindow" Height="450" Width="800" Icon="\icon\logo_company.ico">
-    <Grid>
-        
-    </Grid>
+        Title="base Window" Height="450" Width="800" Icon="\icon\logo_company.ico">
+	<Grid>
+		<Grid.Background>
+			<ImageBrush ImageSource="\picture\baseDrone.png" AlignmentY="Top" AlignmentX="Center" Stretch="Fill"/>
+		</Grid.Background>
+		<Grid x:Name="add_base_Grid" Visibility="Hidden">
+			<TextBox x:Name="IdBox" HorizontalAlignment="Left" Margin="170,90,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
+				 TextChanged="idBox_TextChanged" BorderBrush="Black" BorderThickness="1"/>
+			<TextBox x:Name="NameBox" HorizontalAlignment="Left" Margin="170,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="1.15,0.587"
+				 BorderBrush="Black" BorderThickness="1" TextChanged="nameBox_TextChanged"/>
+			<TextBox x:Name="ChargeBox" HorizontalAlignment="Left" Margin="200,190,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="55" RenderTransformOrigin="1.15,0.587"
+				 BorderBrush="Black" BorderThickness="1" TextChanged="chargeBox_TextChanged"/>
+			<TextBox x:Name="LongitudeBox" HorizontalAlignment="Left" Margin="170,245,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="1.15,0.587"
+				 BorderBrush="Black" BorderThickness="1" TextChanged="longitudeBox_TextChanged"/>
+			<TextBox x:Name="LatitudeBox" HorizontalAlignment="Left" Margin="170,280,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="1.15,0.587"
+				 BorderBrush="Black" BorderThickness="1" TextChanged="latitudeBox_TextChanged"/>
+			<TextBlock HorizontalAlignment="Left" Margin="56,90,0,0" Text="Enter ID:" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Comic Sans MS"/>
+			<TextBlock Name="Name" HorizontalAlignment="Left" Margin="45,140,0,0" Text="Enter Name:" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Comic Sans MS" />
+			<TextBlock HorizontalAlignment="Left" Margin="23,190,0,0" Text="How many charge-slots:" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Comic Sans MS"/>
+
+			<Button x:Name="addButton" Content="ADD" HorizontalAlignment="Left" Margin="170,0,0,70" VerticalAlignment="Bottom" Width="120" Height="35" Background="LawnGreen" Click="add_button_Click"
+					FontFamily="Comic Sans MS" FontWeight="DemiBold" IsEnabled="False"/>
+			<Button Content="Cancel" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Height="35" Background="OrangeRed" Click="close_Click" Margin="0,0,170,70" FontFamily="Comic Sans MS"  FontWeight="DemiBold"/>
+			<Label Content="Location:   Longitude -&#10; &#10;                 Latitude   -" HorizontalAlignment="Left" Margin="18,240,0,0" VerticalAlignment="Top" FontFamily="Comic Sans MS"/>
+		</Grid>
+		<Grid x:Name="action_base_Grid" Visibility="Hidden">
+			<TextBox x:Name="name_base" HorizontalAlignment="Right" Margin="0,80,230,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="name_base_TextChanged"/>
+			<TextBox x:Name="chargeSlots_base" HorizontalAlignment="Right" Margin="0,110,230,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="chargeSlots_base_TextChanged"/>
+			<Button x:Name="update_button" Content="Update" HorizontalAlignment="Right" Margin="0,95,160,0" VerticalAlignment="Top" Click="update_Click" IsEnabled="False" Background="MediumSeaGreen" FontFamily="Comic Sans MS"  FontWeight="DemiBold"/>
+			<Button x:Name="delete_base" Content="Delete Base-Station" Click="delete_Click" HorizontalAlignment="Right" Margin="0,0,170,120" VerticalAlignment="Bottom" Height="25" IsEnabled="False" Background="Orange" FontFamily="Comic Sans MS"  FontWeight="DemiBold"/>
+			<Button Content="Close" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Height="35" Background="OrangeRed" Click="close_Click" Margin="0,0,170,65" FontFamily="Comic Sans MS"  FontWeight="DemiBold"/>
+			<Label Name="Base_details" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" Height="310" Width="auto"/>
+			<Label Content="Update name:" HorizontalAlignment="Right" Margin="0,75,390,0" VerticalAlignment="Top" FontFamily="Comic Sans MS"/>
+			<Label Content="Update num of charge slots:" HorizontalAlignment="Right" Margin="0,105,360,0" VerticalAlignment="Top" FontFamily="Comic Sans MS"/>
+			<ListView x:Name="droneListView" HorizontalAlignment="Left" VerticalAlignment="Bottom" MouseDoubleClick="droneListView_MouseDoubleClick" Margin="230,0,0,30" Width="240" Height="150">
+			</ListView>
+
+		</Grid>
+	</Grid>
 </Window>

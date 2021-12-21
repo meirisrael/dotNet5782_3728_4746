@@ -55,18 +55,6 @@ namespace PL
 			BaseListView.ItemsSource = baseStations;
 		}
 
-		private void DroneListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-		{
-			new baseWindow().ShowDialog();
-		}
-
-		private void Close_Click(object sender, RoutedEventArgs e)=> Close();
-
-		private void BaseListViewGrouping_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-		{
-			new baseWindow().ShowDialog();
-		}
-
 		private void groupButton_Click(object sender, RoutedEventArgs e)
 		{
 			if (groupButton.Content.ToString() == "Group the List")
@@ -89,9 +77,26 @@ namespace PL
 			}
 		}
 
+		private void BaseListViewGrouping_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			if ((BO.BaseToList)BaseListView.SelectedItem == null)
+				MessageBox.Show("Choose a base-station !!", "ERROR");
+			else
+				new baseWindow(bl, (BO.BaseToList)BaseListViewGrouping.SelectedItem, BaseListView).ShowDialog();
+		}
 		private void BaseListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
-
+			if ((BO.BaseToList)BaseListView.SelectedItem == null)
+				MessageBox.Show("Choose a base-station !!", "ERROR");
+			else
+				new baseWindow(bl, (BO.BaseToList)BaseListView.SelectedItem, BaseListView).ShowDialog();
 		}
+
+		private void Add_Click(object sender, RoutedEventArgs e)
+		{
+			new baseWindow(bl, BaseListView).ShowDialog();
+		}
+
+		private void Close_Click(object sender, RoutedEventArgs e) => Close();
 	}
 }

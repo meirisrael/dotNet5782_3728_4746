@@ -26,15 +26,10 @@ namespace BO
 	//the range of longi or lati is not correct 
 	public class InvalidLoc : Exception
 	{
-		public InvalidLoc(string type_, string range) : base($"IBL-ERROR: {type_} NEED TO BE BEHTWEEN {range}\n") { }
-		public InvalidLoc(string ms, string type_, string range) : base($"{ms}\nIBL-ERROR: {type_} NEED TO BE BEHTWEEN {range}\n") { }
-	}
-
-	//the user not give a value for name.....
-	public class EmptyValue : Exception
-	{
-		public EmptyValue(string ms,string type_) : base($"{ms}\nDAL-ERORR: YOU MUST BE GIVE A VALUE FOR {type_}\n") { this._type = type_; }
-		public string _type;
+		public string type;
+		public string range;
+		public InvalidLoc(string type_, string range_) : base($"IBL-ERROR: {type_} NEED TO BE BEHTWEEN {range_}\n") { type = type_;range = range_; }
+		public InvalidLoc(string ms, string type_, string range_) : base($"{ms}\nIBL-ERROR: {type_} NEED TO BE BEHTWEEN {range_}\n") { type = type_; range = range_; }
 	}
 
 	// exceptions - problem with Categories

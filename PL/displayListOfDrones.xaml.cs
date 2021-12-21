@@ -126,33 +126,25 @@ namespace PL
 		/// <param name="e"></param>
 		private void DroneListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
-			try
+			if ((BO.DroneToList)DroneListView.SelectedItem == null)
+				MessageBox.Show("Choose a drone !!", "ERROR");
+			else
 			{
-				new droneWindow(bl,(BO.DroneToList)DroneListView.SelectedItem,DroneListView).ShowDialog();
+				new droneWindow(bl, (BO.DroneToList)DroneListView.SelectedItem, DroneListView).ShowDialog();
 				filterByStatus();
 				filterByWeight();
 			}
-			catch (Exception)
-			{
-
-				MessageBox.Show("Choose a drone !!", "ERROR");
-			}
-			
 		}
 		private void DroneListViewGrouping_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
-			try
+			if ((BO.DroneToList)DroneListViewGrouping.SelectedItem == null)
+				MessageBox.Show("Choose a drone !!", "ERROR");
+			else
 			{
 				new droneWindow(bl, (BO.DroneToList)DroneListViewGrouping.SelectedItem, DroneListView).ShowDialog();
 				filterByStatus();
 				filterByWeight();
 			}
-			catch (Exception)
-			{
-
-				MessageBox.Show("Choose a drone !!", "ERROR");
-			}
-
 		}
 
 		/// <summary>
