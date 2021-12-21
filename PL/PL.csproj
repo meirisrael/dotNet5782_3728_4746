@@ -12,6 +12,7 @@
     <None Remove="picture\background.png" />
     <None Remove="picture\baseDrone.png" />
     <None Remove="picture\baseDroneSnip.png" />
+    <None Remove="picture\customer.jpg" />
     <None Remove="picture\drone.png" />
     <None Remove="picture\logo_base.jpg" />
     <None Remove="picture\logo_customers.jpg" />
@@ -31,6 +32,7 @@
     <Resource Include="picture\background.png" />
     <Resource Include="picture\baseDrone.png" />
     <Resource Include="picture\baseDroneSnip.png" />
+    <Resource Include="picture\customer.jpg" />
     <Resource Include="picture\drone.png" />
     <Resource Include="picture\logo_base.jpg" />
     <Resource Include="picture\logo_customers.jpg" />

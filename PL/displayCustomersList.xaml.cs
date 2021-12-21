@@ -23,6 +23,7 @@ namespace PL
 	public partial class displayCustomersList : Window
 	{
 		private BlApi.IBL bl;
+		IEnumerable<BO.CustomerToList> customers = new List<BO.CustomerToList>();
 		//-------------------------------------------------------------- FUNC AND CONST VARIABL -------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
 		private const uint MF_BYCOMMAND = 0x00000000;
@@ -47,12 +48,17 @@ namespace PL
 			RemoveMenu(hMenu, SC_CLOSE, MF_BYCOMMAND);
 		}
 		//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-		public displayCustomersList(BlApi.IBL bl)
+		public displayCustomersList(BlApi.IBL ibl)
 		{
 			InitializeComponent();
+			bl = ibl;
+			customers = bl.GetListOfCustomers();
+			CustomerlistView.ItemsSource = customers;
 		}
 
-        private void Close_Click(object sender, RoutedEventArgs e)
+        private void Close_Click(object sender, RoutedEventArgs e) => Close();
+
+        private void CustomerlistView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
 
         }
