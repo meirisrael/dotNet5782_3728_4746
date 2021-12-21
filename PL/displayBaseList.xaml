@@ -8,7 +8,7 @@
 	<Grid>
 		<Button Content="ADD Base-Sation" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="green" Width="110" Height="25" Click="Add_Click" BorderBrush="Black" BorderThickness="1" FontFamily="Comic Sans MS"  FontWeight="DemiBold" Margin="0,0,80,80"/>
 
-		<ListView x:Name="BaseListView" MouseDoubleClick="BaseListView_MouseDoubleClick" FontFamily="David" FontWeight="DemiBold" Height="250" Width="323" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="36,49,0,0" Visibility="Visible">
+		<ListView x:Name="BaseListView" MouseDoubleClick="BaseListView_MouseDoubleClick" FontFamily="David" FontWeight="DemiBold" Height="250" Width="323" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="36,49,0,0" Visibility="Visible" >
 			<ListView.Background>
 				<ImageBrush ImageSource="\picture\baseDroneSnip.png" AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="Fill" />
 			</ListView.Background>

@@ -22,6 +22,8 @@ namespace PL
 	public partial class baseWindow : Window
 	{
 		private BlApi.IBL bl;
+		private ListView baseList;
+		private BO.BaseStation BaseStation;
 		//-------------------------------------------------------------- FUNC AND CONST VARIABL -------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
 		private const uint MF_BYCOMMAND = 0x00000000;
@@ -46,13 +48,38 @@ namespace PL
 			RemoveMenu(hMenu, SC_CLOSE, MF_BYCOMMAND);
 		}
 		//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-		public baseWindow(BlApi.IBL ibl)
+		/// <summary>
+		/// if the user want to open the action on base grid
+		/// </summary>
+		/// <param name="ibl"></param>
+		/// <param name="b"> the base station that the user choose</param>
+		/// <param name="list"> the list view </param>
+		public baseWindow(BlApi.IBL ibl, BO.BaseToList b,ListView list)
 		{
 			InitializeComponent();
 			bl = ibl;
+			baseList = list;
+			BaseStation = bl.GetBaseStation(b.Id);
+			action_base_Grid.Visibility = Visibility.Visible;
+			if (BaseStation.DroneInCharge.Count == 0)
+				delete_base.IsEnabled = true;
+			Base_details.Content =BaseStation.ToString();
+			droneListView.ItemsSource = BaseStation.DroneInCharge;
+		}
+		/// <summary>
+		/// uf the user want to add a new base station
+		/// </summary>
+		/// <param name="ibl"></param>
+		/// <param name="list"> the list view </param>
+		public baseWindow(BlApi.IBL ibl, ListView list)
+		{
+			InitializeComponent();
+			bl = ibl;
+			baseList = list;
+			add_base_Grid.Visibility = Visibility.Visible;
 		}
 
-		private void ChargeBox_TextChanged(object sender, TextChangedEventArgs e)
+		private void chargeBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			ChargeBox.Background = null;
 			if (LatitudeBox.Text != "" && LongitudeBox.Text != "" && NameBox.Text != "" && IdBox.Text != "" && ChargeBox.Text != "")
@@ -60,7 +87,7 @@ namespace PL
 			else addButton.IsEnabled = false;
 		}
 
-		private void LatitudeBox_TextChanged(object sender, TextChangedEventArgs e)
+		private void latitudeBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			LatitudeBox.Background = null;
 			if (ChargeBox.Text != "" && LongitudeBox.Text != "" && NameBox.Text != "" && IdBox.Text != "" && LatitudeBox.Text != "")
@@ -68,7 +95,7 @@ namespace PL
 			else addButton.IsEnabled = false;
 		}
 
-		private void LongitudeBox_TextChanged(object sender, TextChangedEventArgs e)
+		private void longitudeBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			LongitudeBox.Background = null;
 			if (LatitudeBox.Text != "" && ChargeBox.Text != "" && NameBox.Text != "" && IdBox.Text != "" && LongitudeBox.Text != "")
@@ -76,7 +103,7 @@ namespace PL
 			else addButton.IsEnabled = false;
 		}
 
-		private void NameBox_TextChanged(object sender, TextChangedEventArgs e)
+		private void nameBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			NameBox.Background = null;
 			if (LatitudeBox.Text != "" && LongitudeBox.Text != "" && ChargeBox.Text != "" && IdBox.Text != "" && NameBox.Text != "")
@@ -84,15 +111,13 @@ namespace PL
 			else addButton.IsEnabled = false;
 		}
 
-		private void IdBox_TextChanged(object sender, TextChangedEventArgs e)
+		private void idBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			IdBox.Background = null;
 			if (LatitudeBox.Text != "" && LongitudeBox.Text != "" && NameBox.Text != "" && ChargeBox.Text != "" && IdBox.Text != "")
 				addButton.IsEnabled = true;
 			else addButton.IsEnabled = false;
 		}
-
-		private void Cancel_Click(object sender, RoutedEventArgs e) => Close();
 
 		private void add_button_Click(object sender, RoutedEventArgs e)
 		{
@@ -115,7 +140,7 @@ namespace PL
 			if (!int.TryParse(name, out baseName))
 			{
 				MessageBox.Show("Base-Station Name most be an intenger", "ERROR");
-				IdBox.Background = Brushes.Salmon;
+				NameBox.Background = Brushes.Salmon;
 				return;
 			}
 			else baseName = int.Parse(name);
@@ -123,7 +148,7 @@ namespace PL
 			if (!int.TryParse(charge, out chargeSlots))
 			{
 				MessageBox.Show("Base-Station charge-slots most be an intenger", "ERROR");
-				IdBox.Background = Brushes.Salmon;
+				ChargeBox.Background = Brushes.Salmon;
 				return;
 			}
 			else chargeSlots = int.Parse(charge); 
@@ -131,7 +156,7 @@ namespace PL
 			if (!double.TryParse(longi, out longitude))
 			{
 				MessageBox.Show("Base-Station longitude most be an intenger", "ERROR");
-				IdBox.Background = Brushes.Salmon;
+				LongitudeBox.Background = Brushes.Salmon;
 				return;
 			}
 			else longitude = double.Parse(longi); 
@@ -139,7 +164,7 @@ namespace PL
 			if (!double.TryParse(lati, out latitude))
 			{
 				MessageBox.Show("Base-Station latitude most be an intenger", "ERROR");
-				IdBox.Background = Brushes.Salmon;
+				LatitudeBox.Background = Brushes.Salmon;
 				return;
 			}
 			else latitude = double.Parse(lati);
@@ -148,6 +173,7 @@ namespace PL
 			{
 				bl.AddBaseStation(baseId, baseName, chargeSlots, loc);
 				MessageBox.Show("Successfuly added", "Successfull");
+				baseList.ItemsSource = bl.GetListOfBaseStations(b => true);
 				Close();
 			}
 			catch (BO.InvalidId)//drone id
@@ -178,6 +204,76 @@ namespace PL
 				MessageBox.Show("ID alredy exist", "ERROR");
 				IdBox.Background = Brushes.Salmon;
 			}
+		}
+
+		private void name_base_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			name_base.Background = null;
+			if (name_base.Text != "") update_button.IsEnabled = true;
+			else update_button.IsEnabled = false;
+		}
+
+		private void chargeSlots_base_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			chargeSlots_base.Background = null;
+			if (chargeSlots_base.Text != "") update_button.IsEnabled = true;
+			else update_button.IsEnabled = false;
+		}
+
+		private void update_Click(object sender, RoutedEventArgs e)
+		{
+			string name = name_base.Text;
+			string charge = chargeSlots_base.Text;
+			int baseName, chargeSlots;
+			if (!int.TryParse(name, out baseName) && name != "")
+			{
+				MessageBox.Show("Base-Station Name most be an intenger", "ERROR");
+				name_base.Background = Brushes.Salmon;
+				return;
+			}
+
+			if (!int.TryParse(charge, out chargeSlots) && charge != "")
+			{
+				MessageBox.Show("Base-Station charge-slots most be an intenger", "ERROR");
+				chargeSlots_base.Background = Brushes.Salmon;
+				return;
+			}
+
+			try
+			{
+				bl.UpdateBaseStation(BaseStation.Id, name, charge);
+				MessageBox.Show("Successfuly Update", "Successfull");
+				Base_details.Content = bl.GetBaseStation(BaseStation.Id);
+				baseList.ItemsSource = bl.GetListOfBaseStations(d => true);
+				name_base.Text = "";
+				chargeSlots_base.Text = "";
+			}
+			catch (Exception)
+			{ }
+		}
+
+		private void close_Click(object sender, RoutedEventArgs e) => Close();
+
+		private void delete_Click(object sender, RoutedEventArgs e)
+		{
+			//bl.GetBaseStation(BaseStation.Id)
+		}
+
+		private void droneListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			try
+			{
+				BO.DroneToList d = new BO.DroneToList();
+				d.Id = BaseStation.DroneInCharge[droneListView.SelectedIndex].DroneId;
+				new droneWindow(bl, d, droneListView).ShowDialog();
+				BaseStation = bl.GetBaseStation(BaseStation.Id);
+				droneListView.ItemsSource = BaseStation.DroneInCharge;
+				Base_details.Content = BaseStation.ToString();
+				if (BaseStation.DroneInCharge.Count == 0)
+					delete_base.IsEnabled = true;
+			}
+			catch (Exception)
+			{ MessageBox.Show("Choose a drone !!", "ERROR"); }
 		}
 	}
 }

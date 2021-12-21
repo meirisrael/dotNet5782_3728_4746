@@ -160,6 +160,7 @@ namespace PL
 				drone = bl.GetDrone(drone.Id);
 				Drone_label.Content = drone.ToString();
 				listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
+				UpdateModelBox.Text = "";
 			}
 			catch (Exception ex)
 			{
