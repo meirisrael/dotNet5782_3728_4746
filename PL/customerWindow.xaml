@@ -28,7 +28,7 @@
             <Button x:Name="add_button" Content="ADD" Margin="356,317,356,0" Background="#FF6BE482" FontSize="18" FontFamily="Aharoni" Foreground="Black" IsEnabled="False" Click="add_Click" Grid.ColumnSpan="2" MaxWidth="88" MaxHeight="29" Height="61" VerticalAlignment="Top"/>
             <Button Content="Cancel" HorizontalAlignment="Right" Width="120" Background="OrangeRed" Click="Cancel_Click" Margin="0,0,127,37" FontFamily="Aharoni"  FontWeight="Bold" Grid.Column="1" FontSize="20" Height="35" VerticalAlignment="Bottom"/>
         </Grid>
-        <Grid x:Name="update_Grid" Visibility="Visible">
+        <Grid x:Name="update_Grid" Visibility="Hidden">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="400*"/>
                 <ColumnDefinition Width="400*"/>
@@ -44,7 +44,7 @@
             <Button x:Name="update_button" Content="Update" Margin="0,137,0,0" Click="update_button_Click" Background="#FFE2B91D" MaxWidth="77" MaxHeight="28" FontFamily="Aharoni" FontSize="18" IsEnabled="False" Height="28" VerticalAlignment="Top" HorizontalAlignment="Center" Width="76"/>
             <Button Content="Close" HorizontalAlignment="Right" Width="120" Background="OrangeRed" Click="Cancel_Click" Margin="0,32,80,0" FontFamily="Aharoni"  FontWeight="Bold" Grid.Column="1" FontSize="20" Height="35" VerticalAlignment="Top"/>
             <Button x:Name="delete_button" Content="Delete" Grid.Column="1" Margin="212,357,114,27" Click="delete_button_Click" FontFamily="Aharoni" FontSize="16" Background="Red" FontWeight="Normal" FontStyle="Normal" MaxWidth="66" MaxHeight="26.04"/>
-            <ListView x:Name="parcelListView" Margin="75,189,75,25" Background="#59000000" FontFamily="Arial Rounded MT Bold" Foreground="White" MaxWidth="250" MouseDoubleClick="parcelListView_MouseDoubleClick"/>
+            <ListView x:Name="parcelListView" Margin="75,189,75,15" Background="#59000000" FontFamily="Arial Rounded MT Bold" Foreground="White" MaxWidth="250" MouseDoubleClick="parcelListView_MouseDoubleClick"/>
         </Grid>
 
 
