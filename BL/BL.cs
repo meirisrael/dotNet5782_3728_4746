@@ -1075,11 +1075,11 @@ namespace BL
 		private BO.ParcelStatues getStatusOfParcel(DO.Parcel p)
 		{
 			BO.ParcelStatues statues = BO.ParcelStatues.Defined;
-			if (p.Scheduled != DateTime.MinValue)
+			if (p.Scheduled != null)
 				statues = BO.ParcelStatues.Associated;
-			if (p.PickedUp != DateTime.MinValue)
+			if (p.PickedUp != null)
 				statues = BO.ParcelStatues.Collected;
-			if (p.Delivered != DateTime.MinValue)
+			if (p.Delivered != null)
 				statues = BO.ParcelStatues.Delivered;
 
 			return statues;

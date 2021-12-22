@@ -113,5 +113,21 @@ namespace PL
 		{
 			new parcelWindow(bl,ParcelListView).ShowDialog();
 		}
+
+		private void ParcelListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			if ((BO.ParcelToList)ParcelListView.SelectedItem == null)
+				MessageBox.Show("Choose a drone !!", "ERROR");
+			else
+			{
+				new parcelWindow(bl, (BO.ParcelToList)ParcelListView.SelectedItem, ParcelListView).ShowDialog();
+				filterByStatus();
+			}
+		}
+
+		private void ParcelListViewGrouping_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			
+		}
 	}
 }
