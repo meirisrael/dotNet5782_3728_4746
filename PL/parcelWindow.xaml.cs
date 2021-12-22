@@ -65,6 +65,9 @@ namespace PL
 			parcel = bl.GetParcel(p.Id);
 			parcelDetails.Content = parcel.ToString();
 			shippingButton();
+			listOfParcels = list;
+			if (parcel.Delivered != null)
+				drone_Button.Visibility = Visibility.Hidden;
 		}
 		/// <summary>
 		/// 
@@ -75,6 +78,12 @@ namespace PL
 				parcelShip_Button.Content = "Collection confirmation";
 			else if (parcel.PickedUp != DateTime.MinValue)
 				parcelShip_Button.Content = "Confirmation of delivery";
+			if (parcel.Delivered != DateTime.MinValue)
+			{
+				parcelShip_Button.Visibility = Visibility.Hidden;
+				close_.HorizontalAlignment = HorizontalAlignment.Center;
+				close_.Margin = new(0,0,0,50);
+			}
 		}
 
 		private void add_button_Click(object sender, RoutedEventArgs e)
@@ -190,6 +199,30 @@ namespace PL
 			parcel.PickedUp = DateTime.Now;
 			parcelDetails.Content = parcel.ToString();
 			shippingButton();
+		}
+
+		private void senderDetails_Click(object sender, RoutedEventArgs e)
+		{
+			BO.CustomerToList customer = new BO.CustomerToList { Id = parcel.Sender.Id };
+			new customerWindow(bl, customer, listOfParcels).ShowDialog();
+			parcel = bl.GetParcel(parcel.Id);
+			parcelDetails.Content = parcel.ToString();
+		}
+
+		private void targetDetails_Click(object sender, RoutedEventArgs e)
+		{
+			BO.CustomerToList customer = new BO.CustomerToList { Id = parcel.Target.Id };
+			new customerWindow(bl, customer, listOfParcels).ShowDialog();
+			parcel = bl.GetParcel(parcel.Id);
+			parcelDetails.Content = parcel.ToString();
+		}
+
+		private void droneDetails_Click(object sender, RoutedEventArgs e)
+		{
+			BO.DroneToList drone = new BO.DroneToList { Id = parcel.Drone.Id };
+			new droneWindow(bl, drone, listOfParcels).ShowDialog();
+			parcel = bl.GetParcel(parcel.Id);
+			parcelDetails.Content = parcel.ToString();
 		}
 	}
 }
