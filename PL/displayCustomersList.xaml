@@ -14,7 +14,7 @@
             <RowDefinition Height="25*"/>
             <RowDefinition Height="192*"/>
         </Grid.RowDefinitions>
-        <ListView x:Name="CustomerlistView" Opacity="0.8" Grid.Row="1" FontFamily="Arial Rounded MT Bold" FontSize="14" MouseDoubleClick="CustomerlistView_MouseDoubleClick">
+        <ListView x:Name="CustomerlistView" Opacity="0.8" Grid.Row="1" FontFamily="Arial Rounded MT Bold" MouseDoubleClick="CustomerlistView_MouseDoubleClick">
             <ListView.Background>
                 <ImageBrush ImageSource="/picture/customer.jpg"/>
             </ListView.Background>
@@ -25,6 +25,7 @@
                 <ColumnDefinition Width="52*"/>
             </Grid.ColumnDefinitions>
             <Button x:Name="Close" Content="Close" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFFC1C1C" FontFamily="Comic Sans MS" FontWeight="Bold" Click="Close_Click" Foreground="Black" Width="56" FontStyle="Normal" Height="30"/>
+            <Button x:Name="Add" Content="New Customer" HorizontalAlignment="Left" Margin="44,0,0,0" VerticalAlignment="Center" Height="30" Width="108" Background="#FF6EDA45" FontFamily="Comic Sans MS" FontWeight="Bold" Click="Add_Click"/>
         </Grid>
     </Grid>
 </Window>

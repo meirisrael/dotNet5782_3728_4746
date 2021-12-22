@@ -60,7 +60,17 @@ namespace PL
 
         private void CustomerlistView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+			if ((BO.CustomerToList)CustomerlistView.SelectedItem == null)
+				MessageBox.Show("Choose a drone !!", "ERROR");
+			else
+			{
+				new customerWindow(bl, (BO.CustomerToList)CustomerlistView.SelectedItem, CustomerlistView).ShowDialog();
+			}
+		}
 
-        }
+        private void Add_Click(object sender, RoutedEventArgs e)
+        {
+			new customerWindow(bl, CustomerlistView).ShowDialog();
+		}
     }
 }
