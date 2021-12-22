@@ -22,6 +22,7 @@ namespace PL
 	public partial class displayParcelsList : Window
 	{
 		private BlApi.IBL bl;
+		private IEnumerable<BO.ParcelToList> parcels;
 		//-------------------------------------------------------------- FUNC AND CONST VARIABL -------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
 		private const uint MF_BYCOMMAND = 0x00000000;
@@ -49,8 +50,68 @@ namespace PL
 		public displayParcelsList(BlApi.IBL ibl)
 		{
 			InitializeComponent();
+			bl = ibl;
+			StatusSelector.ItemsSource = Enum.GetValues(typeof(BO.ParcelStatues));
+			ParcelListView.Visibility = Visibility.Visible;
+			parcels = bl.GetListOfParcels(p => true);
+			ParcelListView.ItemsSource = parcels;
 		}
 
 		private void Close_Click(object sender, RoutedEventArgs e) => Close();
+
+		private void groupButton_Click(object sender, RoutedEventArgs e)
+		{
+			if (groupButton.Content.ToString() == "Group the List")
+			{
+				ParcelListViewGrouping.ItemsSource = parcels;
+				CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListViewGrouping.ItemsSource);
+				PropertyGroupDescription groupDescription = new PropertyGroupDescription("NameSender");
+				view.GroupDescriptions.Add(groupDescription);
+				ParcelListViewGrouping.Visibility = Visibility.Visible;
+				ParcelListView.Visibility = Visibility.Hidden;
+				groupButton.Content = "Default display";
+				StatusSelector.IsEnabled = false;
+			}
+			else if (groupButton.Content.ToString() == "Default display")
+			{
+				ParcelListViewGrouping.Visibility = Visibility.Hidden;
+				ParcelListView.Visibility = Visibility.Visible;
+				groupButton.Content = "Group the List";
+				parcels = bl.GetListOfParcels(d => true);
+				ParcelListView.ItemsSource = parcels;
+				StatusSelector.IsEnabled = true;
+			}
+		}
+
+		private void StatusSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{filterByStatus();}
+		/// <summary>
+		/// filter the list view by the status of parcel
+		/// </summary>
+		private void filterByStatus()
+		{
+			if (StatusSelector.SelectedItem == null)
+				return;
+			else if (StatusSelector.SelectedItem != null)
+			{
+				parcels = bl.GetListOfParcels(p => true);
+				parcels = parcels.ToList().FindAll(p => p.Status == (BO.ParcelStatues)StatusSelector.SelectedItem);
+			}
+			else
+				parcels = bl.GetListOfParcels(d => true);
+			ParcelListView.ItemsSource = parcels;
+		}
+
+		private void Clear_Click(object sender, RoutedEventArgs e)
+		{
+			StatusSelector.SelectedItem = null;
+			parcels = bl.GetListOfParcels(p => true);
+			ParcelListView.ItemsSource = parcels;
+		}
+
+		private void Add_Click(object sender, RoutedEventArgs e)
+		{
+			new parcelWindow(bl,ParcelListView).ShowDialog();
+		}
 	}
 }

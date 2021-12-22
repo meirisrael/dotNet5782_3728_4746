@@ -455,6 +455,8 @@ namespace BL
 			catch (DO.IdNotExist ex)//customer-target or sender
 			{ throw new BO.IdNotExist(ex.Message, ex._type); }
 
+			catch (DO.SenderTargetIdEqual ex)
+			{ throw new BO.SenderTargetIdEqual(); }
 		}
 
 		//-----------------------------------------------------------------------------------------------------UPDATE - OPTION-------------------------------------------------------------------------------------------------------
@@ -1073,11 +1075,11 @@ namespace BL
 		private BO.ParcelStatues getStatusOfParcel(DO.Parcel p)
 		{
 			BO.ParcelStatues statues = BO.ParcelStatues.Defined;
-			if (p.Scheduled != null)
+			if (p.Scheduled != DateTime.MinValue)
 				statues = BO.ParcelStatues.Associated;
-			if (p.PickedUp != null)
+			if (p.PickedUp != DateTime.MinValue)
 				statues = BO.ParcelStatues.Collected;
-			if (p.Delivered != null)
+			if (p.Delivered != DateTime.MinValue)
 				statues = BO.ParcelStatues.Delivered;
 
 			return statues;
