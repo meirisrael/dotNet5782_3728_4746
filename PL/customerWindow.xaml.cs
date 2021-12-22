@@ -162,7 +162,8 @@ namespace PL
 			bl.UpdateCustomer(customer.Id, upNameBox.Text, upPhoneBox.Text);
 			MessageBox.Show("Successfuly updated");
 			listOfCustomers.ItemsSource = bl.GetListOfCustomers();
-			Close();
+			customer = bl.GetCustomer(customer.Id);
+			customerLabel.Content = customer.ToString();
 		}
 
         private void upNameBox_TextChanged(object sender, TextChangedEventArgs e)
