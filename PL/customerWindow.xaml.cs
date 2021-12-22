@@ -65,6 +65,8 @@ namespace PL
 			update_Grid.Visibility = Visibility.Visible;
 			customerLabel.Content = customer.ToString();
 			parcelListView.ItemsSource = bl.GetListOfParcels(p => (p.SenderId == c.Id || p.TargetId == c.Id));
+			if (c.ParcelDelivred != 0 || c.ParcelInTransit != 0 || c.ParcelRecived != 0 || c.ParcelSentNotDelivred != 0)
+				parcelListView.Visibility = Visibility.Visible;
 		}
 		//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		private void add_Click(object sender, RoutedEventArgs e)
@@ -164,6 +166,8 @@ namespace PL
 			listOfCustomers.ItemsSource = bl.GetListOfCustomers();
 			customer = bl.GetCustomer(customer.Id);
 			customerLabel.Content = customer.ToString();
+			upPhoneBox.Text = "";
+			upNameBox.Text = "";
 		}
 
         private void upNameBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -203,7 +207,7 @@ namespace PL
 				MessageBox.Show("Choose a parcel !!", "ERROR");
 			else
 			{
-				//new parcelWindow(bl, (BO.ParcelToList)parcelListView.SelectedItem, parcelListView).ShowDialog();
+				new parcelWindow(bl, (BO.ParcelToList)parcelListView.SelectedItem, parcelListView).ShowDialog();
 			}
 		}
     }
