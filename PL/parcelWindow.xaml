@@ -32,8 +32,8 @@
 			<Grid.Background>
 				<ImageBrush ImageSource="/picture/parcelDeliver.png" AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="Fill" />
 			</Grid.Background>
-			<Label Name="parcelDetails" HorizontalAlignment="Right" Margin="0,0,50,0" VerticalAlignment="Center" Height="370" Width="auto"  FontFamily="david" FontWeight="DemiBold" />
-			<Button x:Name="parcelShip_Button" HorizontalAlignment="Right" Margin="0,0,130,50" VerticalAlignment="Bottom" Width="auto" Height="35" Background="LawnGreen"/>
+			<Label Name="parcelDetails" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="370" Width="auto"  FontFamily="david" FontWeight="DemiBold" />
+			<Button x:Name="parcelShip_Button" Click="parcelShip_Button_Click" HorizontalAlignment="Right" Margin="0,0,130,50" VerticalAlignment="Bottom" Width="auto" Height="35" Background="LawnGreen"/>
 			<Button Content="Close" Click="Cancel_Click" HorizontalAlignment="Left" Margin="130,0,0,50" VerticalAlignment="Bottom" Width="120" Height="35" Background="OrangeRed"/>
 
 		</Grid>

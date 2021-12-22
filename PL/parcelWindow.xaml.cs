@@ -66,6 +66,9 @@ namespace PL
 			parcelDetails.Content = parcel.ToString();
 			shippingButton();
 		}
+		/// <summary>
+		/// 
+		/// </summary>
 		private void shippingButton()
 		{
 			if (parcel.Scheduled != DateTime.MinValue)
@@ -73,6 +76,7 @@ namespace PL
 			else if (parcel.PickedUp != DateTime.MinValue)
 				parcelShip_Button.Content = "Confirmation of delivery";
 		}
+
 		private void add_button_Click(object sender, RoutedEventArgs e)
 		{
 			string id = idBox.Text;
@@ -180,5 +184,12 @@ namespace PL
 		}
 
 		private void Cancel_Click(object sender, RoutedEventArgs e) => Close();
+
+		private void parcelShip_Button_Click(object sender, RoutedEventArgs e)
+		{
+			parcel.PickedUp = DateTime.Now;
+			parcelDetails.Content = parcel.ToString();
+			shippingButton();
+		}
 	}
 }
