@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="displayCustomersList" Height="450" Width="633">
+        Title="List of Customer's" Height="450" Width="633"  Icon="icon\logo_company.ico">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
