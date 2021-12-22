@@ -9,18 +9,21 @@ namespace BO
 	// exceptions - problem with id
 	public class IdExist : Exception//id of drone, base.... exist
 	{
-		public IdExist(string type_) : base($"IBL-ERROR: THIS {type_} ID ALREADY EXIST\n") { }
-		public IdExist(string ms, string type_) : base($"{ms}\nIBL-ERROR: THIS {type_} ID ALREADY EXIST\n") { }
+		public string type;
+		public IdExist(string type_) : base($"IBL-ERROR: THIS {type_} ID ALREADY EXIST\n") { type = type_; }
+		public IdExist(string ms, string type_) : base($"{ms}\nIBL-ERROR: THIS {type_} ID ALREADY EXIST\n") { type = type_; }
 	}
 	public class IdNotExist : Exception//id of drone, base.... not exist
 	{
-		public IdNotExist(string type_) : base($"IBL-ERROR: THIS {type_} ID DO NOT EXIST\n") { }
-		public IdNotExist(string ms, string type_) : base($"{ ms}\nIBL-ERROR: THIS {type_} ID DO NOT EXIST\n") { }
+		public string type;
+		public IdNotExist(string type_) : base($"IBL-ERROR: THIS {type_} ID DO NOT EXIST\n") { type = type_; }
+		public IdNotExist(string ms, string type_) : base($"{ ms}\nIBL-ERROR: THIS {type_} ID DO NOT EXIST\n") { type = type_; }
 	}
 	public class InvalidId : Exception// the id of base,drone.... is negative or equal to zero
 	{
-		public InvalidId(string type_) : base($"IBL-ERROR: ID OF {type_} TO BE BIGGER THAN ZERO\n") { }
-		public InvalidId(string ms, string type_) : base($"{ms}\nIBL-ERROR: ID OF {type_} TO BE BIGGER THAN ZERO\n") { }
+		public string type;
+		public InvalidId(string type_) : base($"IBL-ERROR: ID OF {type_} TO BE BIGGER THAN ZERO\n") { type = type_; }
+		public InvalidId(string ms, string type_) : base($"{ms}\nIBL-ERROR: ID OF {type_} TO BE BIGGER THAN ZERO\n") { type = type_; }
 	}
 
 	//the range of longi or lati is not correct 
@@ -106,6 +109,12 @@ namespace BO
 	public class AllParcelAssoc : Exception// if all parcel is alredy associated
 	{
 		public AllParcelAssoc() : base("IBL: ALL PARCEL ALREDY ASSOCIATED\n") { }
+	}
+
+	// exceptions specific for parcel
+	public class SenderTargetIdEqual : Exception
+	{
+		public SenderTargetIdEqual() : base("DAL-ERROR: THE TARGET AND THE SENDER IS THE SAME PERSON\n") { }
 	}
 
 	// exceptions for Weight that drone can't take

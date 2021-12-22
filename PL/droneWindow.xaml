@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="drone Window" Height="600" Width="850" Icon="icon\logo_company.ico">
+        Title="Drone Window" Height="600" Width="850" Icon="icon\logo_company.ico">
 	<Grid x:Name="MainGride">
 		<Grid x:Name="add_drone_Grid" Visibility="Hidden">
 			<Grid.Background>

@@ -284,7 +284,7 @@ namespace PL
 		/// <param name="e"></param>
 		private void UpdateModel_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			if (UpdateModelBox.Text != null)
+			if (UpdateModelBox.Text != "")
 				Update_button.IsEnabled = true;
 			else
 				Update_button.IsEnabled = false;

@@ -1,0 +1,35 @@
+﻿<Window x:Class="PL.parcelWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL"
+        mc:Ignorable="d"
+        Title="Parcel Window" Height="500" Width="800" Icon="icon\logo_company.ico">
+	<Grid>
+		<Grid x:Name="addParcel_grid" Visibility="Visible">
+			<Grid.Background>
+				<ImageBrush ImageSource="/picture/sentParcel.png" AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="Fill" />
+			</Grid.Background>
+			<Button Name="add_button" Content="ADD" Click="add_button_Click" HorizontalAlignment="Left" Margin="170,0,0,90" VerticalAlignment="Bottom" 
+					FontFamily="Comic Sans MS" FontWeight="DemiBold" Width="120" Height="35" Background="LawnGreen" IsEnabled="False"/>
+			<Button Content="Cancel" Click="Cancel_Click" HorizontalAlignment="Right" Margin="0,0,170,90" VerticalAlignment="Bottom" 
+					FontFamily="Comic Sans MS" FontWeight="DemiBold" Width="120" Height="35" Background="OrangeRed"/>
+			<Label Content="Enter Id of parcel" HorizontalAlignment="Left" Margin="50,80,0,0" VerticalAlignment="Top" FontFamily="Comic Sans MS"/>
+			<Label Content="Enter Id of sender" HorizontalAlignment="Left" Margin="50,130,0,0" VerticalAlignment="Top" FontFamily="Comic Sans MS"/>
+			<Label Content="Enter Id of target" HorizontalAlignment="Left" Margin="50,180,0,0" VerticalAlignment="Top" FontFamily="Comic Sans MS"/>
+			<Label Content="Choose weight of parcel" HorizontalAlignment="Left" Margin="50,230,0,0" VerticalAlignment="Top" FontFamily="Comic Sans MS"/>
+			<Label Content="Choose priority of parcel" HorizontalAlignment="Left" Margin="50,280,0,0" VerticalAlignment="Top" FontFamily="Comic Sans MS"/>
+			<TextBox x:Name="idBox" TextChanged="idBox_TextChanged" HorizontalAlignment="Left" Margin="220,85,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+			<TextBox x:Name="senderBox" TextChanged="senderBox_TextChanged" HorizontalAlignment="Left" Margin="220,135,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+			<TextBox x:Name="targetBox" TextChanged="targetBox_TextChanged" HorizontalAlignment="Left" Margin="220,185,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+			<ComboBox Name="weightSelector" SelectionChanged="weightSelector_SelectionChanged" HorizontalAlignment="Left" Margin="220,235,0,0" VerticalAlignment="Top" Width="120"/>
+			<ComboBox x:Name="prioritySelector" SelectionChanged="prioritySelector_SelectionChanged" HorizontalAlignment="Left" Margin="220,285,0,0" VerticalAlignment="Top" Width="120"/>
+
+		</Grid>
+
+		<Grid x:Name="actionPrcel_grid" Visibility="Hidden">
+
+		</Grid>
+	</Grid>
+</Window>

@@ -19,20 +19,14 @@
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions >
 			<ComboBox Name="StatusSelector" Grid.Column="1" VerticalAlignment="Top" Margin="0,10,36,0"	
-					 />
-			<ComboBox Name="WeightSelector" Grid.Column="1" VerticalAlignment="Bottom" Margin="0,0,36,10"
-					  />
-			<Button Content="Clear" Grid.Column="1" HorizontalAlignment="Right"  VerticalAlignment="Bottom" Margin="0,0,0,11"  Background="red" BorderBrush="Black" BorderThickness="1" FontFamily="Comic Sans MS" FontWeight="DemiBold"/>
-			<Button Content="Clear" Grid.Column="1" HorizontalAlignment="Right"  VerticalAlignment="Top" Margin="0,11,0,0"  Background="red" BorderBrush="Black" BorderThickness="1" FontFamily="Comic Sans MS"  FontWeight="DemiBold"/>
-			<Button Content="ADD Parcel" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Background="green" Width="133" Height="25"  BorderBrush="Black" BorderThickness="1" FontFamily="Comic Sans MS"  FontWeight="DemiBold"/>
+					 SelectionChanged="StatusSelector_SelectionChanged"/>
+			<Button Content="Clear" Grid.Column="1" Click="Clear_Click" HorizontalAlignment="Right"  VerticalAlignment="Top" Margin="0,11,0,0"  Background="red" BorderBrush="Black" BorderThickness="1" FontFamily="Comic Sans MS"  FontWeight="DemiBold"/>
+			<Button Content="ADD Parcel" Click="Add_Click" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Background="green" Width="133" Height="25"  BorderBrush="Black" BorderThickness="1" FontFamily="Comic Sans MS"  FontWeight="DemiBold"/>
 			<Button Content="Close" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Gold" Height="35" Width="35" Click="Close_Click" BorderBrush="Black" BorderThickness="1" FontFamily="Comic Sans MS"  FontWeight="DemiBold"/>
-			<TextBlock HorizontalAlignment="Left" Margin="94,13,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="96"/>
-			<TextBlock HorizontalAlignment="Left" Margin="94,40,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="106" RenderTransformOrigin="1.094,0.566"/>
 			<Label Content="Filter by Status " HorizontalAlignment="Left" VerticalAlignment="Top" Width="106" Height="35" Margin="91,6,0,0" FontFamily="Comic Sans MS"/>
-			<Label Content="Filter by Weight " HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="111" Height="28" Margin="91,0,0,8" FontFamily="Comic Sans MS" Grid.ColumnSpan="2"/>
-			<Button x:Name="groupButton" Content="Group the List" HorizontalAlignment="Left" Margin="2,0,0,0" VerticalAlignment="Center" Background="DarkMagenta" Height="25" BorderBrush="Black" BorderThickness="1" FontFamily="Comic Sans MS"  FontWeight="DemiBold"/>
+			<Button x:Name="groupButton" Content="Group the List" Click="groupButton_Click" HorizontalAlignment="Center" Margin="0,0,0,5" VerticalAlignment="Bottom" Background="DarkMagenta" Height="25" BorderBrush="Black" BorderThickness="1" FontFamily="Comic Sans MS"  FontWeight="DemiBold" Grid.Column="1"/>
 		</Grid>
-		<ListView x:Name="ParcelListView"  Grid.Row="1" FontFamily="David" FontWeight="DemiBold" Visibility="Visible" Foreground="WhiteSmoke" >
+		<ListView x:Name="ParcelListView"  Grid.Row="1" FontFamily="David" FontWeight="DemiBold" Visibility="Hidden" Foreground="WhiteSmoke">
 			<ListView.Background>
 				<ImageBrush ImageSource="\picture\background.png" AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="Fill" />
 			</ListView.Background>
@@ -72,7 +66,7 @@
 						</Style>
 					</GroupStyle.ContainerStyle>
 				</GroupStyle>
-			</ListView.GroupStyle>
+			</ListView.GroupStyle >
 			<ListView.Background>
 				<ImageBrush ImageSource="\picture\background.png" AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="Fill" />
 			</ListView.Background>
