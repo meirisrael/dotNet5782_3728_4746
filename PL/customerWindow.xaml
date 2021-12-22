@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="customerWindow" Height="450" Width="800" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.IsSharedSizeScope="True">
     <Grid x:Name="mainGrid">
-        <Grid x:Name="addCustomer_Grid" Visibility="Hidden" RenderTransformOrigin="0.505,0.505" Margin="0,0,-25,-15">
+        <Grid x:Name="addCustomer_Grid" Visibility="Visible" RenderTransformOrigin="0.505,0.505" Margin="0,0,-25,-15">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="400*"/>
                 <ColumnDefinition Width="400*"/>
@@ -20,11 +20,11 @@
             <TextBlock x:Name="Phone" Margin="0,170,22,0" TextWrapping="Wrap" Foreground="White" FontFamily="Arial" Text="Phone" FontSize="16" Height="18" VerticalAlignment="Top" HorizontalAlignment="Right" Width="60"/>
             <TextBlock x:Name="Longitude" Margin="0,217,16,0" TextWrapping="Wrap" Foreground="White" FontFamily="Arial" Text="Longitude" FontSize="16" Height="18" VerticalAlignment="Top" HorizontalAlignment="Right" Width="72"/>
             <TextBlock x:Name="Latitude" Margin="0,260,16,0" TextWrapping="Wrap" Foreground="White" FontFamily="Arial" Text="Latitude" FontSize="16" Height="18" VerticalAlignment="Top" HorizontalAlignment="Right" Width="72"/>
-            <TextBox x:Name="LongitudeBox" Grid.Column="1" Margin="34,220,0,0" Text="" TextWrapping="Wrap" HorizontalAlignment="Left" Width="120" Height="18" VerticalAlignment="Top"/>
+            <TextBox x:Name="LongitudeBox" Grid.Column="1" Margin="34,220,0,0" Text="" TextWrapping="Wrap" HorizontalAlignment="Left" Width="120" Height="18" VerticalAlignment="Top" TextChanged="LongitudeBox_TextChanged"/>
             <TextBox x:Name="PhoneBox" Grid.Column="1" Margin="34,173,0,0" Text="" TextWrapping="Wrap" TextChanged="PhoneBox_TextChanged" HorizontalAlignment="Left" Width="120" Height="18" VerticalAlignment="Top"/>
             <TextBox x:Name="NameBox" Grid.Column="1" Margin="34,129,0,0" Text="" TextWrapping="Wrap" TextChanged="NameBox_TextChanged" Height="18" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120"/>
             <TextBox x:Name="IdBox" Grid.Column="1" Margin="34,81,0,0" Text="" TextWrapping="Wrap" TextChanged="IdBox_TextChanged" Height="18" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120"/>
-            <TextBox x:Name="LatitudeBox" Grid.Column="1" Margin="34,263,0,0" Text="" TextWrapping="Wrap" HorizontalAlignment="Left" Width="120" Height="18" VerticalAlignment="Top"/>
+            <TextBox x:Name="LatitudeBox" Grid.Column="1" Margin="34,263,0,0" Text="" TextWrapping="Wrap" HorizontalAlignment="Left" Width="120" Height="18" VerticalAlignment="Top" TextChanged="LatitudeBox_TextChanged"/>
             <Button x:Name="add_button" Content="ADD" Margin="356,317,356,0" Background="#FF6BE482" FontSize="18" FontFamily="Aharoni" Foreground="Black" IsEnabled="False" Click="add_Click" Grid.ColumnSpan="2" MaxWidth="88" MaxHeight="29" Height="61" VerticalAlignment="Top"/>
             <Button Content="Cancel" HorizontalAlignment="Right" Width="120" Background="OrangeRed" Click="Cancel_Click" Margin="0,0,127,37" FontFamily="Aharoni"  FontWeight="Bold" Grid.Column="1" FontSize="20" Height="35" VerticalAlignment="Bottom"/>
         </Grid>
