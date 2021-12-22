@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Parcel Window" Height="500" Width="800" Icon="icon\logo_company.ico">
 	<Grid>
-		<Grid x:Name="addParcel_grid" Visibility="Visible">
+		<Grid x:Name="addParcel_grid" Visibility="Hidden">
 			<Grid.Background>
 				<ImageBrush ImageSource="/picture/sentParcel.png" AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="Fill" />
 			</Grid.Background>
@@ -28,7 +28,13 @@
 
 		</Grid>
 
-		<Grid x:Name="actionPrcel_grid" Visibility="Hidden">
+		<Grid x:Name="actionPrcel_grid" Visibility="Visible">
+			<Grid.Background>
+				<ImageBrush ImageSource="/picture/parcelDeliver.png" AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="Fill" />
+			</Grid.Background>
+			<Label Name="parcelDetails" HorizontalAlignment="Right" Margin="0,0,50,0" VerticalAlignment="Center" Height="370" Width="auto"  FontFamily="david" FontWeight="DemiBold" />
+			<Button x:Name="parcelShip_Button" HorizontalAlignment="Right" Margin="0,0,130,50" VerticalAlignment="Bottom" Width="auto" Height="35" Background="LawnGreen"/>
+			<Button Content="Close" Click="Cancel_Click" HorizontalAlignment="Left" Margin="130,0,0,50" VerticalAlignment="Bottom" Width="120" Height="35" Background="OrangeRed"/>
 
 		</Grid>
 	</Grid>

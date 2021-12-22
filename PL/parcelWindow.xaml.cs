@@ -22,7 +22,7 @@ namespace PL
 	public partial class parcelWindow : Window
 	{
 		private BlApi.IBL bl;
-		private BO.Drone parcel;
+		private BO.Parcel parcel;
 		private ListView listOfParcels;
 		//-------------------------------------------------------------- FUNC AND CONST VARIABL -------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
@@ -52,11 +52,27 @@ namespace PL
 		{
 			InitializeComponent();
 			bl = ibl;
+			addParcel_grid.Visibility = Visibility.Visible;
 			weightSelector.ItemsSource = Enum.GetValues(typeof(BO.WeightCategories));
 			prioritySelector.ItemsSource = Enum.GetValues(typeof(BO.Priorities));
 			listOfParcels = list;
 		}
-
+		public parcelWindow(BlApi.IBL ibl, BO.ParcelToList p,ListView list)
+		{
+			InitializeComponent();
+			actionPrcel_grid.Visibility = Visibility.Visible;
+			bl = ibl;
+			parcel = bl.GetParcel(p.Id);
+			parcelDetails.Content = parcel.ToString();
+			shippingButton();
+		}
+		private void shippingButton()
+		{
+			if (parcel.Scheduled != DateTime.MinValue)
+				parcelShip_Button.Content = "Collection confirmation";
+			else if (parcel.PickedUp != DateTime.MinValue)
+				parcelShip_Button.Content = "Confirmation of delivery";
+		}
 		private void add_button_Click(object sender, RoutedEventArgs e)
 		{
 			string id = idBox.Text;
