@@ -22,7 +22,6 @@ namespace PL
 	public partial class baseWindow : Window
 	{
 		private BlApi.IBL bl;
-		private ListView baseList;
 		private BO.BaseStation BaseStation;
 		//-------------------------------------------------------------- FUNC AND CONST VARIABL -------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
@@ -54,71 +53,38 @@ namespace PL
 		/// <param name="ibl"></param>
 		/// <param name="b"> the base station that the user choose</param>
 		/// <param name="list"> the list view </param>
-		public baseWindow(BlApi.IBL ibl, BO.BaseToList b,ListView list)
+		public baseWindow(BlApi.IBL ibl, BO.BaseToList b)
 		{
 			InitializeComponent();
 			bl = ibl;
-			baseList = list;
 			BaseStation = bl.GetBaseStation(b.Id);
 			action_base_Grid.Visibility = Visibility.Visible;
 			if (BaseStation.DroneInCharge.Count == 0)
 				delete_base.IsEnabled = true;
 			Base_details.Content =BaseStation.ToString();
-			droneListView.ItemsSource = BaseStation.DroneInCharge;
+			if (BaseStation.DroneInCharge.Count != 0)
+			{
+				droneListView.ItemsSource = BaseStation.DroneInCharge;
+				droneListView.Visibility = Visibility.Visible;
+			}
 		}
 		/// <summary>
 		/// uf the user want to add a new base station
 		/// </summary>
 		/// <param name="ibl"></param>
 		/// <param name="list"> the list view </param>
-		public baseWindow(BlApi.IBL ibl, ListView list)
+		public baseWindow(BlApi.IBL ibl)
 		{
 			InitializeComponent();
 			bl = ibl;
-			baseList = list;
 			add_base_Grid.Visibility = Visibility.Visible;
 		}
 
-		private void chargeBox_TextChanged(object sender, TextChangedEventArgs e)
-		{
-			ChargeBox.Background = null;
-			if (LatitudeBox.Text != "" && LongitudeBox.Text != "" && NameBox.Text != "" && IdBox.Text != "" && ChargeBox.Text != "")
-				addButton.IsEnabled = true;
-			else addButton.IsEnabled = false;
-		}
-
-		private void latitudeBox_TextChanged(object sender, TextChangedEventArgs e)
-		{
-			LatitudeBox.Background = null;
-			if (ChargeBox.Text != "" && LongitudeBox.Text != "" && NameBox.Text != "" && IdBox.Text != "" && LatitudeBox.Text != "")
-				addButton.IsEnabled = true;
-			else addButton.IsEnabled = false;
-		}
-
-		private void longitudeBox_TextChanged(object sender, TextChangedEventArgs e)
-		{
-			LongitudeBox.Background = null;
-			if (LatitudeBox.Text != "" && ChargeBox.Text != "" && NameBox.Text != "" && IdBox.Text != "" && LongitudeBox.Text != "")
-				addButton.IsEnabled = true;
-			else addButton.IsEnabled = false;
-		}
-
-		private void nameBox_TextChanged(object sender, TextChangedEventArgs e)
-		{
-			NameBox.Background = null;
-			if (LatitudeBox.Text != "" && LongitudeBox.Text != "" && ChargeBox.Text != "" && IdBox.Text != "" && NameBox.Text != "")
-				addButton.IsEnabled = true;
-			else addButton.IsEnabled = false;
-		}
-
-		private void idBox_TextChanged(object sender, TextChangedEventArgs e)
-		{
-			IdBox.Background = null;
-			if (LatitudeBox.Text != "" && LongitudeBox.Text != "" && NameBox.Text != "" && ChargeBox.Text != "" && IdBox.Text != "")
-				addButton.IsEnabled = true;
-			else addButton.IsEnabled = false;
-		}
-
+		/// <summary>
+		/// after the user enter all data for add an new base station he can click and add the new base station
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"> click </param>
 		private void add_button_Click(object sender, RoutedEventArgs e)
 		{
 			string id = IdBox.Text;
@@ -173,7 +139,6 @@ namespace PL
 			{
 				bl.AddBaseStation(baseId, baseName, chargeSlots, loc);
 				MessageBox.Show("Successfuly added", "Successfull");
-				baseList.ItemsSource = bl.GetListOfBaseStations(b => true);
 				Close();
 			}
 			catch (BO.InvalidId)//drone id
@@ -205,21 +170,49 @@ namespace PL
 				IdBox.Background = Brushes.Salmon;
 			}
 		}
-
-		private void name_base_TextChanged(object sender, TextChangedEventArgs e)
+		/// <summary>
+		/// if the user want to see or update data on the drone that chrging in this base station 
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"> click </param>
+		private void droneListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
-			name_base.Background = null;
-			if (name_base.Text != "") update_button.IsEnabled = true;
-			else update_button.IsEnabled = false;
+			try
+			{
+				BO.DroneToList d = new BO.DroneToList();
+				d.Id = BaseStation.DroneInCharge[droneListView.SelectedIndex].DroneId;
+				new droneWindow(bl, d).ShowDialog();
+				BaseStation = bl.GetBaseStation(BaseStation.Id);
+				if (BaseStation.DroneInCharge.Count != 0)
+				{
+					droneListView.ItemsSource = BaseStation.DroneInCharge;
+					droneListView.Visibility = Visibility.Visible;
+				}
+				else
+					droneListView.Visibility = Visibility.Hidden;
+				Base_details.Content = BaseStation.ToString();
+				if (BaseStation.DroneInCharge.Count == 0)
+					delete_base.IsEnabled = true;
+			}
+			catch (Exception)
+			{ MessageBox.Show("Choose a drone !!", "ERROR"); }
+		}
+		/// <summary>
+		/// only if no one drone in the base station the user can delete it
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void delete_Click(object sender, RoutedEventArgs e)
+		{
+			MessageBoxResult result = MessageBox.Show("Are you sure to delete", "Deleting Customer", MessageBoxButton.YesNo);
+			//bl.GetBaseStation(BaseStation.Id)
 		}
 
-		private void chargeSlots_base_TextChanged(object sender, TextChangedEventArgs e)
-		{
-			chargeSlots_base.Background = null;
-			if (chargeSlots_base.Text != "") update_button.IsEnabled = true;
-			else update_button.IsEnabled = false;
-		}
-
+		/// <summary>
+		/// if the user want to upadate name or num of charge slots for this base station
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void update_Click(object sender, RoutedEventArgs e)
 		{
 			string name = name_base.Text;
@@ -244,36 +237,101 @@ namespace PL
 				bl.UpdateBaseStation(BaseStation.Id, name, charge);
 				MessageBox.Show("Successfuly Update", "Successfull");
 				Base_details.Content = bl.GetBaseStation(BaseStation.Id);
-				baseList.ItemsSource = bl.GetListOfBaseStations(d => true);
 				name_base.Text = "";
 				chargeSlots_base.Text = "";
 			}
 			catch (Exception)
 			{ }
 		}
+		/// <summary>
+		/// user enter a new data in the box
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"> click </param>
+		private void chargeBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			ChargeBox.Background = Brushes.LightGreen;
+			if (LatitudeBox.Text != "" && LongitudeBox.Text != "" && NameBox.Text != "" && IdBox.Text != "" && ChargeBox.Text != "")
+				addButton.IsEnabled = true;
+			else addButton.IsEnabled = false;
+		}
+		/// <summary>
+		/// user enter a new data in the box
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"> warp </param>
+		private void latitudeBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			LatitudeBox.Background = Brushes.LightGreen;
+			if (ChargeBox.Text != "" && LongitudeBox.Text != "" && NameBox.Text != "" && IdBox.Text != "" && LatitudeBox.Text != "")
+				addButton.IsEnabled = true;
+			else addButton.IsEnabled = false;
+		}
+		/// <summary>
+		/// user enter a new data in the box
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"> warp </param>
+		private void longitudeBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			LongitudeBox.Background = Brushes.LightGreen;
+			if (LatitudeBox.Text != "" && ChargeBox.Text != "" && NameBox.Text != "" && IdBox.Text != "" && LongitudeBox.Text != "")
+				addButton.IsEnabled = true;
+			else addButton.IsEnabled = false;
+		}
+		/// <summary>
+		/// user enter a new data in the box
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"> warp </param>
+		private void nameBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			NameBox.Background = Brushes.LightGreen;
+			if (LatitudeBox.Text != "" && LongitudeBox.Text != "" && ChargeBox.Text != "" && IdBox.Text != "" && NameBox.Text != "")
+				addButton.IsEnabled = true;
+			else addButton.IsEnabled = false;
+		}
+		/// <summary>
+		/// user enter a new data in the box
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"> warp </param>
+		private void idBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			IdBox.Background = Brushes.LightGreen;
+			if (LatitudeBox.Text != "" && LongitudeBox.Text != "" && NameBox.Text != "" && ChargeBox.Text != "" && IdBox.Text != "")
+				addButton.IsEnabled = true;
+			else addButton.IsEnabled = false;
+		}
+		/// <summary>
+		/// user enter a new data in the box
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"> warp </param>
+		private void name_base_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			name_base.Background = Brushes.LightGreen;
+			if (name_base.Text != "") update_button.IsEnabled = true;
+			else update_button.IsEnabled = false;
+		}
+		/// <summary>
+		/// user enter a new data in the box
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e" warp ></param>
+		private void chargeSlots_base_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			chargeSlots_base.Background = Brushes.LightGreen;
+			if (chargeSlots_base.Text != "") update_button.IsEnabled = true;
+			else update_button.IsEnabled = false;
+		}
 
+		/// <summary>
+		/// if the user want to close or cancel the page 
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"> click </param>
 		private void close_Click(object sender, RoutedEventArgs e) => Close();
 
-		private void delete_Click(object sender, RoutedEventArgs e)
-		{
-			//bl.GetBaseStation(BaseStation.Id)
-		}
-
-		private void droneListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-		{
-			try
-			{
-				BO.DroneToList d = new BO.DroneToList();
-				d.Id = BaseStation.DroneInCharge[droneListView.SelectedIndex].DroneId;
-				new droneWindow(bl, d, droneListView).ShowDialog();
-				BaseStation = bl.GetBaseStation(BaseStation.Id);
-				droneListView.ItemsSource = BaseStation.DroneInCharge;
-				Base_details.Content = BaseStation.ToString();
-				if (BaseStation.DroneInCharge.Count == 0)
-					delete_base.IsEnabled = true;
-			}
-			catch (Exception)
-			{ MessageBox.Show("Choose a drone !!", "ERROR"); }
-		}
 	}
 }

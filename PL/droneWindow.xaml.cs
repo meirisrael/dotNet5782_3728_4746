@@ -23,7 +23,6 @@ namespace PL
 	{
 		private BlApi.IBL bl;
 		private BO.Drone drone;
-		private ListView listOfDrone;
 		//------------------------------------------------------------------ FUNC AND CONST VARIABL --------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
 		private const uint MF_BYCOMMAND = 0x00000000;
@@ -53,10 +52,9 @@ namespace PL
 		/// if the ctor get only one param so need do open the add window
 		/// </summary>
 		/// <param name="ibl"></param>
-		public droneWindow(BlApi.IBL ibl,ListView list)
+		public droneWindow(BlApi.IBL ibl)
 		{
 			bl = ibl;
-			listOfDrone = list;
 			InitializeComponent();
 			add_drone_Grid.Visibility = Visibility.Visible;
 			WeightSelector.ItemsSource = Enum.GetValues(typeof(BO.WeightCategories));
@@ -73,16 +71,17 @@ namespace PL
 		/// </summary>
 		/// <param name="ibl"></param>
 		/// <param name="d"></param>
-		public droneWindow(BlApi.IBL ibl, BO.DroneToList d, ListView list)
+		public droneWindow(BlApi.IBL ibl, BO.DroneToList d)
 		{
 			bl = ibl;
-			listOfDrone = list;
 			InitializeComponent();
 			action_drone_Grid.Visibility = Visibility.Visible;
 			drone = bl.GetDrone(d.Id);
 			Drone_label.Content = drone.ToString();
 			charging_button();
 			shipping_button();
+			if (drone.InTransit.Id != 0)
+				parcelDetails_Button.Visibility = Visibility.Visible;
 		}
 		//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -129,7 +128,6 @@ namespace PL
 			{
 				bl.AddDrone(droneId, ModelBox.Text, (BO.WeightCategories)WeightSelector.SelectedItem, firstBase);
 				MessageBox.Show("Successfuly added", "Successfull");
-				listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
 				Close();
 			}
 			catch (BO.InvalidId)//drone id
@@ -159,7 +157,6 @@ namespace PL
 				MessageBox.Show("Successfuly update", "Successfull");
 				drone = bl.GetDrone(drone.Id);
 				Drone_label.Content = drone.ToString();
-				listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
 				UpdateModelBox.Text = "";
 			}
 			catch (Exception ex)
@@ -200,7 +197,6 @@ namespace PL
 			Drone_label.Content = drone.ToString();
 			charging_button();
 			shipping_button();
-			listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
 		}
 		/// <summary>
 		/// if the user press the button for shipping need to affect/collect/delive the parcel
@@ -235,7 +231,7 @@ namespace PL
 				{
 					bl.ParcelDeliverd(drone.Id);
 					MessageBox.Show("Successfuly deliverd", "Successfull");
-					charging_button();
+					parcelDetails_Button.Visibility = Visibility.Hidden;
 				}
 				catch (Exception)
 				{ MessageBox.Show("Parcel can't be deliverd", "ERROR"); }
@@ -243,8 +239,18 @@ namespace PL
 			else { }
 			drone = bl.GetDrone(drone.Id);
 			Drone_label.Content = drone.ToString();
+			charging_button();
 			shipping_button();
-			listOfDrone.ItemsSource = bl.GetListOfDrones(d => true);
+		}
+		/// <summary>
+		/// if the user want to see or update parcel details
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"> click </param>
+		private void parcelDetails_Click(object sender, RoutedEventArgs e)
+		{
+			BO.ParcelToList p = new BO.ParcelToList { Id = drone.InTransit.Id };
+			new parcelWindow(bl,p).ShowDialog();
 		}
 
 		/// <summary>
@@ -257,7 +263,7 @@ namespace PL
 			else if (drone.Status == BO.DroneStatuses.Maintenance)
 				charge_button.Content = "Release drone from charge";
 			else
-			{ charge_button.Content = "Can't charging now"; charge_button.FontWeight = new FontWeight(); }
+				charge_button.Content = "Can't charging now";
 		}
 		/// <summary>
 		/// choose which button visible to the user
@@ -317,16 +323,10 @@ namespace PL
 		}
 
 		/// <summary>
-		/// if the user press the button "close" so close the window
+		/// if the user press the button "close" or "cancel" so close the window
 		/// </summary>
 		/// <param name="sender"></param>
-		/// <param name="e"></param>
+		/// <param name="e"> click </param>
 		private void Close_Click(object sender, RoutedEventArgs e) => Close();
-		/// <summary>
-		/// if the user press the button "cancel" so close the window
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void Cancel_Click(object sender, RoutedEventArgs e) => Close();
 	}
 }

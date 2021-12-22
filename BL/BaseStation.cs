@@ -18,7 +18,7 @@ namespace BO
 		public override string ToString()
 		{
 			string charge="none";
-			if (this.DroneInCharge != null)
+			if (this.DroneInCharge.Count != 0)
 			{
 				charge = "";
 				foreach (DroneCharge item in DroneInCharge)

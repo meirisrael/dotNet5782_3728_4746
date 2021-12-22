@@ -111,7 +111,7 @@ namespace PL
 
 		private void Add_Click(object sender, RoutedEventArgs e)
 		{
-			new parcelWindow(bl,ParcelListView).ShowDialog();
+			new parcelWindow(bl).ShowDialog();
 		}
 
 		private void ParcelListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -120,7 +120,7 @@ namespace PL
 				MessageBox.Show("Choose a drone !!", "ERROR");
 			else
 			{
-				new parcelWindow(bl, (BO.ParcelToList)ParcelListView.SelectedItem, ParcelListView).ShowDialog();
+				new parcelWindow(bl, (BO.ParcelToList)ParcelListView.SelectedItem).ShowDialog();
 				filterByStatus();
 			}
 		}

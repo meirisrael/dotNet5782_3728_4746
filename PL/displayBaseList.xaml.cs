@@ -47,6 +47,10 @@ namespace PL
 			RemoveMenu(hMenu, SC_CLOSE, MF_BYCOMMAND);
 		}
 		//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		/// <summary>
+		/// ctor
+		/// </summary>
+		/// <param name="ibl"></param>
 		public displayBaseList(BlApi.IBL ibl)
 		{
 			InitializeComponent();
@@ -55,6 +59,11 @@ namespace PL
 			BaseListView.ItemsSource = baseStations;
 		}
 
+		/// <summary>
+		/// if the user want to group the list according to avalible charging stations
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void groupButton_Click(object sender, RoutedEventArgs e)
 		{
 			if (groupButton.Content.ToString() == "Group the List")
@@ -76,27 +85,58 @@ namespace PL
 				BaseListViewGrouping.ItemsSource = baseStations;
 			}
 		}
+		/// <summary>
+		/// if the user want to add an new base station
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"> click </param>
+		private void Add_Click(object sender, RoutedEventArgs e)
+		{
+			new baseWindow(bl).ShowDialog();
+			baseStations = bl.GetListOfBaseStations(b => true);
+			BaseListView.ItemsSource = baseStations;
+		}
 
+		/// <summary>
+		/// if the user want to update data on specific base station
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"> doubul click </param>
 		private void BaseListViewGrouping_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
-			if ((BO.BaseToList)BaseListView.SelectedItem == null)
+			if ((BO.BaseToList)BaseListViewGrouping.SelectedItem == null)
 				MessageBox.Show("Choose a base-station !!", "ERROR");
 			else
-				new baseWindow(bl, (BO.BaseToList)BaseListViewGrouping.SelectedItem, BaseListView).ShowDialog();
+			{
+				new baseWindow(bl, (BO.BaseToList)BaseListViewGrouping.SelectedItem).ShowDialog();
+				baseStations = bl.GetListOfBaseStations(b => true);
+				BaseListViewGrouping.ItemsSource = baseStations;
+				CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(BaseListViewGrouping.ItemsSource);
+				PropertyGroupDescription groupDescription = new PropertyGroupDescription("ChargeSlots");
+			}
 		}
+		/// <summary>
+		/// if the user want to update data on specific base station
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"> double click </param>
 		private void BaseListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
 			if ((BO.BaseToList)BaseListView.SelectedItem == null)
 				MessageBox.Show("Choose a base-station !!", "ERROR");
 			else
-				new baseWindow(bl, (BO.BaseToList)BaseListView.SelectedItem, BaseListView).ShowDialog();
+			{
+				new baseWindow(bl, (BO.BaseToList)BaseListView.SelectedItem).ShowDialog();
+				baseStations = bl.GetListOfBaseStations(b => true);
+				BaseListView.ItemsSource = baseStations;
+			}
 		}
 
-		private void Add_Click(object sender, RoutedEventArgs e)
-		{
-			new baseWindow(bl, BaseListView).ShowDialog();
-		}
-
+		/// <summary>
+		/// if the user want to close or cancel the page
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"> click </param>
 		private void Close_Click(object sender, RoutedEventArgs e) => Close();
 	}
 }

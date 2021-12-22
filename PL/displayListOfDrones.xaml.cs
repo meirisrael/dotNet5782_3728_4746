@@ -106,7 +106,37 @@ namespace PL
 				drones = bl.GetListOfDrones(d => d.Status == (BO.DroneStatuses)StatusSelector.SelectedItem);
 			DroneListView.ItemsSource = drones;
 		}
-		
+		/// <summary>
+		/// groop all drone by her status
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void group_Click(object sender, RoutedEventArgs e)
+		{
+			if (groupButton.Content.ToString() == "Group the List")
+			{
+				DroneListViewGrouping.ItemsSource = drones;
+				CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(DroneListViewGrouping.ItemsSource);
+				PropertyGroupDescription groupDescription = new PropertyGroupDescription("Status");
+				view.GroupDescriptions.Add(groupDescription);
+				DroneListViewGrouping.Visibility = Visibility.Visible;
+				DroneListView.Visibility = Visibility.Hidden;
+				groupButton.Content = "Default display";
+				StatusSelector.IsEnabled = false;
+				WeightSelector.IsEnabled = false;
+			}
+			else if (groupButton.Content.ToString() == "Default display")
+			{
+				DroneListViewGrouping.Visibility = Visibility.Hidden;
+				DroneListView.Visibility = Visibility.Visible;
+				groupButton.Content = "Group the List";
+				drones = bl.GetListOfDrones(d => true);
+				DroneListView.ItemsSource = drones;
+				StatusSelector.IsEnabled = true;
+				WeightSelector.IsEnabled = true;
+			}
+		}
+
 
 		/// <summary>
 		/// if the user press the button "add drone" so open a new window for add
@@ -115,7 +145,9 @@ namespace PL
 		/// <param name="e"></param>
 		private void Add_Click(object sender, RoutedEventArgs e)
 		{
-			new droneWindow(bl, DroneListView).ShowDialog();
+			new droneWindow(bl).ShowDialog();
+			drones = bl.GetListOfDrones(d => true);
+			DroneListView.ItemsSource = drones;
 			filterByStatus();
 			filterByWeight();
 		}
@@ -130,7 +162,9 @@ namespace PL
 				MessageBox.Show("Choose a drone !!", "ERROR");
 			else
 			{
-				new droneWindow(bl, (BO.DroneToList)DroneListView.SelectedItem, DroneListView).ShowDialog();
+				new droneWindow(bl, (BO.DroneToList)DroneListView.SelectedItem).ShowDialog();
+				drones = bl.GetListOfDrones(d => true);
+				DroneListView.ItemsSource = drones;
 				filterByStatus();
 				filterByWeight();
 			}
@@ -141,9 +175,14 @@ namespace PL
 				MessageBox.Show("Choose a drone !!", "ERROR");
 			else
 			{
-				new droneWindow(bl, (BO.DroneToList)DroneListViewGrouping.SelectedItem, DroneListView).ShowDialog();
+				new droneWindow(bl, (BO.DroneToList)DroneListViewGrouping.SelectedItem).ShowDialog();
+				drones = bl.GetListOfDrones(d => true);
+				
 				filterByStatus();
 				filterByWeight();
+				DroneListViewGrouping.ItemsSource = drones;
+				CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(DroneListViewGrouping.ItemsSource);
+				PropertyGroupDescription groupDescription = new PropertyGroupDescription("Status");
 			}
 		}
 
@@ -187,35 +226,6 @@ namespace PL
 		/// <param name="e"></param>
 		private void Close_Click(object sender, RoutedEventArgs e) => Close();
 
-		/// <summary>
-		/// groop all drone by her status
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void group_Click(object sender, RoutedEventArgs e)
-		{
-			if (groupButton.Content.ToString() == "Group the List")
-			{
-				DroneListViewGrouping.ItemsSource = drones;
-				CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(DroneListViewGrouping.ItemsSource);
-				PropertyGroupDescription groupDescription = new PropertyGroupDescription("Status");
-				view.GroupDescriptions.Add(groupDescription);
-				DroneListViewGrouping.Visibility = Visibility.Visible;
-				DroneListView.Visibility = Visibility.Hidden;
-				groupButton.Content = "Default display";
-				StatusSelector.IsEnabled = false;
-				WeightSelector.IsEnabled = false;
-			}
-			else if (groupButton.Content.ToString() == "Default display")
-			{
-				DroneListViewGrouping.Visibility = Visibility.Hidden;
-				DroneListView.Visibility = Visibility.Visible;
-				groupButton.Content = "Group the List";
-				drones = bl.GetListOfDrones(d => true);
-				DroneListView.ItemsSource = drones;
-				StatusSelector.IsEnabled = true;
-				WeightSelector.IsEnabled = true;
-			}
-		}
+		
 	}
 }

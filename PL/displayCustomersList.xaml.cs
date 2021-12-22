@@ -64,13 +64,13 @@ namespace PL
 				MessageBox.Show("Choose a drone !!", "ERROR");
 			else
 			{
-				new customerWindow(bl, (BO.CustomerToList)CustomerlistView.SelectedItem, CustomerlistView).ShowDialog();
+				new customerWindow(bl, (BO.CustomerToList)CustomerlistView.SelectedItem).ShowDialog();
 			}
 		}
 
         private void Add_Click(object sender, RoutedEventArgs e)
         {
-			new customerWindow(bl, CustomerlistView).ShowDialog();
+			new customerWindow(bl).ShowDialog();
 		}
     }
 }

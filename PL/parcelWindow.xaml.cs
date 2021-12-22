@@ -23,7 +23,6 @@ namespace PL
 	{
 		private BlApi.IBL bl;
 		private BO.Parcel parcel;
-		private ListView listOfParcels;
 		//-------------------------------------------------------------- FUNC AND CONST VARIABL -------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
 		private const uint MF_BYCOMMAND = 0x00000000;
@@ -48,16 +47,15 @@ namespace PL
 			RemoveMenu(hMenu, SC_CLOSE, MF_BYCOMMAND);
 		}
 		//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-		public parcelWindow(BlApi.IBL ibl,ListView list)
+		public parcelWindow(BlApi.IBL ibl)
 		{
 			InitializeComponent();
 			bl = ibl;
 			addParcel_grid.Visibility = Visibility.Visible;
 			weightSelector.ItemsSource = Enum.GetValues(typeof(BO.WeightCategories));
 			prioritySelector.ItemsSource = Enum.GetValues(typeof(BO.Priorities));
-			listOfParcels = list;
 		}
-		public parcelWindow(BlApi.IBL ibl, BO.ParcelToList p,ListView list)
+		public parcelWindow(BlApi.IBL ibl, BO.ParcelToList p)
 		{
 			InitializeComponent();
 			actionPrcel_grid.Visibility = Visibility.Visible;
@@ -65,7 +63,6 @@ namespace PL
 			parcel = bl.GetParcel(p.Id);
 			parcelDetails.Content = parcel.ToString();
 			shippingButton();
-			listOfParcels = list;
 			if (parcel.Delivered != null)
 				drone_Button.Visibility = Visibility.Hidden;
 		}
@@ -120,7 +117,6 @@ namespace PL
 			{
 				bl.AddParcel(parcelId, senderId, targetId, (BO.WeightCategories)weightSelector.SelectedItem, (BO.Priorities)prioritySelector.SelectedItem);
 				MessageBox.Show("Successfuly added", "Successfull");
-				listOfParcels.ItemsSource = bl.GetListOfParcels(p => true);
 				Close();
 			}
 			catch (BO.InvalidId ex)
@@ -204,7 +200,7 @@ namespace PL
 		private void senderDetails_Click(object sender, RoutedEventArgs e)
 		{
 			BO.CustomerToList customer = new BO.CustomerToList { Id = parcel.Sender.Id };
-			new customerWindow(bl, customer, listOfParcels).ShowDialog();
+			new customerWindow(bl, customer).ShowDialog();
 			parcel = bl.GetParcel(parcel.Id);
 			parcelDetails.Content = parcel.ToString();
 		}
@@ -212,7 +208,7 @@ namespace PL
 		private void targetDetails_Click(object sender, RoutedEventArgs e)
 		{
 			BO.CustomerToList customer = new BO.CustomerToList { Id = parcel.Target.Id };
-			new customerWindow(bl, customer, listOfParcels).ShowDialog();
+			new customerWindow(bl, customer).ShowDialog();
 			parcel = bl.GetParcel(parcel.Id);
 			parcelDetails.Content = parcel.ToString();
 		}
@@ -220,7 +216,7 @@ namespace PL
 		private void droneDetails_Click(object sender, RoutedEventArgs e)
 		{
 			BO.DroneToList drone = new BO.DroneToList { Id = parcel.Drone.Id };
-			new droneWindow(bl, drone, listOfParcels).ShowDialog();
+			new droneWindow(bl, drone).ShowDialog();
 			parcel = bl.GetParcel(parcel.Id);
 			parcelDetails.Content = parcel.ToString();
 		}

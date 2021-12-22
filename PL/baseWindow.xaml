@@ -39,7 +39,7 @@
 			<Label Name="Base_details" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" Height="310" Width="auto"/>
 			<Label Content="Update name:" HorizontalAlignment="Right" Margin="0,75,390,0" VerticalAlignment="Top" FontFamily="Comic Sans MS"/>
 			<Label Content="Update num of charge slots:" HorizontalAlignment="Right" Margin="0,105,360,0" VerticalAlignment="Top" FontFamily="Comic Sans MS"/>
-			<ListView x:Name="droneListView" HorizontalAlignment="Left" VerticalAlignment="Bottom" MouseDoubleClick="droneListView_MouseDoubleClick" Margin="230,0,0,30" Width="240" Height="150">
+			<ListView x:Name="droneListView" HorizontalAlignment="Left" VerticalAlignment="Bottom" MouseDoubleClick="droneListView_MouseDoubleClick" Margin="230,0,0,30" Width="240" Height="150" Visibility="Hidden">
 			</ListView>
 
 		</Grid>

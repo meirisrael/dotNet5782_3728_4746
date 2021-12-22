@@ -23,7 +23,6 @@ namespace PL
     {
 		private BlApi.IBL bl;
 		private BO.Customer customer;
-		private ListView listOfCustomers;
 		//------------------------------------------------------------------ FUNC AND CONST VARIABL --------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
 		private const uint MF_BYCOMMAND = 0x00000000;
@@ -49,17 +48,15 @@ namespace PL
 		}
 
 		//-------------------------------------------------------------------------- CTOR ------------------------------------------------------------------------------------------------------------------
-		public customerWindow(BlApi.IBL ibl, ListView list)
+		public customerWindow(BlApi.IBL ibl)
         {
 			bl = ibl;
-			listOfCustomers = list;
 			InitializeComponent();
 			addCustomer_Grid.Visibility = Visibility.Visible;
 		}
-		public customerWindow(BlApi.IBL ibl,BO.CustomerToList c, ListView list)
+		public customerWindow(BlApi.IBL ibl,BO.CustomerToList c)
 		{
 			bl = ibl;
-			listOfCustomers = list;
 			customer = bl.GetCustomer(c.Id);
 			InitializeComponent();
 			update_Grid.Visibility = Visibility.Visible;
@@ -107,7 +104,6 @@ namespace PL
             {
 				bl.AddCustomer(customerId, NameBox.Text, PhoneBox.Text, location);
 				MessageBox.Show("Successfuly added", "Successfull");
-				listOfCustomers.ItemsSource = bl.GetListOfCustomers();
 				Close();
 			}
 			catch(BO.IdExist)
@@ -163,7 +159,6 @@ namespace PL
         {
 			bl.UpdateCustomer(customer.Id, upNameBox.Text, upPhoneBox.Text);
 			MessageBox.Show("Successfuly updated");
-			listOfCustomers.ItemsSource = bl.GetListOfCustomers();
 			customer = bl.GetCustomer(customer.Id);
 			customerLabel.Content = customer.ToString();
 			upPhoneBox.Text = "";
@@ -207,7 +202,7 @@ namespace PL
 				MessageBox.Show("Choose a parcel !!", "ERROR");
 			else
 			{
-				new parcelWindow(bl, (BO.ParcelToList)parcelListView.SelectedItem, parcelListView).ShowDialog();
+				new parcelWindow(bl, (BO.ParcelToList)parcelListView.SelectedItem).ShowDialog();
 			}
 		}
     }
