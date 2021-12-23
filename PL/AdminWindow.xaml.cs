@@ -10,22 +10,21 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace PL
 {
 	/// <summary>
-	/// Interaction logic for MainWindow.xaml
+	/// Interaction logic for AdminWindow.xaml
 	/// </summary>
 	public partial class AdminWindow : Window
 	{
-
-		BlApi.IBL ibl = BL.BlFactory.GetBl();
-		public AdminWindow()
+		private BlApi.IBL bl;
+		public AdminWindow(BlApi.IBL ibl)
 		{
 			InitializeComponent();
+			bl = ibl;
 		}
 		/// <summary>
 		/// if the user press the button "drone"
@@ -34,7 +33,7 @@ namespace PL
 		/// <param name="e"></param>
 		private void DronesButton_Click(object sender, RoutedEventArgs e)
 		{
-			new displayListOfDrones(ibl).ShowDialog();
+			new displayListOfDrones(bl).ShowDialog();
 		}
 		/// <summary>
 		/// if the user ant to open the base station window
@@ -43,7 +42,7 @@ namespace PL
 		/// <param name="e"> press button</param>
 		private void BaseButton_Click(object sender, RoutedEventArgs e)
 		{
-			new displayBaseList(ibl).Show();
+			new displayBaseList(bl).ShowDialog();
 		}
 		/// <summary>
 		/// if the user want to see all customers and to add or upsate one
@@ -52,7 +51,7 @@ namespace PL
 		/// <param name="e"></param>
 		private void Customers_Click(object sender, RoutedEventArgs e)
 		{
-			new displayCustomersList(ibl).ShowDialog();
+			new displayCustomersList(bl).ShowDialog();
 		}
 		/// <summary>
 		/// if the user want to see all parcels and to add or update one
@@ -61,7 +60,7 @@ namespace PL
 		/// <param name="e"></param>
 		private void Parcels_Click(object sender, RoutedEventArgs e)
 		{
-			new displayParcelsList(ibl).ShowDialog();
+			new displayParcelsList(bl).ShowDialog();
 		}
 
 		/// <summary>
@@ -77,6 +76,5 @@ namespace PL
 			}, this.Dispatcher);
 			timer.Start();
 		}
-		
 	}
 }

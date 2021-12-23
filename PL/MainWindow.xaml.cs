@@ -15,13 +15,15 @@ using System.Windows.Shapes;
 namespace PL
 {
 	/// <summary>
-	/// Interaction logic for LoginWindow.xaml
+	/// Interaction logic for MainWindow1.xaml
 	/// </summary>
-	public partial class LoginWindow : Window
+	public partial class MainWindow : Window
 	{
-		public LoginWindow()
+		BlApi.IBL ibl = BL.BlFactory.GetBl();
+		public MainWindow()
 		{
 			InitializeComponent();
+			new AdminWindow(ibl).ShowDialog();
 		}
 	}
 }
