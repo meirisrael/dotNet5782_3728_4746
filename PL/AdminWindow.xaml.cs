@@ -19,11 +19,11 @@ namespace PL
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	public partial class MainWindow : Window
+	public partial class AdminWindow : Window
 	{
 
 		BlApi.IBL ibl = BL.BlFactory.GetBl();
-		public MainWindow()
+		public AdminWindow()
 		{
 			InitializeComponent();
 		}

@@ -24,20 +24,5 @@ namespace PL
 		{
 			InitializeComponent();
 		}
-
-		private void Button_Click(object sender, RoutedEventArgs e)
-		{
-
-		}
-
-		private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
-		{
-
-		}
-
-		private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-		{
-
-		}
 	}
 }
