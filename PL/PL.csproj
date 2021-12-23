@@ -28,7 +28,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BL\BL.csproj" />
-    <ProjectReference Include="..\PO\PO.csproj" />
   </ItemGroup>
 
   <ItemGroup>
