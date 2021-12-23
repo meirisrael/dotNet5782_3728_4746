@@ -66,11 +66,72 @@ namespace PL
 				parcelListView.Visibility = Visibility.Visible;
 		}
 		//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-		private void add_Click(object sender, RoutedEventArgs e)
+		
+
+		private void LatitudeBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			LatitudeBox.Background = Brushes.LightGreen;
+			if (LatitudeBox.Text != "" && PhoneBox.Text != "" && LongitudeBox.Text != "" && NameBox.Text != "" && IdBox.Text != "")
+				add_button.IsEnabled = true;
+			else
+				add_button.IsEnabled = false;
+		}
+		private void IdBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			IdBox.Background = Brushes.LightGreen;
+			if (LatitudeBox.Text != "" && PhoneBox.Text != "" && LongitudeBox.Text != "" && NameBox.Text != "" && IdBox.Text != "")
+				add_button.IsEnabled = true;
+			else
+				add_button.IsEnabled = false;
+		}
+		private void NameBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+			NameBox.Background = Brushes.LightGreen;
+			if (LatitudeBox.Text != "" && PhoneBox.Text != "" && LongitudeBox.Text != "" && NameBox.Text != "" && IdBox.Text != "")
+				add_button.IsEnabled = true;
+			else
+				add_button.IsEnabled = false;
+		}
+		private void PhoneBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			PhoneBox.Background = Brushes.LightGreen;
+			if (LatitudeBox.Text != "" && PhoneBox.Text != "" && LongitudeBox.Text != "" && NameBox.Text != "" && IdBox.Text != "")
+				add_button.IsEnabled = true;
+			else
+				add_button.IsEnabled = false;
+		}
+		private void LongitudeBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			LongitudeBox.Background = Brushes.LightGreen;
+			if (LatitudeBox.Text != "" && PhoneBox.Text != "" && LongitudeBox.Text != "" && NameBox.Text != "" && IdBox.Text != "")
+				add_button.IsEnabled = true;
+			else
+				add_button.IsEnabled = false;
+		}
+		private void upNameBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			upNameBox.Background = Brushes.LightGreen;
+			if (upNameBox.Text != "" || upPhoneBox.Text != "")
+				update_button.IsEnabled = true;
+			else
+				update_button.IsEnabled = false;
+		}
+		private void upPhoneBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			upPhoneBox.Background = Brushes.LightGreen;
+			if (upNameBox.Text != "" || upPhoneBox.Text != "")
+				update_button.IsEnabled = true;
+			else
+				update_button.IsEnabled = false;
+		}
+
+
+
+		private void add_Click(object sender, RoutedEventArgs e)
+		{
 			string id = IdBox.Text;
 			string lon = LongitudeBox.Text;
-			string lat=LatitudeBox.Text;
+			string lat = LatitudeBox.Text;
 			int customerId;
 			double longitude, latitude;
 			BO.Location location = new();
@@ -82,7 +143,7 @@ namespace PL
 			}
 			else
 				customerId = int.Parse(id);
-			if (!double.TryParse(lon, out longitude)|| longitude> 180 || longitude<-180)
+			if (!double.TryParse(lon, out longitude) || longitude > 180 || longitude < -180)
 			{
 				MessageBox.Show("Longitude ID most be a double between -180 and 180", "ERROR");
 				LongitudeBox.Background = Brushes.Salmon;
@@ -90,7 +151,7 @@ namespace PL
 			}
 			else
 				longitude = double.Parse(lon);
-			if (!double.TryParse(lat, out latitude)||latitude>90||latitude<-90)
+			if (!double.TryParse(lat, out latitude) || latitude > 90 || latitude < -90)
 			{
 				MessageBox.Show("Latitude ID most be a double between -90 and 90", "ERROR");
 				LatitudeBox.Background = Brushes.Salmon;
@@ -100,62 +161,19 @@ namespace PL
 				latitude = double.Parse(lat);
 			location.Longitude = longitude;
 			location.Latitude = latitude;
-            try
-            {
+			try
+			{
 				bl.AddCustomer(customerId, NameBox.Text, PhoneBox.Text, location);
 				MessageBox.Show("Successfuly added", "Successfull");
 				Close();
 			}
-			catch(BO.IdExist)
-            {
+			catch (BO.IdExist)
+			{
 				MessageBox.Show("ID alredy exist", "ERROR");
 				IdBox.Background = Brushes.Salmon;
-			}	
-        }
-
-		private void LatitudeBox_TextChanged(object sender, TextChangedEventArgs e)
-		{
-			LatitudeBox.Background = null;
-			if (LatitudeBox.Text != "" && PhoneBox.Text != "" && LongitudeBox.Text != "" && NameBox.Text != "" && IdBox.Text != "")
-				add_button.IsEnabled = true;
-			else
-				add_button.IsEnabled = false;
+			}
 		}
-		private void IdBox_TextChanged(object sender, TextChangedEventArgs e)
-		{
-			IdBox.Background = null;
-			if (LatitudeBox.Text != "" && PhoneBox.Text != "" && LongitudeBox.Text != "" && NameBox.Text != "" && IdBox.Text != "")
-				add_button.IsEnabled = true;
-			else
-				add_button.IsEnabled = false;
-		}
-		private void NameBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-			NameBox.Background = null;
-			if (LatitudeBox.Text != "" && PhoneBox.Text != "" && LongitudeBox.Text != "" && NameBox.Text != "" && IdBox.Text != "")
-				add_button.IsEnabled = true;
-			else
-				add_button.IsEnabled = false;
-		}
-		private void PhoneBox_TextChanged(object sender, TextChangedEventArgs e)
-		{
-			PhoneBox.Background = null;
-			if (LatitudeBox.Text != "" && PhoneBox.Text != "" && LongitudeBox.Text != "" && NameBox.Text != "" && IdBox.Text != "")
-				add_button.IsEnabled = true;
-			else
-				add_button.IsEnabled = false;
-		}
-		private void LongitudeBox_TextChanged(object sender, TextChangedEventArgs e)
-		{
-			LongitudeBox.Background = null;
-			if (LatitudeBox.Text != "" && PhoneBox.Text != "" && LongitudeBox.Text != "" && NameBox.Text != "" && IdBox.Text != "")
-				add_button.IsEnabled = true;
-			else
-				add_button.IsEnabled = false;
-		}
-		private void Cancel_Click(object sender, RoutedEventArgs e) => Close();
-
-        private void update_button_Click(object sender, RoutedEventArgs e)
+		private void update_button_Click(object sender, RoutedEventArgs e)
         {
 			bl.UpdateCustomer(customer.Id, upNameBox.Text, upPhoneBox.Text);
 			MessageBox.Show("Successfuly updated");
@@ -164,25 +182,6 @@ namespace PL
 			upPhoneBox.Text = "";
 			upNameBox.Text = "";
 		}
-
-        private void upNameBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-			upNameBox.Background = null;
-			if (upNameBox.Text != "" || upPhoneBox.Text != "")
-				update_button.IsEnabled = true;
-			else 
-				update_button.IsEnabled = false;
-        }
-
-        private void upPhoneBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-			upPhoneBox.Background = null;
-			if (upNameBox.Text != "" || upPhoneBox.Text != "")
-				update_button.IsEnabled = true;
-			else
-				update_button.IsEnabled = false;
-		}
-
         private void delete_button_Click(object sender, RoutedEventArgs e)
         {
 			MessageBoxResult result = MessageBox.Show("Are you sure to delete", "Deleting Customer", MessageBoxButton.YesNo);
@@ -205,5 +204,7 @@ namespace PL
 				new parcelWindow(bl, (BO.ParcelToList)parcelListView.SelectedItem).ShowDialog();
 			}
 		}
-    }
+
+		private void Cancel_Click(object sender, RoutedEventArgs e) => Close();
+	}
 }

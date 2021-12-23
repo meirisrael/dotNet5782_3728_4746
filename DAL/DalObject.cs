@@ -137,9 +137,9 @@ namespace DalObject
 				Priority = priorities,
 				DroneId = droneId,
 				Requested = DateTime.Now,
-				Scheduled = DateTime.MinValue,
-				PickedUp = DateTime.MinValue,
-				Delivered = DateTime.MinValue
+				Scheduled = null,
+				PickedUp = null,
+				Delivered = null
 			});
 		}
 

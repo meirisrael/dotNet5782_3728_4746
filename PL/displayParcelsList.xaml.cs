@@ -47,6 +47,10 @@ namespace PL
 			RemoveMenu(hMenu, SC_CLOSE, MF_BYCOMMAND);
 		}
 		//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		/// <summary>
+		/// ctor
+		/// </summary>
+		/// <param name="ibl"></param>
 		public displayParcelsList(BlApi.IBL ibl)
 		{
 			InitializeComponent();
@@ -57,8 +61,23 @@ namespace PL
 			ParcelListView.ItemsSource = parcels;
 		}
 
-		private void Close_Click(object sender, RoutedEventArgs e) => Close();
 
+		/// <summary>
+		/// if the user want to add an new parcel 
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"> click </param>
+		private void Add_Click(object sender, RoutedEventArgs e)
+		{
+			new parcelWindow(bl).ShowDialog();
+			parcels = bl.GetListOfParcels(p => true);
+			ParcelListView.ItemsSource = parcels;
+		}
+		/// <summary>
+		/// if the user want to group the list of parcel by the sender of parcel or return to default view
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"> click </param>
 		private void groupButton_Click(object sender, RoutedEventArgs e)
 		{
 			if (groupButton.Content.ToString() == "Group the List")
@@ -82,9 +101,62 @@ namespace PL
 				StatusSelector.IsEnabled = true;
 			}
 		}
+		/// <summary>
+		/// clear selection and retur to default view 
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"> click </param>
+		private void Clear_Click(object sender, RoutedEventArgs e)
+		{
+			StatusSelector.SelectedItem = null;
+			parcels = bl.GetListOfParcels(p => true);
+			ParcelListView.ItemsSource = parcels;
+		}
 
+		/// <summary>
+		/// if the user change selction to see different parcel by her status of delivery
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void StatusSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{filterByStatus();}
+		{ filterByStatus(); }
+
+
+		/// <summary>
+		/// if the user want to see details or update data of specific parcel
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"> Double Click </param>
+		private void ParcelListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			if ((BO.ParcelToList)ParcelListView.SelectedItem == null)
+				MessageBox.Show("Choose a drone !!", "ERROR");
+			else
+			{
+				new parcelWindow(bl, (BO.ParcelToList)ParcelListView.SelectedItem).ShowDialog();
+				parcels = bl.GetListOfParcels(p => true);
+				ParcelListView.ItemsSource = parcels;
+				filterByStatus();
+			}
+		}
+		/// <summary>
+		/// if the user want to see details or update data of specific parcel
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"> Double Click </param>
+		private void ParcelListViewGrouping_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			if ((BO.ParcelToList)ParcelListViewGrouping.SelectedItem == null)
+				MessageBox.Show("Choose a drone !!", "ERROR");
+			else
+			{
+				new parcelWindow(bl, (BO.ParcelToList)ParcelListViewGrouping.SelectedItem).ShowDialog();
+				parcels = bl.GetListOfParcels(p => true);
+				ParcelListViewGrouping.ItemsSource = parcels;
+				filterByStatus();
+			}
+		}
+
 		/// <summary>
 		/// filter the list view by the status of parcel
 		/// </summary>
@@ -102,32 +174,11 @@ namespace PL
 			ParcelListView.ItemsSource = parcels;
 		}
 
-		private void Clear_Click(object sender, RoutedEventArgs e)
-		{
-			StatusSelector.SelectedItem = null;
-			parcels = bl.GetListOfParcels(p => true);
-			ParcelListView.ItemsSource = parcels;
-		}
-
-		private void Add_Click(object sender, RoutedEventArgs e)
-		{
-			new parcelWindow(bl).ShowDialog();
-		}
-
-		private void ParcelListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-		{
-			if ((BO.ParcelToList)ParcelListView.SelectedItem == null)
-				MessageBox.Show("Choose a drone !!", "ERROR");
-			else
-			{
-				new parcelWindow(bl, (BO.ParcelToList)ParcelListView.SelectedItem).ShowDialog();
-				filterByStatus();
-			}
-		}
-
-		private void ParcelListViewGrouping_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-		{
-			
-		}
+		/// <summary>
+		/// if the user want to close the page
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"> click </param>
+		private void Close_Click(object sender, RoutedEventArgs e) => Close();
 	}
 }

@@ -28,13 +28,13 @@
 
 		</Grid>
 
-		<Grid x:Name="actionPrcel_grid" Visibility="Visible">
+		<Grid x:Name="actionPrcel_grid" Visibility="Hidden">
 			<Grid.Background>
 				<ImageBrush ImageSource="/picture/parcelDeliver.png" AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="Fill" />
 			</Grid.Background>
 			<Label Name="parcelDetails" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="370" Width="auto"  FontFamily="david" FontWeight="DemiBold" />
-			<Button x:Name="parcelShip_Button" Click="parcelShip_Button_Click" HorizontalAlignment="Right" Margin="0,0,130,50" VerticalAlignment="Bottom" Width="auto" Height="35" Background="LawnGreen"/>
-			<Button x:Name="close_" Content="Close" Click="Cancel_Click" HorizontalAlignment="Left" Margin="130,0,0,50" VerticalAlignment="Bottom" Width="120" Height="35" Background="OrangeRed"/>
+			<Button x:Name="parcelShip_Button" Click="parcelShip_Button_Click" HorizontalAlignment="Right" Margin="0,0,130,50" VerticalAlignment="Bottom" Width="auto" Height="35" Background="LawnGreen" FontFamily="Comic Sans MS" FontWeight="DemiBold"/>
+			<Button x:Name="close_" Content="Close" Click="Cancel_Click" HorizontalAlignment="Left" Margin="130,0,0,50" VerticalAlignment="Bottom" Width="120" Height="35" Background="OrangeRed" FontFamily="Comic Sans MS" FontWeight="DemiBold"/>
 			<Button Content="Sender details" Click="senderDetails_Click" HorizontalAlignment="Left" Margin="50,80,0,0" VerticalAlignment="Top" Width="100" Height="30" FontFamily="Comic Sans MS" FontWeight="DemiBold" Background="PaleVioletRed"/>
 			<Button Content="Target details" Click="targetDetails_Click" HorizontalAlignment="Left" Margin="50,150,0,0" VerticalAlignment="Top" Width="100" Height="30" FontFamily="Comic Sans MS" FontWeight="DemiBold" Background="BlueViolet"/>
 			<Button Name="drone_Button" Content="Drone details" Click="droneDetails_Click" HorizontalAlignment="Left" Margin="50,220,0,0" VerticalAlignment="Top" Width="100" Height="30" FontFamily="Comic Sans MS" FontWeight="DemiBold" Background="LightGreen"/>

@@ -65,12 +65,16 @@ namespace PL
 			else
 			{
 				new customerWindow(bl, (BO.CustomerToList)CustomerlistView.SelectedItem).ShowDialog();
+				customers = bl.GetListOfCustomers();
+				CustomerlistView.ItemsSource = customers;
 			}
 		}
 
         private void Add_Click(object sender, RoutedEventArgs e)
         {
 			new customerWindow(bl).ShowDialog();
+			customers = bl.GetListOfCustomers();
+			CustomerlistView.ItemsSource = customers;
 		}
     }
 }

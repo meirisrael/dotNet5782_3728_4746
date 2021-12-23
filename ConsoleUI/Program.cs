@@ -17,7 +17,6 @@ namespace ConsoleUI
             int intA,intB,intC,intD;
             double doubA,doubB;
             string stringA, stringB;
-            //DateTime dateA, dateB, dateC, dateD;
             DO.WeightCategories weight;
             DO.Priorities priorities;
 

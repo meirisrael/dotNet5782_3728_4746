@@ -57,7 +57,7 @@ namespace BL
 			{
 				DateTime? isDeliverd = dal.GetListParcels(b => true).ToList().Find(item => item.DroneId == d.Id).Delivered;
 				int idParcel =  dal.GetListParcels(b => true).ToList().Find(item => item.DroneId == d.Id).Id;//return id of parcel that the drone is associated;
-				if (isDeliverd != null || isDeliverd == DateTime.MinValue)//check if the parcel is not in transit
+				if (isDeliverd != null)//check if the parcel is not in transit
 					idParcel = 0;
 				BO.Location l = new BO.Location();
 				l.Latitude = 0; l.Longitude = 0;
@@ -772,7 +772,7 @@ namespace BL
 				BO.DroneToList d = droneToList.Find(d => d.Id == drone.Id);
 				foreach (DO.Parcel item in dal.GetListParcels(p => true))
 				{
-					if (item.DroneId == d.Id && (item.Delivered == DateTime.MinValue || item.Delivered==null))
+					if (item.DroneId == d.Id && ( item.Delivered==null))
 					{ drone.InTransit = convertParcel(item, droneId); break; }
 				}
 			}
