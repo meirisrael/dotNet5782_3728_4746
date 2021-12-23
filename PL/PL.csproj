@@ -14,6 +14,8 @@
     <None Remove="picture\baseDroneSnip.png" />
     <None Remove="picture\customer.jpg" />
     <None Remove="picture\drone.png" />
+    <None Remove="picture\LoginAdmin.png" />
+    <None Remove="picture\LoginClient.png" />
     <None Remove="picture\logo_base.jpg" />
     <None Remove="picture\logo_customers.jpg" />
     <None Remove="picture\logo_drone.jpg" />
@@ -37,6 +39,8 @@
     <Resource Include="picture\baseDroneSnip.png" />
     <Resource Include="picture\customer.jpg" />
     <Resource Include="picture\drone.png" />
+    <Resource Include="picture\LoginAdmin.png" />
+    <Resource Include="picture\LoginClient.png" />
     <Resource Include="picture\logo_base.jpg" />
     <Resource Include="picture\logo_customers.jpg" />
     <Resource Include="picture\logo_drone.jpg" />

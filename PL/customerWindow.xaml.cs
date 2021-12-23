@@ -165,6 +165,7 @@ namespace PL
 			{
 				bl.AddCustomer(customerId, NameBox.Text, PhoneBox.Text, location);
 				MessageBox.Show("Successfuly added", "Successfull");
+				MessageBox.Show($"Your userId is- {customerId}\nYour code is- {NameBox.Text+customerId}", "Login information");
 				Close();
 			}
 			catch (BO.IdExist)

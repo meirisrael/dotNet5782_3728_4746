@@ -5,8 +5,43 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="MainWindow1" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Login" Height="320" Width="300" Icon="\icon\logo_company.ico">
+	<Grid>
+		<TabControl>
+			<TabControl.Items>
+				<TabItem Header="sign-in">
+					<Grid>
+						<Label Content="Enter UserId" HorizontalAlignment="Left" Margin="25,50,0,0" VerticalAlignment="Top"/>
+						<TextBox x:Name="userIdBox" TextChanged="userIdBox_TextChanged" HorizontalAlignment="Left" Margin="120,55,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+						<Label Content="Enter Password" HorizontalAlignment="Left" Margin="25,90,0,0" VerticalAlignment="Top"/>
+						<PasswordBox x:Name="passwordBox" PasswordChanged="passwordBox_PasswordChanged" HorizontalAlignment="Left" Margin="120,95,0,0" VerticalAlignment="Top" Width="120"/>
+						<Button Name="connect_Button" Content="Connect" Click="Connect_Click" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Center" Width="80" Height="30" Background="LawnGreen" IsEnabled="False"/>
+						<Label Content="Not yet registered and want to sign-up ?" HorizontalAlignment="Center" Margin="0,0,0,70" VerticalAlignment="Bottom"/>
+						<TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="50">
+							<Hyperlink Name="AddNewCustomer" Click="AddNewCustomer_Click">Register Now</Hyperlink>
+						</TextBlock>
+						<Grid.Background>
+							<ImageBrush ImageSource="\picture\LoginClient.png" AlignmentY="Top" AlignmentX="Center" Stretch="Fill"/>
+						</Grid.Background>
+					</Grid>
+
+				</TabItem>
+				<TabItem Header="worker">
+					<TabItem.Content>
+						<Grid>
+							<Label Content="Enter UserId" HorizontalAlignment="Left" Margin="25,50,0,0" VerticalAlignment="Top" Foreground="White"/>
+							<TextBox x:Name="AdminIdBox" TextChanged="AdminIdBox_TextChanged" HorizontalAlignment="Left" Margin="120,55,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+							<Label Content="Enter Password" HorizontalAlignment="Left" Margin="25,90,0,0" VerticalAlignment="Top" Foreground="White"/>
+							<PasswordBox x:Name="AdminpasswordBox" PasswordChanged="AdminpasswordBox_PasswordChanged" HorizontalAlignment="Left" Margin="120,95,0,0" VerticalAlignment="Top" Width="120"/>
+							<Button x:Name="AdminConnect_Button" Content="Connect" Click="AdminConnect_Click" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Center" Width="80" Height="30" Background="LawnGreen" IsEnabled="False"/>
+							<Grid.Background>
+								<ImageBrush ImageSource="\picture\LoginAdmin.png" AlignmentY="Top" AlignmentX="Center" Stretch="Fill"/>
+							</Grid.Background>
+						</Grid>
+					</TabItem.Content>
+				</TabItem>
+
+			</TabControl.Items>
+		</TabControl>
+	</Grid>
 </Window>
