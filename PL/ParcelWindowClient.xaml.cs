@@ -19,7 +19,7 @@ namespace PL
 	/// <summary>
 	/// Interaction logic for parcelWindow.xaml
 	/// </summary>
-	public partial class parcelWindow : Window
+	public partial class ParcelWindowClient : Window
 	{
 		private BlApi.IBL bl;
 		private BO.Parcel parcel;
@@ -51,7 +51,7 @@ namespace PL
 		/// ctor add new parcel
 		/// </summary>
 		/// <param name="ibl"></param>
-		public parcelWindow(BlApi.IBL ibl)
+		public ParcelWindowClient(BlApi.IBL ibl)
 		{
 			InitializeComponent();
 			bl = ibl;
@@ -64,7 +64,7 @@ namespace PL
 		/// </summary>
 		/// <param name="ibl"></param>
 		/// <param name="p"></param>
-		public parcelWindow(BlApi.IBL ibl, BO.ParcelToList p,string status)
+		public ParcelWindowClient(BlApi.IBL ibl, BO.ParcelToList p)
 		{
 			InitializeComponent();
 			actionPrcel_grid.Visibility = Visibility.Visible;
@@ -72,8 +72,6 @@ namespace PL
 			parcel = bl.GetParcel(p.Id);
 			parcelDetails.Content = parcel.ToString();
 			shippingButton();
-			if (parcel.Delivered != null || parcel.Scheduled == null)
-				drone_Button.Visibility = Visibility.Hidden;
 		}
 
 		/// <summary>
@@ -167,44 +165,7 @@ namespace PL
 				parcel = bl.GetParcel(parcel.Id);
 				parcelDetails.Content = parcel.ToString();
 				shippingButton();
-				drone_Button.Visibility = Visibility.Hidden;
 			}
-		}
-		/// <summary>
-		/// if the user want to see custome(sender) details
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"> click </param>
-		private void senderDetails_Click(object sender, RoutedEventArgs e)
-		{
-			BO.CustomerToList customer = new BO.CustomerToList { Id = parcel.Sender.Id };
-			new CustomerWindow(bl, customer,"admin").ShowDialog();
-			parcel = bl.GetParcel(parcel.Id);
-			parcelDetails.Content = parcel.ToString();
-		}
-		/// <summary>
-		/// if the user want to see custome(target) details
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"> click </param>
-		private void targetDetails_Click(object sender, RoutedEventArgs e)
-		{
-			BO.CustomerToList customer = new BO.CustomerToList { Id = parcel.Target.Id };
-			new CustomerWindow(bl, customer,"admin").ShowDialog();
-			parcel = bl.GetParcel(parcel.Id);
-			parcelDetails.Content = parcel.ToString();
-		}
-		/// <summary>
-		/// if the user want to see drone details or update data
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void droneDetails_Click(object sender, RoutedEventArgs e)
-		{
-			BO.DroneToList drone = new BO.DroneToList { Id = parcel.Drone.Id };
-			new droneWindow(bl, drone).ShowDialog();
-			parcel = bl.GetParcel(parcel.Id);
-			parcelDetails.Content = parcel.ToString();
 		}
 
 		/// <summary>
@@ -220,7 +181,7 @@ namespace PL
 			{
 				parcelShip_Button.Visibility = Visibility.Hidden;
 				close_.HorizontalAlignment = HorizontalAlignment.Center;
-				close_.Margin = new(0,0,0,50);
+				close_.Margin = new(0, 0, 0, 50);
 			}
 		}
 
@@ -290,15 +251,5 @@ namespace PL
 		/// <param name="sender"></param>
 		/// <param name="e"> click </param>
 		private void Cancel_Click(object sender, RoutedEventArgs e) => Close();
-
-
-		private void adminOption(BO.ParcelToList p)
-		{
-
-		}
-		private void clientOption(BO.ParcelToList p)
-		{
-
-		}
 	}
 }

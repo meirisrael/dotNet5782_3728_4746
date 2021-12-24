@@ -250,7 +250,7 @@ namespace PL
 		private void parcelDetails_Click(object sender, RoutedEventArgs e)
 		{
 			BO.ParcelToList p = new BO.ParcelToList { Id = drone.InTransit.Id };
-			new parcelWindow(bl,p,"admin").ShowDialog();
+			new ParcelWindowAdmin(bl,p).ShowDialog();
 		}
 
 		/// <summary>

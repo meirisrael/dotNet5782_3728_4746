@@ -45,12 +45,12 @@ namespace PL
 
 		private void Customer_Click(object sender, RoutedEventArgs e)
 		{
-			new CustomerWindow(bl, customer,"client").ShowDialog();
+			new CustomerWindowClient(bl, customer).ShowDialog();
 		}
 
 		private void Parcels_Click(object sender, RoutedEventArgs e)
 		{
-			new parcelWindow(bl).ShowDialog();
+			new ParcelWindowClient(bl).ShowDialog();
 		}
 	}
 }

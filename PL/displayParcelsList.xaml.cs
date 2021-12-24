@@ -69,7 +69,7 @@ namespace PL
 		/// <param name="e"> click </param>
 		private void Add_Click(object sender, RoutedEventArgs e)
 		{
-			new parcelWindow(bl).ShowDialog();
+			new ParcelWindowAdmin(bl).ShowDialog();
 			parcels = bl.GetListOfParcels(p => true);
 			ParcelListView.ItemsSource = parcels;
 		}
@@ -133,7 +133,7 @@ namespace PL
 				MessageBox.Show("Choose a drone !!", "ERROR");
 			else
 			{
-				new parcelWindow(bl, (BO.ParcelToList)ParcelListView.SelectedItem,"admin").ShowDialog();
+				new ParcelWindowAdmin(bl, (BO.ParcelToList)ParcelListView.SelectedItem).ShowDialog();
 				parcels = bl.GetListOfParcels(p => true);
 				ParcelListView.ItemsSource = parcels;
 				filterByStatus();
@@ -150,7 +150,7 @@ namespace PL
 				MessageBox.Show("Choose a drone !!", "ERROR");
 			else
 			{
-				new parcelWindow(bl, (BO.ParcelToList)ParcelListViewGrouping.SelectedItem,"admin").ShowDialog();
+				new ParcelWindowAdmin(bl, (BO.ParcelToList)ParcelListViewGrouping.SelectedItem).ShowDialog();
 				parcels = bl.GetListOfParcels(p => true);
 				ParcelListViewGrouping.ItemsSource = parcels;
 				filterByStatus();

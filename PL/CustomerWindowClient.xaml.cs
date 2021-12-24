@@ -16,14 +16,13 @@ using System.Windows.Interop;
 
 namespace PL
 {
-    /// <summary>
-    /// Interaction logic for customerWindow.xaml
-    /// </summary>
-    public partial class CustomerWindow : Window
-    {
+	/// <summary>
+	/// Interaction logic for customerWindow.xaml
+	/// </summary>
+	public partial class CustomerWindowClient : Window
+	{
 		private BlApi.IBL bl;
 		private BO.Customer customer;
-		private string status;
 		//------------------------------------------------------------------ FUNC AND CONST VARIABL --------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
 		private const uint MF_BYCOMMAND = 0x00000000;
@@ -37,46 +36,45 @@ namespace PL
 		static extern uint RemoveMenu(IntPtr hMenu, uint nPosition, uint wFlags);
 
 		protected override void OnSourceInitialized(EventArgs e)
-		{
-			base.OnSourceInitialized(e);
+			{
+				base.OnSourceInitialized(e);
 
-			WindowInteropHelper wih = new WindowInteropHelper(this);
-			IntPtr hWnd = wih.Handle;
-			IntPtr hMenu = GetSystemMenu(hWnd, false);
+				WindowInteropHelper wih = new WindowInteropHelper(this);
+				IntPtr hWnd = wih.Handle;
+				IntPtr hMenu = GetSystemMenu(hWnd, false);
 
-			// CloseButton disabled
-			RemoveMenu(hMenu, SC_CLOSE, MF_BYCOMMAND);
-		}
+				// CloseButton disabled
+				RemoveMenu(hMenu, SC_CLOSE, MF_BYCOMMAND);
+			}
 
 		//-------------------------------------------------------------------------- CTOR ------------------------------------------------------------------------------------------------------------------
-		public CustomerWindow(BlApi.IBL ibl)
-        {
+		public CustomerWindowClient(BlApi.IBL ibl)
+		{
 			bl = ibl;
 			InitializeComponent();
 			addCustomer_Grid.Visibility = Visibility.Visible;
 		}
 		/// <summary>
-		/// ctor
-		/// </summary>
-		/// <param name="ibl"></param>
-		/// <param name="c"></param>
-		/// <param name="status"> admin or client </param>
-		public CustomerWindow(BlApi.IBL ibl,BO.CustomerToList c,string status_)
+			/// ctor
+			/// </summary>
+			/// <param name="ibl"></param>
+			/// <param name="c"></param>
+			/// <param name="status"> admin or client </param>
+		public CustomerWindowClient(BlApi.IBL ibl, BO.CustomerToList c)
 		{
 			bl = ibl;
 			customer = bl.GetCustomer(c.Id);
 			InitializeComponent();
 			update_Grid.Visibility = Visibility.Visible;
 			customerLabel.Content = customer.ToString();
-			if (status_ == "admin")
-				adminOption(customer);
-			else if (status_ == "client")
-				clientOption(customer);
-			status = status_;
+			if (customer.ParcelFromCustomer.Count != 0)
+			{
+				parcelListView.Visibility = Visibility.Visible;
+				parcelListView.ItemsSource = bl.GetListOfParcels(p => p.SenderId == c.Id);
+			}
 		}
-
 		//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-		
+
 
 		private void LatitudeBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
@@ -93,9 +91,9 @@ namespace PL
 				add_button.IsEnabled = true;
 			else
 				add_button.IsEnabled = false;
-		}
+			}
 		private void NameBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
+		{
 			NameBox.Background = Brushes.LightGreen;
 			if (LatitudeBox.Text != "" && PhoneBox.Text != "" && LongitudeBox.Text != "" && NameBox.Text != "" && IdBox.Text != "")
 				add_button.IsEnabled = true;
@@ -175,7 +173,7 @@ namespace PL
 			{
 				bl.AddCustomer(customerId, NameBox.Text, PhoneBox.Text, location);
 				MessageBox.Show("Successfuly added", "Successfull");
-				MessageBox.Show($"Your userId is- {customerId}\nYour code is- {NameBox.Text+customerId}", "Login information");
+				MessageBox.Show($"Your userId is- {customerId}\nYour code is- {NameBox.Text + customerId}", "Login information");
 				Close();
 			}
 			catch (BO.IdExist)
@@ -185,7 +183,7 @@ namespace PL
 			}
 		}
 		private void update_button_Click(object sender, RoutedEventArgs e)
-        {
+		{
 			bl.UpdateCustomer(customer.Id, upNameBox.Text, upPhoneBox.Text);
 			MessageBox.Show("Successfuly updated");
 			customer = bl.GetCustomer(customer.Id);
@@ -194,33 +192,16 @@ namespace PL
 			upNameBox.Text = "";
 		}
 
-        private void parcelListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
+		private void parcelListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
 			if ((BO.ParcelToList)parcelListView.SelectedItem == null)
 				MessageBox.Show("Choose a parcel !!", "ERROR");
 			else
 			{
-				new parcelWindow(bl, (BO.ParcelToList)parcelListView.SelectedItem,status).ShowDialog();
+				new ParcelWindowClient(bl, (BO.ParcelToList)parcelListView.SelectedItem).ShowDialog();
 			}
 		}
 
 		private void Cancel_Click(object sender, RoutedEventArgs e) => Close();
-
-		private void adminOption(BO.Customer c)
-		{
-			if (c.ParcelFromCustomer.Count != 0 || c.ParcelToCustomer.Count != 0)
-			{
-				parcelListView.Visibility = Visibility.Visible;
-				parcelListView.ItemsSource = bl.GetListOfParcels(p => (p.SenderId == c.Id || p.TargetId == c.Id));
-			}
-		}
-		private void clientOption(BO.Customer c)
-		{
-			if (c.ParcelFromCustomer.Count != 0)
-			{
-				parcelListView.Visibility = Visibility.Visible;
-				parcelListView.ItemsSource = bl.GetListOfParcels(p => p.SenderId == c.Id);
-			}
-		}
 	}
 }

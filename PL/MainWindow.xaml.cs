@@ -78,7 +78,7 @@ namespace PL
 		/// <param name="e"></param>
 		private void AddNewCustomer_Click(object sender, RoutedEventArgs e)
 		{
-			new CustomerWindow(ibl).ShowDialog();
+			new CustomerWindowClient(ibl).ShowDialog();
 		}
 
 
