@@ -133,7 +133,7 @@ namespace PL
 				MessageBox.Show("Choose a drone !!", "ERROR");
 			else
 			{
-				new parcelWindow(bl, (BO.ParcelToList)ParcelListView.SelectedItem).ShowDialog();
+				new parcelWindow(bl, (BO.ParcelToList)ParcelListView.SelectedItem,"admin").ShowDialog();
 				parcels = bl.GetListOfParcels(p => true);
 				ParcelListView.ItemsSource = parcels;
 				filterByStatus();
@@ -150,7 +150,7 @@ namespace PL
 				MessageBox.Show("Choose a drone !!", "ERROR");
 			else
 			{
-				new parcelWindow(bl, (BO.ParcelToList)ParcelListViewGrouping.SelectedItem).ShowDialog();
+				new parcelWindow(bl, (BO.ParcelToList)ParcelListViewGrouping.SelectedItem,"admin").ShowDialog();
 				parcels = bl.GetListOfParcels(p => true);
 				ParcelListViewGrouping.ItemsSource = parcels;
 				filterByStatus();

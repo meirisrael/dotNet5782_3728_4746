@@ -62,7 +62,7 @@ namespace PL
 			foreach (BO.CustomerToList item in ibl.GetListOfCustomers())
 			{
 				if (userIdBox.Text == item.Id.ToString() && passwordBox.Password == (item.Name + item.Id.ToString()))
-				{ new customerWindow(ibl, item).ShowDialog(); flag = true; }
+				{ new ClientWindow(ibl, item).ShowDialog(); flag = true; }
 			}
 			if (!flag)
 			{
@@ -78,7 +78,7 @@ namespace PL
 		/// <param name="e"></param>
 		private void AddNewCustomer_Click(object sender, RoutedEventArgs e)
 		{
-			new customerWindow(ibl).ShowDialog();
+			new CustomerWindow(ibl).ShowDialog();
 		}
 
 

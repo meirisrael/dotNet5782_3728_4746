@@ -1092,7 +1092,7 @@ namespace BL
 		private int parcelWasDliver(int customerId)
 		{
 			int counter = 0;
-			foreach (DO.Parcel item in dal.GetListParcels(p => p.Id != 0))
+			foreach (DO.Parcel item in dal.GetListParcels(p => true))
 			{
 				if (item.SenderId == customerId && item.Delivered != null)
 					counter++;
@@ -1107,7 +1107,7 @@ namespace BL
 		private int parcelSentNotDeliver(int customerId)
 		{
 			int counter = 0;
-			foreach (DO.Parcel item in dal.GetListParcels(p => p.Id != 0))
+			foreach (DO.Parcel item in dal.GetListParcels(p => true))
 			{
 				if (item.SenderId == customerId && item.Delivered == null && item.PickedUp != null)
 					counter++;
@@ -1122,7 +1122,7 @@ namespace BL
 		private int parcelRecive(int customerId)
 		{
 			int counter = 0;
-			foreach (DO.Parcel item in dal.GetListParcels(p => p.Id != 0))
+			foreach (DO.Parcel item in dal.GetListParcels(p => true))
 			{
 				if (item.TargetId == customerId && item.Delivered != null)
 					counter++;
@@ -1137,7 +1137,7 @@ namespace BL
 		private int parcelInTransit(int customerId)
 		{
 			int counter = 0;
-			foreach (DO.Parcel item in dal.GetListParcels(p => p.Id != 0))
+			foreach (DO.Parcel item in dal.GetListParcels(p => true))
 			{
 				if (item.TargetId == customerId && item.Delivered == null && item.PickedUp != null)
 					counter++;

@@ -19,10 +19,11 @@ namespace PL
     /// <summary>
     /// Interaction logic for customerWindow.xaml
     /// </summary>
-    public partial class customerWindow : Window
+    public partial class CustomerWindow : Window
     {
 		private BlApi.IBL bl;
 		private BO.Customer customer;
+		private string status;
 		//------------------------------------------------------------------ FUNC AND CONST VARIABL --------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
 		private const uint MF_BYCOMMAND = 0x00000000;
@@ -48,23 +49,32 @@ namespace PL
 		}
 
 		//-------------------------------------------------------------------------- CTOR ------------------------------------------------------------------------------------------------------------------
-		public customerWindow(BlApi.IBL ibl)
+		public CustomerWindow(BlApi.IBL ibl)
         {
 			bl = ibl;
 			InitializeComponent();
 			addCustomer_Grid.Visibility = Visibility.Visible;
 		}
-		public customerWindow(BlApi.IBL ibl,BO.CustomerToList c)
+		/// <summary>
+		/// ctor
+		/// </summary>
+		/// <param name="ibl"></param>
+		/// <param name="c"></param>
+		/// <param name="status"> admin or client </param>
+		public CustomerWindow(BlApi.IBL ibl,BO.CustomerToList c,string status_)
 		{
 			bl = ibl;
 			customer = bl.GetCustomer(c.Id);
 			InitializeComponent();
 			update_Grid.Visibility = Visibility.Visible;
 			customerLabel.Content = customer.ToString();
-			parcelListView.ItemsSource = bl.GetListOfParcels(p => (p.SenderId == c.Id || p.TargetId == c.Id));
-			if (c.ParcelDelivred != 0 || c.ParcelInTransit != 0 || c.ParcelRecived != 0 || c.ParcelSentNotDelivred != 0)
-				parcelListView.Visibility = Visibility.Visible;
+			if (status_ == "admin")
+				adminOption(customer);
+			else if (status_ == "client")
+				clientOption(customer);
+			status = status_;
 		}
+
 		//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		
 
@@ -183,18 +193,6 @@ namespace PL
 			upPhoneBox.Text = "";
 			upNameBox.Text = "";
 		}
-        private void delete_button_Click(object sender, RoutedEventArgs e)
-        {
-			MessageBoxResult result = MessageBox.Show("Are you sure to delete", "Deleting Customer", MessageBoxButton.YesNo);
-			if (result == MessageBoxResult.Yes)
-			{
-				//do something
-			}
-			else if (result == MessageBoxResult.No)
-			{
-				//do something else
-			}
-		}
 
         private void parcelListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -202,10 +200,27 @@ namespace PL
 				MessageBox.Show("Choose a parcel !!", "ERROR");
 			else
 			{
-				new parcelWindow(bl, (BO.ParcelToList)parcelListView.SelectedItem).ShowDialog();
+				new parcelWindow(bl, (BO.ParcelToList)parcelListView.SelectedItem,status).ShowDialog();
 			}
 		}
 
 		private void Cancel_Click(object sender, RoutedEventArgs e) => Close();
+
+		private void adminOption(BO.Customer c)
+		{
+			if (c.ParcelFromCustomer.Count != 0 || c.ParcelToCustomer.Count != 0)
+			{
+				parcelListView.Visibility = Visibility.Visible;
+				parcelListView.ItemsSource = bl.GetListOfParcels(p => (p.SenderId == c.Id || p.TargetId == c.Id));
+			}
+		}
+		private void clientOption(BO.Customer c)
+		{
+			if (c.ParcelFromCustomer.Count != 0)
+			{
+				parcelListView.Visibility = Visibility.Visible;
+				parcelListView.ItemsSource = bl.GetListOfParcels(p => p.SenderId == c.Id);
+			}
+		}
 	}
 }

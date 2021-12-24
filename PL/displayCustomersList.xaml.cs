@@ -64,7 +64,7 @@ namespace PL
 				MessageBox.Show("Choose a drone !!", "ERROR");
 			else
 			{
-				new customerWindow(bl, (BO.CustomerToList)CustomerlistView.SelectedItem).ShowDialog();
+				new CustomerWindow(bl, (BO.CustomerToList)CustomerlistView.SelectedItem,"admin").ShowDialog();
 				customers = bl.GetListOfCustomers();
 				CustomerlistView.ItemsSource = customers;
 			}
@@ -72,7 +72,7 @@ namespace PL
 
         private void Add_Click(object sender, RoutedEventArgs e)
         {
-			new customerWindow(bl).ShowDialog();
+			new CustomerWindow(bl).ShowDialog();
 			customers = bl.GetListOfCustomers();
 			CustomerlistView.ItemsSource = customers;
 		}

@@ -64,7 +64,7 @@ namespace PL
 		/// </summary>
 		/// <param name="ibl"></param>
 		/// <param name="p"></param>
-		public parcelWindow(BlApi.IBL ibl, BO.ParcelToList p)
+		public parcelWindow(BlApi.IBL ibl, BO.ParcelToList p,string status)
 		{
 			InitializeComponent();
 			actionPrcel_grid.Visibility = Visibility.Visible;
@@ -72,7 +72,7 @@ namespace PL
 			parcel = bl.GetParcel(p.Id);
 			parcelDetails.Content = parcel.ToString();
 			shippingButton();
-			if (parcel.Delivered != null)
+			if (parcel.Delivered != null || parcel.Scheduled == null)
 				drone_Button.Visibility = Visibility.Hidden;
 		}
 
@@ -178,7 +178,7 @@ namespace PL
 		private void senderDetails_Click(object sender, RoutedEventArgs e)
 		{
 			BO.CustomerToList customer = new BO.CustomerToList { Id = parcel.Sender.Id };
-			new customerWindow(bl, customer).ShowDialog();
+			new CustomerWindow(bl, customer,"admin").ShowDialog();
 			parcel = bl.GetParcel(parcel.Id);
 			parcelDetails.Content = parcel.ToString();
 		}
@@ -190,7 +190,7 @@ namespace PL
 		private void targetDetails_Click(object sender, RoutedEventArgs e)
 		{
 			BO.CustomerToList customer = new BO.CustomerToList { Id = parcel.Target.Id };
-			new customerWindow(bl, customer).ShowDialog();
+			new CustomerWindow(bl, customer,"admin").ShowDialog();
 			parcel = bl.GetParcel(parcel.Id);
 			parcelDetails.Content = parcel.ToString();
 		}
@@ -290,5 +290,15 @@ namespace PL
 		/// <param name="sender"></param>
 		/// <param name="e"> click </param>
 		private void Cancel_Click(object sender, RoutedEventArgs e) => Close();
+
+
+		private void adminOption(BO.ParcelToList p)
+		{
+
+		}
+		private void clientOption(BO.ParcelToList p)
+		{
+
+		}
 	}
 }
