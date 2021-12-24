@@ -48,6 +48,10 @@ namespace PL
 			RemoveMenu(hMenu, SC_CLOSE, MF_BYCOMMAND);
 		}
 		//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="ibl"></param>
 		public displayCustomersList(BlApi.IBL ibl)
 		{
 			InitializeComponent();
@@ -55,9 +59,17 @@ namespace PL
 			customers = bl.GetListOfCustomers();
 			CustomerlistView.ItemsSource = customers;
 		}
-
+		/// <summary>
+		/// Close button
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
         private void Close_Click(object sender, RoutedEventArgs e) => Close();
-
+		/// <summary>
+		/// double click on a customer from the list to view his details and to update his name and phone number
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
         private void CustomerlistView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
 			if ((BO.CustomerToList)CustomerlistView.SelectedItem == null)
@@ -69,7 +81,7 @@ namespace PL
 				CustomerlistView.ItemsSource = customers;
 			}
 		}
-
+		// button add to add a new customer
         private void Add_Click(object sender, RoutedEventArgs e)
         {
 			new CustomerWindowAdmin(bl).ShowDialog();
