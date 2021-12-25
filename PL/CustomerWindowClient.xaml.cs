@@ -63,10 +63,10 @@ namespace PL
 		/// </summary>
 		/// <param name="ibl"></param>
 		/// <param name="c"></param>
-		public CustomerWindowClient(BlApi.IBL ibl, BO.CustomerToList c)
+		public CustomerWindowClient(BlApi.IBL ibl, BO.Customer c)
 		{
 			bl = ibl;
-			customer = bl.GetCustomer(c.Id);
+			customer = c;
 			InitializeComponent();
 			update_Grid.Visibility = Visibility.Visible;
 			customerLabel.Content = customer.ToString();
@@ -174,6 +174,8 @@ namespace PL
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
+		
+
 		private void add_Click(object sender, RoutedEventArgs e)
 		{
 			string id = IdBox.Text;
@@ -247,8 +249,12 @@ namespace PL
 			else
 			{
 				new ParcelWindowClient(bl, (BO.ParcelToList)parcelListView.SelectedItem).ShowDialog();
+				parcelListView.ItemsSource = bl.GetListOfParcels(p => p.SenderId == customer.Id);
+				customer = bl.GetCustomer(customer.Id);
+				customerLabel.Content = customer.ToString();
 			}
 		}
+	
 		//Close button to quit the page
 		private void Cancel_Click(object sender, RoutedEventArgs e) => Close();
 	}

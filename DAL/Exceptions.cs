@@ -62,6 +62,11 @@ namespace DO
 	{
 		public SenderTargetIdEqual() : base("DAL-ERROR: THE TARGET AND THE SENDER IS THE SAME PERSON\n") { }
 	}
+	// the parcel cant be removed 
+	public class CantRemove : Exception
+	{
+		public CantRemove() : base("DAL ERROR: THE PARCEL CAN'T BE REMOVED BECAUSE IS ALREADY SCHEDULED TO A DRONE\n") { }
+	}
 
 	// if not request the right factory 
 	public class FactoryError : Exception

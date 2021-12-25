@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Parcel Window" Height="500" Width="800" Icon="icon\logo_company.ico">
 	<Grid>
-		<Grid x:Name="addParcel_grid" Visibility="Hidden">
+		<Grid x:Name="addParcel_grid" Visibility="Visible">
 			<Grid.Background>
 				<ImageBrush ImageSource="/picture/sentParcel.png" AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="Fill" />
 			</Grid.Background>
@@ -21,20 +21,21 @@
 			<Label Content="Choose weight of parcel" HorizontalAlignment="Left" Margin="50,230,0,0" VerticalAlignment="Top" FontFamily="Comic Sans MS"/>
 			<Label Content="Choose priority of parcel" HorizontalAlignment="Left" Margin="50,280,0,0" VerticalAlignment="Top" FontFamily="Comic Sans MS"/>
 			<TextBox x:Name="idBox" TextChanged="idBox_TextChanged" HorizontalAlignment="Left" Margin="220,85,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-			<TextBox x:Name="senderBox" TextChanged="senderBox_TextChanged" HorizontalAlignment="Left" Margin="220,135,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+			<TextBox x:Name="senderBox" Text="" HorizontalAlignment="Left" Margin="220,135,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsEnabled="False" Background = "LightGreen"/>
 			<TextBox x:Name="targetBox" TextChanged="targetBox_TextChanged" HorizontalAlignment="Left" Margin="220,185,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
 			<ComboBox Name="weightSelector" SelectionChanged="weightSelector_SelectionChanged" HorizontalAlignment="Left" Margin="220,235,0,0" VerticalAlignment="Top" Width="120"/>
 			<ComboBox x:Name="prioritySelector" SelectionChanged="prioritySelector_SelectionChanged" HorizontalAlignment="Left" Margin="220,285,0,0" VerticalAlignment="Top" Width="120"/>
-
+			
 		</Grid>
 
-		<Grid x:Name="actionPrcel_grid" Visibility="Visible">
+		<Grid x:Name="actionPrcel_grid" Visibility="Hidden">
 			<Grid.Background>
 				<ImageBrush ImageSource="/picture/parcelDeliver.png" AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="Fill" />
 			</Grid.Background>
 			<Label Name="parcelDetails" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="370" Width="auto"  FontFamily="david" FontWeight="DemiBold" />
 			<Button x:Name="parcelShip_Button" Click="parcelShip_Button_Click" HorizontalAlignment="Right" Margin="0,0,130,50" VerticalAlignment="Bottom" Width="auto" Height="35" Background="LawnGreen" FontFamily="Comic Sans MS" FontWeight="DemiBold"/>
 			<Button x:Name="close_" Content="Close" Click="Cancel_Click" HorizontalAlignment="Left" Margin="130,0,0,50" VerticalAlignment="Bottom" Width="120" Height="35" Background="OrangeRed" FontFamily="Comic Sans MS" FontWeight="DemiBold"/>
+			<Button x:Name="RemoveParcel" Content="Delete parcel" Click="RemoveParcel_Click" HorizontalAlignment="Left" Margin="50,0,0,50" VerticalAlignment="Center"  Width="100" Height="30" Background="PaleVioletRed" FontFamily="Comic Sans MS" FontWeight="DemiBold" Visibility="Hidden"/>
 		</Grid>
 	</Grid>
 </Window>

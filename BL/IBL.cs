@@ -20,6 +20,7 @@ namespace BlApi
 		public void UpdateCustomer(int customerId, string name = null, string phone = null);
 		public void DroneToCharge(int droneId);
 		public void DroneLeaveCharge(int droneId);
+		public void DeleteParcel(int parcelId);
 		public bool AffectParcelToDrone(int droneId);
 		public void ParcelCollection(int droneId);
 		public void ParcelDeliverd(int droneId);

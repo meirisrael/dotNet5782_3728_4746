@@ -105,10 +105,14 @@ namespace BO
 	{
 		public AlreadyDelivered() : base("IBL-ERROR: This parcel has already been delivered\n") { }
 	}
-	
 	public class AllParcelAssoc : Exception// if all parcel is alredy associated
 	{
 		public AllParcelAssoc() : base("IBL: ALL PARCEL ALREDY ASSOCIATED\n") { }
+	}
+	// the parcel cant be removed 
+	public class CantRemove : Exception
+	{
+		public CantRemove(string ms) : base($"{ms}\nIBL ERROR: THE PARCEL CAN'T BE REMOVED BECAUSE IS ALREADY SCHEDULED TO A DRONE\n") { }
 	}
 
 	// exceptions specific for parcel

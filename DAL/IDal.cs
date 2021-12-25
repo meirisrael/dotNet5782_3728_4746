@@ -13,8 +13,10 @@ namespace DalApi
 		public void AddDrone(int id,string model, DO.WeightCategories weight);
 		public void AddCustomer(int id,string name, string phone, double longi, double lati);
 		public void AddParcel(int id, int senderId, int targetId, int droneId, DO.WeightCategories weight, DO.Priorities priorities);
+		
 		//method - action on drone and parcel
 		public void AssignParcelToDrone(int parcelId, int droneId);
+		public void DeleteParcel(int parcelId);
 		public void ParcelOnDrone(int parcelId);
 		public void ParcelDelivered(int parcelId);
 		//method- drone to charge,leav charge

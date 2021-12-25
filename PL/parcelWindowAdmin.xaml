@@ -38,6 +38,7 @@
 			<Button Content="Sender details" Click="senderDetails_Click" HorizontalAlignment="Left" Margin="50,80,0,0" VerticalAlignment="Top" Width="100" Height="30" FontFamily="Comic Sans MS" FontWeight="DemiBold" Background="PaleVioletRed"/>
 			<Button Content="Target details" Click="targetDetails_Click" HorizontalAlignment="Left" Margin="50,150,0,0" VerticalAlignment="Top" Width="100" Height="30" FontFamily="Comic Sans MS" FontWeight="DemiBold" Background="BlueViolet"/>
 			<Button Name="drone_Button" Content="Drone details" Click="droneDetails_Click" HorizontalAlignment="Left" Margin="50,220,0,0" VerticalAlignment="Top" Width="100" Height="30" FontFamily="Comic Sans MS" FontWeight="DemiBold" Background="LightGreen"/>
+			<Button x:Name="RemoveParcel" Content="Delete parcel" Click="RemoveParcel_Click" HorizontalAlignment="Left" Margin="50,290,0,0" VerticalAlignment="Top"  Width="100" Height="30" Background="NavajoWhite" FontFamily="Comic Sans MS" FontWeight="DemiBold" Visibility="Hidden"/>
 
 		</Grid>
 	</Grid>

@@ -131,11 +131,12 @@ namespace PL
 				add_button.IsEnabled = true;
 			else
 				add_button.IsEnabled = false;
-		}/// <summary>
-		 /// button "ADD" become available if all fives Textbox are filled
-		 /// </summary>
-		 /// <param name="sender"></param>
-		 /// <param name="e"></param>
+		}
+		/// <summary>
+		/// button "ADD" become available if all fives Textbox are filled
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void LongitudeBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			LongitudeBox.Background = Brushes.LightGreen;
@@ -250,10 +251,13 @@ namespace PL
 			else
 			{
 				new ParcelWindowAdmin(bl, (BO.ParcelToList)parcelListView.SelectedItem).ShowDialog();
+				parcelListView.ItemsSource = bl.GetListOfParcels(p => p.SenderId == customer.Id);
+				customer = bl.GetCustomer(customer.Id);
+				customerLabel.Content = customer.ToString();
 			}
 		}
+		
 		//Close button to quit the page
 		private void Cancel_Click(object sender, RoutedEventArgs e) => Close();
-
 	}
 }

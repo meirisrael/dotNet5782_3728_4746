@@ -70,6 +70,8 @@ namespace PL
 			actionPrcel_grid.Visibility = Visibility.Visible;
 			bl = ibl;
 			parcel = bl.GetParcel(p.Id);
+			if (parcel.Scheduled == null)
+				RemoveParcel.Visibility = Visibility.Visible;
 			parcelDetails.Content = parcel.ToString();
 			shippingButton();
 			if (parcel.Delivered != null || parcel.Scheduled == null)
@@ -206,6 +208,24 @@ namespace PL
 			parcel = bl.GetParcel(parcel.Id);
 			parcelDetails.Content = parcel.ToString();
 		}
+		/// <summary>
+		/// if the user want to delte the parcel
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"> click </param>
+		private void RemoveParcel_Click(object sender, RoutedEventArgs e)
+		{
+			try
+			{
+				bl.DeleteParcel(parcel.Id);
+				MessageBox.Show("Successfuly deleted", "Successfull");
+				Close();
+			}
+			catch (BO.CantRemove)
+			{
+				MessageBox.Show("Parcel cant be removed", "ERROR");
+			}
+		}
 
 		/// <summary>
 		/// set which functionality the button has according to the parcel data
@@ -291,5 +311,6 @@ namespace PL
 		/// <param name="e"> click </param>
 		private void Cancel_Click(object sender, RoutedEventArgs e) => Close();
 
+		
 	}
 }

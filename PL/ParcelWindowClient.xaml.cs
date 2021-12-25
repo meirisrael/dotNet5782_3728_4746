@@ -51,13 +51,14 @@ namespace PL
 		/// ctor add new parcel
 		/// </summary>
 		/// <param name="ibl"></param>
-		public ParcelWindowClient(BlApi.IBL ibl)
+		public ParcelWindowClient(BlApi.IBL ibl ,BO.Customer c)
 		{
 			InitializeComponent();
 			bl = ibl;
 			addParcel_grid.Visibility = Visibility.Visible;
 			weightSelector.ItemsSource = Enum.GetValues(typeof(BO.WeightCategories));
 			prioritySelector.ItemsSource = Enum.GetValues(typeof(BO.Priorities));
+			senderBox.Text = c.Id.ToString();
 		}
 		/// <summary>
 		/// ctor update data of parcel and see details 
@@ -70,6 +71,8 @@ namespace PL
 			actionPrcel_grid.Visibility = Visibility.Visible;
 			bl = ibl;
 			parcel = bl.GetParcel(p.Id);
+			if (parcel.Scheduled == null)
+				RemoveParcel.Visibility = Visibility.Visible;
 			parcelDetails.Content = parcel.ToString();
 			shippingButton();
 		}
@@ -167,6 +170,24 @@ namespace PL
 				shippingButton();
 			}
 		}
+		/// <summary>
+		/// if the user want to delte the parcel
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"> click </param>
+		private void RemoveParcel_Click(object sender, RoutedEventArgs e)
+		{
+			try
+			{
+				bl.DeleteParcel(parcel.Id);
+				MessageBox.Show("Successfuly deleted", "Successfull");
+				Close();
+			}
+			catch (BO.CantRemove)
+			{
+				MessageBox.Show("Parcel cant be removed", "ERROR");
+			}
+		}
 
 		/// <summary>
 		/// set which functionality the button has according to the parcel data
@@ -251,5 +272,7 @@ namespace PL
 		/// <param name="sender"></param>
 		/// <param name="e"> click </param>
 		private void Cancel_Click(object sender, RoutedEventArgs e) => Close();
+
+		
 	}
 }

@@ -21,12 +21,12 @@ namespace PL
 	public partial class ClientWindow : Window
 	{
 		private BlApi.IBL bl;
-		private BO.CustomerToList customer;
+		private BO.Customer customer;
 		public ClientWindow(BlApi.IBL ibl, BO.CustomerToList c)
 		{
 			InitializeComponent();
 			bl = ibl;
-			customer = c;
+			customer = bl.GetCustomer(c.Id);
 		}
 
 		/// <summary>
@@ -48,9 +48,14 @@ namespace PL
 			new CustomerWindowClient(bl, customer).ShowDialog();
 		}
 
+		/// <summary>
+		/// add new parcel
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"> click </param>
 		private void Parcels_Click(object sender, RoutedEventArgs e)
 		{
-			new ParcelWindowClient(bl).ShowDialog();
+			new ParcelWindowClient(bl,customer).ShowDialog();
 		}
 	}
 }

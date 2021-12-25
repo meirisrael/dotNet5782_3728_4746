@@ -194,6 +194,22 @@ namespace DalObject
 			}
 		}
 		/// <summary>
+		/// if the user add new parcel and yet is not assigne to a drone and want to delete him
+		/// </summary>
+		/// <param name="parcelId"></param>
+		public void DeleteParcel(int parcelId)
+		{
+			DO.Parcel p = new DO.Parcel();
+			if (parcelId <= 0) throw new DO.InvalidId("PARCEL");
+			if (!DataSource.parcels.Exists(p => p.Id == parcelId)) throw new DO.IdNotExist("PARCEL");
+			else p = DataSource.parcels.Find(p => p.Id == parcelId);
+
+			if (p.Scheduled == null)
+				DataSource.parcels.Remove(p);
+			else throw new DO.CantRemove();
+
+		}
+		/// <summary>
 		/// change the PickedUp date of a given parcel by the present time and change the status of the related drone to "shipping"
 		/// </summary>
 		/// <param name="parcelId"></param>

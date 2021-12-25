@@ -586,6 +586,20 @@ namespace BL
 			dal.DroneLeaveChargeStation(droneId, baseStation.Id);//base station- charge slot++ and remove the drone from the list "drone charge"
 		}
 		/// <summary>
+		/// if the user add new parcel and yet is not assigne to a drone and want to delete him
+		/// </summary>
+		/// <param name="parcelId"></param>
+		public void DeleteParcel(int parcelId)
+		{
+			try
+			{
+				dal.DeleteParcel(parcelId);
+			}
+			catch (DO.InvalidId ex) { throw new BO.InvalidId(ex.Message); }
+			catch (DO.IdNotExist ex) { throw new BO.IdNotExist(ex.Message); }
+			catch (DO.CantRemove ex) { throw new BO.CantRemove(ex.Message); }
+		}
+		/// <summary>
 		/// the func associte the parcel to a drone
 		/// </summary>
 		/// <param name="droneId"></param>
