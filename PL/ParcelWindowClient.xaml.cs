@@ -200,6 +200,7 @@ namespace PL
 		{
 			if (parcel.Scheduled != null)
 				parcelShip_Button.Content = "Collection confirmation";
+			else parcelShip_Button.Visibility = Visibility.Hidden;
 			if (parcel.PickedUp != null)
 				parcelShip_Button.Content = "Confirmation of delivery";
 			if (parcel.Delivered != null)

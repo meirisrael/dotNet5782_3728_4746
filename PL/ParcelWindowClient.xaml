@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Parcel Window" Height="500" Width="800" Icon="icon\logo_company.ico">
 	<Grid>
-		<Grid x:Name="addParcel_grid" Visibility="Visible">
+		<Grid x:Name="addParcel_grid" Visibility="Hidden">
 			<Grid.Background>
 				<ImageBrush ImageSource="/picture/sentParcel.png" AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="Fill" />
 			</Grid.Background>

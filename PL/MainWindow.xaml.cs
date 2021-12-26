@@ -62,7 +62,7 @@ namespace PL
 			foreach (BO.CustomerToList item in ibl.GetListOfCustomers())
 			{
 				if (userIdBox.Text == item.Id.ToString() && passwordBox.Password == (item.Name + item.Id.ToString()))
-				{ new ClientWindow(ibl, item).Show(); flag = true; Close(); }
+				{ new ClientWindow(ibl, item).Show(); flag = true; }
 
 			}
 			if (!flag)
@@ -115,10 +115,7 @@ namespace PL
 		private void AdminConnect_Click(object sender, RoutedEventArgs e)
 		{
 			if ((AdminIdBox.Text == meir.userId.ToString() && AdminpasswordBox.Password == meir.Password) || (AdminIdBox.Text == lior.userId.ToString() && AdminpasswordBox.Password == lior.Password))
-			{
 				new AdminWindow(ibl).Show();
-				Close();
-			}
 			else
 			{
 				MessageBox.Show("the userId or password is incorect", "ERROR");
