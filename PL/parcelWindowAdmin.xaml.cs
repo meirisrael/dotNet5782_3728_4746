@@ -215,15 +215,19 @@ namespace PL
 		/// <param name="e"> click </param>
 		private void RemoveParcel_Click(object sender, RoutedEventArgs e)
 		{
-			try
+			MessageBoxResult result = MessageBox.Show("Are you sure to delete", "Deleting Customer", MessageBoxButton.YesNo);
+			if (result == MessageBoxResult.Yes)
 			{
-				bl.DeleteParcel(parcel.Id);
-				MessageBox.Show("Successfuly deleted", "Successfull");
-				Close();
-			}
-			catch (BO.CantRemove)
-			{
-				MessageBox.Show("Parcel cant be removed", "ERROR");
+				try
+				{
+					bl.DeleteParcel(parcel.Id);
+					MessageBox.Show("Successfuly deleted", "Successfull");
+					Close();
+				}
+				catch (BO.CantRemove)
+				{
+					MessageBox.Show("Parcel cant be removed", "ERROR");
+				}
 			}
 		}
 
