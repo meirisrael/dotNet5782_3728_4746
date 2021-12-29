@@ -163,6 +163,7 @@ namespace PL
 			else
 			{
 				new droneWindow(bl, (BO.DroneToList)DroneListView.SelectedItem).ShowDialog();
+
 				drones = bl.GetListOfDrones(d => true);
 				DroneListView.ItemsSource = drones;
 				filterByStatus();
@@ -176,13 +177,13 @@ namespace PL
 			else
 			{
 				new droneWindow(bl, (BO.DroneToList)DroneListViewGrouping.SelectedItem).ShowDialog();
-				drones = bl.GetListOfDrones(d => true);
 				
-				filterByStatus();
-				filterByWeight();
+				drones = bl.GetListOfDrones(d => true);
 				DroneListViewGrouping.ItemsSource = drones;
 				CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(DroneListViewGrouping.ItemsSource);
 				PropertyGroupDescription groupDescription = new PropertyGroupDescription("Status");
+				filterByStatus();
+				filterByWeight();
 			}
 		}
 

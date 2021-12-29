@@ -59,8 +59,6 @@ namespace PL
 			bl = ibl;
 			BaseStation = bl.GetBaseStation(b.Id);
 			action_base_Grid.Visibility = Visibility.Visible;
-			if (BaseStation.DroneInCharge.Count == 0)
-				delete_base.IsEnabled = true;
 			Base_details.Content =BaseStation.ToString();
 			if (BaseStation.DroneInCharge.Count != 0)
 			{
@@ -191,22 +189,11 @@ namespace PL
 				else
 					droneListView.Visibility = Visibility.Hidden;
 				Base_details.Content = BaseStation.ToString();
-				if (BaseStation.DroneInCharge.Count == 0)
-					delete_base.IsEnabled = true;
 			}
 			catch (Exception)
 			{ MessageBox.Show("Choose a drone !!", "ERROR"); }
 		}
-		/// <summary>
-		/// only if no one drone in the base station the user can delete it
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void delete_Click(object sender, RoutedEventArgs e)
-		{
-			MessageBoxResult result = MessageBox.Show("Are you sure to delete", "Deleting Customer", MessageBoxButton.YesNo);
-			//bl.GetBaseStation(BaseStation.Id)
-		}
+		
 
 		/// <summary>
 		/// if the user want to upadate name or num of charge slots for this base station

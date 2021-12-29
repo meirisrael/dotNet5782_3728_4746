@@ -238,7 +238,12 @@ namespace PL
 		{
 			if (parcel.Scheduled != null)
 				parcelShip_Button.Content = "Collection confirmation";
-			else parcelShip_Button.Visibility = Visibility.Hidden;
+			else
+			{
+				parcelShip_Button.Visibility = Visibility.Hidden;
+				close_.HorizontalAlignment = HorizontalAlignment.Center;
+				close_.Margin = new(0, 0, 0, 50);
+			}
 			if (parcel.PickedUp != null)
 				parcelShip_Button.Content = "Confirmation of delivery";
 			if (parcel.Delivered != null)

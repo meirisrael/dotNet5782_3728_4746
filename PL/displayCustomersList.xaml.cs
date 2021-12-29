@@ -81,6 +81,7 @@ namespace PL
 				CustomerlistView.ItemsSource = customers;
 			}
 		}
+		
 		// button add to add a new customer
         private void Add_Click(object sender, RoutedEventArgs e)
         {
