@@ -20,7 +20,7 @@ namespace DAL
 				case "List"://if list type
 					lock (LockObj)//thread safe
 					{
-						return DalObject.DalObject.GetInstance;//singeltone
+						return Dal.DalObject.GetInstance;//singeltone
 					}
 				case "XML"://if XML type
 
