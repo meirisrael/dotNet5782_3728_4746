@@ -50,6 +50,10 @@ namespace DO
 	{
 		public NegativeDroneId() : base("DAL-ERROR: THE DRONE ID NEED TO BE POSITIVE OR ZERO->NOT ASSIGNE TO AN SPECIFIC DRONE OR, BIGEER THAN ZERO->ASSIGNE TO AN SPECIFIC DRONE\n") { }
 	}
+	public class DroneNotInCharge : Exception// if the drone is not charging right now
+	{
+		public DroneNotInCharge() : base("DAL-ERROR: ERROR IN THE DATA BASE THE DRONE IS NOT CHARGE\n") { }
+	}
 
 	// exceptions for Weight that drone can't take
 	public class ParcelTooHeavy : Exception//if the parcel is too heavy and the drone cant take
@@ -72,5 +76,11 @@ namespace DO
 	public class FactoryError : Exception
 	{
 		public FactoryError() : base("DAL-ERROR: ONLY TWO FACTORY ARE EXISTS\n") { }
+	}
+
+	public class XMLFileLoadCreate : Exception
+	{
+		string type;
+		public XMLFileLoadCreate(string type_, string msg) : base($"DAL-ERROR: {msg}\n") { type = type_; }
 	}
 }

@@ -85,7 +85,7 @@ namespace BO
 	}
 	public class DroneNotInCharge : Exception// if the drone is not charging right now
 	{
-		public DroneNotInCharge() : base("IBL-ERROR: ERROR IN THE DATA BASE AN DRONE IS NOT CHARGE\n") { }
+		public DroneNotInCharge() : base("IBL-ERROR: ERROR IN THE DATA BASE THE DRONE IS NOT CHARGE\n") { }
 	}
 
 	// exceptions specific for parcel

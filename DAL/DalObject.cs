@@ -158,23 +158,10 @@ namespace Dal
 				throw new DO.IdNotExist("PARCEL");
 			if(!DataSource.drones.Exists(item => item.Id == droneId))
 				throw new DO.IdNotExist("DRONE");
-				
-			foreach (DO.Parcel item in DataSource.parcels)
-			{
-				if (item.Id == parcelId)
-				{
-					p = item;
-					break;
-				}
-			}
-			foreach (DO.Drone item in DataSource.drones)
-			{
-				if (item.Id == droneId)
-				{
-					d = item;
-					break;
-				}
-			}
+
+			p = GetParcel(parcelId);
+			d = GetDrone(droneId);
+
 			if (d.MaxWeight != p.Weight)
 			{
 				if (d.MaxWeight == DO.WeightCategories.Light && (p.Weight == DO.WeightCategories.Medium || p.Weight == DO.WeightCategories.Medium))
@@ -285,7 +272,8 @@ namespace Dal
 				throw new DO.IdNotExist("DRONE");
 			if(!DataSource.baseStations.Exists(item => item.Id == baseId))
 				throw new DO.IdNotExist("BASE-STATION");
-
+			if (!DataSource.droneCharges.Exists(item => item.DroneId == droneId)
+				throw new DO.DroneNotInCharge();
 			for (int i = 0; i < DataSource.baseStations.Count; i++)
 			{
 				if (DataSource.baseStations[i].Id == baseId)
@@ -422,7 +410,7 @@ namespace Dal
 			for (int i = 0; i < DataSource.baseStations.Count(); i++)
 			{
 				if (DataSource.baseStations[i].Id == baseStation.Id)
-				{ 
+				{
 					DataSource.baseStations[i] = baseStation; break;
 				}
 			}
