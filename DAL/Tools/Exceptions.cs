@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DO
 {
-
+	#region exceptions - problem with id
 	// exceptions - problem with id
 	public class IdExist : Exception//id of drone, base.... exist
 	{
@@ -23,11 +23,44 @@ namespace DO
 		public InvalidId(string type_) : base($"DAL-ERROR: ID OF {type_} TO BE BIGGER THAN ZERO\n") { this._type = type_; }
 		public string _type;
 	}
+	#endregion
+	
+
+	#region exceptions specific for drone
+	// exceptions specific for drone
+	public class NegativeDroneId : Exception//if the user give an negative value when he need to give a drone id for parcel
+	{
+		public NegativeDroneId() : base("DAL-ERROR: THE DRONE ID NEED TO BE POSITIVE OR ZERO->NOT ASSIGNE TO AN SPECIFIC DRONE OR, BIGEER THAN ZERO->ASSIGNE TO AN SPECIFIC DRONE\n") { }
+	}
+	public class DroneNotInCharge : Exception// if the drone is not charging right now
+	{
+		public DroneNotInCharge() : base("DAL-ERROR: ERROR IN THE DATA BASE THE DRONE IS NOT CHARGE\n") { }
+	}
+	// exceptions for Weight that drone can't take
+	public class ParcelTooHeavy : Exception//if the parcel is too heavy and the drone cant take
+	{
+		public ParcelTooHeavy() : base("DAL-ERROR: THE CATEGORIE OF PARCEL IS TOO HEAVY AND THE DRONE CAN'T TAKE THEM\n") { }
+	}
+	#endregion
+
+
+	#region exceptions specific for parcel
+	// exceptions specific for parcel
+	public class SenderTargetIdEqual : Exception
+	{
+		public SenderTargetIdEqual() : base("DAL-ERROR: THE TARGET AND THE SENDER IS THE SAME PERSON\n") { }
+	}
+	// the parcel cant be removed 
+	public class CantRemove : Exception
+	{
+		public CantRemove() : base("DAL ERROR: THE PARCEL CAN'T BE REMOVED BECAUSE IS ALREADY SCHEDULED TO A DRONE\n") { }
+	}
+	#endregion
 
 	//the range of longi or lati is not correct 
 	public class InvalidLoc : Exception
 	{
-		public InvalidLoc(string type_, string range_) : base($"DAL-ERROR: {type_} NEED TO BE BEHTWEEN {range_}\n") { this._type = type_;this.range = range_; }
+		public InvalidLoc(string type_, string range_) : base($"DAL-ERROR: {type_} NEED TO BE BEHTWEEN {range_}\n") { this._type = type_; this.range = range_; }
 		public string _type;
 		public string range;
 	}
@@ -44,34 +77,6 @@ namespace DO
 	{
 		public InvalidChargeSlot() : base("DAL-ERROR: CHARGE SLOT NEED TO BE BIGGER THAN ZERO OR EQUAL TO ZERO\n") { }
 	}
-
-	// exceptions specific for drone
-	public class NegativeDroneId : Exception//if the user give an negative value when he need to give a drone id for parcel
-	{
-		public NegativeDroneId() : base("DAL-ERROR: THE DRONE ID NEED TO BE POSITIVE OR ZERO->NOT ASSIGNE TO AN SPECIFIC DRONE OR, BIGEER THAN ZERO->ASSIGNE TO AN SPECIFIC DRONE\n") { }
-	}
-	public class DroneNotInCharge : Exception// if the drone is not charging right now
-	{
-		public DroneNotInCharge() : base("DAL-ERROR: ERROR IN THE DATA BASE THE DRONE IS NOT CHARGE\n") { }
-	}
-
-	// exceptions for Weight that drone can't take
-	public class ParcelTooHeavy : Exception//if the parcel is too heavy and the drone cant take
-	{
-		public ParcelTooHeavy() : base("DAL-ERROR: THE CATEGORIE OF PARCEL IS TOO HEAVY AND THE DRONE CAN'T TAKE THEM\n") { }
-	}
-
-	// exceptions specific for parcel
-	public class SenderTargetIdEqual : Exception
-	{
-		public SenderTargetIdEqual() : base("DAL-ERROR: THE TARGET AND THE SENDER IS THE SAME PERSON\n") { }
-	}
-	// the parcel cant be removed 
-	public class CantRemove : Exception
-	{
-		public CantRemove() : base("DAL ERROR: THE PARCEL CAN'T BE REMOVED BECAUSE IS ALREADY SCHEDULED TO A DRONE\n") { }
-	}
-
 	// if not request the right factory 
 	public class FactoryError : Exception
 	{

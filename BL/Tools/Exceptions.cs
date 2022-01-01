@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace BO
 {
+	#region exceptions - problem with id
 	// exceptions - problem with id
 	public class IdExist : Exception//id of drone, base.... exist
 	{
@@ -25,35 +26,9 @@ namespace BO
 		public InvalidId(string type_) : base($"IBL-ERROR: ID OF {type_} TO BE BIGGER THAN ZERO\n") { type = type_; }
 		public InvalidId(string ms, string type_) : base($"{ms}\nIBL-ERROR: ID OF {type_} TO BE BIGGER THAN ZERO\n") { type = type_; }
 	}
+	#endregion
 
-	//the range of longi or lati is not correct 
-	public class InvalidLoc : Exception
-	{
-		public string type;
-		public string range;
-		public InvalidLoc(string type_, string range_) : base($"IBL-ERROR: {type_} NEED TO BE BEHTWEEN {range_}\n") { type = type_;range = range_; }
-		public InvalidLoc(string ms, string type_, string range_) : base($"{ms}\nIBL-ERROR: {type_} NEED TO BE BEHTWEEN {range_}\n") { type = type_; range = range_; }
-	}
-
-	// exceptions - problem with Categories
-	public class InvalidCategory : Exception//WEIGHT PRIORITIES
-	{
-		public InvalidCategory(string type_) : base($"IBL-ERROR: THIS OPTION FOR {type_} IS NOT EXIST, YOU NEED TO GIVE AN OPTION BETWEEN 1 TO 3\n") { }
-		public InvalidCategory(string ms, string type_) : base($"{ms}\nIBL-ERROR: THIS OPTION FOR {type_} IS NOT EXIST, YOU NEED TO GIVE AN OPTION BETWEEN 1 TO 3\n") { }
-	}
-	//if the name not exist
-	public class NameNotExist : Exception
-	{
-		public NameNotExist(string type_) : base($"IBL-ERROR: THIS {type_} NAME DO NOT EXIST\n") { }
-	}
-
-	// if user inser negativ value for charge slots
-	public class InvalidChargeSlot : Exception
-	{
-		public InvalidChargeSlot(string ms) : base($"{ms}\nIBL-ERROR: CHARGE SLOT NEED TO BE BIGGER THAN ZERO OR EQUAL TO ZERO\n") { }
-		public InvalidChargeSlot() : base("IBL-ERROR: CHARGE SLOT NEED TO BE BIGGER THAN ZERO OR EQUAL TO ZERO\n") { }
-	}
-
+	#region exceptions specific for drone
 	// exceptions specific for drone
 	public class NegativeDroneId : Exception//if the user give an negative value when he need to give a drone id for parcel
 	{
@@ -87,7 +62,9 @@ namespace BO
 	{
 		public DroneNotInCharge() : base("IBL-ERROR: ERROR IN THE DATA BASE THE DRONE IS NOT CHARGE\n") { }
 	}
+	#endregion
 
+	#region exceptions specific for parcel
 	// exceptions specific for parcel
 	public class AlreadyPickedUp : Exception//if the parcel alredy  picked up
 	{
@@ -109,18 +86,17 @@ namespace BO
 	{
 		public AllParcelAssoc() : base("IBL: ALL PARCEL ALREDY ASSOCIATED\n") { }
 	}
-	// the parcel cant be removed 
-	public class CantRemove : Exception
+	public class CantRemove : Exception // the parcel cant be removed 
 	{
 		public CantRemove(string ms) : base($"{ms}\nIBL ERROR: THE PARCEL CAN'T BE REMOVED BECAUSE IS ALREADY SCHEDULED TO A DRONE\n") { }
 	}
-
-	// exceptions specific for parcel
 	public class SenderTargetIdEqual : Exception
 	{
 		public SenderTargetIdEqual() : base("DAL-ERROR: THE TARGET AND THE SENDER IS THE SAME PERSON\n") { }
 	}
+	#endregion
 
+	#region  exceptions for Weight that drone can't take
 	// exceptions for Weight that drone can't take
 	public class ParcelTooHeavy : Exception//if the parcel is too heavy and the drone cant take 
 	{
@@ -129,6 +105,35 @@ namespace BO
 	public class DistanceTooBigger: Exception//if the distance betwwen two customer is too bigger
 	{
 		public DistanceTooBigger(): base("IBL-ERROR: THE DISTANCE IS TOO BIGGER AND WE CAN'T DO THE SHIPPING SORRY\n"){ }
+	}
+	#endregion
+
+	//the range of longi or lati is not correct 
+	public class InvalidLoc : Exception
+	{
+		public string type;
+		public string range;
+		public InvalidLoc(string type_, string range_) : base($"IBL-ERROR: {type_} NEED TO BE BEHTWEEN {range_}\n") { type = type_; range = range_; }
+		public InvalidLoc(string ms, string type_, string range_) : base($"{ms}\nIBL-ERROR: {type_} NEED TO BE BEHTWEEN {range_}\n") { type = type_; range = range_; }
+	}
+
+	// exceptions - problem with Categories
+	public class InvalidCategory : Exception//WEIGHT PRIORITIES
+	{
+		public InvalidCategory(string type_) : base($"IBL-ERROR: THIS OPTION FOR {type_} IS NOT EXIST, YOU NEED TO GIVE AN OPTION BETWEEN 1 TO 3\n") { }
+		public InvalidCategory(string ms, string type_) : base($"{ms}\nIBL-ERROR: THIS OPTION FOR {type_} IS NOT EXIST, YOU NEED TO GIVE AN OPTION BETWEEN 1 TO 3\n") { }
+	}
+	//if the name not exist
+	public class NameNotExist : Exception
+	{
+		public NameNotExist(string type_) : base($"IBL-ERROR: THIS {type_} NAME DO NOT EXIST\n") { }
+	}
+
+	// if user inser negativ value for charge slots
+	public class InvalidChargeSlot : Exception
+	{
+		public InvalidChargeSlot(string ms) : base($"{ms}\nIBL-ERROR: CHARGE SLOT NEED TO BE BIGGER THAN ZERO OR EQUAL TO ZERO\n") { }
+		public InvalidChargeSlot() : base("IBL-ERROR: CHARGE SLOT NEED TO BE BIGGER THAN ZERO OR EQUAL TO ZERO\n") { }
 	}
 
 	// if not request the right factory 

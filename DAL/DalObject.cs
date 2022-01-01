@@ -24,7 +24,7 @@ namespace Dal
 		public DalObject()
 		{ DataSource.Initialize(); }
 
-		//----------------------------------------------------------------------------------------------------------ADDING-------------------------------------------------------------------------------------------------
+		#region add method
 		/// <summary>
 		/// add a station in baseStation[] created in DataSource with details given by user
 		/// </summary>
@@ -143,8 +143,9 @@ namespace Dal
 				Delivered = null
 			});
 		}
+		#endregion
 
-		//---------------------------------------------------------------------------------------------------------UPDATE--------------------------------------------------------------------------------------------------
+		#region method - action on drone and parcel
 		/// <summary>
 		/// add a drone Id in droneId field from a parcel given by the user
 		/// </summary>
@@ -272,7 +273,7 @@ namespace Dal
 				throw new DO.IdNotExist("DRONE");
 			if(!DataSource.baseStations.Exists(item => item.Id == baseId))
 				throw new DO.IdNotExist("BASE-STATION");
-			if (!DataSource.droneCharges.Exists(item => item.DroneId == droneId)
+			if (!DataSource.droneCharges.Exists(item => item.DroneId == droneId))
 				throw new DO.DroneNotInCharge();
 			for (int i = 0; i < DataSource.baseStations.Count; i++)
 			{
@@ -293,8 +294,68 @@ namespace Dal
 			}
 
 		}
+		#endregion
 
-		//---------------------------------------------------------------------------------------------------AN SPECIFIC OBJECT-------------------------------------------------------------------------------------------
+		#region method - update data of an object
+		/// <summary>
+		/// the func change the name of the model drone by his id
+		/// </summary>
+		/// <param name="drone"></param>
+		public void UpdateDrone(DO.Drone drone)
+		{
+			for (int i = 0; i < DataSource.drones.Count(); i++)
+			{
+				if (DataSource.drones[i].Id == drone.Id)
+				{
+					DataSource.drones[i] = drone; break;
+				}
+			}
+		}
+		/// <summary>
+		/// the func update some data in the data base
+		/// </summary>
+		/// <param name="baseStation"></param>
+		public void UpdateBaseStation(DO.BaseStation baseStation)
+		{
+			for (int i = 0; i < DataSource.baseStations.Count(); i++)
+			{
+				if (DataSource.baseStations[i].Id == baseStation.Id)
+				{
+					DataSource.baseStations[i] = baseStation; break;
+				}
+			}
+		}
+		/// <summary>
+		/// update data of customer
+		/// </summary>
+		/// <param name="customer"></param>
+		public void UpdateCustomer(DO.Customer customer)
+		{
+			for (int i = 0; i < DataSource.customers.Count(); i++)
+			{
+				if (DataSource.customers[i].Id == customer.Id)
+				{
+					DataSource.customers[i] = customer; break;
+				}
+			}
+		}
+		/// <summary>
+		/// update date of parcel
+		/// </summary>
+		/// <param name="parcel"></param>
+		public void UpdateParcel(DO.Parcel parcel)
+		{
+			for (int i = 0; i < DataSource.parcels.Count(); i++)
+			{
+				if (DataSource.parcels[i].Id == parcel.Id)
+				{
+					DataSource.parcels[i] = parcel; break;
+				}
+			}
+		}
+		#endregion
+
+		#region method- get a specific object by his Id
 		/// <summary>
 		/// for a given base station Id, display it details
 		/// </summary>
@@ -351,8 +412,9 @@ namespace Dal
 			}
 			throw new DO.IdNotExist("PARCEL");
 		}
+		#endregion
 
-		//---------------------------------------------------------------------------------------------------LIST OF AN OBJECT--------------------------------------------------------------------------------------------
+		#region method - return a IEnumerable list of object
 		/// <summary>
 		/// display the details of all base stations
 		/// </summary>
@@ -385,65 +447,10 @@ namespace Dal
 		{
 			return DataSource.parcels.FindAll(f);
 		}
+		#endregion
+		
 
-		//--------------------------------------------------------------------------------------------------------SETTER-----------------------------------------------------------------------------------------
-		/// <summary>
-		/// the func change the name of the model drone by his id
-		/// </summary>
-		/// <param name="drone"></param>
-		public void UpdateDrone(DO.Drone drone)
-		{
-			for (int i = 0; i < DataSource.drones.Count(); i++)
-			{
-				if (DataSource.drones[i].Id == drone.Id)
-				{	
-					DataSource.drones[i] = drone; break;
-				}
-			}
-		}
-		/// <summary>
-		/// the func update some data in the data base
-		/// </summary>
-		/// <param name="baseStation"></param>
-		public void UpdateBaseStation(DO.BaseStation baseStation)
-		{
-			for (int i = 0; i < DataSource.baseStations.Count(); i++)
-			{
-				if (DataSource.baseStations[i].Id == baseStation.Id)
-				{
-					DataSource.baseStations[i] = baseStation; break;
-				}
-			}
-		}
-		/// <summary>
-		/// update data of customer
-		/// </summary>
-		/// <param name="customer"></param>
-		public void UpdateCustomer(DO.Customer customer)
-		{
-			for (int i = 0; i < DataSource.customers.Count(); i++)
-			{
-				if (DataSource.customers[i].Id == customer.Id)
-				{ 
-					DataSource.customers[i] = customer; break;
-				}
-			}
-		}
-		/// <summary>
-		/// update date of parcel
-		/// </summary>
-		/// <param name="parcel"></param>
-		public void UpdateParcel(DO.Parcel parcel)
-		{
-			for (int i = 0; i < DataSource.parcels.Count(); i++)
-			{
-				if (DataSource.parcels[i].Id == parcel.Id)
-				{
-					DataSource.parcels[i] = parcel; break;
-				}
-			}
-		}
-		//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 		/// <summary>
 		/// the func go to config to take the value of the charging rate and the electricity use
 		/// </summary>
