@@ -48,7 +48,7 @@ namespace Dal
 					Longitude = r.Next(-180, 181) * r.NextDouble()  //(r.Next(-180, 181) * r.NextDouble())%3.7 +29.5 shipping only israel
 				});
 				XmlTools.SaveListToXMLSerializer<DO.BaseStation>(baseStations, baseStationPath);
-			}		
+			}
 			for (int i = 0; i < 10; i++)//for drone
 			{
 				List<DO.Drone> drones = XmlTools.LoadListFromXMLSerializer<DO.Drone>(dronePath);
@@ -61,7 +61,7 @@ namespace Dal
 				if (i < 9)
 					CounterDrones++;
 				XmlTools.SaveListToXMLSerializer<DO.Drone>(drones, dronePath);
-			}			
+			}
 			for (int i = 0; i < 10; i++)//for customer
 			{
 				List<DO.Customer> customers = XmlTools.LoadListFromXMLSerializer<DO.Customer>(customerPath);

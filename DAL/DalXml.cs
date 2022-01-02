@@ -84,7 +84,7 @@ namespace DalXml
 			XElement drone = new XElement("Drone",
 				new XElement("Id", id),
 				new XElement("Model", model),
-				new XElement("Weight", weight));
+				new XElement("MaxWeight", weight));
 			drones.Add(drone);
 			XmlTools.SaveListToXMLElement(drones, dronePath);
 		}
@@ -432,7 +432,8 @@ namespace DalXml
 			try
 			{
 				drone = (from dr in drones.Elements()
-						 where int.Parse(dr.Element("Id").Value) == droneId
+						 let id= int.Parse(dr.Element("Id").Value)
+						 where id==droneId
 						 select new DO.Drone()
 						 {
 							 Id = int.Parse(dr.Element("Id").Value),
@@ -495,23 +496,21 @@ namespace DalXml
 		public IEnumerable<DO.Drone> GetListDrones(Predicate<DO.Drone> f)
 		{
 			XElement drones = XmlTools.LoadListFromXMLElement(dronePath);
-			List<DO.Drone> dronesList = new List<DO.Drone>();
 
 			try
 			{
-				dronesList = (from dr in drones.Elements()
-							  select new DO.Drone()
-							  {
-								  Id = int.Parse(dr.Element("Id").Value),
-								  Model = dr.Element("Model").Value,
-								  MaxWeight = (DO.WeightCategories)int.Parse(dr.Element("MaxWeight").Value)
-							  }).ToList();
+				return from dr in drones.Elements()
+					   let drCur = new DO.Drone()
+					   {
+						   Id = int.Parse(dr.Element("Id").Value),
+						   Model = dr.Element("Model").Value,
+						   MaxWeight = (DO.WeightCategories)(int.Parse(dr.Element("MaxWeight").Value))
+					   }
+					   where f(drCur)
+					   select drCur;
 			}
 			catch
-			{
-				dronesList = null;
-			}
-			return dronesList;
+			{ return null; }
 		}
 		/// <summary>
 		/// return IEnumerable list of customers 
