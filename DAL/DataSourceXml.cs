@@ -15,6 +15,7 @@ namespace Dal
 		static string customerPath = @"Customer.xml";//the path to the xml file
 		static string dronePath = @"Drone.xml";//the path to the xml file
 		static string parcelPath = @"Parcel.xml";//the path to the xml file
+		static string droneChargePath = @"DroneCharge.xml";//the path to the xml file
 
 		internal class Config
 		{
@@ -98,7 +99,10 @@ namespace Dal
 				});
 				CounterDrones--;
 				XmlTools.SaveListToXMLSerializer<DO.Parcel>(parcels, parcelPath);
-			}			
+			}
+			List<DO.DroneCharge> droneCharge = XmlTools.LoadListFromXMLSerializer<DO.DroneCharge>(droneChargePath);
+			XmlTools.SaveListToXMLSerializer<DO.DroneCharge>(droneCharge,droneChargePath);
+			
 		}
 	}
 }

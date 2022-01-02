@@ -277,13 +277,15 @@ namespace DalXml
 			XElement droneCharges = XmlTools.LoadListFromXMLElement(droneChargePath);
 
 			XElement droneElement = (from dr in drones.Elements()
-									 where int.Parse(dr.Element("Id").Value) == droneId
+									 let drCurId = int.Parse(dr.Element("Id").Value)
+									 where drCurId == droneId
 									 select dr).FirstOrDefault();
 			if (droneElement == null)
 				throw new DO.IdNotExist("DRONE");
-			XElement baseElement = (from bas in drones.Elements()
-									  where int.Parse(bas.Element("Id").Value) == baseId
-									  select bas).FirstOrDefault();
+			XElement baseElement = (from bas in baseStations.Elements()
+									let basCurId = int.Parse(bas.Element("Id").Value)
+									where basCurId == baseId
+									select bas).FirstOrDefault();
 			if (baseElement == null)
 				throw new DO.IdNotExist("BASE-STATION");
 
