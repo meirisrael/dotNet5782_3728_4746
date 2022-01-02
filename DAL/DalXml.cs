@@ -429,23 +429,21 @@ namespace DalXml
 		{
 			XElement drones = XmlTools.LoadListFromXMLElement(dronePath);
 			DO.Drone drone = new DO.Drone();
-			try
-			{
-				drone = (from dr in drones.Elements()
-						 let id= int.Parse(dr.Element("Id").Value)
-						 where id==droneId
-						 select new DO.Drone()
-						 {
-							 Id = int.Parse(dr.Element("Id").Value),
-							 Model = dr.Element("Model").Value,
-							 MaxWeight = (DO.WeightCategories)int.Parse(dr.Element("MaxWeight").Value)
-						 }).FirstOrDefault();
-			}
-			catch
-			{
+
+			drone = (from dr in drones.Elements()
+						let id= int.Parse(dr.Element("Id").Value)
+						where id==droneId
+						select new DO.Drone()
+						{
+							Id = int.Parse(dr.Element("Id").Value),
+							Model = dr.Element("Model").Value,
+							MaxWeight = Enum.Parse<DO.WeightCategories>(dr.Element("MaxWeight").Value)
+						}).FirstOrDefault();
+
+			if(drone.Id==0)
 				throw new DO.IdNotExist("DRONE");
-			}
-			return drone;
+			else
+				return drone;
 		}
 		/// <summary>
 		/// return a customer 
@@ -497,20 +495,15 @@ namespace DalXml
 		{
 			XElement drones = XmlTools.LoadListFromXMLElement(dronePath);
 
-			try
-			{
-				return from dr in drones.Elements()
-					   let drCur = new DO.Drone()
-					   {
-						   Id = int.Parse(dr.Element("Id").Value),
-						   Model = dr.Element("Model").Value,
-						   MaxWeight = (DO.WeightCategories)(int.Parse(dr.Element("MaxWeight").Value))
-					   }
-					   where f(drCur)
-					   select drCur;
-			}
-			catch
-			{ return null; }
+			return from dr in drones.Elements()
+					let drCur = new DO.Drone()
+					{
+						Id = int.Parse(dr.Element("Id").Value),
+						Model = dr.Element("Model").Value,
+						MaxWeight = Enum.Parse<DO.WeightCategories>(dr.Element("MaxWeight").Value)
+					}
+					where f(drCur)
+					select drCur;
 		}
 		/// <summary>
 		/// return IEnumerable list of customers 
