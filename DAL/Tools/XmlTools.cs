@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
-namespace DalXml
+namespace Dal
 {
 	public class XmlTools
 	{
@@ -100,7 +100,7 @@ namespace DalXml
         {
             try
             {
-                if (File.Exists(dir + filePath))
+                if (File.Exists(dir+filePath))
                 {
                     List<T> list;
                     XmlSerializer x = new XmlSerializer(typeof(List<T>));

@@ -23,7 +23,10 @@ namespace DAL
 						return Dal.DalObject.GetInstance;//singeltone
 					}
 				case "XML"://if XML type
-
+					lock (LockObj)//thread safe
+					{
+						return DalXml.DalXml.GetInstance;//singeltone
+					}
 				default:
 					throw new DO.FactoryError();
 			}

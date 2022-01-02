@@ -5,16 +5,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Dal;
 
 namespace DalXml
 {
 	class DalXml : DalApi.IDal
 	{
+		/// <summary>
+		/// lazy initialization
+		/// </summary>
+		internal static readonly Lazy<DalApi.IDal> _instance = new Lazy<DalApi.IDal>(() => new	DalXml());
+		/// <summary>
+		/// return instance value
+		/// </summary>
+		public static DalApi.IDal GetInstance { get { return _instance.Value; } }
+
 		string baseStationPath = @"BaseStation.xml";//the pathe to the xml file
 		string customerPath = @"Customer.xml";//the pathe to the xml file
-		string dronePath = @"Drone.xml";//the pathe to the xml file
+		string dronePath = @"drone.xml";//the pathe to the xml file
 		string droneChargePath = @"DroneCharge.xml";//the pathe to the xml file
 		string parcelPath = @"Parcel.xml";//the pathe to the xml file
+
+		public DalXml()
+		{ DataSourceXml.Initialize(); }
 
 		#region add method
 		//add method
@@ -527,8 +540,14 @@ namespace DalXml
 		/// <returns> return the arr with the value</returns>
 		public double[] GetChargingRate()
 		{
-			//to do
-			return null;
+			DataSourceXml.Config c = new DataSourceXml.Config();
+			double[] arr = new double[5];
+			arr[0] = DataSource.Config.useWhenFree;
+			arr[1] = DataSource.Config.useWhenLightly;
+			arr[2] = DataSource.Config.useWhenMedium;
+			arr[3] = DataSource.Config.useWhenHeavily;
+			arr[4] = c.chargingRate;
+			return arr;
 		}
 	}
 }

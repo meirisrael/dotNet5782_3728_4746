@@ -20,15 +20,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BL", "BL\BL.csproj", "{9AE8
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PL", "PL\PL.csproj", "{B88E6845-DBBA-48D5-8344-B9E17E34729A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{EA1422FF-A650-41C2-A61F-E5B4DFE54421}"
-	ProjectSection(SolutionItems) = preProject
-		BaseStation.xml = BaseStation.xml
-		Customer.xml = Customer.xml
-		Drone.xml = Drone.xml
-		DroneCharge.xml = DroneCharge.xml
-		Parcel.xml = Parcel.xml
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,9 +53,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{EA1422FF-A650-41C2-A61F-E5B4DFE54421} = {E7363D11-A300-4AA7-961B-52E10C2FB3A6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9A91CCEF-129F-4831-8FCF-AD8F7272113B}

@@ -12,7 +12,7 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
             DO.Choice choice=0;
-            DalApi.IDal dal = DAL.DalFactory.GetDal("List");
+            DalApi.IDal dal = DAL.DalFactory.GetDal("XML");
             bool res;
             int intA,intB,intC,intD;
             double doubA,doubB;

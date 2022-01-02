@@ -28,7 +28,7 @@ namespace BL
 		//ctor
 		private BL()
 		{
-			dal = DAL.DalFactory.GetDal("List");
+			dal = DAL.DalFactory.GetDal("XML");
 			getDataCharge();
 			reqListOfDrone();
 			settingDroneByParcel();
