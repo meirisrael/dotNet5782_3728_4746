@@ -49,6 +49,7 @@ namespace DalApi
 		public IEnumerable<DO.Drone> GetListDrones(Predicate<DO.Drone> f); 
 		public IEnumerable<DO.Customer> GetListCustomers();
 		public IEnumerable<DO.Parcel> GetListParcels(Predicate<DO.Parcel> f);
+		public IEnumerable<DO.DroneCharge> GetListDroneCharge(Predicate<DO.DroneCharge> f);
 		#endregion
 
 		//methot return a data about the charge and the electricity use

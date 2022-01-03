@@ -225,7 +225,8 @@ namespace ConsoleUI
                                     " 2 for drones \n" +
                                     " 3 for customers \n" +
                                     " 4 for parcels \n" +
-                                    " 5 for parcels not assigned to a drone \n 6 for base stations with free battery reload places");
+                                    " 5 for parcels not assigned to a drone \n " +
+                                    " 6 for base stations with free battery reload places");
                                 res = Enum.TryParse<DO.DisplayList>(Console.ReadLine(), out displayList);
                                 if (!res) Console.WriteLine("Wrong input");
                             } while (!res);

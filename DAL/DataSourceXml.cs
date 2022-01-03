@@ -30,79 +30,12 @@ namespace Dal
 		/// </summary>
 		public static void Initialize()
 		{
-			int CounterBaseStation = 2000;
-			int CounterDrones = 1000;
-			int CounterCustomer = 3000;
-			int CounterParcel = 4000;
-			string[] name_ = new string[] { "Meir", "Lior", "Hilel", "Mendel", "Chimon", "David", "Loki", "Rephael", "levi", "Nathan" };
-
-			
-			for (int i = 0; i < 2; i++)//for base station
-			{
-				List<DO.BaseStation> baseStations = XmlTools.LoadListFromXMLSerializer<DO.BaseStation>(baseStationPath);
-				baseStations.Add(new DO.BaseStation()
-				{
-					Id = CounterBaseStation++,
-					Name = i,
-					ChargeSlots = r.Next(1, 6),
-					Latitude = r.Next(-90, 91) * r.NextDouble(),    //(r.Next(-90, 91) * r.NextDouble())%1 +34.5,  shipping only israel
-					Longitude = r.Next(-180, 181) * r.NextDouble()  //(r.Next(-180, 181) * r.NextDouble())%3.7 +29.5 shipping only israel
-				});
-				XmlTools.SaveListToXMLSerializer<DO.BaseStation>(baseStations, baseStationPath);
-			}
-			for (int i = 0; i < 10; i++)//for drone
-			{
-				List<DO.Drone> drones = XmlTools.LoadListFromXMLSerializer<DO.Drone>(dronePath);
-				drones.Add(new DO.Drone()
-				{
-					Id = CounterDrones,
-					Model = "Fantome-" + r.Next(4, 6),
-					MaxWeight = (DO.WeightCategories)3
-				});
-				if (i < 9)
-					CounterDrones++;
-				XmlTools.SaveListToXMLSerializer<DO.Drone>(drones, dronePath);
-			}
-			for (int i = 0; i < 10; i++)//for customer
-			{
-				List<DO.Customer> customers = XmlTools.LoadListFromXMLSerializer<DO.Customer>(customerPath);
-				customers.Add(new DO.Customer()
-				{
-					Id = CounterCustomer,
-					Name = name_[i],
-					Phone = (3761 + i).ToString(),
-					Latitude = r.Next(-90, 91) * r.NextDouble(), //(r.Next(-90, 91) * r.NextDouble())%1 +34.5,  shipping only israel
-					Longitude = r.Next(-180, 181) * r.NextDouble() //(r.Next(-180, 181) * r.NextDouble())%3.7 +29.5 shipping only israel
-				});
-				if (i < 9)
-					CounterCustomer++;
-				XmlTools.SaveListToXMLSerializer<DO.Customer>(customers, customerPath);
-			}
-			for (int i = 1; i <= 10; i++)//for parcel
-			{
-				List<DO.Parcel> parcels = XmlTools.LoadListFromXMLSerializer<DO.Parcel>(parcelPath);
-				DateTime? x, z;
-				if (i % 3 == 0) { x = DateTime.Now.AddHours(2); z = x.Value.AddHours(1); }
-				else { x = null; z = null; }
-				parcels.Add(new DO.Parcel()
-				{
-					Id = CounterParcel++,
-					SenderId = i + 3000 - 1,
-					TargetId = CounterCustomer--,
-					Weight = (DO.WeightCategories)(r.Next(1, 4)),
-					Priority = (DO.Priorities)(r.Next(1, 4)),
-					DroneId = CounterDrones,
-					Requested = DateTime.Now,
-					Scheduled = DateTime.Now.AddSeconds(5),
-					PickedUp = x,
-					Delivered = z
-				});
-				CounterDrones--;
-				XmlTools.SaveListToXMLSerializer<DO.Parcel>(parcels, parcelPath);
-			}
-			List<DO.DroneCharge> droneCharge = XmlTools.LoadListFromXMLSerializer<DO.DroneCharge>(droneChargePath);
-			XmlTools.SaveListToXMLSerializer<DO.DroneCharge>(droneCharge,droneChargePath);
-			
+			DataSource.Initialize();
+			XmlTools.SaveListToXMLSerializer<DO.BaseStation>(DataSource.baseStations,baseStationPath);
+			XmlTools.SaveListToXMLSerializer<DO.Drone>(DataSource.drones, dronePath);
+			XmlTools.SaveListToXMLSerializer<DO.DroneCharge>(DataSource.droneCharges, droneChargePath);
+			XmlTools.SaveListToXMLSerializer<DO.Customer>(DataSource.customers, customerPath);
+			XmlTools.SaveListToXMLSerializer<DO.Parcel>(DataSource.parcels, parcelPath);
 		}
 	}
 }

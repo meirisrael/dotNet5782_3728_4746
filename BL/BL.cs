@@ -119,44 +119,77 @@ namespace BL
 			{
 				BO.Location l = new BO.Location();
 				l.Latitude = b.Latitude; l.Longitude = b.Longitude;
-				baseS.Add(new BO.BaseStation { Id = b.Id, Loc = l });
+				baseS.Add(new BO.BaseStation { Id = b.Id, Loc = l, ChargeSlots = b.ChargeSlots });
 			}
-
+			int baseId=0;
 			for (int i = 0; i < droneToList.Count(); i++)
 			{
-				if (droneToList[i].Status != BO.DroneStatuses.Shipping)//if the drone is not in shipping choose random status
+				try
 				{
-					int r = new Random().Next(1, 3);
-					if (r == 1)
-						droneToList[i].Status = BO.DroneStatuses.free;
-					else
-						droneToList[i].Status = BO.DroneStatuses.Maintenance;
+					foreach (var item in dal.GetListDroneCharge(d => true))
+					{
+						if (item.DroneId == droneToList[i].Id)
+						{
+							baseId = item.StationId;
+							throw new BO.AlreadyInCharge();
+						}
+					}
+					if (droneToList[i].Status != BO.DroneStatuses.Shipping)//if the drone is not in shipping choose random status
+					{
+						int r = new Random().Next(1, 3);
+						if (r == 1)
+							droneToList[i].Status = BO.DroneStatuses.free;
+						else
+							droneToList[i].Status = BO.DroneStatuses.Maintenance;
+					}
+					if (droneToList[i].Status == BO.DroneStatuses.Maintenance)//according to the previous "if" now-if the random choose that the drone is in Maintenance
+					{
+						int r = new Random().Next(0, baseS.Count());//choose randome location 
+						if (baseS[r].ChargeSlots > 0)
+						{
+							droneToList[i].Loc.Longitude = baseS[r].Loc.Longitude;
+							droneToList[i].Loc.Latitude = baseS[r].Loc.Latitude;
+							dal.AssignDroneToBaseStation(droneToList[i].Id, baseS[r].Id);
+							
+							r = new Random().Next(0, 21);//choose random percent of battery between 0to20%
+							droneToList[i].Battery = r;
+							droneToList[i].WhenInCharge = DateTime.Now;
+						}
+						else
+						{
+							BO.BaseStation b = baseS.FirstOrDefault(b => b.ChargeSlots > 0);
+							droneToList[i].Loc.Longitude = b.Loc.Longitude;
+							droneToList[i].Loc.Latitude = b.Loc.Latitude;
+							dal.AssignDroneToBaseStation(droneToList[i].Id, b.Id);
+							r = new Random().Next(0, 21);//choose random percent of battery between 0to20%
+							droneToList[i].Battery = r;
+							droneToList[i].WhenInCharge = DateTime.Now;
+						}
+					}
+					else if (droneToList[i].Status == BO.DroneStatuses.free)//according to the previous "if" now-if the random choose that the drone is free
+					{
+						List<BO.Customer> customerList = new List<BO.Customer>();
+						foreach (DO.Parcel item in dal.GetListParcels(p => p.Id != 0))//add data of parcel that was deliver
+						{
+							if (item.Delivered != null)
+								customerList.Add(getCustomerInIBL(item.TargetId));
+						}
+						int r = new Random().Next(0, customerList.Count());//choose a random loc of parcel 
+						droneToList[i].Loc.Longitude = customerList[r].Loc.Longitude;
+						droneToList[i].Loc.Latitude = customerList[r].Loc.Latitude;
+
+						int percent = calcBatteryToCloserBase(droneToList[i].Loc.Longitude, droneToList[i].Loc.Latitude);//calculate the min percent battery to go back to the base station
+						int finalPercent = new Random().Next(percent, 101);//random choose percent between "percent" to 100 
+						droneToList[i].Battery = finalPercent;
+					}
 				}
-				if (droneToList[i].Status == BO.DroneStatuses.Maintenance)//according to the previous "if" now-if the random choose that the drone is in Maintenance
+				catch
 				{
-					int r = new Random().Next(0, baseS.Count());//choose randome location 
-					droneToList[i].Loc.Longitude = baseS[r].Loc.Longitude;
-					droneToList[i].Loc.Latitude = baseS[r].Loc.Latitude;
-					dal.AssignDroneToBaseStation(droneToList[i].Id, baseS[r].Id);
-					r = new Random().Next(0, 21);//choose random percent of battery between 0to20%
+					droneToList[i].Loc.Longitude = baseS.Find(b=>b.Id==baseId).Loc.Longitude;
+					droneToList[i].Loc.Latitude = baseS.Find(b => b.Id == baseId).Loc.Latitude;
+					int r = new Random().Next(0, 21);//choose random percent of battery between 0to20%
 					droneToList[i].Battery = r;
 					droneToList[i].WhenInCharge = DateTime.Now;
-				}
-				else if (droneToList[i].Status == BO.DroneStatuses.free)//according to the previous "if" now-if the random choose that the drone is free
-				{
-					List<BO.Customer> customerList = new List<BO.Customer>();
-					foreach (DO.Parcel item in dal.GetListParcels(p => p.Id != 0))//add data of parcel that was deliver
-					{
-						if (item.Delivered != null)
-							customerList.Add(getCustomerInIBL(item.TargetId));
-					}
-					int r = new Random().Next(0, customerList.Count());//choose a random loc of parcel 
-					droneToList[i].Loc.Longitude = customerList[r].Loc.Longitude;
-					droneToList[i].Loc.Latitude = customerList[r].Loc.Latitude;
-
-					int percent = calcBatteryToCloserBase(droneToList[i].Loc.Longitude, droneToList[i].Loc.Latitude);//calculate the min percent battery to go back to the base station
-					int finalPercent = new Random().Next(percent, 101);//random choose percent between "percent" to 100 
-					droneToList[i].Battery = finalPercent;
 				}
 			}
 		}

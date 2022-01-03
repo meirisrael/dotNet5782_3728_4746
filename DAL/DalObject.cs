@@ -447,8 +447,17 @@ namespace Dal
 		{
 			return DataSource.parcels.FindAll(f);
 		}
+		/// <summary>
+		/// display the details of all drone that in charge (by predicat)
+		/// </summary>
+		/// <param name="f"> predicat </param>
+		/// <returns> list of drone charge </returns>
+		public IEnumerable<DO.DroneCharge> GetListDroneCharge(Predicate<DO.DroneCharge> f)
+		{
+			return DataSource.droneCharges.FindAll(f);
+		}
 		#endregion
-		
+
 
 
 		/// <summary>

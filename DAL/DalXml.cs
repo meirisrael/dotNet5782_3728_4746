@@ -14,7 +14,7 @@ namespace DalXml
 		/// <summary>
 		/// lazy initialization
 		/// </summary>
-		internal static readonly Lazy<DalApi.IDal> _instance = new Lazy<DalApi.IDal>(() => new	DalXml());
+		internal static readonly Lazy<DalApi.IDal> _instance = new Lazy<DalApi.IDal>(() => new DalXml());
 		/// <summary>
 		/// return instance value
 		/// </summary>
@@ -26,8 +26,8 @@ namespace DalXml
 		string droneChargePath = @"DroneCharge.xml";//the pathe to the xml file
 		string parcelPath = @"Parcel.xml";//the pathe to the xml file
 
-		public DalXml()
-		{ DataSourceXml.Initialize(); }
+		//public DalXml()
+	  //{ DataSourceXml.Initialize(); }
 
 		#region add method
 		//add method
@@ -78,7 +78,7 @@ namespace DalXml
 			XElement drone1 = (from d in drones.Elements()
 							   where int.Parse(d.Element("Id").Value) == id
 							   select d).FirstOrDefault();
-			if(drone1!=null)
+			if (drone1 != null)
 				throw new DO.IdExist("DRONE");
 
 			XElement drone = new XElement("Drone",
@@ -176,14 +176,14 @@ namespace DalXml
 			XElement parcels = XmlTools.LoadListFromXMLElement(parcelPath);
 
 			XElement droneElement = (from dr in drones.Elements()
-							   where int.Parse(dr.Element("Id").Value) == droneId
-							   select dr).FirstOrDefault();
-			if(droneElement == null)
+									 where int.Parse(dr.Element("Id").Value) == droneId
+									 select dr).FirstOrDefault();
+			if (droneElement == null)
 				throw new DO.IdNotExist("DRONE");
 			XElement parcelElement = (from par in drones.Elements()
-							   where int.Parse(par.Element("Id").Value) == parcelId
-							   select par).FirstOrDefault();
-			if(parcelElement == null)
+									  where int.Parse(par.Element("Id").Value) == parcelId
+									  select par).FirstOrDefault();
+			if (parcelElement == null)
 				throw new DO.IdNotExist("PARCEL");
 
 			if (droneElement.Element("MaxWeight").Value != parcelElement.Element("Weight").Value)
@@ -317,14 +317,14 @@ namespace DalXml
 									 select dr).FirstOrDefault();
 			if (droneElement == null)
 				throw new DO.IdNotExist("DRONE");
-			XElement baseElement = (from bas in drones.Elements()
+			XElement baseElement = (from bas in baseStations.Elements()
 									where int.Parse(bas.Element("Id").Value) == baseId
 									select bas).FirstOrDefault();
 			if (baseElement == null)
 				throw new DO.IdNotExist("BASE-STATION");
-			XElement droneCharge= (from cha in drones.Elements()
-								   where int.Parse(cha.Element("Id").Value) == droneId
-								   select cha).FirstOrDefault();
+			XElement droneCharge = (from cha in droneCharges.Elements()
+									where int.Parse(cha.Element("DroneId").Value) == droneId
+									select cha).FirstOrDefault();
 			if (droneCharge == null)
 				throw new DO.DroneNotInCharge();
 
@@ -433,16 +433,16 @@ namespace DalXml
 			DO.Drone drone = new DO.Drone();
 
 			drone = (from dr in drones.Elements()
-						let id= int.Parse(dr.Element("Id").Value)
-						where id==droneId
-						select new DO.Drone()
-						{
-							Id = int.Parse(dr.Element("Id").Value),
-							Model = dr.Element("Model").Value,
-							MaxWeight = Enum.Parse<DO.WeightCategories>(dr.Element("MaxWeight").Value)
-						}).FirstOrDefault();
+					 let id = int.Parse(dr.Element("Id").Value)
+					 where id == droneId
+					 select new DO.Drone()
+					 {
+						 Id = int.Parse(dr.Element("Id").Value),
+						 Model = dr.Element("Model").Value,
+						 MaxWeight = Enum.Parse<DO.WeightCategories>(dr.Element("MaxWeight").Value)
+					 }).FirstOrDefault();
 
-			if(drone.Id==0)
+			if (drone.Id == 0)
 				throw new DO.IdNotExist("DRONE");
 			else
 				return drone;
@@ -498,14 +498,14 @@ namespace DalXml
 			XElement drones = XmlTools.LoadListFromXMLElement(dronePath);
 
 			return from dr in drones.Elements()
-					let drCur = new DO.Drone()
-					{
-						Id = int.Parse(dr.Element("Id").Value),
-						Model = dr.Element("Model").Value,
-						MaxWeight = Enum.Parse<DO.WeightCategories>(dr.Element("MaxWeight").Value)
-					}
-					where f(drCur)
-					select drCur;
+				   let drCur = new DO.Drone()
+				   {
+					   Id = int.Parse(dr.Element("Id").Value),
+					   Model = dr.Element("Model").Value,
+					   MaxWeight = Enum.Parse<DO.WeightCategories>(dr.Element("MaxWeight").Value)
+				   }
+				   where f(drCur)
+				   select drCur;
 		}
 		/// <summary>
 		/// return IEnumerable list of customers 
@@ -523,6 +523,15 @@ namespace DalXml
 		public IEnumerable<DO.Parcel> GetListParcels(Predicate<DO.Parcel> f)
 		{
 			return XmlTools.LoadListFromXMLSerializer<DO.Parcel>(parcelPath).FindAll(f);
+		}
+		/// <summary>
+		/// display the details of all drone that in charge (by predicat)
+		/// </summary>
+		/// <param name="f"> predicat </param>
+		/// <returns> list of drone charge </returns>
+		public IEnumerable<DO.DroneCharge> GetListDroneCharge(Predicate<DO.DroneCharge> f)
+		{
+			return XmlTools.LoadListFromXMLSerializer<DO.DroneCharge>(droneChargePath).FindAll(f);
 		}
 		#endregion
 

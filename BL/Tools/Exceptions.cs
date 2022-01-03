@@ -62,6 +62,10 @@ namespace BO
 	{
 		public DroneNotInCharge() : base("IBL-ERROR: ERROR IN THE DATA BASE THE DRONE IS NOT CHARGE\n") { }
 	}
+	public class AlreadyInCharge : Exception// if the drone is alredy charge 
+	{
+		public AlreadyInCharge() : base() { }
+	}
 	#endregion
 
 	#region exceptions specific for parcel
