@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
+using System.Collections.ObjectModel;
 
 namespace PL
 {
@@ -23,7 +24,7 @@ namespace PL
 	{
 		private BlApi.IBL bl;
 		IEnumerable<BO.DroneToList> drones = new List<BO.DroneToList>();
-
+		ObservableCollection<BO.DroneToList> dronesList { set; get; }
 		//-------------------------------------------------------------- FUNC AND CONST VARIABL -------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
 		private const uint MF_BYCOMMAND = 0x00000000;
@@ -58,7 +59,7 @@ namespace PL
 			bl = ibl;
 			drones = bl.GetListOfDrones(d => true);
 			DroneListView.ItemsSource = drones;
-			
+
 			StatusSelector.ItemsSource = Enum.GetValues(typeof(BO.DroneStatuses));
 			WeightSelector.ItemsSource = Enum.GetValues(typeof(BO.WeightCategories));
 		}

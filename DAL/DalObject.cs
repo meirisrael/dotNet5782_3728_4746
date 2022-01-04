@@ -379,12 +379,11 @@ namespace Dal
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public DO.BaseStation GetBaseStation(int baseId)
 		{
-			foreach (DO.BaseStation item in DataSource.baseStations)
-			{
-				if (item.Id == baseId)
-					return item;
-			}
-			throw new DO.IdNotExist("BASE-STATION");
+			DO.BaseStation b = DataSource.baseStations.FirstOrDefault(b => b.Id == baseId);
+			if (b.Id == 0)
+				throw new DO.IdNotExist("BASE-STATION");
+			else
+				return b;
 		}
 		/// <summary>
 		/// for a given drone Id, display it details
@@ -394,12 +393,11 @@ namespace Dal
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public DO.Drone GetDrone(int droneId)
 		{
-			foreach (DO.Drone item in DataSource.drones)
-			{
-				if (item.Id == droneId)
-					return item;
-			}
-			throw new DO.IdNotExist("DRONE");
+			DO.Drone d = DataSource.drones.FirstOrDefault(d => d.Id == droneId);
+			if (d.Id == 0)
+				throw new DO.IdNotExist("DRONE");
+			else
+				return d;
 		}
 		/// <summary>
 		/// for a given customer Id, display it details
@@ -409,12 +407,11 @@ namespace Dal
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public DO.Customer GetCustomer(int customerId)
 		{
-			foreach (DO.Customer item in DataSource.customers)
-			{
-				if (item.Id == customerId)
-					return item;
-			}
-			throw new DO.IdNotExist("CUSTOMER");
+			DO.Customer c = DataSource.customers.FirstOrDefault(c => c.Id == customerId);
+			if (c.Id == 0)
+				throw new DO.IdNotExist("CUSTOMER");
+			else
+				return c;
 		}
 		/// <summary>
 		/// for a given parcel Id, display it details
@@ -424,12 +421,11 @@ namespace Dal
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public DO.Parcel GetParcel(int parcelId)
 		{
-			foreach (DO.Parcel item in DataSource.parcels)
-			{
-				if (item.Id == parcelId)
-					return item;
-			}
-			throw new DO.IdNotExist("PARCEL");
+			DO.Parcel p = DataSource.parcels.FirstOrDefault(p => p.Id == parcelId);
+			if (p.Id == 0)
+				throw new DO.IdNotExist("PARCEL");
+			else
+				return p;
 		}
 		#endregion
 
