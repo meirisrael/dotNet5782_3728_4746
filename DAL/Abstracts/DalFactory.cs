@@ -9,7 +9,7 @@ namespace DAL
 	/// <summary>
 	/// choose which type return dal with list or dal with xml
 	/// </summary>
-	public class DalFactory
+	static public class DalFactory
 	{
 		private static readonly object LockObj = new object();
 		

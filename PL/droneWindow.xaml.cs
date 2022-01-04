@@ -328,5 +328,10 @@ namespace PL
 		/// <param name="sender"></param>
 		/// <param name="e"> click </param>
 		private void Close_Click(object sender, RoutedEventArgs e) => Close();
+
+		private void Automatic_Button_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
 	}
 }

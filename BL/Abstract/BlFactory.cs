@@ -9,7 +9,7 @@ namespace BL
 	/// <summary>
 	/// call the instance for bl
 	/// </summary>
-	public class BlFactory
+	static public class BlFactory
 	{
 		private static readonly object LockObj = new object();
 		public static BlApi.IBL GetBl()

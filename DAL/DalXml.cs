@@ -431,12 +431,13 @@ namespace DalXml
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public DO.BaseStation GetBaseStation(int baseId)
 		{
-			foreach (DO.BaseStation item in XmlTools.LoadListFromXMLSerializer<DO.BaseStation>(baseStationPath))
-			{
-				if (item.Id == baseId)
-					return item;
-			}
-			throw new DO.IdNotExist("BASE-STATION");
+			List<DO.BaseStation> baseS = XmlTools.LoadListFromXMLSerializer<DO.BaseStation>(baseStationPath);
+
+			DO.BaseStation b = baseS.FirstOrDefault(b => b.Id == baseId);
+			if (b.Id == 0)
+				throw new DO.IdNotExist("BASE-STATION");
+			else
+				return b;
 		}
 		/// <summary>
 		/// return a drone 
@@ -472,12 +473,13 @@ namespace DalXml
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public DO.Customer GetCustomer(int customerId)
 		{
-			foreach (DO.Customer item in XmlTools.LoadListFromXMLSerializer<DO.Customer>(customerPath))
-			{
-				if (item.Id == customerId)
-					return item;
-			}
-			throw new DO.IdNotExist("CUSTOMER");
+			List<DO.Customer> customers = XmlTools.LoadListFromXMLSerializer<DO.Customer>(customerPath);
+
+			DO.Customer customer = customers.FirstOrDefault(c => c.Id == customerId);
+			if (customer.Id == 0)
+				throw new DO.IdNotExist("CUSTOMER");
+			else
+				return customer;
 		}
 		/// <summary>
 		/// return a parcel 
@@ -487,12 +489,13 @@ namespace DalXml
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public DO.Parcel GetParcel(int parcelId)
 		{
-			foreach (DO.Parcel item in XmlTools.LoadListFromXMLSerializer<DO.Parcel>(parcelPath))
-			{
-				if (item.Id == parcelId)
-					return item;
-			}
-			throw new DO.IdNotExist("PARCEL");
+			List<DO.Parcel> parcels = XmlTools.LoadListFromXMLSerializer<DO.Parcel>(parcelPath);
+
+			DO.Parcel parcel = parcels.FirstOrDefault(p => p.Id == parcelId);
+			if (parcel.Id == 0)
+				throw new DO.IdNotExist("PARCEL");
+			else
+				return parcel;
 		}
 		#endregion
 
@@ -555,7 +558,16 @@ namespace DalXml
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public IEnumerable<DO.DroneCharge> GetListDroneCharge(Predicate<DO.DroneCharge> f)
 		{
-			return XmlTools.LoadListFromXMLSerializer<DO.DroneCharge>(droneChargePath).FindAll(f);
+			XElement droneCharges = XmlTools.LoadListFromXMLElement(droneChargePath);
+
+			return from dr in droneCharges.Elements()
+				   let drCur = new DO.DroneCharge()
+				   {
+					   DroneId = int.Parse(dr.Element("DroneId").Value),
+					   StationId=int.Parse(dr.Element("StationId").Value)
+				   }
+				   where f(drCur)
+				   select drCur;
 		}
 		#endregion
 
