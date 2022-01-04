@@ -150,11 +150,10 @@ namespace PL
 		/// <param name="e"></param>
 		private void upNameBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			upNameBox.Background = Brushes.LightGreen;
-			if (upNameBox.Text != "" || upPhoneBox.Text != "")
-				update_button.IsEnabled = true;
+			if (upNameBox.Text != customer.Name || upPhoneBox.Text != customer.Phone)
+			{ update_button.IsEnabled = true; upNameBox.Background = Brushes.LightGreen; }
 			else
-				update_button.IsEnabled = false;
+			{ update_button.IsEnabled = false; upNameBox.Background = Brushes.White; }
 		}
 		/// <summary>
 		/// button "Update" is available if one of the fields "Name" or "Phone" is filled
@@ -163,18 +162,18 @@ namespace PL
 		/// <param name="e"></param>
 		private void upPhoneBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			upPhoneBox.Background = Brushes.LightGreen;
-			if (upNameBox.Text != "" || upPhoneBox.Text != "")
-				update_button.IsEnabled = true;
+			if (upNameBox.Text != customer.Name || upPhoneBox.Text != customer.Phone)
+			{ update_button.IsEnabled = true; upPhoneBox.Background = Brushes.LightGreen; }
 			else
-				update_button.IsEnabled = false;
+			{ update_button.IsEnabled = false; upPhoneBox.Background = Brushes.White; }
 		}
+
 		/// <summary>
 		/// click on button "add" to add a new customer with the details from the five Textbox above
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		
+
 
 		private void add_Click(object sender, RoutedEventArgs e)
 		{
@@ -234,8 +233,10 @@ namespace PL
 			MessageBox.Show("Successfuly updated");
 			customer = bl.GetCustomer(customer.Id);
 			customerLabel.Content = customer.ToString();
-			upPhoneBox.Text = "";
-			upNameBox.Text = "";
+			upPhoneBox.Text = customer.Phone;
+			upNameBox.Text = customer.Name;
+			upPhoneBox.Background = Brushes.White;
+			upNameBox.Background = Brushes.White;
 		}
 		/// <summary>
 		///  double click on a parcel from the list to view his details

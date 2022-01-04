@@ -38,7 +38,7 @@ namespace PL
 		protected override void OnSourceInitialized(EventArgs e)
 		{
 			base.OnSourceInitialized(e);
-
+			this.DataContext = customer;
 			WindowInteropHelper wih = new WindowInteropHelper(this);
 			IntPtr hWnd = wih.Handle;
 			IntPtr hMenu = GetSystemMenu(hWnd, false);
@@ -151,11 +151,10 @@ namespace PL
 		/// <param name="e"></param>
 		private void upNameBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			upNameBox.Background = Brushes.LightGreen;
-			if (upNameBox.Text != "" || upPhoneBox.Text != "")
-				update_button.IsEnabled = true;
+			if (upNameBox.Text != customer.Name || upPhoneBox.Text != customer.Phone)
+			{ update_button.IsEnabled = true; upNameBox.Background = Brushes.LightGreen; }
 			else
-				update_button.IsEnabled = false;
+			{ update_button.IsEnabled = false; upNameBox.Background = Brushes.White; }
 		}
 		/// <summary>
 		/// button "Update" is available if one of the fields "Name" or "Phone" is filled
@@ -164,11 +163,10 @@ namespace PL
 		/// <param name="e"></param>
 		private void upPhoneBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			upPhoneBox.Background = Brushes.LightGreen;
-			if (upNameBox.Text != "" || upPhoneBox.Text != "")
-				update_button.IsEnabled = true;
+			if (upNameBox.Text != customer.Name || upPhoneBox.Text != customer.Phone)
+			{ update_button.IsEnabled = true; upPhoneBox.Background = Brushes.LightGreen; }
 			else
-				update_button.IsEnabled = false;
+			{ update_button.IsEnabled = false; upPhoneBox.Background = Brushes.White; }
 		}
 
 
@@ -187,7 +185,7 @@ namespace PL
 			BO.Location location = new();
 			if (!int.TryParse(id, out customerId))
 			{
-				MessageBox.Show("Customer ID most be an intenger", "ERROR");
+				MessageBox.Show("Customer ID must be an intenger", "ERROR");
 				IdBox.Background = Brushes.Salmon;
 				return;
 			}
@@ -195,7 +193,7 @@ namespace PL
 				customerId = int.Parse(id);
 			if (!double.TryParse(lon, out longitude) || longitude > 180 || longitude < -180)
 			{
-				MessageBox.Show("Longitude ID most be a double between -180 and 180", "ERROR");
+				MessageBox.Show("Longitude ID must be a double between -180 and 180", "ERROR");
 				LongitudeBox.Background = Brushes.Salmon;
 				return;
 			}
@@ -203,7 +201,7 @@ namespace PL
 				longitude = double.Parse(lon);
 			if (!double.TryParse(lat, out latitude) || latitude > 90 || latitude < -90)
 			{
-				MessageBox.Show("Latitude ID most be a double between -90 and 90", "ERROR");
+				MessageBox.Show("Latitude ID must be a double between -90 and 90", "ERROR");
 				LatitudeBox.Background = Brushes.Salmon;
 				return;
 			}
@@ -235,8 +233,10 @@ namespace PL
 			MessageBox.Show("Successfuly updated");
 			customer = bl.GetCustomer(customer.Id);
 			customerLabel.Content = customer.ToString();
-			upPhoneBox.Text = "";
-			upNameBox.Text = "";
+			upPhoneBox.Text = customer.Phone;
+			upNameBox.Text = customer.Name;
+			upPhoneBox.Background = Brushes.White;
+			upNameBox.Background = Brushes.White;
 		}
 		/// <summary>
 		/// double click on a parcel from the list to view his details

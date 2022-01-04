@@ -6,14 +6,24 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="Client Window" Height="450" Width="800" Loaded="Window_Loaded" Icon="\icon\logo_company.ico">
+    <Window.Resources>
+        <Style x:Key = "TriggerStyle" TargetType = "Button">
+            <Setter Property = "Foreground" Value = "Black" />
+            <Style.Triggers>
+                <Trigger Property = "IsMouseOver" Value = "True">
+                    <Setter Property = "Foreground" Value = "White" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid>
 		<StatusBar HorizontalAlignment="Center" VerticalAlignment="Top" Background="White" Height="auto" Width="auto">
 			<TextBlock x:FieldModifier="private" x:Name="myDateTime" Background="White"/>
 		</StatusBar>
 		<Button Content="My Details" HorizontalAlignment="Right" FontStyle="Italic" FontWeight="ExtraBlack" Background="OliveDrab" FontFamily="Comic Sans MS"
-				VerticalAlignment="Bottom" Click="Customer_Click" Height="52" Width="137" BorderBrush="Black" BorderThickness="3" Margin="0,0,50,35" />
+				VerticalAlignment="Bottom" Click="Customer_Click" Height="52" Width="137" BorderBrush="Black" BorderThickness="3" Margin="0,0,50,35" Style = "{StaticResource TriggerStyle}" />
 		<Button Content="New Parcel" HorizontalAlignment="Left" FontStyle="Italic" FontWeight="ExtraBlack" Background="OliveDrab" FontFamily="Comic Sans MS"
-				VerticalAlignment="Bottom" Click="Parcels_Click" Height="52" Width="137" BorderBrush="Black" BorderThickness="3" Margin="50,0,0,35" />
+				VerticalAlignment="Bottom" Click="Parcels_Click" Height="52" Width="137" BorderBrush="Black" BorderThickness="3" Margin="50,0,0,35" Style = "{StaticResource TriggerStyle}"/>
 		<Image Source="/picture/logo_customers.jpg" Margin="0,0,188,30" Height="58" Width="63"
 			 VerticalAlignment="Bottom" HorizontalAlignment="Right" />
 		<Image Source="/picture/logo_parcels.jpg" Margin="190,0,0,30" Height="58" Width="63"

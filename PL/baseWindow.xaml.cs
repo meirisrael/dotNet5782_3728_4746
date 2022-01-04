@@ -56,6 +56,7 @@ namespace PL
 		public baseWindow(BlApi.IBL ibl, BO.BaseToList b)
 		{
 			InitializeComponent();
+			this.DataContext=BaseStation;
 			bl = ibl;
 			BaseStation = bl.GetBaseStation(b.Id);
 			action_base_Grid.Visibility = Visibility.Visible;
@@ -224,8 +225,8 @@ namespace PL
 				bl.UpdateBaseStation(BaseStation.Id, name, charge);
 				MessageBox.Show("Successfuly Update", "Successfull");
 				Base_details.Content = bl.GetBaseStation(BaseStation.Id);
-				name_base.Text = "";
-				chargeSlots_base.Text = "";
+				name_base.Text = BaseStation.Name.ToString();
+				chargeSlots_base.Text = BaseStation.ChargeSlots.ToString();
 			}
 			catch (Exception)
 			{ }
@@ -297,9 +298,9 @@ namespace PL
 		/// <param name="e"> warp </param>
 		private void name_base_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			name_base.Background = Brushes.LightGreen;
-			if (name_base.Text != "") update_button.IsEnabled = true;
-			else update_button.IsEnabled = false;
+			if (name_base.Text != BaseStation.Name.ToString())
+			{ update_button.IsEnabled = true; name_base.Background = Brushes.LightGreen; }
+			else { update_button.IsEnabled = false; name_base.Background = Brushes.White; }
 		}
 		/// <summary>
 		/// user enter a new data in the box
@@ -308,10 +309,11 @@ namespace PL
 		/// <param name="e" warp ></param>
 		private void chargeSlots_base_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			chargeSlots_base.Background = Brushes.LightGreen;
-			if (chargeSlots_base.Text != "") update_button.IsEnabled = true;
-			else update_button.IsEnabled = false;
-		}
+
+			if (chargeSlots_base.Text != BaseStation.ChargeSlots.ToString())
+			{ update_button.IsEnabled = true; chargeSlots_base.Background = Brushes.LightGreen; }
+			else { update_button.IsEnabled = false; chargeSlots_base.Background = Brushes.White; }
+			}
 
 		/// <summary>
 		/// if the user want to close or cancel the page 
