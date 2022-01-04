@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 using Dal;
 
@@ -27,7 +28,7 @@ namespace DalXml
 		string parcelPath = @"Parcel.xml";//the pathe to the xml file
 
 		//public DalXml()
-	  //{ DataSourceXml.Initialize(); }
+		//{ DataSourceXml.Initialize(); }
 
 		#region add method
 		//add method
@@ -39,6 +40,7 @@ namespace DalXml
 		/// <param name="chargeSlots"></param>
 		/// <param name="longe"> longitude </param>
 		/// <param name="lati"> latitude </param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void AddBaseStation(int id, int name, int chargeSlots, double longe, double lati)
 		{
 			List<DO.BaseStation> baseStations = XmlTools.LoadListFromXMLSerializer<DO.BaseStation>(baseStationPath);
@@ -68,6 +70,7 @@ namespace DalXml
 		/// <param name="id"> id of drone </param>
 		/// <param name="model"> mode of the drone </param>
 		/// <param name="weight"> the max weight that the drone can take </param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void AddDrone(int id, string model, DO.WeightCategories weight)
 		{
 			XElement drones = XmlTools.LoadListFromXMLElement(dronePath);
@@ -96,6 +99,7 @@ namespace DalXml
 		/// <param name="phone"> his number phone </param>
 		/// <param name="longi"> longitude </param>
 		/// <param name="lati"> latitude </param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void AddCustomer(int id, string name, string phone, double longi, double lati)
 		{
 			List<DO.Customer> customers = XmlTools.LoadListFromXMLSerializer<DO.Customer>(customerPath);
@@ -126,6 +130,7 @@ namespace DalXml
 		/// <param name="droneId"> the drone id </param>
 		/// <param name="weight"> the weight of the parcel </param>
 		/// <param name="priorities"> the priority of delivering </param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void AddParcel(int id, int senderId, int targetId, int droneId, DO.WeightCategories weight, DO.Priorities priorities)
 		{
 			List<DO.Parcel> parcels = XmlTools.LoadListFromXMLSerializer<DO.Parcel>(parcelPath);
@@ -170,6 +175,7 @@ namespace DalXml
 		/// </summary>
 		/// <param name="parcelId"> the parcel id </param>
 		/// <param name="droneId"> the drone id </param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void AssignParcelToDrone(int parcelId, int droneId)
 		{
 			XElement drones = XmlTools.LoadListFromXMLElement(dronePath);
@@ -202,6 +208,7 @@ namespace DalXml
 		/// delete a "new" parcel 
 		/// </summary>
 		/// <param name="parcelId"> the parcel id </param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void DeleteParcel(int parcelId)
 		{
 			List<DO.Parcel> parcels = XmlTools.LoadListFromXMLSerializer<DO.Parcel>(parcelPath);
@@ -221,6 +228,7 @@ namespace DalXml
 		/// collect parcel 
 		/// </summary>
 		/// <param name="parcelId"> the parcel id </param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void ParcelOnDrone(int parcelId)
 		{
 			List<DO.Parcel> parcels = XmlTools.LoadListFromXMLSerializer<DO.Parcel>(parcelPath);
@@ -243,6 +251,7 @@ namespace DalXml
 		/// deliverd parcel
 		/// </summary>
 		/// <param name="parcelId"> the parcel id</param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void ParcelDelivered(int parcelId)
 		{
 			List<DO.Parcel> parcels = XmlTools.LoadListFromXMLSerializer<DO.Parcel>(parcelPath);
@@ -270,6 +279,7 @@ namespace DalXml
 		/// </summary>
 		/// <param name="droneId"> the drone id </param>
 		/// <param name="baseId">  the base id where the ddrone go </param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void AssignDroneToBaseStation(int droneId, int baseId)
 		{
 			XElement drones = XmlTools.LoadListFromXMLElement(dronePath);
@@ -306,6 +316,7 @@ namespace DalXml
 		/// </summary>
 		/// <param name="droneId"> the drone id </param>
 		/// <param name="baseId"> the base id wher the drone charged </param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void DroneLeaveChargeStation(int droneId, int baseId)
 		{
 			XElement drones = XmlTools.LoadListFromXMLElement(dronePath);
@@ -345,6 +356,7 @@ namespace DalXml
 		/// update data of drone 
 		/// </summary>
 		/// <param name="drone"> a drone </param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void UpdateDrone(DO.Drone drone)
 		{
 			XElement drones = XmlTools.LoadListFromXMLElement(dronePath);
@@ -360,6 +372,7 @@ namespace DalXml
 		/// update data of base station 
 		/// </summary>
 		/// <param name="baseStation"> a base station </param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void UpdateBaseStation(DO.BaseStation baseStation)
 		{
 			List<DO.BaseStation> baseStations = XmlTools.LoadListFromXMLSerializer<DO.BaseStation>(baseStationPath);
@@ -376,6 +389,7 @@ namespace DalXml
 		/// update data of customer 
 		/// </summary>
 		/// <param name="customer"> a customer </param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void UpdateCustomer(DO.Customer customer)
 		{
 			List<DO.Customer> customers = XmlTools.LoadListFromXMLSerializer<DO.Customer>(customerPath);
@@ -392,6 +406,7 @@ namespace DalXml
 		/// update data of parcel
 		/// </summary>
 		/// <param name="parcel"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void UpdateParcel(DO.Parcel parcel)
 		{
 			List<DO.Parcel> parcels = XmlTools.LoadListFromXMLSerializer<DO.Parcel>(parcelPath);
@@ -413,6 +428,7 @@ namespace DalXml
 		/// </summary>
 		/// <param name="baseId"> the base id</param>
 		/// <returns> base station </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public DO.BaseStation GetBaseStation(int baseId)
 		{
 			foreach (DO.BaseStation item in XmlTools.LoadListFromXMLSerializer<DO.BaseStation>(baseStationPath))
@@ -427,6 +443,7 @@ namespace DalXml
 		/// </summary>
 		/// <param name="droneId"> the drone id </param>
 		/// <returns> drone </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public DO.Drone GetDrone(int droneId)
 		{
 			XElement drones = XmlTools.LoadListFromXMLElement(dronePath);
@@ -452,6 +469,7 @@ namespace DalXml
 		/// </summary>
 		/// <param name="customerId"> the customer id </param>
 		/// <returns> customer </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public DO.Customer GetCustomer(int customerId)
 		{
 			foreach (DO.Customer item in XmlTools.LoadListFromXMLSerializer<DO.Customer>(customerPath))
@@ -466,6 +484,7 @@ namespace DalXml
 		/// </summary>
 		/// <param name="parcelId"> the parcel id </param>
 		/// <returns> parcel </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public DO.Parcel GetParcel(int parcelId)
 		{
 			foreach (DO.Parcel item in XmlTools.LoadListFromXMLSerializer<DO.Parcel>(parcelPath))
@@ -484,6 +503,7 @@ namespace DalXml
 		/// </summary>
 		/// <param name="f"> predicat</param>
 		/// <returns> base stations </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public IEnumerable<DO.BaseStation> GetListBaseStations(Predicate<DO.BaseStation> f)
 		{
 			return XmlTools.LoadListFromXMLSerializer<DO.BaseStation>(baseStationPath).FindAll(f);
@@ -493,6 +513,7 @@ namespace DalXml
 		/// </summary>
 		/// <param name="f"> predicat </param>
 		/// <returns> drones </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public IEnumerable<DO.Drone> GetListDrones(Predicate<DO.Drone> f)
 		{
 			XElement drones = XmlTools.LoadListFromXMLElement(dronePath);
@@ -511,6 +532,7 @@ namespace DalXml
 		/// return IEnumerable list of customers 
 		/// </summary>
 		/// <returns> customers </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public IEnumerable<DO.Customer> GetListCustomers()
 		{
 			return XmlTools.LoadListFromXMLSerializer<DO.Customer>(customerPath);
@@ -520,6 +542,7 @@ namespace DalXml
 		/// </summary>
 		/// <param name="f"> predicat </param>
 		/// <returns> parcels </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public IEnumerable<DO.Parcel> GetListParcels(Predicate<DO.Parcel> f)
 		{
 			return XmlTools.LoadListFromXMLSerializer<DO.Parcel>(parcelPath).FindAll(f);
@@ -529,6 +552,7 @@ namespace DalXml
 		/// </summary>
 		/// <param name="f"> predicat </param>
 		/// <returns> list of drone charge </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public IEnumerable<DO.DroneCharge> GetListDroneCharge(Predicate<DO.DroneCharge> f)
 		{
 			return XmlTools.LoadListFromXMLSerializer<DO.DroneCharge>(droneChargePath).FindAll(f);
@@ -541,6 +565,7 @@ namespace DalXml
 		/// the func go to config to take the value of the charging rate and the electricity use
 		/// </summary>
 		/// <returns> return the arr with the value</returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public double[] GetChargingRate()
 		{
 			DataSourceXml.Config c = new DataSourceXml.Config();

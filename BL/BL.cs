@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace BL
 {
@@ -41,37 +42,43 @@ namespace BL
 		/// </summary>
 		private void getDataCharge()
 		{
-			double[] arr = new double[5];
-			arr = dal.GetChargingRate();
-			_useWhenFree = arr[0];
-			_useWhenLightly = arr[1];
-			_useWhenMedium = arr[2];
-			_useWhenHeavily = arr[3];
-			_chargingRate = arr[4];
+			lock (dal)
+			{
+				double[] arr = new double[5];
+				arr = dal.GetChargingRate();
+				_useWhenFree = arr[0];
+				_useWhenLightly = arr[1];
+				_useWhenMedium = arr[2];
+				_useWhenHeavily = arr[3];
+				_chargingRate = arr[4];
+			}
 		}
 		/// <summary>
 		/// the func req from the data base all data about the drone
 		/// </summary>
 		private void reqListOfDrone()
 		{
-			foreach (DO.Drone d in dal.GetListDrones(d => true))
+			lock (dal)
 			{
-				DateTime? isDeliverd = dal.GetListParcels(b => true).ToList().Find(item => item.DroneId == d.Id).Delivered;
-				int idParcel =  dal.GetListParcels(b => true).ToList().Find(item => item.DroneId == d.Id).Id;//return id of parcel that the drone is associated;
-				if (isDeliverd != null)//check if the parcel is not in transit
-					idParcel = 0;
-				BO.Location l = new BO.Location();
-				l.Latitude = 0; l.Longitude = 0;
-				droneToList.Add(new BO.DroneToList
+				foreach (DO.Drone d in dal.GetListDrones(d => true))
 				{
-					Id = d.Id,
-					Model = d.Model,
-					MaxWeight = (BO.WeightCategories)d.MaxWeight,
-					Battery = 0,
-					Status = BO.DroneStatuses.free,
-					Loc = l,
-					IdOfParcel=idParcel
-				});
+					DateTime? isDeliverd = dal.GetListParcels(b => true).ToList().Find(item => item.DroneId == d.Id).Delivered;
+					int idParcel = dal.GetListParcels(b => true).ToList().Find(item => item.DroneId == d.Id).Id;//return id of parcel that the drone is associated;
+					if (isDeliverd != null)//check if the parcel is not in transit
+						idParcel = 0;
+					BO.Location l = new BO.Location();
+					l.Latitude = 0; l.Longitude = 0;
+					droneToList.Add(new BO.DroneToList
+					{
+						Id = d.Id,
+						Model = d.Model,
+						MaxWeight = (BO.WeightCategories)d.MaxWeight,
+						Battery = 0,
+						Status = BO.DroneStatuses.free,
+						Loc = l,
+						IdOfParcel = idParcel
+					});
+				}
 			}
 		}
 		/// <summary>
@@ -81,30 +88,33 @@ namespace BL
 		{
 			List<BO.ParcelToList> parcelToList = new List<BO.ParcelToList>();
 			//add the data
-			foreach (DO.Parcel item in dal.GetListParcels(p => p.Id != 0))
+			lock (dal)
 			{
-				parcelToList.Add(new BO.ParcelToList
+				foreach (DO.Parcel item in dal.GetListParcels(p => p.Id != 0))
 				{
-					Id = item.Id,
-					NameSender = getCustomerInIBL(item.SenderId).Name,
-					NameTarget = getCustomerInIBL(item.TargetId).Name,
-					Weight = (BO.WeightCategories)item.Weight,
-					Priority = (BO.Priorities)item.Priority,
-					Status = getStatusOfParcel(item)
-				});
-			}
-			for (int i = 0; i < parcelToList.Count(); i++)
-			{
-				int droneIdAssigneToParcel = dal.GetListParcels(b => true).ToList().Find(item => item.Id == parcelToList[i].Id).DroneId;//search drone that assigne to this parcel
-				if (parcelToList[i].Status < BO.ParcelStatues.Delivered && droneIdAssigneToParcel > 0)//if the parcel was not deliver and the parcel he has a drone ,need to the shipping
+					parcelToList.Add(new BO.ParcelToList
+					{
+						Id = item.Id,
+						NameSender = getCustomerInIBL(item.SenderId).Name,
+						NameTarget = getCustomerInIBL(item.TargetId).Name,
+						Weight = (BO.WeightCategories)item.Weight,
+						Priority = (BO.Priorities)item.Priority,
+						Status = getStatusOfParcel(item)
+					});
+				}
+				for (int i = 0; i < parcelToList.Count(); i++)
 				{
-					droneToList[indexDrone(droneIdAssigneToParcel)].Status = BO.DroneStatuses.Shipping;
+					int droneIdAssigneToParcel = dal.GetListParcels(b => true).ToList().Find(item => item.Id == parcelToList[i].Id).DroneId;//search drone that assigne to this parcel
+					if (parcelToList[i].Status < BO.ParcelStatues.Delivered && droneIdAssigneToParcel > 0)//if the parcel was not deliver and the parcel he has a drone ,need to the shipping
+					{
+						droneToList[indexDrone(droneIdAssigneToParcel)].Status = BO.DroneStatuses.Shipping;
 
-					locOfDroneByParcel(parcelToList[i], droneIdAssigneToParcel);
+						locOfDroneByParcel(parcelToList[i], droneIdAssigneToParcel);
 
-					int percent = (int)Math.Ceiling(calcBatteryToShipping(droneToList[indexDrone(droneIdAssigneToParcel)], parcelToList[i]));//calculate the percent of battery the drone need to do the shipping 
-					int finalPercent = new Random().Next(percent, 101);//choose random the percent between "percent" to 100
-					droneToList[indexDrone(droneIdAssigneToParcel)].Battery = finalPercent;
+						int percent = (int)Math.Ceiling(calcBatteryToShipping(droneToList[indexDrone(droneIdAssigneToParcel)], parcelToList[i]));//calculate the percent of battery the drone need to do the shipping 
+						int finalPercent = new Random().Next(percent, 101);//choose random the percent between "percent" to 100
+						droneToList[indexDrone(droneIdAssigneToParcel)].Battery = finalPercent;
+					}
 				}
 			}
 		}
@@ -115,81 +125,84 @@ namespace BL
 		{
 			List<BO.BaseStation> baseS = new List<BO.BaseStation>();
 			//add the data location of base station in the list
-			foreach (DO.BaseStation b in dal.GetListBaseStations(b => b.Id != 0))
+			lock (dal)
 			{
-				BO.Location l = new BO.Location();
-				l.Latitude = b.Latitude; l.Longitude = b.Longitude;
-				baseS.Add(new BO.BaseStation { Id = b.Id, Loc = l, ChargeSlots = b.ChargeSlots });
-			}
-			int baseId=0;
-			for (int i = 0; i < droneToList.Count(); i++)
-			{
-				try
+				foreach (DO.BaseStation b in dal.GetListBaseStations(b => b.Id != 0))
 				{
-					foreach (var item in dal.GetListDroneCharge(d => true))
-					{
-						if (item.DroneId == droneToList[i].Id)
-						{
-							baseId = item.StationId;
-							throw new BO.AlreadyInCharge();
-						}
-					}
-					if (droneToList[i].Status != BO.DroneStatuses.Shipping)//if the drone is not in shipping choose random status
-					{
-						int r = new Random().Next(1, 3);
-						if (r == 1)
-							droneToList[i].Status = BO.DroneStatuses.free;
-						else
-							droneToList[i].Status = BO.DroneStatuses.Maintenance;
-					}
-					if (droneToList[i].Status == BO.DroneStatuses.Maintenance)//according to the previous "if" now-if the random choose that the drone is in Maintenance
-					{
-						int r = new Random().Next(0, baseS.Count());//choose randome location 
-						if (baseS[r].ChargeSlots > 0)
-						{
-							droneToList[i].Loc.Longitude = baseS[r].Loc.Longitude;
-							droneToList[i].Loc.Latitude = baseS[r].Loc.Latitude;
-							dal.AssignDroneToBaseStation(droneToList[i].Id, baseS[r].Id);
-							
-							r = new Random().Next(0, 21);//choose random percent of battery between 0to20%
-							droneToList[i].Battery = r;
-							droneToList[i].WhenInCharge = DateTime.Now;
-						}
-						else
-						{
-							BO.BaseStation b = baseS.FirstOrDefault(b => b.ChargeSlots > 0);
-							droneToList[i].Loc.Longitude = b.Loc.Longitude;
-							droneToList[i].Loc.Latitude = b.Loc.Latitude;
-							dal.AssignDroneToBaseStation(droneToList[i].Id, b.Id);
-							r = new Random().Next(0, 21);//choose random percent of battery between 0to20%
-							droneToList[i].Battery = r;
-							droneToList[i].WhenInCharge = DateTime.Now;
-						}
-					}
-					else if (droneToList[i].Status == BO.DroneStatuses.free)//according to the previous "if" now-if the random choose that the drone is free
-					{
-						List<BO.Customer> customerList = new List<BO.Customer>();
-						foreach (DO.Parcel item in dal.GetListParcels(p => p.Id != 0))//add data of parcel that was deliver
-						{
-							if (item.Delivered != null)
-								customerList.Add(getCustomerInIBL(item.TargetId));
-						}
-						int r = new Random().Next(0, customerList.Count());//choose a random loc of parcel 
-						droneToList[i].Loc.Longitude = customerList[r].Loc.Longitude;
-						droneToList[i].Loc.Latitude = customerList[r].Loc.Latitude;
-
-						int percent = calcBatteryToCloserBase(droneToList[i].Loc.Longitude, droneToList[i].Loc.Latitude);//calculate the min percent battery to go back to the base station
-						int finalPercent = new Random().Next(percent, 101);//random choose percent between "percent" to 100 
-						droneToList[i].Battery = finalPercent;
-					}
+					BO.Location l = new BO.Location();
+					l.Latitude = b.Latitude; l.Longitude = b.Longitude;
+					baseS.Add(new BO.BaseStation { Id = b.Id, Loc = l, ChargeSlots = b.ChargeSlots });
 				}
-				catch
+				int baseId = 0;
+				for (int i = 0; i < droneToList.Count(); i++)
 				{
-					droneToList[i].Loc.Longitude = baseS.Find(b=>b.Id==baseId).Loc.Longitude;
-					droneToList[i].Loc.Latitude = baseS.Find(b => b.Id == baseId).Loc.Latitude;
-					int r = new Random().Next(0, 21);//choose random percent of battery between 0to20%
-					droneToList[i].Battery = r;
-					droneToList[i].WhenInCharge = DateTime.Now;
+					try
+					{
+						foreach (var item in dal.GetListDroneCharge(d => true))
+						{
+							if (item.DroneId == droneToList[i].Id)
+							{
+								baseId = item.StationId;
+								throw new BO.AlreadyInCharge();
+							}
+						}
+						if (droneToList[i].Status != BO.DroneStatuses.Shipping)//if the drone is not in shipping choose random status
+						{
+							int r = new Random().Next(1, 3);
+							if (r == 1)
+								droneToList[i].Status = BO.DroneStatuses.free;
+							else
+								droneToList[i].Status = BO.DroneStatuses.Maintenance;
+						}
+						if (droneToList[i].Status == BO.DroneStatuses.Maintenance)//according to the previous "if" now-if the random choose that the drone is in Maintenance
+						{
+							int r = new Random().Next(0, baseS.Count());//choose randome location 
+							if (baseS[r].ChargeSlots > 0)
+							{
+								droneToList[i].Loc.Longitude = baseS[r].Loc.Longitude;
+								droneToList[i].Loc.Latitude = baseS[r].Loc.Latitude;
+								dal.AssignDroneToBaseStation(droneToList[i].Id, baseS[r].Id);
+
+								r = new Random().Next(0, 21);//choose random percent of battery between 0to20%
+								droneToList[i].Battery = r;
+								droneToList[i].WhenInCharge = DateTime.Now;
+							}
+							else
+							{
+								BO.BaseStation b = baseS.FirstOrDefault(b => b.ChargeSlots > 0);
+								droneToList[i].Loc.Longitude = b.Loc.Longitude;
+								droneToList[i].Loc.Latitude = b.Loc.Latitude;
+								dal.AssignDroneToBaseStation(droneToList[i].Id, b.Id);
+								r = new Random().Next(0, 21);//choose random percent of battery between 0to20%
+								droneToList[i].Battery = r;
+								droneToList[i].WhenInCharge = DateTime.Now;
+							}
+						}
+						else if (droneToList[i].Status == BO.DroneStatuses.free)//according to the previous "if" now-if the random choose that the drone is free
+						{
+							List<BO.Customer> customerList = new List<BO.Customer>();
+							foreach (DO.Parcel item in dal.GetListParcels(p => p.Id != 0))//add data of parcel that was deliver
+							{
+								if (item.Delivered != null)
+									customerList.Add(getCustomerInIBL(item.TargetId));
+							}
+							int r = new Random().Next(0, customerList.Count());//choose a random loc of parcel 
+							droneToList[i].Loc.Longitude = customerList[r].Loc.Longitude;
+							droneToList[i].Loc.Latitude = customerList[r].Loc.Latitude;
+
+							int percent = calcBatteryToCloserBase(droneToList[i].Loc.Longitude, droneToList[i].Loc.Latitude);//calculate the min percent battery to go back to the base station
+							int finalPercent = new Random().Next(percent, 101);//random choose percent between "percent" to 100 
+							droneToList[i].Battery = finalPercent;
+						}
+					}
+					catch
+					{
+						droneToList[i].Loc.Longitude = baseS.Find(b => b.Id == baseId).Loc.Longitude;
+						droneToList[i].Loc.Latitude = baseS.Find(b => b.Id == baseId).Loc.Latitude;
+						int r = new Random().Next(0, 21);//choose random percent of battery between 0to20%
+						droneToList[i].Battery = r;
+						droneToList[i].WhenInCharge = DateTime.Now;
+					}
 				}
 			}
 		}
@@ -291,16 +304,19 @@ namespace BL
 			{
 				double finalDis = -1;
 				BO.Location loc = new BO.Location();
-				foreach (DO.BaseStation b in dal.GetListBaseStations(b => b.Id != 0))
+				lock (dal)
 				{
-					double dis = distanceBetweenTwoPoints(b.Latitude, b.Longitude, locSender.Latitude, locSender.Longitude);
-					if (finalDis == -1 || dis < finalDis)
+					foreach (DO.BaseStation b in dal.GetListBaseStations(b => b.Id != 0))
 					{
-						droneToList[indexDrone(droneId)].Loc.Longitude = b.Longitude;
-						droneToList[indexDrone(droneId)].Loc.Latitude = b.Latitude;
-						finalDis = dis;
-					}
+						double dis = distanceBetweenTwoPoints(b.Latitude, b.Longitude, locSender.Latitude, locSender.Longitude);
+						if (finalDis == -1 || dis < finalDis)
+						{
+							droneToList[indexDrone(droneId)].Loc.Longitude = b.Longitude;
+							droneToList[indexDrone(droneId)].Loc.Latitude = b.Latitude;
+							finalDis = dis;
+						}
 
+					}
 				}
 			}
 			else if (p.Status == BO.ParcelStatues.Collected)//if the parcel was collected by the drone so the loc of drone is where the sender is 
@@ -316,21 +332,24 @@ namespace BL
 		/// <returns> an customer </returns>
 		private BO.Customer getCustomerInIBL(int id)
 		{
-			try
+			lock (dal)
 			{
-				BO.Customer customer = new BO.Customer();
-				DO.Customer c = new DO.Customer();
-				c = dal.GetCustomer(id);
-				customer.Id = c.Id;
-				customer.Name = c.Name;
-				customer.Phone = c.Phone;
-				customer.Loc.Latitude = c.Latitude;
-				customer.Loc.Longitude = c.Longitude;
-				return customer;
-			}
-			catch (DO.IdNotExist ex)//customer
-			{
-				throw new BO.IdNotExist(ex.Message, ex._type);
+				try
+				{
+					BO.Customer customer = new BO.Customer();
+					DO.Customer c = new DO.Customer();
+					c = dal.GetCustomer(id);
+					customer.Id = c.Id;
+					customer.Name = c.Name;
+					customer.Phone = c.Phone;
+					customer.Loc.Latitude = c.Latitude;
+					customer.Loc.Longitude = c.Longitude;
+					return customer;
+				}
+				catch (DO.IdNotExist ex)//customer
+				{
+					throw new BO.IdNotExist(ex.Message, ex._type);
+				}
 			}
 		}
 		/// <summary>
@@ -340,53 +359,58 @@ namespace BL
 		private double disToCloserBase(double longi, double lati)
 		{
 			double disToBase = -1;
-			foreach (DO.BaseStation b in dal.GetListBaseStations(b => b.Id != 0))
+			lock (dal)
 			{
-				double dis = distanceBetweenTwoPoints(b.Latitude, b.Longitude, lati, longi);
-				if ((disToBase == -1 || dis < disToBase) && b.ChargeSlots > 0)//if "dis" that is calculate in the previous line is smaller than the "disToBase"= the smaller distanse right now so "disToBase = dis"
-					disToBase = dis;
+				foreach (DO.BaseStation b in dal.GetListBaseStations(b => b.Id != 0))
+				{
+					double dis = distanceBetweenTwoPoints(b.Latitude, b.Longitude, lati, longi);
+					if ((disToBase == -1 || dis < disToBase) && b.ChargeSlots > 0)//if "dis" that is calculate in the previous line is smaller than the "disToBase"= the smaller distanse right now so "disToBase = dis"
+						disToBase = dis;
 
+				}
+				return disToBase;
 			}
-			return disToBase;
 		}
 		/// <summary>
 		/// the func search and return the location of customer by his name
 		/// </summary>
 		/// <param name="name"></param>
 		/// <returns> an location </returns>
-		private BO.Location getLocCustomer(int customerId=0, string name = null)
+		private BO.Location getLocCustomer(int customerId = 0, string name = null)
 		{
-			if (name == null)
+			lock (dal)
 			{
-				BO.Location location = new BO.Location();
-				foreach (DO.Customer item in dal.GetListCustomers())
+				if (name == null)
 				{
-					if (item.Id == customerId)
+					BO.Location location = new BO.Location();
+					foreach (DO.Customer item in dal.GetListCustomers())
 					{
-						location.Longitude = item.Longitude;
-						location.Latitude = item.Latitude;
-						return location;
+						if (item.Id == customerId)
+						{
+							location.Longitude = item.Longitude;
+							location.Latitude = item.Latitude;
+							return location;
+						}
 					}
+					throw new BO.IdNotExist("CUSTOMER");
 				}
-				throw new BO.IdNotExist("CUSTOMER");
-			}
-			else//if customer id = 0
-			{
-				BO.Location loc = new BO.Location();
-				foreach (DO.Customer item in dal.GetListCustomers())
+				else//if customer id = 0
 				{
-					if (item.Name == name)
+					BO.Location loc = new BO.Location();
+					foreach (DO.Customer item in dal.GetListCustomers())
 					{
-						loc.Latitude = item.Latitude;
-						loc.Longitude = item.Longitude;
+						if (item.Name == name)
+						{
+							loc.Latitude = item.Latitude;
+							loc.Longitude = item.Longitude;
+						}
 					}
+					if (loc != null)
+						return loc;
+					else
+						throw new BO.NameNotExist("CUSTOMER");
 				}
-				if (loc != null)
-					return loc;
-				else
-					throw new BO.NameNotExist("CUSTOMER");
 			}
-
 		}
 		#endregion
 		#endregion
@@ -399,21 +423,25 @@ namespace BL
 		/// <param name="name"></param>
 		/// <param name="chargeSlots"></param>
 		/// <param name="location"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void AddBaseStation(int id, int name, int chargeSlots, BO.Location location)
 		{
-			try
-			{ dal.AddBaseStation(id, name, chargeSlots, location.Longitude, location.Latitude); }
-			catch (DO.InvalidId ex)//base
-			{ throw new BO.InvalidId(ex.Message, ex._type); }
+			lock (dal)
+			{
+				try
+				{ dal.AddBaseStation(id, name, chargeSlots, location.Longitude, location.Latitude); }
+				catch (DO.InvalidId ex)//base
+				{ throw new BO.InvalidId(ex.Message, ex._type); }
 
-			catch (DO.InvalidChargeSlot ex)
-			{ throw new BO.InvalidChargeSlot(ex.Message); }
+				catch (DO.InvalidChargeSlot ex)
+				{ throw new BO.InvalidChargeSlot(ex.Message); }
 
-			catch (DO.InvalidLoc ex)
-			{ throw new BO.InvalidLoc(ex.Message, ex._type, ex.range); }
+				catch (DO.InvalidLoc ex)
+				{ throw new BO.InvalidLoc(ex.Message, ex._type, ex.range); }
 
-			catch (DO.IdExist ex)
-			{ throw new BO.IdExist(ex.Message, ex._type); }
+				catch (DO.IdExist ex)
+				{ throw new BO.IdExist(ex.Message, ex._type); }
+			}
 		}
 		/// <summary>
 		/// the func add a new drone to the data base
@@ -422,42 +450,44 @@ namespace BL
 		/// <param name="model"></param>
 		/// <param name="weight"></param>
 		/// <param name="firstBaseStation"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void AddDrone(int id, string model, BO.WeightCategories weight, int firstBaseStation)
 		{
-			try
-			{ dal.GetBaseStation(firstBaseStation); }
-			catch (DO.IdNotExist ex)//base or drone
-			{ throw new BO.IdNotExist(ex.Message, ex._type); }
-			try
+			lock (dal)
 			{
-				dal.AddDrone(id, model, (DO.WeightCategories)weight);
-				dal.AssignDroneToBaseStation(id, firstBaseStation);
+				try
+				{ dal.GetBaseStation(firstBaseStation); }
+				catch (DO.IdNotExist ex)//base or drone
+				{ throw new BO.IdNotExist(ex.Message, ex._type); }
+				try
+				{
+					dal.AddDrone(id, model, (DO.WeightCategories)weight);
+					dal.AssignDroneToBaseStation(id, firstBaseStation);
+				}
+				catch (DO.InvalidId ex)//drone id
+				{ throw new BO.InvalidId(ex.Message, ex._type); }
+
+				catch (DO.InvalidCategory ex)
+				{ throw new BO.InvalidCategory(ex.Message, ex._type); }
+
+				catch (DO.IdExist ex)//drone
+				{ throw new BO.IdExist(ex.Message, ex._type); }
+
+				int r = new Random().Next(20, 41);
+				double battery = r;
+				BO.Location l = new() { Latitude = dal.GetBaseStation(firstBaseStation).Latitude, Longitude = dal.GetBaseStation(firstBaseStation).Longitude };
+				droneToList.Add(new BO.DroneToList
+				{
+					Id = id,
+					Model = model,
+					MaxWeight = (BO.WeightCategories)weight,
+					Battery = battery,
+					Status = BO.DroneStatuses.Maintenance,
+					Loc = l,
+					IdOfParcel = 0,
+					WhenInCharge = DateTime.Now
+				});
 			}
-			catch (DO.InvalidId ex)//drone id
-			{ throw new BO.InvalidId(ex.Message, ex._type); }
-
-			catch (DO.InvalidCategory ex)
-			{ throw new BO.InvalidCategory(ex.Message, ex._type); }
-
-			catch (DO.IdExist ex)//drone
-			{ throw new BO.IdExist(ex.Message, ex._type); }
-
-			
-
-			int r = new Random().Next(20, 41);
-			double battery = r;
-			BO.Location l = new() { Latitude = dal.GetBaseStation(firstBaseStation).Latitude, Longitude = dal.GetBaseStation(firstBaseStation).Longitude };
-			droneToList.Add(new BO.DroneToList
-			{
-				Id = id,
-				Model = model,
-				MaxWeight = (BO.WeightCategories)weight,
-				Battery = battery,
-				Status = BO.DroneStatuses.Maintenance,
-				Loc = l,
-				IdOfParcel = 0,
-				WhenInCharge = DateTime.Now
-			});
 		}
 		/// <summary>
 		/// the func add a new customer to the data base
@@ -466,20 +496,24 @@ namespace BL
 		/// <param name="name"></param>
 		/// <param name="phone"></param>
 		/// <param name="location"></param>ff
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void AddCustomer(int id, string name, string phone, BO.Location location)
 		{
-			try
+			lock (dal)
 			{
-				dal.AddCustomer(id, name, phone, location.Longitude, location.Latitude);
+				try
+				{
+					dal.AddCustomer(id, name, phone, location.Longitude, location.Latitude);
+				}
+				catch (DO.InvalidId ex)//customer
+				{ throw new BO.InvalidId(ex.Message, ex._type); }
+
+				catch (DO.InvalidLoc ex)
+				{ throw new BO.InvalidLoc(ex.Message, ex._type, ex.range); }
+
+				catch (DO.IdExist ex)//customer
+				{ throw new BO.IdExist(ex.Message, ex._type); }
 			}
-			catch (DO.InvalidId ex)//customer
-			{ throw new BO.InvalidId(ex.Message, ex._type); }
-
-			catch (DO.InvalidLoc ex)
-			{ throw new BO.InvalidLoc(ex.Message, ex._type, ex.range); }
-
-			catch (DO.IdExist ex)//customer
-			{ throw new BO.IdExist(ex.Message, ex._type); }
 		}
 		/// <summary>
 		/// the fun add an new parcel to the data base
@@ -489,50 +523,58 @@ namespace BL
 		/// <param name="targetId"></param>
 		/// <param name="weight"></param>
 		/// <param name="priorities"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void AddParcel(int id, int senderId, int targetId, BO.WeightCategories weight, BO.Priorities priorities)
 		{
-			try
-			{ dal.AddParcel(id, senderId, targetId, 0, (DO.WeightCategories)weight, (DO.Priorities)priorities); }
-			//ב-BL כל הזמנים יאותחלו לזמן אפס למעט תאריך יצירה שיאותחל ל-DateTime.Now
-			catch (DO.InvalidId ex)//parcel-id or sender or target 
-			{ throw new BO.InvalidId(ex.Message, ex._type); }
+			lock (dal)
+			{
+				try
+				{ dal.AddParcel(id, senderId, targetId, 0, (DO.WeightCategories)weight, (DO.Priorities)priorities); }
+				//ב-BL כל הזמנים יאותחלו לזמן אפס למעט תאריך יצירה שיאותחל ל-DateTime.Now
+				catch (DO.InvalidId ex)//parcel-id or sender or target 
+				{ throw new BO.InvalidId(ex.Message, ex._type); }
 
-			catch (DO.NegativeDroneId ex)//for drone id
-			{ throw new BO.InvalidId(ex.Message, "DRONE"); }
+				catch (DO.NegativeDroneId ex)//for drone id
+				{ throw new BO.InvalidId(ex.Message, "DRONE"); }
 
-			catch (DO.InvalidCategory ex)
-			{ throw new BO.InvalidCategory(ex.Message, ex._type); }
+				catch (DO.InvalidCategory ex)
+				{ throw new BO.InvalidCategory(ex.Message, ex._type); }
 
-			catch (DO.IdExist ex)//parcel
-			{ throw new BO.IdExist(ex.Message, ex._type); }
+				catch (DO.IdExist ex)//parcel
+				{ throw new BO.IdExist(ex.Message, ex._type); }
 
-			catch (DO.IdNotExist ex)//customer-target or sender
-			{ throw new BO.IdNotExist(ex.Message, ex._type); }
+				catch (DO.IdNotExist ex)//customer-target or sender
+				{ throw new BO.IdNotExist(ex.Message, ex._type); }
 
-			catch (DO.SenderTargetIdEqual ex)
-			{ throw new BO.SenderTargetIdEqual(); }
+				catch (DO.SenderTargetIdEqual ex)
+				{ throw new BO.SenderTargetIdEqual(); }
+			}
 		}
 		#endregion
-		
+
 		#region UPDATE - OPTION
 		/// <summary>
 		/// the func update the name of model drone
 		/// </summary>
 		/// <param name="droneId"></param>
 		/// <param name="model"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void UpdateDrone(int droneId, string model)
 		{
-			try
+			lock (dal)
 			{
-				DO.Drone drone = new DO.Drone();
-				drone = dal.GetDrone(droneId);
-				drone.Model = model;
-				dal.UpdateDrone(drone);
-				for (int i = 0; i < droneToList.Count(); i++)
-				{ if (droneToList[i].Id == droneId) droneToList[i].Model = model; }
+				try
+				{
+					DO.Drone drone = new DO.Drone();
+					drone = dal.GetDrone(droneId);
+					drone.Model = model;
+					dal.UpdateDrone(drone);
+					for (int i = 0; i < droneToList.Count(); i++)
+					{ if (droneToList[i].Id == droneId) droneToList[i].Model = model; }
+				}
+				catch (DO.IdNotExist ex)//drone
+				{ throw new BO.IdNotExist(ex.Message, ex._type); }
 			}
-			catch (DO.IdNotExist ex)//drone
-			{ throw new BO.IdNotExist(ex.Message, ex._type); }
 		}
 		/// <summary>
 		/// update the data of data base
@@ -540,27 +582,31 @@ namespace BL
 		/// <param name="baseId"></param>
 		/// <param name="name"></param>
 		/// <param name="chargeslots"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void UpdateBaseStation(int baseId, string name = null, string chargeslots = null)
 		{
 			DO.BaseStation baseStation = new DO.BaseStation();
-			try
-			{ baseStation = dal.GetBaseStation(baseId); }
-			catch (DO.IdNotExist ex)//base
-			{ throw new BO.IdNotExist(ex.Message, ex._type); }
+			lock (dal)
+			{
+				try
+				{ baseStation = dal.GetBaseStation(baseId); }
+				catch (DO.IdNotExist ex)//base
+				{ throw new BO.IdNotExist(ex.Message, ex._type); }
 
-			int name_int, charge_slots;
-			if (name != "")
-			{
-				name_int = int.Parse(name);
-				baseStation = dal.GetBaseStation(baseId);
-				baseStation.Name = name_int;
-				dal.UpdateBaseStation(baseStation);
-			}
-			if (chargeslots != "")
-			{
-				charge_slots = int.Parse(chargeslots);
-				baseStation.ChargeSlots = charge_slots;
-				dal.UpdateBaseStation(baseStation);
+				int name_int, charge_slots;
+				if (name != "")
+				{
+					name_int = int.Parse(name);
+					baseStation = dal.GetBaseStation(baseId);
+					baseStation.Name = name_int;
+					dal.UpdateBaseStation(baseStation);
+				}
+				if (chargeslots != "")
+				{
+					charge_slots = int.Parse(chargeslots);
+					baseStation.ChargeSlots = charge_slots;
+					dal.UpdateBaseStation(baseStation);
+				}
 			}
 		}
 		/// <summary>
@@ -569,30 +615,35 @@ namespace BL
 		/// <param name="customerId"></param>
 		/// <param name="name"></param>
 		/// <param name="phone"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void UpdateCustomer(int customerId, string name = null, string phone = null)
 		{
 			DO.Customer customer = new DO.Customer();
-			try
-			{ customer = dal.GetCustomer(customerId); }
-			catch (DO.IdNotExist ex)//customer
-			{ throw new BO.IdExist(ex.Message, ex._type); }
-			if (name != "")
+			lock (dal)
 			{
-				customer = dal.GetCustomer(customerId);
-				customer.Name = name;
-				dal.UpdateCustomer(customer);
-			}
-			if (phone != "")
-			{
-				customer = dal.GetCustomer(customerId);
-				customer.Phone = phone;
-				dal.UpdateCustomer(customer);
+				try
+				{ customer = dal.GetCustomer(customerId); }
+				catch (DO.IdNotExist ex)//customer
+				{ throw new BO.IdExist(ex.Message, ex._type); }
+				if (name != "")
+				{
+					customer = dal.GetCustomer(customerId);
+					customer.Name = name;
+					dal.UpdateCustomer(customer);
+				}
+				if (phone != "")
+				{
+					customer = dal.GetCustomer(customerId);
+					customer.Phone = phone;
+					dal.UpdateCustomer(customer);
+				}
 			}
 		}
 		/// <summary>
 		/// the func send the drone to charge
 		/// </summary>
 		/// <param name="droneId"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void DroneToCharge(int droneId)
 		{
 			BO.DroneToList drone = new BO.DroneToList();
@@ -616,14 +667,17 @@ namespace BL
 				if (drone.Id == droneToList[i].Id)
 					droneToList[i] = drone;
 			}
-
-			dal.AssignDroneToBaseStation(droneId, baseStation.Id);//update the data base
+			lock (dal)
+			{
+				dal.AssignDroneToBaseStation(droneId, baseStation.Id);//update the data base
+			}
 		}
 		/// <summary>
 		/// the func release the drone from base station charge
 		/// </summary>
 		/// <param name="droneId"></param>
 		/// <param name="time"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void DroneLeaveCharge(int droneId)
 		{
 			BO.DroneToList drone = new BO.DroneToList();
@@ -638,26 +692,34 @@ namespace BL
 				drone.Battery = 100;
 			DO.BaseStation baseStation = new DO.BaseStation();
 			baseStation = currentBase(drone.Loc.Longitude, drone.Loc.Latitude);
-			dal.DroneLeaveChargeStation(droneId, baseStation.Id);//base station- charge slot++ and remove the drone from the list "drone charge"
+			lock (dal)
+			{
+				dal.DroneLeaveChargeStation(droneId, baseStation.Id);//base station- charge slot++ and remove the drone from the list "drone charge"
+			}
 		}
 		/// <summary>
 		/// if the user add new parcel and yet is not assigne to a drone and want to delete him
 		/// </summary>
 		/// <param name="parcelId"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void DeleteParcel(int parcelId)
 		{
-			try
+			lock (dal)
 			{
-				dal.DeleteParcel(parcelId);
+				try
+				{
+					dal.DeleteParcel(parcelId);
+				}
+				catch (DO.InvalidId ex) { throw new BO.InvalidId(ex.Message); }
+				catch (DO.IdNotExist ex) { throw new BO.IdNotExist(ex.Message); }
+				catch (DO.CantRemove ex) { throw new BO.CantRemove(ex.Message); }
 			}
-			catch (DO.InvalidId ex) { throw new BO.InvalidId(ex.Message); }
-			catch (DO.IdNotExist ex) { throw new BO.IdNotExist(ex.Message); }
-			catch (DO.CantRemove ex) { throw new BO.CantRemove(ex.Message); }
 		}
 		/// <summary>
 		/// the func associte the parcel to a drone
 		/// </summary>
 		/// <param name="droneId"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public bool AffectParcelToDrone(int droneId)
 		{
 			int parcelId;
@@ -667,119 +729,129 @@ namespace BL
 				throw new BO.DroneNotFree();
 
 			DO.Parcel p = new DO.Parcel();
-			List<DO.Parcel> parcel_ = (List<DO.Parcel>)dal.GetListParcels(p => p.DroneId == 0);//new List<DO.Parcel>();
-			if (parcel_.Count() == 0)
-				throw new BO.AllParcelAssoc();
-			List<DO.Parcel> parcelEmrgency = (List<DO.Parcel>)dal.GetListParcels(p => p.DroneId == 0);//removeByPriority(parcel, DO.Priorities.Emergecey);//O(n)
-			parcelEmrgency.RemoveAll(item => (int)item.Priority != 3);
-			parcelEmrgency.RemoveAll(item => (int)item.Weight > (int)drone.MaxWeight);//(parcelEmrgency, (DO.WeightCategories)drone.MaxWeight);
-			parcelEmrgency.OrderByDescending(item => (int)item.Weight).ToList();
-			parcelId = chooseParcel(parcelEmrgency, drone);
-			if (parcelId != -1)
+			lock (dal)
 			{
-				drone.Status = BO.DroneStatuses.Shipping;//change status of drone 
-				drone.IdOfParcel = parcelId;
-				updateDroneList(drone);//update drone in data base
-				p = parcel_.Find(item => (item.Id == parcelId));//find parcel from the list of parcel by id
-				p.DroneId = drone.Id;
-				p.Scheduled = DateTime.Now;//update time of 
-				dal.UpdateParcel(p);
-				return true;//no need to continue
+				List<DO.Parcel> parcel_ = (List<DO.Parcel>)dal.GetListParcels(p => p.DroneId == 0);//new List<DO.Parcel>();
+				if (parcel_.Count() == 0)
+					throw new BO.AllParcelAssoc();
+				List<DO.Parcel> parcelEmrgency = (List<DO.Parcel>)dal.GetListParcels(p => p.DroneId == 0);//removeByPriority(parcel, DO.Priorities.Emergecey);//O(n)
+				parcelEmrgency.RemoveAll(item => (int)item.Priority != 3);
+				parcelEmrgency.RemoveAll(item => (int)item.Weight > (int)drone.MaxWeight);//(parcelEmrgency, (DO.WeightCategories)drone.MaxWeight);
+				parcelEmrgency.OrderByDescending(item => (int)item.Weight).ToList();
+				parcelId = chooseParcel(parcelEmrgency, drone);
+				if (parcelId != -1)
+				{
+					drone.Status = BO.DroneStatuses.Shipping;//change status of drone 
+					drone.IdOfParcel = parcelId;
+					updateDroneList(drone);//update drone in data base
+					p = parcel_.Find(item => (item.Id == parcelId));//find parcel from the list of parcel by id
+					p.DroneId = drone.Id;
+					p.Scheduled = DateTime.Now;//update time of 
+					dal.UpdateParcel(p);
+					return true;//no need to continue
+				}
+				//no found a parcel in priority emergency so go to the next priority
+				List<DO.Parcel> parcelFast = (List<DO.Parcel>)dal.GetListParcels(p => p.DroneId == 0);//removeByPriority(parcel, DO.Priorities.Emergecey);//O(n)
+				parcelFast.RemoveAll(item => (int)item.Priority != 2);
+				parcelFast.RemoveAll(item => (int)item.Weight > (int)drone.MaxWeight);//(parcelEmrgency, (DO.WeightCategories)drone.MaxWeight);
+				parcelFast.OrderByDescending(item => (int)item.Weight).ToList();
+				parcelId = chooseParcel(parcelFast, drone);
+				if (parcelId != -1)
+				{
+					drone.Status = BO.DroneStatuses.Shipping;//change status of drone 
+					drone.IdOfParcel = parcelId;
+					updateDroneList(drone);//update drone in data base
+					p = parcel_.Find(item => (item.Id == parcelId));//find parcel from the list of parcel by id
+					p.DroneId = drone.Id;
+					p.Scheduled = DateTime.Now;//update time of 
+					dal.UpdateParcel(p);
+					return true;//no need to continue
+				}
+				//no found a parcel in priority fast so go to the next priority
+				List<DO.Parcel> parcelNormal = (List<DO.Parcel>)dal.GetListParcels(p => p.DroneId == 0);//removeByPriority(parcel, DO.Priorities.Emergecey);//O(n)
+				parcelNormal.RemoveAll(item => (int)item.Priority != 1);
+				parcelNormal.RemoveAll(item => (int)item.Weight > (int)drone.MaxWeight);//(parcelEmrgency, (DO.WeightCategories)drone.MaxWeight);
+				parcelNormal.OrderByDescending(item => (int)item.Weight).ToList();
+				parcelId = chooseParcel(parcelNormal, drone);
+				if (parcelId != -1)
+				{
+					drone.Status = BO.DroneStatuses.Shipping;//change status of drone 
+					drone.IdOfParcel = parcelId;
+					updateDroneList(drone);//update drone in data base
+					p = parcel_.Find(item => (item.Id == parcelId));//find parcel from the list of parcel by id
+					p.DroneId = drone.Id;
+					p.Scheduled = DateTime.Now;//update time of 
+					dal.UpdateParcel(p);
+					return true;//no need to continue
+				}
+				throw new BO.NoDroneCanParcel();//the drone can't take any parcel
 			}
-			//no found a parcel in priority emergency so go to the next priority
-			List<DO.Parcel> parcelFast = (List<DO.Parcel>)dal.GetListParcels(p => p.DroneId == 0);//removeByPriority(parcel, DO.Priorities.Emergecey);//O(n)
-			parcelFast.RemoveAll(item => (int)item.Priority != 2);
-			parcelFast.RemoveAll(item => (int)item.Weight > (int)drone.MaxWeight);//(parcelEmrgency, (DO.WeightCategories)drone.MaxWeight);
-			parcelFast.OrderByDescending(item => (int)item.Weight).ToList();
-			parcelId = chooseParcel(parcelFast, drone);
-			if (parcelId != -1)
-			{
-				drone.Status = BO.DroneStatuses.Shipping;//change status of drone 
-				drone.IdOfParcel = parcelId;
-				updateDroneList(drone);//update drone in data base
-				p = parcel_.Find(item => (item.Id == parcelId));//find parcel from the list of parcel by id
-				p.DroneId = drone.Id;
-				p.Scheduled = DateTime.Now;//update time of 
-				dal.UpdateParcel(p);
-				return true;//no need to continue
-			}
-			//no found a parcel in priority fast so go to the next priority
-			List<DO.Parcel> parcelNormal = (List<DO.Parcel>)dal.GetListParcels(p => p.DroneId == 0);//removeByPriority(parcel, DO.Priorities.Emergecey);//O(n)
-			parcelNormal.RemoveAll(item => (int)item.Priority != 1);
-			parcelNormal.RemoveAll(item => (int)item.Weight > (int)drone.MaxWeight);//(parcelEmrgency, (DO.WeightCategories)drone.MaxWeight);
-			parcelNormal.OrderByDescending(item => (int)item.Weight).ToList();
-			parcelId = chooseParcel(parcelNormal, drone);
-			if (parcelId != -1)
-			{
-				drone.Status = BO.DroneStatuses.Shipping;//change status of drone 
-				drone.IdOfParcel = parcelId;
-				updateDroneList(drone);//update drone in data base
-				p = parcel_.Find(item => (item.Id == parcelId));//find parcel from the list of parcel by id
-				p.DroneId = drone.Id;
-				p.Scheduled = DateTime.Now;//update time of 
-				dal.UpdateParcel(p);
-				return true;//no need to continue
-			}
-			throw new BO.NoDroneCanParcel();//the drone can't take any parcel
-
 		}
 		/// <summary>
 		/// collect a parcel to deliver
 		/// </summary>
 		/// <param name="droneId"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void ParcelCollection(int droneId)
 		{
 			BO.DroneToList drone = new BO.DroneToList();
 			drone = droneToList[indexDrone(droneId)];
 			DO.Parcel parcel = new DO.Parcel();
-			foreach (DO.Parcel item in dal.GetListParcels(p => p.Id != 0))
+			lock (dal)
 			{
-				if (item.DroneId == drone.Id)
-					parcel = item;
+				foreach (DO.Parcel item in dal.GetListParcels(p => p.Id != 0))
+				{
+					if (item.DroneId == drone.Id)
+						parcel = item;
+				}
+				if (parcel.DroneId != droneId)
+					throw new BO.NoParcelId();
+				if (parcel.PickedUp != null)//if parcel pick-up
+					throw new BO.AlreadyPickedUp();
+				if (parcel.Scheduled == null)// if parcel not associate to a drone 
+					throw new BO.NotScheduledYet();
+				parcel.PickedUp = DateTime.Now;
+				dal.UpdateParcel(parcel);
+				drone.Battery -= (int)(Math.Ceiling(_useWhenFree * distanceBetweenTwoPoints(drone.Loc.Latitude, drone.Loc.Longitude, getLocCustomer(parcel.SenderId).Latitude, getLocCustomer(parcel.SenderId).Longitude)));
+				drone.Loc.Longitude = getLocCustomer(parcel.SenderId).Longitude;//update the location to the sender
+				drone.Loc.Latitude = getLocCustomer(parcel.SenderId).Latitude;
+				updateDroneList(drone);
 			}
-			if (parcel.DroneId != droneId)
-				throw new BO.NoParcelId();
-			if (parcel.PickedUp != null)//if parcel pick-up
-				throw new BO.AlreadyPickedUp();
-			if (parcel.Scheduled == null)// if parcel not associate to a drone 
-				throw new BO.NotScheduledYet();
-			parcel.PickedUp = DateTime.Now;
-			dal.UpdateParcel(parcel);
-			drone.Battery -= (int)(Math.Ceiling(_useWhenFree * distanceBetweenTwoPoints(drone.Loc.Latitude, drone.Loc.Longitude, getLocCustomer(parcel.SenderId).Latitude, getLocCustomer(parcel.SenderId).Longitude)));
-			drone.Loc.Longitude = getLocCustomer(parcel.SenderId).Longitude;//update the location to the sender
-			drone.Loc.Latitude = getLocCustomer(parcel.SenderId).Latitude;
-			updateDroneList(drone);
 		}
 		/// <summary>
 		/// the func updaste that the drone was deliver the parcel
 		/// </summary>
 		/// <param name="droneId"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void ParcelDeliverd(int droneId)
 		{
 			BO.DroneToList drone = new BO.DroneToList();
 			drone = droneToList[indexDrone(droneId)];
 			DO.Parcel parcel = new DO.Parcel();
-			foreach (DO.Parcel item in dal.GetListParcels(p => p.Id != 0))
+			lock (dal)
 			{
-				if (item.DroneId == drone.Id)
+				foreach (DO.Parcel item in dal.GetListParcels(p => p.Id != 0))
 				{
-					parcel = item;
+					if (item.DroneId == drone.Id)
+					{
+						parcel = item;
+					}
 				}
+				if (parcel.DroneId != droneId)
+					throw new BO.NoParcelId();
+				if (parcel.PickedUp == null) //if parcel not pick-up
+					throw new BO.NotPickedUpYet();
+				if (parcel.Delivered != null) //if parcel was deliver
+					throw new BO.AlreadyDelivered();
+				parcel.Delivered = DateTime.Now;
+				dal.UpdateParcel(parcel);
+				drone.Battery -= calcBatteryUsedWhenShipping(parcel.Weight, distanceBetweenTwoPoints(drone.Loc.Latitude, drone.Loc.Longitude, getLocCustomer(parcel.TargetId).Latitude, getLocCustomer(parcel.TargetId).Longitude));
+				drone.Loc.Longitude = getLocCustomer(parcel.TargetId).Longitude;//update the location to the target
+				drone.Loc.Latitude = getLocCustomer(parcel.TargetId).Latitude;
+				drone.Status = BO.DroneStatuses.free;
+				drone.IdOfParcel = null;
+				updateDroneList(drone);
 			}
-			if (parcel.DroneId != droneId)
-				throw new BO.NoParcelId();
-			if (parcel.PickedUp == null) //if parcel not pick-up
-				throw new BO.NotPickedUpYet();
-			if (parcel.Delivered != null) //if parcel was deliver
-				throw new BO.AlreadyDelivered();
-			parcel.Delivered = DateTime.Now;
-			dal.UpdateParcel(parcel);
-			drone.Battery -= calcBatteryUsedWhenShipping(parcel.Weight, distanceBetweenTwoPoints(drone.Loc.Latitude, drone.Loc.Longitude, getLocCustomer(parcel.TargetId).Latitude, getLocCustomer(parcel.TargetId).Longitude));
-			drone.Loc.Longitude = getLocCustomer(parcel.TargetId).Longitude;//update the location to the target
-			drone.Loc.Latitude = getLocCustomer(parcel.TargetId).Latitude;
-			drone.Status = BO.DroneStatuses.free;
-			drone.IdOfParcel = null;
-			updateDroneList(drone);
 		}
 		#endregion
 
@@ -789,70 +861,80 @@ namespace BL
 		/// </summary>
 		/// <param name="baseId"></param>
 		/// <returns> an base station </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public BO.BaseStation GetBaseStation(int baseId)
 		{
 			BO.BaseStation baseS = new BO.BaseStation();
 			DO.BaseStation b = new DO.BaseStation();
-			try
-			{ b = dal.GetBaseStation(baseId); }
-			catch (DO.IdNotExist ex)//base
-			{ throw new BO.IdNotExist(ex.Message, ex._type); }
-
-			baseS.Id = b.Id;
-			baseS.Name = b.Name;
-			baseS.ChargeSlots = b.ChargeSlots;
-			baseS.Loc.Latitude = b.Latitude;
-			baseS.Loc.Longitude = b.Longitude;
-
-			for (int i = 0; i < droneToList.Count(); i++)
+			lock (dal)
 			{
-				if (droneToList[i].Status == BO.DroneStatuses.Maintenance && (droneToList[i].Loc.Latitude == baseS.Loc.Latitude && droneToList[i].Loc.Longitude == baseS.Loc.Longitude))
-					baseS.DroneInCharge.Add(new BO.DroneCharge { DroneId = droneToList[i].Id, Battery = droneToList[i].Battery });
+				try
+				{ b = dal.GetBaseStation(baseId); }
+				catch (DO.IdNotExist ex)//base
+				{ throw new BO.IdNotExist(ex.Message, ex._type); }
+
+				baseS.Id = b.Id;
+				baseS.Name = b.Name;
+				baseS.ChargeSlots = b.ChargeSlots;
+				baseS.Loc.Latitude = b.Latitude;
+				baseS.Loc.Longitude = b.Longitude;
+
+				for (int i = 0; i < droneToList.Count(); i++)
+				{
+					if (droneToList[i].Status == BO.DroneStatuses.Maintenance && (droneToList[i].Loc.Latitude == baseS.Loc.Latitude && droneToList[i].Loc.Longitude == baseS.Loc.Longitude))
+						baseS.DroneInCharge.Add(new BO.DroneCharge { DroneId = droneToList[i].Id, Battery = droneToList[i].Battery });
+				}
+				return baseS;
+
 			}
-			return baseS;
 		}
 		/// <summary>
 		/// the func search an drone in the data base
 		/// </summary>
 		/// <param name="droneId"></param>
 		/// <returns> an drone </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public BO.Drone GetDrone(int droneId)
 		{
 			BO.Drone drone = new BO.Drone();
-			try
-			{ dal.GetDrone(droneId); }
-			catch (DO.IdNotExist ex)//drone
-			{ throw new BO.IdNotExist(ex.Message, ex._type); }
-			for (int i = 0; i < droneToList.Count(); i++)//get all drone
+			lock (dal)
 			{
-				if (droneToList[i].Id == droneId)
+				try
+				{ dal.GetDrone(droneId); }
+				catch (DO.IdNotExist ex)//drone
+				{ throw new BO.IdNotExist(ex.Message, ex._type); }
+				for (int i = 0; i < droneToList.Count(); i++)//get all drone
 				{
-					drone.Id = droneToList[i].Id;
-					drone.Model = droneToList[i].Model;
-					drone.MaxWeight = droneToList[i].MaxWeight;
-					drone.Status = droneToList[i].Status;
-					drone.Battery = droneToList[i].Battery;
-					drone.Loc.Longitude = droneToList[i].Loc.Longitude;
-					drone.Loc.Latitude = droneToList[i].Loc.Latitude;
-					break;
+					if (droneToList[i].Id == droneId)
+					{
+						drone.Id = droneToList[i].Id;
+						drone.Model = droneToList[i].Model;
+						drone.MaxWeight = droneToList[i].MaxWeight;
+						drone.Status = droneToList[i].Status;
+						drone.Battery = droneToList[i].Battery;
+						drone.Loc.Longitude = droneToList[i].Loc.Longitude;
+						drone.Loc.Latitude = droneToList[i].Loc.Latitude;
+						break;
+					}
 				}
-			}
-			if (drone.Status == BO.DroneStatuses.Shipping)//if drone is in shipping searche who is the parcel
-			{
-				BO.DroneToList d = droneToList.Find(d => d.Id == drone.Id);
-				foreach (DO.Parcel item in dal.GetListParcels(p => true))
+				if (drone.Status == BO.DroneStatuses.Shipping)//if drone is in shipping searche who is the parcel
 				{
-					if (item.DroneId == d.Id && ( item.Delivered==null))
-					{ drone.InTransit = convertParcel(item, droneId); break; }
+					BO.DroneToList d = droneToList.Find(d => d.Id == drone.Id);
+					foreach (DO.Parcel item in dal.GetListParcels(p => true))
+					{
+						if (item.DroneId == d.Id && (item.Delivered == null))
+						{ drone.InTransit = convertParcel(item, droneId); break; }
+					}
 				}
+				return drone;
 			}
-			return drone;
 		}
 		/// <summary>
 		/// the func return a customer
 		/// </summary>
 		/// <param name="customerId"></param>
 		/// <returns></returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public BO.Customer GetCustomer(int customerId)
 		{
 			BO.Customer customer = new BO.Customer();
@@ -860,45 +942,49 @@ namespace BL
 			BO.CustomerInParcel sender = new BO.CustomerInParcel();
 
 			customer = getCustomerInIBL(customerId);
-			foreach (DO.Parcel item in dal.GetListParcels(p => p.Id != 0))//add to the list parcel that the customer is the sender
+			lock (dal)
 			{
-				sender.Id = item.SenderId;//
-				sender.Name = getCustomerInIBL(item.SenderId).Name;
-				if (item.SenderId == customerId)//if the customer is the sender
+				foreach (DO.Parcel item in dal.GetListParcels(p => p.Id != 0))//add to the list parcel that the customer is the sender
 				{
-					customer.ParcelFromCustomer.Add(new BO.ParcelAtCustomer
+					sender.Id = item.SenderId;//
+					sender.Name = getCustomerInIBL(item.SenderId).Name;
+					if (item.SenderId == customerId)//if the customer is the sender
 					{
-						Id = item.Id,
-						Weight = (BO.WeightCategories)item.Weight,
-						Priority = (BO.Priorities)item.Priority,
-						status = getStatusOfParcel(item),
-						SenderOrTraget = sender,
-					});
+						customer.ParcelFromCustomer.Add(new BO.ParcelAtCustomer
+						{
+							Id = item.Id,
+							Weight = (BO.WeightCategories)item.Weight,
+							Priority = (BO.Priorities)item.Priority,
+							status = getStatusOfParcel(item),
+							SenderOrTraget = sender,
+						});
+					}
 				}
-			}
-			foreach (DO.Parcel item in dal.GetListParcels(p => p.Id != 0))//add to the list parcel that the customer is the target
-			{
-				target.Id = item.TargetId;
-				target.Name = getCustomerInIBL(item.TargetId).Name;
-				if (item.TargetId == customerId)//if the customer is the target
+				foreach (DO.Parcel item in dal.GetListParcels(p => p.Id != 0))//add to the list parcel that the customer is the target
 				{
-					customer.ParcelToCustomer.Add(new BO.ParcelAtCustomer
+					target.Id = item.TargetId;
+					target.Name = getCustomerInIBL(item.TargetId).Name;
+					if (item.TargetId == customerId)//if the customer is the target
 					{
-						Id = item.Id,
-						Weight = (BO.WeightCategories)item.Weight,
-						Priority = (BO.Priorities)item.Priority,
-						status = getStatusOfParcel(item),
-						SenderOrTraget = target,
-					});
+						customer.ParcelToCustomer.Add(new BO.ParcelAtCustomer
+						{
+							Id = item.Id,
+							Weight = (BO.WeightCategories)item.Weight,
+							Priority = (BO.Priorities)item.Priority,
+							status = getStatusOfParcel(item),
+							SenderOrTraget = target,
+						});
+					}
 				}
+				return customer;
 			}
-			return customer;
 		}
 		/// <summary>
 		/// the func search and return a parcel
 		/// </summary>
 		/// <param name="parcelId"></param>
 		/// <returns> an parcel </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public BO.Parcel GetParcel(int parcelId)
 		{
 			BO.Parcel parcel = new BO.Parcel();
@@ -906,11 +992,13 @@ namespace BL
 			BO.CustomerInParcel target = new BO.CustomerInParcel();
 			BO.DroneToList drone = new BO.DroneToList();
 			DO.Parcel p = new DO.Parcel();
-			try
-			{ p = dal.GetParcel(parcelId); }
-			catch (DO.IdNotExist ex)
-			{ throw new BO.IdNotExist(ex.Message, ex._type); }
-
+			lock (dal)
+			{
+				try
+				{ p = dal.GetParcel(parcelId); }
+				catch (DO.IdNotExist ex)
+				{ throw new BO.IdNotExist(ex.Message, ex._type); }
+			}
 			parcel.Id = p.Id;
 			parcel.Weight = (BO.WeightCategories)p.Weight;
 			parcel.Priority = (BO.Priorities)p.Priority;
@@ -938,93 +1026,109 @@ namespace BL
 			return parcel;
 		}
 		#endregion
-		
+
 		#region DISPLAY LIST OF AN OBJECT - OPTION
 		/// <summary>
 		/// the func return a list of base station
 		/// </summary>
 		/// <returns> a list of base station </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public IEnumerable<BO.BaseToList> GetListOfBaseStations(Predicate<DO.BaseStation> f)
 		{
 			List<BO.BaseToList> baseS = new List<BO.BaseToList>();
-			foreach (DO.BaseStation item in dal.GetListBaseStations(f))
+			lock (dal)
 			{
-				BO.Location l = new() { Latitude = item.Latitude, Longitude = item.Longitude };
-				baseS.Add(new BO.BaseToList
+				foreach (DO.BaseStation item in dal.GetListBaseStations(f))
 				{
-					Id = item.Id,
-					Name = item.Name,
-					ChargeSlots = item.ChargeSlots,
-					ChargeBusy = howManyCharge(l)
-				});
+					BO.Location l = new() { Latitude = item.Latitude, Longitude = item.Longitude };
+					baseS.Add(new BO.BaseToList
+					{
+						Id = item.Id,
+						Name = item.Name,
+						ChargeSlots = item.ChargeSlots,
+						ChargeBusy = howManyCharge(l)
+					});
+				}
+				return (IEnumerable<BO.BaseToList>)baseS;
 			}
-			return (IEnumerable<BO.BaseToList>)baseS;
 		}
 		/// <summary>
 		/// the func return an list of drone
 		/// </summary>
 		/// <returns> list of drone </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public IEnumerable<BO.DroneToList> GetListOfDrones(Predicate<BO.DroneToList> f)
 		{
 			List<BO.DroneToList> drones = new();
-			foreach (DO.Drone item in dal.GetListDrones(d => true))
+			lock (dal)
 			{
-				BO.Location l = new() { Latitude = droneToList.Find(d => d.Id == item.Id).Loc.Latitude, Longitude = droneToList.Find(d => d.Id == item.Id).Loc.Longitude };
-				drones.Add(new()
+				foreach (DO.Drone item in dal.GetListDrones(d => true))
 				{
-					Id = item.Id,
-					Model = item.Model,
-					MaxWeight = (BO.WeightCategories)item.MaxWeight,
-					Battery = droneToList.Find(d => d.Id == item.Id).Battery,
-					Status = droneToList.Find(d => d.Id == item.Id).Status,
-					Loc = l,
-					IdOfParcel = droneToList.Find(d => d.Id == item.Id).IdOfParcel
-				});
+					BO.Location l = new() { Latitude = droneToList.Find(d => d.Id == item.Id).Loc.Latitude, Longitude = droneToList.Find(d => d.Id == item.Id).Loc.Longitude };
+					drones.Add(new()
+					{
+						Id = item.Id,
+						Model = item.Model,
+						MaxWeight = (BO.WeightCategories)item.MaxWeight,
+						Battery = droneToList.Find(d => d.Id == item.Id).Battery,
+						Status = droneToList.Find(d => d.Id == item.Id).Status,
+						Loc = l,
+						IdOfParcel = droneToList.Find(d => d.Id == item.Id).IdOfParcel
+					});
+				}
+				return (IEnumerable<BO.DroneToList>)drones.FindAll(f);
 			}
-			return (IEnumerable<BO.DroneToList>)drones.FindAll(f);
 		}
 		/// <summary>
 		/// the func return an list of customer
 		/// </summary>
 		/// <returns> list of customer </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public IEnumerable<BO.CustomerToList> GetListOfCustomers()
 		{
 			List<BO.CustomerToList> customer = new List<BO.CustomerToList>();
-			foreach (DO.Customer item in dal.GetListCustomers())
+			lock (dal)
 			{
-				customer.Add(new BO.CustomerToList
+				foreach (DO.Customer item in dal.GetListCustomers())
 				{
-					Id = item.Id,
-					Name = item.Name,
-					Phone = item.Phone,
-					ParcelDelivred = parcelWasDliver(item.Id),
-					ParcelSentNotDelivred = parcelSentNotDeliver(item.Id),
-					ParcelRecived = parcelRecive(item.Id),
-					ParcelInTransit = parcelInTransit(item.Id)
-				});
+					customer.Add(new BO.CustomerToList
+					{
+						Id = item.Id,
+						Name = item.Name,
+						Phone = item.Phone,
+						ParcelDelivred = parcelWasDliver(item.Id),
+						ParcelSentNotDelivred = parcelSentNotDeliver(item.Id),
+						ParcelRecived = parcelRecive(item.Id),
+						ParcelInTransit = parcelInTransit(item.Id)
+					});
+				}
+				return (IEnumerable<BO.CustomerToList>)customer;
 			}
-			return (IEnumerable<BO.CustomerToList>)customer;
 		}
 		/// <summary>
 		/// the func return a list of parcel 
 		/// </summary>
 		/// <returns> list of parcel </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public IEnumerable<BO.ParcelToList> GetListOfParcels(Predicate<DO.Parcel> f)
 		{
 			List<BO.ParcelToList> parcel = new List<BO.ParcelToList>();
-			foreach (DO.Parcel item in dal.GetListParcels(f))
+			lock (dal)
 			{
-				parcel.Add(new BO.ParcelToList
+				foreach (DO.Parcel item in dal.GetListParcels(f))
 				{
-					Id = item.Id,
-					NameSender = dal.GetCustomer(item.SenderId).Name,
-					NameTarget = dal.GetCustomer(item.TargetId).Name,
-					Weight = (BO.WeightCategories)item.Weight,
-					Priority = (BO.Priorities)item.Priority,
-					Status = getStatusOfParcel(item)
-				});
+					parcel.Add(new BO.ParcelToList
+					{
+						Id = item.Id,
+						NameSender = dal.GetCustomer(item.SenderId).Name,
+						NameTarget = dal.GetCustomer(item.TargetId).Name,
+						Weight = (BO.WeightCategories)item.Weight,
+						Priority = (BO.Priorities)item.Priority,
+						Status = getStatusOfParcel(item)
+					});
+				}
+				return (IEnumerable<BO.ParcelToList>)parcel;
 			}
-			return (IEnumerable<BO.ParcelToList>)parcel;
 		}
 		#endregion
 
@@ -1060,9 +1164,11 @@ namespace BL
 		/// <returns> the current base station </returns>
 		private DO.BaseStation currentBase(double longi, double lati)
 		{
-			foreach (DO.BaseStation item in dal.GetListBaseStations(b => b.Id != 0))
-				if (item.Longitude == longi && item.Latitude == lati) return item;
-
+			lock (dal)
+			{
+				foreach (DO.BaseStation item in dal.GetListBaseStations(b => b.Id != 0))
+					if (item.Longitude == longi && item.Latitude == lati) return item;
+			}
 			throw new BO.DroneNotInBase();
 		}
 		/// <summary>
@@ -1075,16 +1181,19 @@ namespace BL
 		{
 			double disToBase = -1;
 			DO.BaseStation baseStation = new DO.BaseStation();
-			foreach (DO.BaseStation b in dal.GetListBaseStations(b => b.Id != 0))
+			lock (dal)
 			{
-				double dis = distanceBetweenTwoPoints(b.Latitude, b.Longitude, lati, longi);
-				if ((disToBase == -1 || dis < disToBase) && b.ChargeSlots > 0)//if "dis" that is calculate in the previous line is smaller than the "disToBase"= the smaller distanse right now so "disToBase = dis"
+				foreach (DO.BaseStation b in dal.GetListBaseStations(b => b.Id != 0))
 				{
-					disToBase = dis;
-					baseStation = b;
+					double dis = distanceBetweenTwoPoints(b.Latitude, b.Longitude, lati, longi);
+					if ((disToBase == -1 || dis < disToBase) && b.ChargeSlots > 0)//if "dis" that is calculate in the previous line is smaller than the "disToBase"= the smaller distanse right now so "disToBase = dis"
+					{
+						disToBase = dis;
+						baseStation = b;
+					}
 				}
+				return baseStation;
 			}
-			return baseStation;
 		}
 		/// <summary>
 		/// the func convert a parcel from type idal to ibl include add data for the type ibl
@@ -1109,12 +1218,15 @@ namespace BL
 			parcel.LocDelivered.Longitude = getCustomerInIBL(p.TargetId).Loc.Longitude;
 			parcel.LocDelivered.Latitude = getCustomerInIBL(p.TargetId).Loc.Latitude;
 			parcel.DistanceDelivery = distanceBetweenTwoPoints(parcel.LocPickedUp.Latitude, parcel.LocPickedUp.Longitude, parcel.LocDelivered.Latitude, parcel.LocDelivered.Longitude);
-			foreach (DO.Customer item in dal.GetListCustomers())//search who is the sender and who is the target
+			lock (dal)
 			{
-				if (p.SenderId == item.Id)
-				{ customerS.Id = item.Id; customerS.Name = item.Name; }
-				if (p.TargetId == item.Id)
-				{ customerT.Id = item.Id; customerT.Name = item.Name; }
+				foreach (DO.Customer item in dal.GetListCustomers())//search who is the sender and who is the target
+				{
+					if (p.SenderId == item.Id)
+					{ customerS.Id = item.Id; customerS.Name = item.Name; }
+					if (p.TargetId == item.Id)
+					{ customerT.Id = item.Id; customerT.Name = item.Name; }
+				}
 			}
 			parcel.Sender = customerS;
 			parcel.Target = customerT;
@@ -1144,13 +1256,16 @@ namespace BL
 		/// <returns> number of parcel </returns>
 		private int parcelWasDliver(int customerId)
 		{
-			int counter = 0;
-			foreach (DO.Parcel item in dal.GetListParcels(p => true))
+			lock (dal)
 			{
-				if (item.SenderId == customerId && item.Delivered != null)
-					counter++;
+				int counter = 0;
+				foreach (DO.Parcel item in dal.GetListParcels(p => true))
+				{
+					if (item.SenderId == customerId && item.Delivered != null)
+						counter++;
+				}
+				return counter;
 			}
-			return counter;
 		}
 		/// <summary>
 		/// the func serche how many parcel the customer sent but yet is not delivered
@@ -1159,13 +1274,16 @@ namespace BL
 		/// <returns> number of parcel </returns>
 		private int parcelSentNotDeliver(int customerId)
 		{
-			int counter = 0;
-			foreach (DO.Parcel item in dal.GetListParcels(p => true))
+			lock (dal)
 			{
-				if (item.SenderId == customerId && item.Delivered == null && item.PickedUp != null)
-					counter++;
+				int counter = 0;
+				foreach (DO.Parcel item in dal.GetListParcels(p => true))
+				{
+					if (item.SenderId == customerId && item.Delivered == null && item.PickedUp != null)
+						counter++;
+				}
+				return counter;
 			}
-			return counter;
 		}
 		/// <summary>
 		/// the func serche how many parcel the customer recive
@@ -1174,13 +1292,16 @@ namespace BL
 		/// <returns> number of parcel </returns>
 		private int parcelRecive(int customerId)
 		{
-			int counter = 0;
-			foreach (DO.Parcel item in dal.GetListParcels(p => true))
+			lock (dal)
 			{
-				if (item.TargetId == customerId && item.Delivered != null)
-					counter++;
+				int counter = 0;
+				foreach (DO.Parcel item in dal.GetListParcels(p => true))
+				{
+					if (item.TargetId == customerId && item.Delivered != null)
+						counter++;
+				}
+				return counter;
 			}
-			return counter;
 		}
 		/// <summary>
 		/// the func serche how many parcel the customer need to recive in future(parcel is ion tarnsit)
@@ -1189,13 +1310,16 @@ namespace BL
 		/// <returns></returns>
 		private int parcelInTransit(int customerId)
 		{
-			int counter = 0;
-			foreach (DO.Parcel item in dal.GetListParcels(p => true))
+			lock (dal)
 			{
-				if (item.TargetId == customerId && item.Delivered == null && item.PickedUp != null)
-					counter++;
+				int counter = 0;
+				foreach (DO.Parcel item in dal.GetListParcels(p => true))
+				{
+					if (item.TargetId == customerId && item.Delivered == null && item.PickedUp != null)
+						counter++;
+				}
+				return counter;
 			}
-			return counter;
 		}
 		/// <summary>
 		/// the func calculate how many drone charge in the base station by his location
@@ -1204,13 +1328,16 @@ namespace BL
 		/// <returns> return a number of drone </returns>
 		private int howManyCharge(BO.Location loc)
 		{
-			int counter = 0;
-			foreach (BO.DroneToList d in droneToList)
+			lock (dal)
 			{
-				if (d.Status == BO.DroneStatuses.Maintenance && loc.Longitude == d.Loc.Longitude && loc.Latitude == d.Loc.Latitude)
-					counter++;
+				int counter = 0;
+				foreach (BO.DroneToList d in droneToList)
+				{
+					if (d.Status == BO.DroneStatuses.Maintenance && loc.Longitude == d.Loc.Longitude && loc.Latitude == d.Loc.Latitude)
+						counter++;
+				}
+				return counter;
 			}
-			return counter;
 		}
 		/// <summary>
 		/// the func calculate by priorities and battery whiche parcel the drone can take and if it is possible return the id of parcel
@@ -1278,20 +1405,6 @@ namespace BL
 					return idC;
 			}
 			return -1;//if the drone can take any parcel return -1
-		}
-		/// <summary>
-		/// check the weight of parcel and return the battery use per kilometer for thei parcel
-		/// </summary>
-		/// <param name="parcel"></param>
-		/// <returns> battery use </returns>
-		private double whichUse(DO.Parcel parcel)
-		{
-			if (parcel.Weight == DO.WeightCategories.Heavy)
-				return _useWhenHeavily;
-			else if (parcel.Weight == DO.WeightCategories.Medium)
-				return _useWhenMedium;
-			else
-				return _useWhenLightly;
 		}
 		/// <summary>
 		/// calculate the closer parcel from drone

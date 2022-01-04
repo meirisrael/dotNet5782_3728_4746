@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 using Dal;
 
 namespace Dal
@@ -33,6 +34,7 @@ namespace Dal
 		/// <param name="chargeSlots"></param>
 		/// <param name="longe"></param>
 		/// <param name="lati"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void AddBaseStation(int id, int name, int chargeSlots, double longi, double latti)
 		{
 			if (id < 0 || id == 0) throw new DO.InvalidId("BASE-STATION");
@@ -58,6 +60,7 @@ namespace Dal
 		/// <param name="id"></param>
 		/// <param name="model"></param>
 		/// <param name="weight"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void AddDrone(int id, string model, DO.WeightCategories weight)
 		{
 			if (id < 0 || id == 0) throw new DO.InvalidId("DRONE");
@@ -81,6 +84,7 @@ namespace Dal
 		/// <param name="phone"></param>
 		/// <param name="longi"></param>
 		/// <param name="lati"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void AddCustomer(int id, string name, string phone, double longi, double latti)
 		{
 			if (id < 0 || id == 0) throw new DO.InvalidId("CUSTOMER");
@@ -112,6 +116,7 @@ namespace Dal
 		/// <param name="scheduled"></param>
 		/// <param name="pickedUp"></param>
 		/// <param name="delivered"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void AddParcel(int id, int senderId, int targetId, int droneId, DO.WeightCategories weight, DO.Priorities priorities)
 		{
 			if (id < 0 || id == 0) throw new DO.InvalidId("PARCEL");
@@ -151,6 +156,7 @@ namespace Dal
 		/// </summary>
 		/// <param name="parcelId"></param>
 		/// <param name="droneId"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void AssignParcelToDrone(int parcelId, int droneId)
 		{
 			DO.Parcel p = new DO.Parcel();
@@ -186,6 +192,7 @@ namespace Dal
 		/// if the user add new parcel and yet is not assigne to a drone and want to delete him
 		/// </summary>
 		/// <param name="parcelId"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void DeleteParcel(int parcelId)
 		{
 			DO.Parcel p = new DO.Parcel();
@@ -202,6 +209,7 @@ namespace Dal
 		/// change the PickedUp date of a given parcel by the present time and change the status of the related drone to "shipping"
 		/// </summary>
 		/// <param name="parcelId"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void ParcelOnDrone(int parcelId)
 		{
 			if(!DataSource.parcels.Exists(item => item.Id == parcelId))
@@ -222,6 +230,7 @@ namespace Dal
 		/// change the "Delivered" date of a given parcel by the present time and change the status of the related drone to "free"
 		/// </summary>
 		/// <param name="parcelId"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void ParcelDelivered(int parcelId)
 		{
 			if(!DataSource.parcels.Exists(item => item.Id == parcelId)) 
@@ -243,6 +252,7 @@ namespace Dal
 		/// </summary>
 		/// <param name="droneId"></param>
 		/// <param name="baseId"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void AssignDroneToBaseStation(int droneId, int baseId)
 		{
 			if(!DataSource.drones.Exists(item => item.Id == droneId)) 
@@ -267,6 +277,7 @@ namespace Dal
 		/// </summary>
 		/// <param name="droneId"></param>
 		/// <param name="baseId"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void DroneLeaveChargeStation(int droneId, int baseId)
 		{
 			if(!DataSource.drones.Exists(item => item.Id == droneId))
@@ -301,6 +312,7 @@ namespace Dal
 		/// the func change the name of the model drone by his id
 		/// </summary>
 		/// <param name="drone"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void UpdateDrone(DO.Drone drone)
 		{
 			for (int i = 0; i < DataSource.drones.Count(); i++)
@@ -315,6 +327,7 @@ namespace Dal
 		/// the func update some data in the data base
 		/// </summary>
 		/// <param name="baseStation"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void UpdateBaseStation(DO.BaseStation baseStation)
 		{
 			for (int i = 0; i < DataSource.baseStations.Count(); i++)
@@ -329,6 +342,7 @@ namespace Dal
 		/// update data of customer
 		/// </summary>
 		/// <param name="customer"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void UpdateCustomer(DO.Customer customer)
 		{
 			for (int i = 0; i < DataSource.customers.Count(); i++)
@@ -343,6 +357,7 @@ namespace Dal
 		/// update date of parcel
 		/// </summary>
 		/// <param name="parcel"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void UpdateParcel(DO.Parcel parcel)
 		{
 			for (int i = 0; i < DataSource.parcels.Count(); i++)
@@ -361,6 +376,7 @@ namespace Dal
 		/// </summary>
 		/// <param name="baseId"></param>
 		/// <returns> an base station </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public DO.BaseStation GetBaseStation(int baseId)
 		{
 			foreach (DO.BaseStation item in DataSource.baseStations)
@@ -375,6 +391,7 @@ namespace Dal
 		/// </summary>
 		/// <param name="droneId"></param>
 		/// <returns> an drone </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public DO.Drone GetDrone(int droneId)
 		{
 			foreach (DO.Drone item in DataSource.drones)
@@ -389,6 +406,7 @@ namespace Dal
 		/// </summary>
 		/// <param name="customerId"></param>
 		/// <returns> a customer </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public DO.Customer GetCustomer(int customerId)
 		{
 			foreach (DO.Customer item in DataSource.customers)
@@ -403,6 +421,7 @@ namespace Dal
 		/// </summary>
 		/// <param name="parcelId"></param>
 		/// <returns> an parcel </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public DO.Parcel GetParcel(int parcelId)
 		{
 			foreach (DO.Parcel item in DataSource.parcels)
@@ -419,6 +438,7 @@ namespace Dal
 		/// display the details of all base stations
 		/// </summary>
 		/// <returns> list of Base-Station</returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public IEnumerable<DO.BaseStation> GetListBaseStations(Predicate<DO.BaseStation> f)
 		{
 			return DataSource.baseStations.FindAll(f);
@@ -427,6 +447,7 @@ namespace Dal
 		/// display the details of all drones
 		/// </summary>
 		/// <returns> list of drones </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public IEnumerable<DO.Drone> GetListDrones(Predicate<DO.Drone> f)
 		{
 			return DataSource.drones.FindAll(f);
@@ -435,6 +456,7 @@ namespace Dal
 		/// display the details of all customers
 		/// </summary>
 		/// <returns> list of custome </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public IEnumerable<DO.Customer> GetListCustomers()
 		{
 			return DataSource.customers;
@@ -443,6 +465,7 @@ namespace Dal
 		/// display the details of all parcels
 		/// </summary>
 		/// <returns> List of parcels </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public IEnumerable<DO.Parcel> GetListParcels(Predicate<DO.Parcel> f)
 		{
 			return DataSource.parcels.FindAll(f);
@@ -452,6 +475,7 @@ namespace Dal
 		/// </summary>
 		/// <param name="f"> predicat </param>
 		/// <returns> list of drone charge </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public IEnumerable<DO.DroneCharge> GetListDroneCharge(Predicate<DO.DroneCharge> f)
 		{
 			return DataSource.droneCharges.FindAll(f);
@@ -464,6 +488,7 @@ namespace Dal
 		/// the func go to config to take the value of the charging rate and the electricity use
 		/// </summary>
 		/// <returns> return the arr with the value </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public double[] GetChargingRate()
 		{
 			DataSource.Config c = new DataSource.Config();
