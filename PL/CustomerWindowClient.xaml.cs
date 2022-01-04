@@ -38,7 +38,7 @@ namespace PL
 		protected override void OnSourceInitialized(EventArgs e)
 			{
 				base.OnSourceInitialized(e);
-
+				this.DataContext = customer;
 				WindowInteropHelper wih = new WindowInteropHelper(this);
 				IntPtr hWnd = wih.Handle;
 				IntPtr hMenu = GetSystemMenu(hWnd, false);

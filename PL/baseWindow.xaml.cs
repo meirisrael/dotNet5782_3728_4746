@@ -38,7 +38,7 @@ namespace PL
 		protected override void OnSourceInitialized(EventArgs e)
 		{
 			base.OnSourceInitialized(e);
-
+			this.DataContext = BaseStation;
 			WindowInteropHelper wih = new WindowInteropHelper(this);
 			IntPtr hWnd = wih.Handle;
 			IntPtr hMenu = GetSystemMenu(hWnd, false);
@@ -56,7 +56,6 @@ namespace PL
 		public baseWindow(BlApi.IBL ibl, BO.BaseToList b)
 		{
 			InitializeComponent();
-			this.DataContext=BaseStation;
 			bl = ibl;
 			BaseStation = bl.GetBaseStation(b.Id);
 			action_base_Grid.Visibility = Visibility.Visible;
@@ -227,6 +226,9 @@ namespace PL
 				Base_details.Content = bl.GetBaseStation(BaseStation.Id);
 				name_base.Text = BaseStation.Name.ToString();
 				chargeSlots_base.Text = BaseStation.ChargeSlots.ToString();
+				update_button.IsEnabled = false;
+				chargeSlots_base.Background = Brushes.White;
+				name_base.Background = Brushes.White;
 			}
 			catch (Exception)
 			{ }
@@ -298,7 +300,7 @@ namespace PL
 		/// <param name="e"> warp </param>
 		private void name_base_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			if (name_base.Text != BaseStation.Name.ToString())
+			if (name_base.Text != BaseStation.Name.ToString()&& name_base.Text !="")
 			{ update_button.IsEnabled = true; name_base.Background = Brushes.LightGreen; }
 			else { update_button.IsEnabled = false; name_base.Background = Brushes.White; }
 		}
@@ -310,7 +312,7 @@ namespace PL
 		private void chargeSlots_base_TextChanged(object sender, TextChangedEventArgs e)
 		{
 
-			if (chargeSlots_base.Text != BaseStation.ChargeSlots.ToString())
+			if (chargeSlots_base.Text != BaseStation.ChargeSlots.ToString() && chargeSlots_base.Text !="" )
 			{ update_button.IsEnabled = true; chargeSlots_base.Background = Brushes.LightGreen; }
 			else { update_button.IsEnabled = false; chargeSlots_base.Background = Brushes.White; }
 			}

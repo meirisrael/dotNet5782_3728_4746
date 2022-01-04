@@ -151,7 +151,7 @@ namespace PL
 		/// <param name="e"></param>
 		private void upNameBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			if (upNameBox.Text != customer.Name || upPhoneBox.Text != customer.Phone)
+			if (upNameBox.Text != customer.Name && upNameBox.Text !="")
 			{ update_button.IsEnabled = true; upNameBox.Background = Brushes.LightGreen; }
 			else
 			{ update_button.IsEnabled = false; upNameBox.Background = Brushes.White; }
@@ -163,7 +163,7 @@ namespace PL
 		/// <param name="e"></param>
 		private void upPhoneBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			if (upNameBox.Text != customer.Name || upPhoneBox.Text != customer.Phone)
+			if ( upPhoneBox.Text != customer.Phone && upPhoneBox.Text !="")
 			{ update_button.IsEnabled = true; upPhoneBox.Background = Brushes.LightGreen; }
 			else
 			{ update_button.IsEnabled = false; upPhoneBox.Background = Brushes.White; }

@@ -30,9 +30,9 @@
 			<Button Content="Cancel" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Height="35" Background="OrangeRed" Click="close_Click" Margin="0,0,170,70" FontFamily="Comic Sans MS"  FontWeight="DemiBold"/>
 			<Label Content="Location:   Longitude -&#10; &#10;                 Latitude   -" HorizontalAlignment="Left" Margin="18,240,0,0" VerticalAlignment="Top" FontFamily="Comic Sans MS"/>
 		</Grid>
-		<Grid x:Name="action_base_Grid" Visibility="Visible">
-            <TextBox x:Name="name_base" HorizontalAlignment="Right" Margin="0,80,230,0" Text = "{Binding Name, Mode = TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="name_base_TextChanged"/>
-            <TextBox x:Name="chargeSlots_base" HorizontalAlignment="Right" Margin="0,110,230,0" Text = "{Binding ChargeSlots, Mode = TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="chargeSlots_base_TextChanged"/>
+		<Grid x:Name="action_base_Grid" Visibility="Hidden">
+            <TextBox x:Name="name_base" HorizontalAlignment="Right" Margin="0,80,230,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="name_base_TextChanged" Text = "{Binding Name, Mode = TwoWay}"/>
+            <TextBox x:Name="chargeSlots_base" HorizontalAlignment="Right" Margin="0,110,230,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="chargeSlots_base_TextChanged" Text = "{Binding ChargeSlots, Mode = TwoWay}"/>
 			<Button x:Name="update_button" Content="Update" HorizontalAlignment="Right" Margin="0,95,160,0" VerticalAlignment="Top" Click="update_Click" IsEnabled="False" Background="MediumSeaGreen" FontFamily="Comic Sans MS"  FontWeight="DemiBold"/>
 			<Button Content="Close" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Height="35" Background="OrangeRed" Click="close_Click" Margin="0,0,170,65" FontFamily="Comic Sans MS"  FontWeight="DemiBold"/>
 			<Label Name="Base_details" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" Height="310" Width="auto"/>
