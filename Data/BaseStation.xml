@@ -10,7 +10,7 @@
   <BaseStation>
     <Id>2001</Id>
     <Name>1</Name>
-    <ChargeSlots>4</ChargeSlots>
+    <ChargeSlots>2</ChargeSlots>
     <Longitude>154.31989961598066</Longitude>
     <Latitude>32.02161938511842</Latitude>
   </BaseStation>
