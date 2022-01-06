@@ -28,8 +28,8 @@ namespace DalXml
 		private string droneChargePath = @"DroneCharge.xml";//the pathe to the xml file
 		private string parcelPath = @"Parcel.xml";//the pathe to the xml file
 
-		public DalXml()
-		{ DataSourceXml.Initialize(); }
+		//public DalXml()
+		//{ DataSourceXml.Initialize(); }
 
 		#region add method
 		//add method
