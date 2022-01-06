@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
@@ -14,13 +15,18 @@ namespace Dal
         /// <summary>
         /// Start for every file path, inside 'xml' folder
         /// </summary>
-        static string dir = @"xml\";
+        static string dir;
 
         /// <summary>
         /// Static constructor
         /// </summary>
         static XmlTools()
         {
+            string str = Assembly.GetExecutingAssembly().Location;
+            dir = Path.GetDirectoryName(str);
+            for (int i = 0; i < 4; i++)
+                dir = Path.GetDirectoryName(dir);
+            dir += @"\Data\";
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
         }

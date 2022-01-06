@@ -36,7 +36,7 @@ namespace Dal
 			int CounterDrones = 1000;
 			int CounterCustomer = 3000;
 			int CounterParcel = 4000;
-			string[] name_ = new string[] { "Meir", "Lior", "Hilel", "Mendel", "Chimon", "David", "Loki", "Rephael", "levi", "Nathan" };
+			string[] name_ = new string[] { "Meir", "Lior", "Hilel", "Mendel", "Chimon", "David", "Loki", "Rephael", "Levi", "Nathan" };
 			for (int i = 0; i < 2; i++)//for base station
 			{
 				baseStations.Add(new DO.BaseStation()
