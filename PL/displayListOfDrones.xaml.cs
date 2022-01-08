@@ -180,10 +180,10 @@ namespace PL
 				new droneWindow(bl, (BO.DroneToList)DroneListViewGrouping.SelectedItem).ShowDialog();
 				
 				drones = bl.GetListOfDrones(d => true);
-				
+				DroneListViewGrouping.ItemsSource = drones;
 				CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(DroneListViewGrouping.ItemsSource);
 				PropertyGroupDescription groupDescription = new PropertyGroupDescription("Status");
-				DroneListViewGrouping.ItemsSource = drones;
+				view.GroupDescriptions.Add(groupDescription);
 				filterByStatus();
 				filterByWeight();
 			}

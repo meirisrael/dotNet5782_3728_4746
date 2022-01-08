@@ -18,7 +18,7 @@
 						<Button Name="connect_Button" Content="Connect" Click="Connect_Click" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Center" Width="80" Height="30" Background="LawnGreen" IsEnabled="False"/>
 						<Label Content="Not yet registered and want to sign-up ?" HorizontalAlignment="Center" Margin="0,0,0,70" VerticalAlignment="Bottom"/>
 						<TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="50">
-							<Hyperlink Name="AddNewCustomer" Click="AddNewCustomer_Click">Register Now</Hyperlink>
+							<Hyperlink Name="AddNewCustomer" Click="AddNewCustomer_Click" Foreground="Yellow">Register Now</Hyperlink>
 						</TextBlock>
 						<Grid.Background>
 							<ImageBrush ImageSource="\picture\LoginClient.png" AlignmentY="Top" AlignmentX="Center" Stretch="Fill"/>

@@ -113,6 +113,7 @@ namespace PL
 				BaseListViewGrouping.ItemsSource = baseStations;
 				CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(BaseListViewGrouping.ItemsSource);
 				PropertyGroupDescription groupDescription = new PropertyGroupDescription("ChargeSlots");
+				view.GroupDescriptions.Add(groupDescription);
 			}
 		}
 		/// <summary>
