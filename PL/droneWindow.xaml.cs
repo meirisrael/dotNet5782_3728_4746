@@ -38,7 +38,7 @@ namespace PL
 		protected override void OnSourceInitialized(EventArgs e)
 		{
 			base.OnSourceInitialized(e);
-
+			this.DataContext = drone;
 			WindowInteropHelper wih = new WindowInteropHelper(this);
 			IntPtr hWnd = wih.Handle;
 			IntPtr hMenu = GetSystemMenu(hWnd, false);
@@ -157,7 +157,9 @@ namespace PL
 				MessageBox.Show("Successfuly update", "Successfull");
 				drone = bl.GetDrone(drone.Id);
 				Drone_label.Content = drone.ToString();
-				UpdateModelBox.Text = "";
+				UpdateModelBox.Text = drone.Model;
+				Update_button.IsEnabled = false; 
+				UpdateModelBox.Background = Brushes.White;
 			}
 			catch (Exception ex)
 			{
@@ -290,11 +292,11 @@ namespace PL
 		/// <param name="e"></param>
 		private void UpdateModel_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			if (UpdateModelBox.Text != "")
-				Update_button.IsEnabled = true;
+			if (UpdateModelBox.Text != drone.Model && UpdateModelBox.Text != "")
+			{ Update_button.IsEnabled = true; UpdateModelBox.Background = Brushes.LightGreen; }
 			else
-				Update_button.IsEnabled = false;
-		}
+			{ Update_button.IsEnabled = false; UpdateModelBox.Background = Brushes.White; }
+			}
 		/// <summary>
 		/// get the id from the box for add a new drone
 		/// </summary>
