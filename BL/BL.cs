@@ -788,7 +788,7 @@ namespace BL
 			{
 				parcel = (from item in dal.GetListParcels(p => true)
 						  let id =item.DroneId
-						  where id == drone.Id
+						  where (id == drone.Id && item.Id==drone.IdOfParcel)
 						  select item).FirstOrDefault();
 				if (parcel.DroneId != droneId)
 					throw new BO.NoParcelId();
@@ -818,7 +818,7 @@ namespace BL
 			{
 				parcel = (from item in dal.GetListParcels(p => true)
 						  let id=item.DroneId
-						  where id == drone.Id
+						  where (id == drone.Id && item.Id == drone.IdOfParcel)
 						  select item).FirstOrDefault();
 				if (parcel.DroneId != droneId)
 					throw new BO.NoParcelId();
@@ -834,6 +834,21 @@ namespace BL
 				drone.Status = BO.DroneStatuses.free;
 				drone.IdOfParcel = null;
 				updateDroneList(drone);
+			}
+		}
+		public void Fullycharged_simulator(int droneId)
+        {
+			BO.DroneToList drone = new BO.DroneToList();
+			drone = droneToList[indexDrone(droneId)];
+			if (drone.Status != BO.DroneStatuses.Maintenance)//if the drone id of drone that the user gave is not in Maintenance so need to throw that
+				throw new BO.DroneNotInCharge();
+			drone.Status = BO.DroneStatuses.free;
+			drone.Battery = 100;
+			DO.BaseStation baseStation = new DO.BaseStation();
+			baseStation = currentBase(drone.Loc.Longitude, drone.Loc.Latitude);
+			lock (dal)
+			{
+				dal.DroneLeaveChargeStation(droneId, baseStation.Id);//base station- charge slot++ and remove the drone from the list "drone charge"
 			}
 		}
 		#endregion

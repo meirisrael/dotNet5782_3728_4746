@@ -6,44 +6,44 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="Drone Window" Height="600" Width="850" Icon="icon\logo_company.ico">
-	<Grid x:Name="MainGride">
-		<Grid x:Name="add_drone_Grid" Visibility="Hidden">
-			<Grid.Background>
-				<ImageBrush Stretch="Fill" ImageSource="picture\drone.png" AlignmentY="Top" AlignmentX="Center"/>
-			</Grid.Background>
-			<ComboBox Name="WeightSelector" HorizontalAlignment="Left" Margin="170,200,0,0" VerticalAlignment="Top" Width="120"  SelectionChanged="WeightSelector_SelectionChanged"/>
-			<TextBox x:Name="IdBox" HorizontalAlignment="Left" Margin="170,100,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
+    <Grid x:Name="MainGride">
+        <Grid x:Name="add_drone_Grid" Visibility="Hidden">
+            <Grid.Background>
+                <ImageBrush Stretch="Fill" ImageSource="picture\drone.png" AlignmentY="Top" AlignmentX="Center"/>
+            </Grid.Background>
+            <ComboBox Name="WeightSelector" HorizontalAlignment="Left" Margin="170,200,0,0" VerticalAlignment="Top" Width="120"  SelectionChanged="WeightSelector_SelectionChanged"/>
+            <TextBox x:Name="IdBox" HorizontalAlignment="Left" Margin="170,100,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
 				 TextChanged="IdBox_TextChanged" BorderBrush="Black" BorderThickness="1"/>
-			<TextBox x:Name="ModelBox" HorizontalAlignment="Left" Margin="170,150,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="1.15,0.587"
+            <TextBox x:Name="ModelBox" HorizontalAlignment="Left" Margin="170,150,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="1.15,0.587"
 				 BorderBrush="Black" BorderThickness="1" TextChanged="ModelBox_TextChanged"/>
-			<TextBlock HorizontalAlignment="Left" Margin="56,100,0,0" Text="Enter ID:" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Comic Sans MS"/>
-			<TextBlock Name="Model" HorizontalAlignment="Left" Margin="45,150,0,0" Text="Enter Model:" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Comic Sans MS" />
-			<TextBlock HorizontalAlignment="Left" Margin="23,200,0,0" Text="Choose Max-Weight:" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Comic Sans MS"/>
-			<TextBlock HorizontalAlignment="Left" Margin="10,250,0,0" Text="Choose ID Of Base-Staion:" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Comic Sans MS"/>
-			<ComboBox Name="BaseSelectore" HorizontalAlignment="Left" Margin="170,250,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="BaseSelectore_SelectionChanged" />
-			<ListView x:Name="BaseListView" Width="300" Height="200" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,150,56,0" FontFamily="david" FontWeight="DemiBold"></ListView>
-			<Button x:Name="add_button" Content="ADD" HorizontalAlignment="Left" Margin="170,0,0,90" VerticalAlignment="Bottom" Width="120" Height="35" Background="LawnGreen" Click="Add_Click"
+            <TextBlock HorizontalAlignment="Left" Margin="56,100,0,0" Text="Enter ID:" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Comic Sans MS"/>
+            <TextBlock Name="Model" HorizontalAlignment="Left" Margin="45,150,0,0" Text="Enter Model:" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Comic Sans MS" />
+            <TextBlock HorizontalAlignment="Left" Margin="23,200,0,0" Text="Choose Max-Weight:" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Comic Sans MS"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,250,0,0" Text="Choose ID Of Base-Staion:" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Comic Sans MS"/>
+            <ComboBox Name="BaseSelectore" HorizontalAlignment="Left" Margin="170,250,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="BaseSelectore_SelectionChanged" />
+            <ListView x:Name="BaseListView" Width="300" Height="200" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,150,56,0" FontFamily="david" FontWeight="DemiBold"></ListView>
+            <Button x:Name="add_button" Content="ADD" HorizontalAlignment="Left" Margin="170,0,0,90" VerticalAlignment="Bottom" Width="120" Height="35" Background="LawnGreen" Click="Add_Click"
 					FontFamily="Comic Sans MS" FontWeight="DemiBold" IsEnabled="False"/>
-			<Button Content="Cancel" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Height="35" Background="OrangeRed" Click="Close_Click" Margin="0,0,170,90" FontFamily="Comic Sans MS"  FontWeight="DemiBold"/>
-		</Grid>
+            <Button Content="Cancel" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Height="35" Background="OrangeRed" Click="Close_Click" Margin="0,0,170,90" FontFamily="Comic Sans MS"  FontWeight="DemiBold"/>
+        </Grid>
 
-		<Grid x:Name="action_drone_Grid" Visibility="Hidden">
-			<Grid.Background>
-				<ImageBrush Stretch="Fill" ImageSource="picture\mavic_pro.png" AlignmentY="Top" AlignmentX="Center"/>
-			</Grid.Background>
-			<TextBlock HorizontalAlignment="Left" Text="To change the Model:" TextWrapping="Wrap" VerticalAlignment="Top" Width="124" Margin="40,63,0,0" FontFamily="Comic Sans MS"/>
-			<TextBox x:Name="UpdateModelBox" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="138" TextChanged="UpdateModel_TextChanged" Margin="179,64,0,0" Text="{Binding Model,Mode=TwoWay}" />
-			<Label Name="Drone_label" HorizontalAlignment="Right" VerticalAlignment="Top" Width="auto" Height="416" BorderBrush="LightGoldenrodYellow" BorderThickness="2" FontStyle="Oblique" Background="Yellow" Opacity="0.5" FontFamily="david" FontWeight="DemiBold" Margin="0,84,42,0"/>
-			<Button Content="Close" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="134" Height="34" Background="Red" Click="Close_Click" FontFamily="Comic Sans MS" FontWeight="DemiBold"/>
-			<Button Name="Update_button" Content="Update" HorizontalAlignment="Left" VerticalAlignment="Top" Width="61" Background="MediumSeaGreen" IsEnabled="False" Click="Update_button_Click" Margin="351,64,0,0" FontFamily="Comic Sans MS" FontWeight="DemiBold"/>
-			<Button x:Name="charge_button" Content="" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="155" Height="35" Background="MediumPurple" Visibility="Visible"
+        <Grid x:Name="action_drone_Grid" Visibility="Hidden">
+            <Grid.Background>
+                <ImageBrush Stretch="Fill" ImageSource="picture\mavic_pro.png" AlignmentY="Top" AlignmentX="Center"/>
+            </Grid.Background>
+            <TextBlock HorizontalAlignment="Left" Text="To change the Model:" TextWrapping="Wrap" VerticalAlignment="Top" Width="124" Margin="40,63,0,0" FontFamily="Comic Sans MS"/>
+            <TextBox x:Name="UpdateModelBox" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="138" TextChanged="UpdateModel_TextChanged" Margin="179,64,0,0" Text="{Binding Model,Mode=TwoWay}" />
+            <Label Name="Drone_label" HorizontalAlignment="Right" VerticalAlignment="Top" Width="auto" Height="416" BorderBrush="LightGoldenrodYellow" BorderThickness="2" FontStyle="Oblique" Background="Yellow" Opacity="0.5" FontFamily="david" FontWeight="DemiBold" Margin="0,84,42,0"/>
+            <Button x:Name="close_button" Content="Close" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="134" Height="34" Background="Red" Click="Close_Click" FontFamily="Comic Sans MS" FontWeight="DemiBold"/>
+            <Button Name="Update_button" Content="Update" HorizontalAlignment="Left" VerticalAlignment="Top" Width="61" Background="MediumSeaGreen" IsEnabled="False" Click="Update_button_Click" Margin="351,64,0,0" FontFamily="Comic Sans MS" FontWeight="DemiBold"/>
+            <Button x:Name="charge_button" Content="" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="155" Height="35" Background="MediumPurple" Visibility="Visible"
 				Click="charge_button_Click" Margin="30,150,0,0" FontFamily="Comic Sans MS" FontWeight="DemiBold"/>
-			<Button x:Name="parcel_button" Content="" HorizontalAlignment="Left" Margin="230,150,0,0" VerticalAlignment="Top" Width="155" Height="35" Background="CadetBlue" Visibility="Visible"
+            <Button x:Name="parcel_button" Content="" HorizontalAlignment="Left" Margin="230,150,0,0" VerticalAlignment="Top" Width="155" Height="35" Background="CadetBlue" Visibility="Visible"
 				Click="parcel_button_Click" FontFamily="Comic Sans MS" FontWeight="DemiBold"/>
-			<Button x:Name="parcelDetails_Button" Content="Parcel details" Click="parcelDetails_Click" HorizontalAlignment="Left" Margin="165,210,0,0" VerticalAlignment="Top" Height="35" Width="90" FontFamily="Comic Sans MS" FontWeight="DemiBold" Background="Fuchsia" Visibility="Hidden"/>
-			<Button Click="Automatic_Button_Click" Content="Automatic" HorizontalAlignment="Right" Margin="0,0,50,40" VerticalAlignment="Bottom" Width="80" Height="25" Background="Goldenrod"/>
+            <Button x:Name="parcelDetails_Button" Content="Parcel details" Click="parcelDetails_Click" HorizontalAlignment="Left" Margin="165,210,0,0" VerticalAlignment="Top" Height="35" Width="90" FontFamily="Comic Sans MS" FontWeight="DemiBold" Background="Fuchsia" Visibility="Hidden"/>
+            <Button x:Name="auto_button" Click="Automatic_Button_Click" Content="Automatic" HorizontalAlignment="Right" Margin="0,0,50,40" VerticalAlignment="Bottom" Width="80" Height="25" Background="LightGreen"/>
 
-		</Grid>
-	</Grid>
+        </Grid>
+    </Grid>
 
 </Window>

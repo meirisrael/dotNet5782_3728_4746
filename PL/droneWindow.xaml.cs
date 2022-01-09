@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -14,6 +16,7 @@ using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
 
+
 namespace PL
 {
 	/// <summary>
@@ -23,6 +26,8 @@ namespace PL
 	{
 		private BlApi.IBL bl;
 		private BO.Drone drone;
+		private System.ComponentModel.BackgroundWorker backgroundWorker1 = new BackgroundWorker();
+		
 		//------------------------------------------------------------------ FUNC AND CONST VARIABL --------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
 		private const uint MF_BYCOMMAND = 0x00000000;
@@ -42,6 +47,8 @@ namespace PL
 			WindowInteropHelper wih = new WindowInteropHelper(this);
 			IntPtr hWnd = wih.Handle;
 			IntPtr hMenu = GetSystemMenu(hWnd, false);
+
+		
 
 			// CloseButton disabled
 			RemoveMenu(hMenu, SC_CLOSE, MF_BYCOMMAND);
@@ -75,6 +82,7 @@ namespace PL
 		{
 			bl = ibl;
 			InitializeComponent();
+			InitializeBackgroundWorker();//////
 			action_drone_Grid.Visibility = Visibility.Visible;
 			drone = bl.GetDrone(d.Id);
 			Drone_label.Content = drone.ToString();
@@ -82,6 +90,19 @@ namespace PL
 			shipping_button();
 			if (drone.InTransit.Id != 0)
 				parcelDetails_Button.Visibility = Visibility.Visible;
+		}
+		private void InitializeBackgroundWorker()//////
+		{
+			backgroundWorker1.DoWork +=
+				new DoWorkEventHandler(backgroundWorker1_DoWork);
+			backgroundWorker1.RunWorkerCompleted +=
+				new RunWorkerCompletedEventHandler(
+			backgroundWorker1_RunWorkerCompleted);
+			backgroundWorker1.ProgressChanged +=
+				new ProgressChangedEventHandler(
+			backgroundWorker1_ProgressChanged);
+			backgroundWorker1.WorkerSupportsCancellation = true;
+			backgroundWorker1.WorkerReportsProgress = true;
 		}
 		//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -333,7 +354,130 @@ namespace PL
 
 		private void Automatic_Button_Click(object sender, RoutedEventArgs e)
 		{
+			
+			if (auto_button.Content.ToString() == "Manual")
+			{
+				auto_button.IsEnabled = false;
+				close_button.IsEnabled = false;
+				this.backgroundWorker1.CancelAsync();
+			}
+			else
+			{
+				auto_button.Content = "Manual";
+				auto_button.Background = Brushes.Orange;
+				this.backgroundWorker1.RunWorkerAsync();
+			}
 
+		}
+		private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+		{
+			//BackgroundWorker worker = sender as BackgroundWorker;
+			while (true)
+            {
+			if (drone.Status == BO.DroneStatuses.Maintenance)
+                {
+					while (drone.Battery != 100)
+                    {
+						Thread.Sleep(500);
+						drone.Battery += 2;
+						if (drone.Battery > 100) drone.Battery = 100;
+						//Drone_label.Content = drone.ToString();
+						this.backgroundWorker1.ReportProgress(0,drone) ;
+					}				
+					bl.Fullycharged_simulator(drone.Id);
+					drone = bl.GetDrone(drone.Id);
+					this.backgroundWorker1.ReportProgress(0, drone);
+					//worker.ReportProgress(0);
+				}
+				else if (drone.Status == BO.DroneStatuses.free)
+                {
+					try
+					{
+						bl.AffectParcelToDrone(drone.Id);
+						drone = bl.GetDrone(drone.Id);
+						this.backgroundWorker1.ReportProgress(0, drone);
+					}
+					catch(Exception)  
+					{
+						Thread.Sleep(2000);
+						if (drone.Battery != 100)
+						{
+							double bat = drone.Battery;
+							bl.DroneToCharge(drone.Id);
+							bat -= bl.GetDrone(drone.Id).Battery;
+							for (double i = bat; i > 2; i -= 2)
+							{
+								drone.Battery -= 2;
+								this.backgroundWorker1.ReportProgress(0, drone);
+								Thread.Sleep(500);
+							}
+							drone = bl.GetDrone(drone.Id);
+							this.backgroundWorker1.ReportProgress(0, drone);
+						}
+					}
+
+				}
+			else if (drone.Status == BO.DroneStatuses.Shipping)
+                {
+                    try
+                    {
+						double bat = drone.Battery;
+						bl.ParcelCollection(drone.Id);
+						bat -= bl.GetDrone(drone.Id).Battery;
+						for (double i = bat; i > 2; i -= 2)
+						{
+							drone.Battery -= 2;
+							this.backgroundWorker1.ReportProgress(0, drone);
+							Thread.Sleep(500);
+						}
+						drone = bl.GetDrone(drone.Id);
+						this.backgroundWorker1.ReportProgress(0, drone);
+
+						bat = drone.Battery;
+						bl.ParcelDeliverd(drone.Id);
+						bat -= bl.GetDrone(drone.Id).Battery;
+						for (double i = bat; i > 2; i -= 2)
+						{
+							drone.Battery -= 2;
+							this.backgroundWorker1.ReportProgress(0, drone);
+							Thread.Sleep(500);
+						}
+						drone = bl.GetDrone(drone.Id);
+						this.backgroundWorker1.ReportProgress(0, drone);
+					}
+                    catch (Exception)
+                    {
+						Thread.Sleep(500);
+					}
+                }
+                if (this.backgroundWorker1.CancellationPending)
+                {
+					return;
+                }
+
+			}
+		}
+		private void backgroundWorker1_RunWorkerCompleted(
+		  object sender, RunWorkerCompletedEventArgs e)
+		{
+			if (e.Error != null)
+			{
+				MessageBox.Show(e.Error.Message);
+			}
+            else
+            {
+				auto_button.Content = "Automatic";
+				auto_button.IsEnabled = true;
+				close_button.IsEnabled = true;
+				auto_button.Background = Brushes.LightGreen;
+				charging_button();
+				shipping_button();
+            }
+					}
+		private void backgroundWorker1_ProgressChanged(object sender,
+		   ProgressChangedEventArgs e)
+		{
+			Drone_label.Content = e.UserState.ToString();
 		}
 	}
 }

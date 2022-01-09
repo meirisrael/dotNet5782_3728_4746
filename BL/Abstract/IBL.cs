@@ -27,6 +27,7 @@ namespace BlApi
 		public bool AffectParcelToDrone(int droneId);
 		public void ParcelCollection(int droneId);
 		public void ParcelDeliverd(int droneId);
+		public void Fullycharged_simulator(int droneId);
 		#endregion
 
 		#region get an object - option

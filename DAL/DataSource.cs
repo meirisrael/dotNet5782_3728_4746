@@ -21,10 +21,10 @@ namespace Dal
 
 		internal class Config
 		{
-			internal static double useWhenFree = 0.0001;//0.0001% per kilometere
-			internal static double useWhenLightly = 0.0003;//0.0003% per kilometere
-			internal static double useWhenMedium = 0.0004;//0.0004% per kilometere
-			internal static double useWhenHeavily =0.0009;//0.0009% per kilometere
+			internal static double useWhenFree = 0.01;//0.0001% per kilometere
+			internal static double useWhenLightly = 0.03;//0.0003% per kilometere
+			internal static double useWhenMedium = 0.04;//0.0004% per kilometere
+			internal static double useWhenHeavily =0.09;//0.0009% per kilometere
 			internal double chargingRate = 35; //35% per hour
 		}
 		/// <summary>
@@ -44,8 +44,8 @@ namespace Dal
 					Id = CounterBaseStation++,
 					Name = i,
 					ChargeSlots = r.Next(1,6),
-					Latitude = r.Next(-90, 91) * r.NextDouble(),    //(r.Next(-90, 91) * r.NextDouble())%1 +34.5,  shipping only israel
-					Longitude = r.Next(-180, 181) * r.NextDouble()  //(r.Next(-180, 181) * r.NextDouble())%3.7 +29.5 shipping only israel
+					Latitude = (r.Next(-90, 91) * r.NextDouble())%1 +34.5, // shipping only israel previous://Latitude = r.Next(-90, 91) * r.NextDouble(),
+					Longitude = (r.Next(-180, 181) * r.NextDouble())%3.7 +29.5 //shipping only israel previous://Longitude = r.Next(-180, 181) * r.NextDouble()
 				});
 			}
 			for (int i = 0; i < 10; i++)//for the drone
@@ -66,8 +66,8 @@ namespace Dal
 					Id = CounterCustomer,
 					Name = name_[i],
 					Phone = (3761 + i).ToString(),
-					Latitude = r.Next(-90, 91) * r.NextDouble(), //(r.Next(-90, 91) * r.NextDouble())%1 +34.5,  shipping only israel
-					Longitude = r.Next(-180, 181) * r.NextDouble() //(r.Next(-180, 181) * r.NextDouble())%3.7 +29.5 shipping only israel
+					Latitude = (r.Next(-90, 91) * r.NextDouble()) % 1 + 34.5, // shipping only israel //Latitude = r.Next(-90, 91) * r.NextDouble(),
+					Longitude = (r.Next(-180, 181) * r.NextDouble()) % 3.7 + 29.5 //shipping only israel//Longitude = r.Next(-180, 181) * r.NextDouble()
 				});
 				if (i < 9)
 					CounterCustomer++;

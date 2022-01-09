@@ -7,7 +7,7 @@
   </Drone>
   <Drone>
     <Id>1001</Id>
-    <Model>Fantome-5</Model>
+    <Model>Fantome-4</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
@@ -17,27 +17,27 @@
   </Drone>
   <Drone>
     <Id>1003</Id>
-    <Model>Fantome-5</Model>
-    <MaxWeight>Heavy</MaxWeight>
-  </Drone>
-  <Drone>
-    <Id>1004</Id>
     <Model>Fantome-4</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
-    <Id>1005</Id>
+    <Id>1004</Id>
     <Model>Fantome-5</Model>
+    <MaxWeight>Heavy</MaxWeight>
+  </Drone>
+  <Drone>
+    <Id>1005</Id>
+    <Model>Fantome-4</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
     <Id>1006</Id>
-    <Model>Fantome-5</Model>
+    <Model>Fantome-4</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
     <Id>1007</Id>
-    <Model>Fantome-5</Model>
+    <Model>Fantome-4</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
@@ -47,7 +47,7 @@
   </Drone>
   <Drone>
     <Id>1009</Id>
-    <Model>Fantome-4</Model>
+    <Model>Fantome-5</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
 </ArrayOfDrone>

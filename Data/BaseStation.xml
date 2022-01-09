@@ -3,15 +3,15 @@
   <BaseStation>
     <Id>2000</Id>
     <Name>0</Name>
-    <ChargeSlots>5</ChargeSlots>
-    <Longitude>15.364274587186182</Longitude>
-    <Latitude>46.8889031637874</Latitude>
+    <ChargeSlots>4</ChargeSlots>
+    <Longitude>27.513708673796483</Longitude>
+    <Latitude>35.112393679382464</Latitude>
   </BaseStation>
   <BaseStation>
     <Id>2001</Id>
     <Name>1</Name>
-    <ChargeSlots>5</ChargeSlots>
-    <Longitude>154.31989961598066</Longitude>
-    <Latitude>32.02161938511842</Latitude>
+    <ChargeSlots>2</ChargeSlots>
+    <Longitude>32.236256813088545</Longitude>
+    <Latitude>34.13750660309452</Latitude>
   </BaseStation>
 </ArrayOfBaseStation>
