@@ -40,7 +40,7 @@
 		<ListView x:Name="DroneListViewGrouping" MouseDoubleClick="DroneListViewGrouping_MouseDoubleClick" Grid.Row="1" FontFamily="David" FontWeight="DemiBold" Visibility="Hidden">
 			<ListView.View >
 				<GridView>
-					<GridViewColumn Header="Id" Width="60" DisplayMemberBinding="{Binding Id}"/>
+					<GridViewColumn Header="Id" Width="60" DisplayMemberBinding="{Binding Id}" />
 					<GridViewColumn Header="Model" Width="110" DisplayMemberBinding="{Binding Model }"/>
 					<GridViewColumn Header="Max Weight" Width="110" DisplayMemberBinding="{Binding MaxWeight}"/>
 					<GridViewColumn Header="Battery" Width="60" DisplayMemberBinding="{Binding Battery}"/>
@@ -74,6 +74,11 @@
 					</GroupStyle.ContainerStyle>
 				</GroupStyle>
 			</ListView.GroupStyle>
+			<ListView.ItemContainerStyle>
+				<Style TargetType="ListViewItem">
+					<Setter Property="HorizontalContentAlignment" Value="Center"/>
+				</Style>
+			</ListView.ItemContainerStyle>
 			<ListView.Background>
 				<ImageBrush ImageSource="\picture\background.png" AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="Fill" />
 			</ListView.Background>

@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 using Dal;
 
+
 namespace DalXml
 {
 	class DalXml : DalApi.IDal
@@ -21,11 +22,11 @@ namespace DalXml
 		/// </summary>
 		public static DalApi.IDal GetInstance { get { return _instance.Value; } }
 
-		string baseStationPath = @"BaseStation.xml";//the pathe to the xml file
-		string customerPath = @"Customer.xml";//the pathe to the xml file
-		string dronePath = @"drone.xml";//the pathe to the xml file
-		string droneChargePath = @"DroneCharge.xml";//the pathe to the xml file
-		string parcelPath = @"Parcel.xml";//the pathe to the xml file
+		private string baseStationPath = @"BaseStation.xml";//the pathe to the xml file
+		private string customerPath = @"Customer.xml";//the pathe to the xml file
+		private string dronePath = @"drone.xml";//the pathe to the xml file
+		private string droneChargePath = @"DroneCharge.xml";//the pathe to the xml file
+		private string parcelPath = @"Parcel.xml";//the pathe to the xml file
 
 		//public DalXml()
 		//{ DataSourceXml.Initialize(); }

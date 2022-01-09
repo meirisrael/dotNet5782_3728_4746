@@ -74,7 +74,7 @@ namespace PL
 			ParcelListView.ItemsSource = parcels;
 		}
 		/// <summary>
-		/// if the user want to group the list of parcel by the sender of parcel or return to default view
+		/// if the user want to group the list of parcel by the sender sent of parcel or go back to default view
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"> click </param>
@@ -152,7 +152,11 @@ namespace PL
 			{
 				new ParcelWindowAdmin(bl, (BO.ParcelToList)ParcelListViewGrouping.SelectedItem).ShowDialog();
 				parcels = bl.GetListOfParcels(p => true);
+				
 				ParcelListViewGrouping.ItemsSource = parcels;
+				CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListViewGrouping.ItemsSource);
+				PropertyGroupDescription groupDescription = new PropertyGroupDescription("NameSender");
+				view.GroupDescriptions.Add(groupDescription);
 				filterByStatus();
 			}
 		}

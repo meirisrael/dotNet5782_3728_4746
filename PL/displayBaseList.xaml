@@ -45,6 +45,11 @@
 					</GroupStyle.ContainerStyle>
 				</GroupStyle>
 			</ListView.GroupStyle>
+			<ListView.ItemContainerStyle>
+				<Style TargetType="ListViewItem">
+					<Setter Property="HorizontalContentAlignment" Value="Center"/>
+				</Style>
+			</ListView.ItemContainerStyle>
 			<ListView.Background>
 				<ImageBrush ImageSource="\picture\baseDroneSnip.png" AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="Fill" />
 			</ListView.Background>

@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<ArrayOfParcel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Parcel>
+    <Id>4000</Id>
+    <SenderId>3000</SenderId>
+    <TargetId>3009</TargetId>
+    <DroneId>1009</DroneId>
+    <Weight>Light</Weight>
+    <Priority>Fast</Priority>
+    <Requested>2022-01-06T15:38:32.0295077+02:00</Requested>
+    <Scheduled>2022-01-06T15:38:37.0360371+02:00</Scheduled>
+    <PickedUp xsi:nil="true" />
+    <Delivered xsi:nil="true" />
+  </Parcel>
+  <Parcel>
+    <Id>4001</Id>
+    <SenderId>3001</SenderId>
+    <TargetId>3008</TargetId>
+    <DroneId>1008</DroneId>
+    <Weight>Heavy</Weight>
+    <Priority>Emergecey</Priority>
+    <Requested>2022-01-06T15:38:32.0367698+02:00</Requested>
+    <Scheduled>2022-01-06T15:38:37.0367723+02:00</Scheduled>
+    <PickedUp xsi:nil="true" />
+    <Delivered xsi:nil="true" />
+  </Parcel>
+  <Parcel>
+    <Id>4002</Id>
+    <SenderId>3002</SenderId>
+    <TargetId>3007</TargetId>
+    <DroneId>1007</DroneId>
+    <Weight>Heavy</Weight>
+    <Priority>Fast</Priority>
+    <Requested>2022-01-06T15:38:32.0368457+02:00</Requested>
+    <Scheduled>2022-01-06T15:38:37.0368473+02:00</Scheduled>
+    <PickedUp>2022-01-06T17:38:32.0367732+02:00</PickedUp>
+    <Delivered>2022-01-06T18:38:32.0367732+02:00</Delivered>
+  </Parcel>
+  <Parcel>
+    <Id>4003</Id>
+    <SenderId>3003</SenderId>
+    <TargetId>3006</TargetId>
+    <DroneId>1006</DroneId>
+    <Weight>Medium</Weight>
+    <Priority>Fast</Priority>
+    <Requested>2022-01-06T15:38:32.0368481+02:00</Requested>
+    <Scheduled>2022-01-06T15:38:37.0368485+02:00</Scheduled>
+    <PickedUp xsi:nil="true" />
+    <Delivered xsi:nil="true" />
+  </Parcel>
+  <Parcel>
+    <Id>4004</Id>
+    <SenderId>3004</SenderId>
+    <TargetId>3005</TargetId>
+    <DroneId>1005</DroneId>
+    <Weight>Heavy</Weight>
+    <Priority>Fast</Priority>
+    <Requested>2022-01-06T15:38:32.036849+02:00</Requested>
+    <Scheduled>2022-01-06T15:38:37.0368493+02:00</Scheduled>
+    <PickedUp xsi:nil="true" />
+    <Delivered xsi:nil="true" />
+  </Parcel>
+  <Parcel>
+    <Id>4005</Id>
+    <SenderId>3005</SenderId>
+    <TargetId>3004</TargetId>
+    <DroneId>1004</DroneId>
+    <Weight>Medium</Weight>
+    <Priority>Emergecey</Priority>
+    <Requested>2022-01-06T15:38:32.036851+02:00</Requested>
+    <Scheduled>2022-01-06T15:38:37.0368514+02:00</Scheduled>
+    <PickedUp>2022-01-06T17:38:32.0368504+02:00</PickedUp>
+    <Delivered>2022-01-06T18:38:32.0368504+02:00</Delivered>
+  </Parcel>
+  <Parcel>
+    <Id>4006</Id>
+    <SenderId>3006</SenderId>
+    <TargetId>3003</TargetId>
+    <DroneId>1003</DroneId>
+    <Weight>Heavy</Weight>
+    <Priority>Fast</Priority>
+    <Requested>2022-01-06T15:38:32.0368519+02:00</Requested>
+    <Scheduled>2022-01-06T15:38:37.0368522+02:00</Scheduled>
+    <PickedUp xsi:nil="true" />
+    <Delivered xsi:nil="true" />
+  </Parcel>
+  <Parcel>
+    <Id>4007</Id>
+    <SenderId>3007</SenderId>
+    <TargetId>3002</TargetId>
+    <DroneId>1002</DroneId>
+    <Weight>Heavy</Weight>
+    <Priority>Emergecey</Priority>
+    <Requested>2022-01-06T15:38:32.0368527+02:00</Requested>
+    <Scheduled>2022-01-06T15:38:37.0368531+02:00</Scheduled>
+    <PickedUp xsi:nil="true" />
+    <Delivered xsi:nil="true" />
+  </Parcel>
+  <Parcel>
+    <Id>4008</Id>
+    <SenderId>3008</SenderId>
+    <TargetId>3001</TargetId>
+    <DroneId>1001</DroneId>
+    <Weight>Medium</Weight>
+    <Priority>Emergecey</Priority>
+    <Requested>2022-01-06T15:38:32.036854+02:00</Requested>
+    <Scheduled>2022-01-06T15:38:37.0368544+02:00</Scheduled>
+    <PickedUp>2022-01-06T17:38:32.0368535+02:00</PickedUp>
+    <Delivered>2022-01-06T18:38:32.0368535+02:00</Delivered>
+  </Parcel>
+  <Parcel>
+    <Id>4009</Id>
+    <SenderId>3009</SenderId>
+    <TargetId>3000</TargetId>
+    <DroneId>1000</DroneId>
+    <Weight>Medium</Weight>
+    <Priority>Normal</Priority>
+    <Requested>2022-01-06T15:38:32.0368551+02:00</Requested>
+    <Scheduled>2022-01-06T15:38:37.0368555+02:00</Scheduled>
+    <PickedUp xsi:nil="true" />
+    <Delivered xsi:nil="true" />
+  </Parcel>
+</ArrayOfParcel>
