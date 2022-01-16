@@ -928,7 +928,7 @@ namespace BL
 					foreach (DO.Parcel item in dal.GetListParcels(p => true))
 					{
 						if (item.DroneId == d.Id && (item.Delivered == null))
-						{ drone.InTransit = convertParcel(item, droneId); break; }
+						{ drone.InTransit = convertParcel(item, droneId,drone.Loc); break; }
 					}
 				}
 				return drone;
@@ -1211,24 +1211,30 @@ namespace BL
 		/// </summary>
 		/// <param name="p"></param>
 		/// <returns> an parcel </returns>
-		private BO.ParcelInTransit convertParcel(DO.Parcel p, int droneId)
+		private BO.ParcelInTransit convertParcel(DO.Parcel p, int droneId,BO.Location loc)
 		{
 			BO.ParcelInTransit parcel = new BO.ParcelInTransit();
 			BO.CustomerInParcel customerS = new BO.CustomerInParcel();
 			BO.CustomerInParcel customerT = new BO.CustomerInParcel();
 
 			parcel.Id = p.Id;
-			if (GetParcel(p.Id).PickedUp == null)
-				parcel.Status = false;
-			else
-				parcel.Status = true;
 			parcel.Weight = (BO.WeightCategories)p.Weight;
 			parcel.Priority = (BO.Priorities)p.Priority;
 			parcel.LocPickedUp.Longitude = getCustomerInIBL(p.SenderId).Loc.Longitude;
 			parcel.LocPickedUp.Latitude = getCustomerInIBL(p.SenderId).Loc.Latitude;
 			parcel.LocDelivered.Longitude = getCustomerInIBL(p.TargetId).Loc.Longitude;
 			parcel.LocDelivered.Latitude = getCustomerInIBL(p.TargetId).Loc.Latitude;
-			parcel.DistanceDelivery = distanceBetweenTwoPoints(parcel.LocPickedUp.Latitude, parcel.LocPickedUp.Longitude, parcel.LocDelivered.Latitude, parcel.LocDelivered.Longitude);
+			if (GetParcel(p.Id).PickedUp == null)
+			{
+				parcel.Status = false;
+				parcel.DistanceDelivery = distanceBetweenTwoPoints(loc.Latitude, loc.Longitude, parcel.LocPickedUp.Latitude, parcel.LocPickedUp.Longitude);
+			}
+			else
+			{
+				parcel.Status = true;
+				parcel.DistanceDelivery = distanceBetweenTwoPoints(parcel.LocPickedUp.Latitude, parcel.LocPickedUp.Longitude, parcel.LocDelivered.Latitude, parcel.LocDelivered.Longitude);
+			}
+			//parcel.DistanceDelivery = distanceBetweenTwoPoints(parcel.LocPickedUp.Latitude, parcel.LocPickedUp.Longitude, parcel.LocDelivered.Latitude, parcel.LocDelivered.Longitude);
 			lock (dal)
 			{
 				foreach (DO.Customer item in dal.GetListCustomers())//search who is the sender and who is the target
@@ -1482,19 +1488,26 @@ namespace BL
 							if (drone.Battery != 100)
 							{
 								double bat = drone.Battery;
-								bl.DroneToCharge(drone.Id);
-								
-							//	drone = droneToList[indexDrone(droneId)];
-								bat -= bl.GetDrone(drone.Id).Battery;
-								for (double i = bat; i > 2; i -= 2)
+								try
 								{
-									drone.Battery -= 2;
-									//updateDroneList(drone);
+									bl.DroneToCharge(drone.Id);
+
+									//	drone = droneToList[indexDrone(droneId)];
+									bat -= bl.GetDrone(drone.Id).Battery;
+									for (double i = bat; i > 2; i -= 2)
+									{
+										drone.Battery -= 2;
+										//updateDroneList(drone);
+										ReportProgressSimulator(drone);
+										Thread.Sleep(timer);
+									}
+									drone = bl.GetDrone(drone.Id);
 									ReportProgressSimulator(drone);
-									Thread.Sleep(timer);
 								}
-								drone = bl.GetDrone(drone.Id);
-								ReportProgressSimulator(drone);
+                                catch (Exception)
+								{
+									Thread.Sleep(2000);
+                                }
 							}
 						}
 
