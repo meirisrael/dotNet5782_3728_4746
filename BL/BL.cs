@@ -1440,6 +1440,7 @@ namespace BL
 		public class Background_Worker
         {
 			private System.ComponentModel.BackgroundWorker backgroundWorker1 = new BackgroundWorker();
+			private const int timer = 500;
 			public Background_Worker(BL ibl,int droneId, Action<BO.Drone> ReportProgressSimulator,Func<bool> Cancellation)
             {
 				BlApi.IBL bl= ibl;
@@ -1454,7 +1455,7 @@ namespace BL
 					{
 						while (drone.Battery != 100)
 						{
-							Thread.Sleep(500);
+							Thread.Sleep(timer);
 							drone.Battery += 2;
 							if (drone.Battery > 100) drone.Battery = 100;
 							//Drone_label.Content = drone.ToString();
@@ -1462,7 +1463,7 @@ namespace BL
 							ReportProgressSimulator(drone);//this.backgroundWorker1.ReportProgress(0, drone);
 						}
 						bl.Fullycharged_simulator(drone.Id);
-						//drone = bl.GetDrone(drone.Id);
+						drone = bl.GetDrone(drone.Id);
 						//drone = droneToList[indexDrone(droneId)];
 						ReportProgressSimulator(drone);
 						//worker.ReportProgress(0);
@@ -1491,7 +1492,7 @@ namespace BL
 									drone.Battery -= 2;
 									//updateDroneList(drone);
 									ReportProgressSimulator(drone);
-									Thread.Sleep(500);
+									Thread.Sleep(timer);
 								}
 								drone = bl.GetDrone(drone.Id);
 								ReportProgressSimulator(drone);
@@ -1512,7 +1513,7 @@ namespace BL
 								drone.Battery -= 2;
 								//updateDroneList(drone);
 								ReportProgressSimulator(drone);
-								Thread.Sleep(500);
+								Thread.Sleep(timer);
 							}
 							drone = bl.GetDrone(drone.Id);
 							ReportProgressSimulator(drone);
@@ -1526,14 +1527,14 @@ namespace BL
 								drone.Battery -= 2;
 							//	updateDroneList(drone);
 								ReportProgressSimulator(drone);
-								Thread.Sleep(500);
+								Thread.Sleep(timer);
 							}
 							drone = bl.GetDrone(drone.Id);
 							ReportProgressSimulator(drone);
 						}
 						catch (Exception)
 						{
-							Thread.Sleep(500);
+							Thread.Sleep(timer);
 						}
 					}
 					if (Cancellation())
