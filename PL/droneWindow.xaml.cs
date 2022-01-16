@@ -350,7 +350,15 @@ namespace PL
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"> click </param>
-		private void Close_Click(object sender, RoutedEventArgs e) => Close();
+		private void Close_Click(object sender, RoutedEventArgs e)
+		{
+			if (auto_button.Content.ToString() == "Manual")
+            {
+				auto_button.IsEnabled = false;
+				this.backgroundWorker1.CancelAsync();
+			}
+			Close();
+		}
 
 		private void Automatic_Button_Click(object sender, RoutedEventArgs e)
 		{
