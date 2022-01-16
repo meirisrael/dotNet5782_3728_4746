@@ -367,95 +367,22 @@ namespace PL
 				auto_button.Background = Brushes.Orange;
 				this.backgroundWorker1.RunWorkerAsync();
 			}
-
 		}
 		private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
 		{
 			//BackgroundWorker worker = sender as BackgroundWorker;
-			while (true)
-            {
-			if (drone.Status == BO.DroneStatuses.Maintenance)
-                {
-					while (drone.Battery != 100)
-                    {
-						Thread.Sleep(500);
-						drone.Battery += 2;
-						if (drone.Battery > 100) drone.Battery = 100;
-						//Drone_label.Content = drone.ToString();
-						this.backgroundWorker1.ReportProgress(0,drone) ;
-					}				
-					bl.Fullycharged_simulator(drone.Id);
-					drone = bl.GetDrone(drone.Id);
-					this.backgroundWorker1.ReportProgress(0, drone);
-					//worker.ReportProgress(0);
-				}
-				else if (drone.Status == BO.DroneStatuses.free)
-                {
-					try
-					{
-						bl.AffectParcelToDrone(drone.Id);
-						drone = bl.GetDrone(drone.Id);
-						this.backgroundWorker1.ReportProgress(0, drone);
-					}
-					catch(Exception)  
-					{
-						Thread.Sleep(2000);
-						if (drone.Battery != 100)
-						{
-							double bat = drone.Battery;
-							bl.DroneToCharge(drone.Id);
-							bat -= bl.GetDrone(drone.Id).Battery;
-							for (double i = bat; i > 2; i -= 2)
-							{
-								drone.Battery -= 2;
-								this.backgroundWorker1.ReportProgress(0, drone);
-								Thread.Sleep(500);
-							}
-							drone = bl.GetDrone(drone.Id);
-							this.backgroundWorker1.ReportProgress(0, drone);
-						}
-					}
-
-				}
-			else if (drone.Status == BO.DroneStatuses.Shipping)
-                {
-                    try
-                    {
-						double bat = drone.Battery;
-						bl.ParcelCollection(drone.Id);
-						bat -= bl.GetDrone(drone.Id).Battery;
-						for (double i = bat; i > 2; i -= 2)
-						{
-							drone.Battery -= 2;
-							this.backgroundWorker1.ReportProgress(0, drone);
-							Thread.Sleep(500);
-						}
-						drone = bl.GetDrone(drone.Id);
-						this.backgroundWorker1.ReportProgress(0, drone);
-
-						bat = drone.Battery;
-						bl.ParcelDeliverd(drone.Id);
-						bat -= bl.GetDrone(drone.Id).Battery;
-						for (double i = bat; i > 2; i -= 2)
-						{
-							drone.Battery -= 2;
-							this.backgroundWorker1.ReportProgress(0, drone);
-							Thread.Sleep(500);
-						}
-						drone = bl.GetDrone(drone.Id);
-						this.backgroundWorker1.ReportProgress(0, drone);
-					}
-                    catch (Exception)
-                    {
-						Thread.Sleep(500);
-					}
-                }
-                if (this.backgroundWorker1.CancellationPending)
-                {
-					return;
-                }
-
-			}
+			Action<BO.Drone> a =(drone)=> ReportProgressSimulator(drone);
+			bl.Simulator(drone.Id,a, Cancellation);
+			
+		}
+		private void ReportProgressSimulator(BO.Drone drone)
+		{
+			//drone = bl.GetDrone(drone.Id);
+			this.backgroundWorker1.ReportProgress(0, drone);
+		}
+		private bool Cancellation()
+        {
+			return this.backgroundWorker1.CancellationPending;
 		}
 		private void backgroundWorker1_RunWorkerCompleted(
 		  object sender, RunWorkerCompletedEventArgs e)

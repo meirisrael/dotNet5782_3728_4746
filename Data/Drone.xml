@@ -7,12 +7,12 @@
   </Drone>
   <Drone>
     <Id>1001</Id>
-    <Model>Fantome-4</Model>
+    <Model>Fantome-5</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
     <Id>1002</Id>
-    <Model>Fantome-5</Model>
+    <Model>Fantome-4</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
@@ -22,7 +22,7 @@
   </Drone>
   <Drone>
     <Id>1004</Id>
-    <Model>Fantome-5</Model>
+    <Model>Fantome-4</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>

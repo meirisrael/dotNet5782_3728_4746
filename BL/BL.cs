@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace BL
 {
@@ -851,6 +854,11 @@ namespace BL
 				dal.DroneLeaveChargeStation(droneId, baseStation.Id);//base station- charge slot++ and remove the drone from the list "drone charge"
 			}
 		}
+		public void Simulator(int droneId, Action<BO.Drone> ReportProgressSimulator, Func<bool> Cancellation)
+        {
+			
+			new Background_Worker(this, droneId, ReportProgressSimulator, Cancellation);
+        }
 		#endregion
 
 		#region DISPLAY SPECIFIC OBJECT - OPTION
@@ -1429,5 +1437,113 @@ namespace BL
 			return p.Id;
 		}
 		#endregion
+		public class Background_Worker : BL
+        {
+			private System.ComponentModel.BackgroundWorker backgroundWorker1 = new BackgroundWorker();
+			public Background_Worker(BL ibl,int droneId, Action<BO.Drone> ReportProgressSimulator,Func<bool> Cancellation)
+            {
+				BlApi.IBL bl= ibl;
+				//BO.DroneToList drone = new BO.DroneToList();
+				//drone = droneToList[indexDrone(droneId)];
+				BO.Drone drone = new();
+				drone = GetDrone(droneId);
+				bool flag = true;
+				while (flag)
+				{
+					if (drone.Status == BO.DroneStatuses.Maintenance)
+					{
+						while (drone.Battery != 100)
+						{
+							Thread.Sleep(500);
+							drone.Battery += 2;
+							if (drone.Battery > 100) drone.Battery = 100;
+							//Drone_label.Content = drone.ToString();
+							//updateDroneList(drone);						
+							ReportProgressSimulator(drone);//this.backgroundWorker1.ReportProgress(0, drone);
+						}
+						bl.Fullycharged_simulator(drone.Id);
+						//drone = bl.GetDrone(drone.Id);
+						//drone = droneToList[indexDrone(droneId)];
+						ReportProgressSimulator(drone);
+						//worker.ReportProgress(0);
+					}
+					else if (drone.Status == BO.DroneStatuses.free)
+					{
+						try
+						{
+							bl.AffectParcelToDrone(drone.Id);
+							//updateDroneList(drone);
+							drone = bl.GetDrone(drone.Id);
+							ReportProgressSimulator(drone);
+						}
+						catch (Exception)
+						{
+							Thread.Sleep(2000);
+							if (drone.Battery != 100)
+							{
+								double bat = drone.Battery;
+								bl.DroneToCharge(drone.Id);
+								
+							//	drone = droneToList[indexDrone(droneId)];
+								bat -= bl.GetDrone(drone.Id).Battery;
+								for (double i = bat; i > 2; i -= 2)
+								{
+									drone.Battery -= 2;
+									//updateDroneList(drone);
+									ReportProgressSimulator(drone);
+									Thread.Sleep(500);
+								}
+								drone = bl.GetDrone(drone.Id);
+								ReportProgressSimulator(drone);
+							}
+						}
+
+					}
+					else if (drone.Status == BO.DroneStatuses.Shipping)
+					{
+						try
+						{
+							double bat = drone.Battery;
+							bl.ParcelCollection(drone.Id);
+							//drone = droneToList[indexDrone(droneId)];
+							bat -= bl.GetDrone(drone.Id).Battery;
+							for (double i = bat; i > 2; i -= 2)
+							{
+								drone.Battery -= 2;
+								//updateDroneList(drone);
+								ReportProgressSimulator(drone);
+								Thread.Sleep(500);
+							}
+							drone = bl.GetDrone(drone.Id);
+							ReportProgressSimulator(drone);
+
+							bat = drone.Battery;
+							bl.ParcelDeliverd(drone.Id);
+							//drone = droneToList[indexDrone(droneId)];
+							bat -= bl.GetDrone(drone.Id).Battery;
+							for (double i = bat; i > 2; i -= 2)
+							{
+								drone.Battery -= 2;
+							//	updateDroneList(drone);
+								ReportProgressSimulator(drone);
+								Thread.Sleep(500);
+							}
+							drone = bl.GetDrone(drone.Id);
+							ReportProgressSimulator(drone);
+						}
+						catch (Exception)
+						{
+							Thread.Sleep(500);
+						}
+					}
+					if (Cancellation())
+					{
+						flag = false;
+					}
+
+				}
+			}
+			
+		}
 	}
 }

@@ -4,14 +4,14 @@
     <Id>2000</Id>
     <Name>0</Name>
     <ChargeSlots>4</ChargeSlots>
-    <Longitude>27.513708673796483</Longitude>
-    <Latitude>35.112393679382464</Latitude>
+    <Longitude>32.50555859641431</Longitude>
+    <Latitude>34.80210542599768</Latitude>
   </BaseStation>
   <BaseStation>
     <Id>2001</Id>
     <Name>1</Name>
-    <ChargeSlots>1</ChargeSlots>
-    <Longitude>32.236256813088545</Longitude>
-    <Latitude>34.13750660309452</Latitude>
+    <ChargeSlots>0</ChargeSlots>
+    <Longitude>25.905731985627565</Longitude>
+    <Latitude>34.76654671517506</Latitude>
   </BaseStation>
 </ArrayOfBaseStation>
