@@ -1437,7 +1437,7 @@ namespace BL
 			return p.Id;
 		}
 		#endregion
-		public class Background_Worker : BL
+		public class Background_Worker
         {
 			private System.ComponentModel.BackgroundWorker backgroundWorker1 = new BackgroundWorker();
 			public Background_Worker(BL ibl,int droneId, Action<BO.Drone> ReportProgressSimulator,Func<bool> Cancellation)
@@ -1446,7 +1446,7 @@ namespace BL
 				//BO.DroneToList drone = new BO.DroneToList();
 				//drone = droneToList[indexDrone(droneId)];
 				BO.Drone drone = new();
-				drone = GetDrone(droneId);
+				drone = bl.GetDrone(droneId);
 				bool flag = true;
 				while (flag)
 				{
