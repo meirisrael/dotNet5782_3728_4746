@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfDroneCharge xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Drone>
-    <DroneId>1004</DroneId>
+    <DroneId>1005</DroneId>
+    <StationId>2000</StationId>
+  </Drone>
+  <Drone>
+    <DroneId>1009</DroneId>
     <StationId>2000</StationId>
   </Drone>
   <Drone>
     <DroneId>1000</DroneId>
-    <StationId>2000</StationId>
-  </Drone>
-  <Drone>
-    <DroneId>1001</DroneId>
     <StationId>2000</StationId>
   </Drone>
 </ArrayOfDroneCharge>

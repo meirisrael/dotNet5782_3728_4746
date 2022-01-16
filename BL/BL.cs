@@ -856,7 +856,6 @@ namespace BL
 		}
 		public void Simulator(int droneId, Action<BO.Drone> ReportProgressSimulator, Func<bool> Cancellation)
         {
-			
 			new Background_Worker(this, droneId, ReportProgressSimulator, Cancellation);
         }
 		#endregion
