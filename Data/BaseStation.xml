@@ -3,14 +3,14 @@
   <BaseStation>
     <Id>2000</Id>
     <Name>0</Name>
-    <ChargeSlots>1</ChargeSlots>
+    <ChargeSlots>0</ChargeSlots>
     <Longitude>32.927040670405624</Longitude>
     <Latitude>34.38881390629747</Latitude>
   </BaseStation>
   <BaseStation>
     <Id>2001</Id>
     <Name>1</Name>
-    <ChargeSlots>4</ChargeSlots>
+    <ChargeSlots>3</ChargeSlots>
     <Longitude>28.303807894142256</Longitude>
     <Latitude>35.140465614684146</Latitude>
   </BaseStation>

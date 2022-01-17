@@ -32,12 +32,12 @@
 			<Label Content="Filter by Weight " HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="111" Height="28" Margin="91,0,0,8" FontFamily="Comic Sans MS" Grid.ColumnSpan="2"/>
 			<Button x:Name="groupButton" Content="Group the List" HorizontalAlignment="Left" Margin="2,0,0,0" VerticalAlignment="Center" Click="group_Click" Background="DarkMagenta" Height="25" BorderBrush="Black" BorderThickness="1" FontFamily="Comic Sans MS"  FontWeight="DemiBold"/>
 		</Grid>
-		<ListView x:Name="DroneListView" MouseDoubleClick="DroneListView_MouseDoubleClick" Grid.Row="1" FontFamily="David" FontWeight="DemiBold" Visibility="Visible" Foreground="WhiteSmoke">
+		<ListView x:Name="DroneListView" MouseDoubleClick="DroneListView_MouseDoubleClick" Grid.Row="1" FontFamily="David" FontWeight="DemiBold" Visibility="Visible" Foreground="WhiteSmoke" ItemsSource="{Binding}">
 			<ListView.Background>
 				<ImageBrush ImageSource="\picture\background.png" AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="Fill" />
 			</ListView.Background>
 		</ListView>
-		<ListView x:Name="DroneListViewGrouping" MouseDoubleClick="DroneListViewGrouping_MouseDoubleClick" Grid.Row="1" FontFamily="David" FontWeight="DemiBold" Visibility="Hidden">
+		<ListView x:Name="DroneListViewGrouping" MouseDoubleClick="DroneListViewGrouping_MouseDoubleClick" Grid.Row="1" FontFamily="David" FontWeight="DemiBold" Visibility="Hidden" ItemsSource="{Binding}">
 			<ListView.View >
 				<GridView>
 					<GridViewColumn Header="Id" Width="60" DisplayMemberBinding="{Binding Id}" />

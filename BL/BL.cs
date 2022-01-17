@@ -839,6 +839,7 @@ namespace BL
 				updateDroneList(drone);
 			}
 		}
+
 		public void Fullycharged_simulator(int droneId)
         {
 			BO.DroneToList drone = new BO.DroneToList();

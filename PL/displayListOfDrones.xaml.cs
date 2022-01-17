@@ -24,7 +24,7 @@ namespace PL
 	{
 		private BlApi.IBL bl;
 		IEnumerable<BO.DroneToList> drones = new List<BO.DroneToList>();
-		ObservableCollection<BO.DroneToList> dronesList { set; get; }
+		public ObservableCollection<BO.DroneToList> dronesList { set; get; }
 		//-------------------------------------------------------------- FUNC AND CONST VARIABL -------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
 		private const uint MF_BYCOMMAND = 0x00000000;
@@ -58,11 +58,16 @@ namespace PL
 			InitializeComponent();
 			bl = ibl;
 			drones = bl.GetListOfDrones(d => true);
-			DroneListView.ItemsSource = drones;
+			//DroneListView.ItemsSource = drones;
+			dronesList = new ObservableCollection<BO.DroneToList>(drones);
+			DroneListView.ItemsSource = dronesList;
+			this.DataContext = this;
 
 			StatusSelector.ItemsSource = Enum.GetValues(typeof(BO.DroneStatuses));
 			WeightSelector.ItemsSource = Enum.GetValues(typeof(BO.WeightCategories));
 		}
+		public displayListOfDrones()
+		{}
 
 		/// <summary>
 		/// if the user select a status to filter
@@ -91,7 +96,7 @@ namespace PL
 				drones = bl.GetListOfDrones(d => true);
 			else
 				drones = bl.GetListOfDrones(d => d.MaxWeight == (BO.WeightCategories)WeightSelector.SelectedItem);
-			DroneListView.ItemsSource = drones;
+			//DroneListView.ItemsSource = drones;
 		}
 		/// <summary>
 		/// if the user press the button clear "weight selector"
@@ -105,7 +110,7 @@ namespace PL
 				drones = bl.GetListOfDrones(d => true);
 			else
 				drones = bl.GetListOfDrones(d => d.Status == (BO.DroneStatuses)StatusSelector.SelectedItem);
-			DroneListView.ItemsSource = drones;
+			//DroneListView.ItemsSource = drones;
 		}
 		/// <summary>
 		/// groop all drone by her status
@@ -146,9 +151,7 @@ namespace PL
 		/// <param name="e"></param>
 		private void Add_Click(object sender, RoutedEventArgs e)
 		{
-			new droneWindow(bl).ShowDialog();
-			drones = bl.GetListOfDrones(d => true);
-			DroneListView.ItemsSource = drones;
+			new droneWindow(bl,this).ShowDialog();
 			filterByStatus();
 			filterByWeight();
 		}
@@ -163,10 +166,7 @@ namespace PL
 				MessageBox.Show("Choose a drone !!", "ERROR");
 			else
 			{
-				new droneWindow(bl, (BO.DroneToList)DroneListView.SelectedItem).ShowDialog();
-
-				drones = bl.GetListOfDrones(d => true);
-				DroneListView.ItemsSource = drones;
+				new droneWindow(bl, (BO.DroneToList)DroneListView.SelectedItem, this).ShowDialog();
 				filterByStatus();
 				filterByWeight();
 			}
@@ -177,7 +177,7 @@ namespace PL
 				MessageBox.Show("Choose a drone !!", "ERROR");
 			else
 			{
-				new droneWindow(bl, (BO.DroneToList)DroneListViewGrouping.SelectedItem).ShowDialog();
+				new droneWindow(bl, (BO.DroneToList)DroneListViewGrouping.SelectedItem,this).ShowDialog();
 				
 				drones = bl.GetListOfDrones(d => true);
 				DroneListViewGrouping.ItemsSource = drones;

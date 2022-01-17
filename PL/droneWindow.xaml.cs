@@ -26,6 +26,8 @@ namespace PL
 	{
 		private BlApi.IBL bl;
 		private BO.Drone drone;
+		private ListView droneList_;
+		displayListOfDrones mySender = new displayListOfDrones();
 		private System.ComponentModel.BackgroundWorker backgroundWorker1 = new BackgroundWorker();
 		private bool flag;
 		//------------------------------------------------------------------ FUNC AND CONST VARIABL --------------------------------------------------------------------------------------------------
@@ -59,10 +61,11 @@ namespace PL
 		/// if the ctor get only one param so need do open the add window
 		/// </summary>
 		/// <param name="ibl"></param>
-		public droneWindow(BlApi.IBL ibl)
+		public droneWindow(BlApi.IBL ibl, displayListOfDrones win)
 		{
-			bl = ibl;
 			InitializeComponent();
+			bl = ibl;
+			mySender = win;
 			add_drone_Grid.Visibility = Visibility.Visible;
 			WeightSelector.ItemsSource = Enum.GetValues(typeof(BO.WeightCategories));
 			BaseListView.ItemsSource = bl.GetListOfBaseStations(b => b.ChargeSlots > 0);
@@ -78,11 +81,12 @@ namespace PL
 		/// </summary>
 		/// <param name="ibl"></param>
 		/// <param name="d"></param>
-		public droneWindow(BlApi.IBL ibl, BO.DroneToList d)
+		public droneWindow(BlApi.IBL ibl, BO.DroneToList d, displayListOfDrones win)
 		{
-			bl = ibl;
 			InitializeComponent();
 			InitializeBackgroundWorker();//////
+			bl = ibl;
+			mySender = win;
 			action_drone_Grid.Visibility = Visibility.Visible;
 			drone = bl.GetDrone(d.Id);
 			Drone_label.Content = drone.ToString();
@@ -149,6 +153,11 @@ namespace PL
 			{
 				bl.AddDrone(droneId, ModelBox.Text, (BO.WeightCategories)WeightSelector.SelectedItem, firstBase);
 				MessageBox.Show("Successfuly added", "Successfull");
+				mySender.dronesList.Clear();
+				foreach (var item in bl.GetListOfDrones(d => true))
+				{
+					mySender.dronesList.Add(item);
+				}
 				Close();
 			}
 			catch (BO.InvalidId)//drone id
@@ -176,7 +185,11 @@ namespace PL
 			{
 				bl.UpdateDrone(drone.Id, UpdateModelBox.Text);
 				MessageBox.Show("Successfuly update", "Successfull");
-				drone = bl.GetDrone(drone.Id);
+				mySender.dronesList.Clear();
+				foreach (var item in bl.GetListOfDrones(d => true))
+				{
+					mySender.dronesList.Add(item);
+				}
 				Drone_label.Content = drone.ToString();
 				UpdateModelBox.Text = drone.Model;
 				Update_button.IsEnabled = false; 
@@ -215,8 +228,12 @@ namespace PL
 				catch (Exception)
 				{ MessageBox.Show("Drone can't release from charge because is not in charge", "ERROR"); }
 			}
-			else { }
 			drone = bl.GetDrone(drone.Id);
+			mySender.dronesList.Clear();
+			foreach (var item in bl.GetListOfDrones(d => true))
+			{
+				mySender.dronesList.Add(item);
+			}
 			Drone_label.Content = drone.ToString();
 			charging_button();
 			shipping_button();
@@ -261,6 +278,11 @@ namespace PL
 			}
 			else { }
 			drone = bl.GetDrone(drone.Id);
+			mySender.dronesList.Clear();
+			foreach (var item in bl.GetListOfDrones(d => true))
+			{
+				mySender.dronesList.Add(item);
+			}
 			Drone_label.Content = drone.ToString();
 			charging_button();
 			shipping_button();
@@ -376,13 +398,12 @@ namespace PL
 				auto_button.IsEnabled = false;
 				close_button.IsEnabled = false;
 				this.backgroundWorker1.CancelAsync();
-
 			}
 			else
 			{
 				auto_button.Content = "Manual";
 				auto_button.Background = Brushes.Orange;
-				controlContainer.IsEnabled = false;
+				controlContainer.Visibility = Visibility.Hidden;
 				this.backgroundWorker1.RunWorkerAsync();
 			}
 		}
@@ -391,7 +412,6 @@ namespace PL
 			//BackgroundWorker worker = sender as BackgroundWorker;
 			Action<BO.Drone> a =(drone)=> ReportProgressSimulator(drone);
 			bl.Simulator(drone.Id,a, Cancellation);
-			
 		}
 		private void ReportProgressSimulator(BO.Drone drone)
 		{
@@ -402,8 +422,7 @@ namespace PL
         {
 			return this.backgroundWorker1.CancellationPending;
 		}
-		private void backgroundWorker1_RunWorkerCompleted(
-		  object sender, RunWorkerCompletedEventArgs e)
+		private void backgroundWorker1_RunWorkerCompleted( object sender, RunWorkerCompletedEventArgs e)
 		{
 			if (e.Error != null)
 			{
@@ -419,13 +438,20 @@ namespace PL
 				charging_button();
 				shipping_button();
 				Cursor = Cursors.Arrow;
+				controlContainer.Visibility = Visibility.Visible;
+				shipping_button();
+				charging_button();
 				if (flag) Close();
             }
 		}
-		private void backgroundWorker1_ProgressChanged(object sender,
-		   ProgressChangedEventArgs e)
+		private void backgroundWorker1_ProgressChanged(object sender,ProgressChangedEventArgs e)
 		{
 			Drone_label.Content = e.UserState.ToString();
+			mySender.dronesList.Clear();
+			foreach (var item in bl.GetListOfDrones(d => true))
+			{
+				mySender.dronesList.Add(item);
+			}
 		}
 	}
 }

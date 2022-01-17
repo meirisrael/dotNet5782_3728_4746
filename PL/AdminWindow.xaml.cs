@@ -33,7 +33,7 @@ namespace PL
 		/// <param name="e"></param>
 		private void DronesButton_Click(object sender, RoutedEventArgs e)
 		{
-			new displayListOfDrones(bl).ShowDialog();
+			new displayListOfDrones(bl).Show();
 		}
 		/// <summary>
 		/// if the user ant to open the base station window
@@ -42,7 +42,7 @@ namespace PL
 		/// <param name="e"> press button</param>
 		private void BaseButton_Click(object sender, RoutedEventArgs e)
 		{
-			new displayBaseList(bl).ShowDialog();
+			new displayBaseList(bl).Show();
 		}
 		/// <summary>
 		/// if the user want to see all customers and to add or upsate one
@@ -51,7 +51,7 @@ namespace PL
 		/// <param name="e"></param>
 		private void Customers_Click(object sender, RoutedEventArgs e)
 		{
-			new displayCustomersList(bl).ShowDialog();
+			new displayCustomersList(bl).Show();
 		}
 		/// <summary>
 		/// if the user want to see all parcels and to add or update one
@@ -60,7 +60,7 @@ namespace PL
 		/// <param name="e"></param>
 		private void Parcels_Click(object sender, RoutedEventArgs e)
 		{
-			new displayParcelsList(bl).ShowDialog();
+			new displayParcelsList(bl).Show();
 		}
 
 		/// <summary>

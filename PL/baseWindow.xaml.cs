@@ -179,7 +179,7 @@ namespace PL
 			{
 				BO.DroneToList d = new BO.DroneToList();
 				d.Id = BaseStation.DroneInCharge[droneListView.SelectedIndex].DroneId;
-				new droneWindow(bl, d).ShowDialog();
+				new droneWindow(bl, d,new displayListOfDrones()).ShowDialog();
 				BaseStation = bl.GetBaseStation(BaseStation.Id);
 				if (BaseStation.DroneInCharge.Count != 0)
 				{
