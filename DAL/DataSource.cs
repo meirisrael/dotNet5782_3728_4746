@@ -21,10 +21,10 @@ namespace Dal
 
 		internal class Config
 		{
-			internal static double useWhenFree = 0.01;//0.0001% per kilometere
-			internal static double useWhenLightly = 0.03;//0.0003% per kilometere
-			internal static double useWhenMedium = 0.04;//0.0004% per kilometere
-			internal static double useWhenHeavily =0.09;//0.0009% per kilometere
+			internal static double useWhenFree = 0.05;//0.0001% per kilometere
+			internal static double useWhenLightly = 0.10;//0.0003% per kilometere
+			internal static double useWhenMedium = 0.15;//0.0004% per kilometere
+			internal static double useWhenHeavily =0.2;//0.0009% per kilometere
 			internal double chargingRate = 35; //35% per hour
 		}
 		/// <summary>

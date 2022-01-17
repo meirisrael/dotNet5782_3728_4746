@@ -27,7 +27,7 @@ namespace PL
 		private BlApi.IBL bl;
 		private BO.Drone drone;
 		private System.ComponentModel.BackgroundWorker backgroundWorker1 = new BackgroundWorker();
-		
+		private bool flag;
 		//------------------------------------------------------------------ FUNC AND CONST VARIABL --------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
 		private const uint MF_BYCOMMAND = 0x00000000;
@@ -353,11 +353,18 @@ namespace PL
 		private void Close_Click(object sender, RoutedEventArgs e)
 		{
 			if (auto_button.Content.ToString() == "Manual")
-            {
+			{
+				Cursor = Cursors.Wait;
 				auto_button.IsEnabled = false;
+				controlContainer.IsEnabled = false;
+				close_button.IsEnabled = false;
 				this.backgroundWorker1.CancelAsync();
+				flag = true;
 			}
-			Close();
+			else
+			{
+				Close();
+			}
 		}
 
 		private void Automatic_Button_Click(object sender, RoutedEventArgs e)
@@ -365,14 +372,17 @@ namespace PL
 			
 			if (auto_button.Content.ToString() == "Manual")
 			{
+				Cursor = Cursors.Wait;
 				auto_button.IsEnabled = false;
 				close_button.IsEnabled = false;
 				this.backgroundWorker1.CancelAsync();
+
 			}
 			else
 			{
 				auto_button.Content = "Manual";
 				auto_button.Background = Brushes.Orange;
+				controlContainer.IsEnabled = false;
 				this.backgroundWorker1.RunWorkerAsync();
 			}
 		}
@@ -404,11 +414,14 @@ namespace PL
 				auto_button.Content = "Automatic";
 				auto_button.IsEnabled = true;
 				close_button.IsEnabled = true;
+				controlContainer.IsEnabled = true;
 				auto_button.Background = Brushes.LightGreen;
 				charging_button();
 				shipping_button();
+				Cursor = Cursors.Arrow;
+				if (flag) Close();
             }
-					}
+		}
 		private void backgroundWorker1_ProgressChanged(object sender,
 		   ProgressChangedEventArgs e)
 		{

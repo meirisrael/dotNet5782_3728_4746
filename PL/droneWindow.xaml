@@ -32,17 +32,20 @@
                 <ImageBrush Stretch="Fill" ImageSource="picture\mavic_pro.png" AlignmentY="Top" AlignmentX="Center"/>
             </Grid.Background>
             <TextBlock HorizontalAlignment="Left" Text="To change the Model:" TextWrapping="Wrap" VerticalAlignment="Top" Width="124" Margin="40,63,0,0" FontFamily="Comic Sans MS"/>
-            <TextBox x:Name="UpdateModelBox" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="138" TextChanged="UpdateModel_TextChanged" Margin="179,64,0,0" Text="{Binding Model,Mode=TwoWay}" />
             <Label Name="Drone_label" HorizontalAlignment="Right" VerticalAlignment="Top" Width="auto" Height="416" BorderBrush="LightGoldenrodYellow" BorderThickness="2" FontStyle="Oblique" Background="Yellow" Opacity="0.5" FontFamily="david" FontWeight="DemiBold" Margin="0,84,42,0"/>
             <Button x:Name="close_button" Content="Close" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="134" Height="34" Background="Red" Click="Close_Click" FontFamily="Comic Sans MS" FontWeight="DemiBold"/>
-            <Button Name="Update_button" Content="Update" HorizontalAlignment="Left" VerticalAlignment="Top" Width="61" Background="MediumSeaGreen" IsEnabled="False" Click="Update_button_Click" Margin="351,64,0,0" FontFamily="Comic Sans MS" FontWeight="DemiBold"/>
-            <Button x:Name="charge_button" Content="" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="155" Height="35" Background="MediumPurple" Visibility="Visible"
-				Click="charge_button_Click" Margin="30,150,0,0" FontFamily="Comic Sans MS" FontWeight="DemiBold"/>
-            <Button x:Name="parcel_button" Content="" HorizontalAlignment="Left" Margin="230,150,0,0" VerticalAlignment="Top" Width="155" Height="35" Background="CadetBlue" Visibility="Visible"
-				Click="parcel_button_Click" FontFamily="Comic Sans MS" FontWeight="DemiBold"/>
-            <Button x:Name="parcelDetails_Button" Content="Parcel details" Click="parcelDetails_Click" HorizontalAlignment="Left" Margin="165,210,0,0" VerticalAlignment="Top" Height="35" Width="90" FontFamily="Comic Sans MS" FontWeight="DemiBold" Background="Fuchsia" Visibility="Hidden"/>
             <Button x:Name="auto_button" Click="Automatic_Button_Click" Content="Automatic" HorizontalAlignment="Right" Margin="0,0,50,40" VerticalAlignment="Bottom" Width="80" Height="25" Background="LightGreen"/>
-
+            <Grid>
+                <Grid x:Name="controlContainer">
+                    <TextBox x:Name="UpdateModelBox" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="138" TextChanged="UpdateModel_TextChanged" Margin="179,64,0,0" Text="{Binding Model,Mode=TwoWay}" />
+                    <Button Name="Update_button" Content="Update" HorizontalAlignment="Left" VerticalAlignment="Top" Width="61" Background="MediumSeaGreen" IsEnabled="False" Click="Update_button_Click" Margin="351,64,0,0" FontFamily="Comic Sans MS" FontWeight="DemiBold"/>
+                    <Button x:Name="charge_button" Content="" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="155" Height="35" Background="MediumPurple" Visibility="Visible"
+				Click="charge_button_Click" Margin="30,150,0,0" FontFamily="Comic Sans MS" FontWeight="DemiBold"/>
+                    <Button x:Name="parcel_button" Content="" HorizontalAlignment="Left" Margin="230,150,0,0" VerticalAlignment="Top" Width="155" Height="35" Background="CadetBlue" Visibility="Visible"
+				Click="parcel_button_Click" FontFamily="Comic Sans MS" FontWeight="DemiBold"/>
+                    <Button x:Name="parcelDetails_Button" Content="Parcel details" Click="parcelDetails_Click" HorizontalAlignment="Left" Margin="165,210,0,0" VerticalAlignment="Top" Height="35" Width="90" FontFamily="Comic Sans MS" FontWeight="DemiBold" Background="Fuchsia" Visibility="Hidden"/>
+                </Grid>
+            </Grid>
         </Grid>
     </Grid>
 

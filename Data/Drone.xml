@@ -2,7 +2,7 @@
 <ArrayOfDrone xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Drone>
     <Id>1000</Id>
-    <Model>Fantome-4</Model>
+    <Model>Fantome-5</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
@@ -17,17 +17,17 @@
   </Drone>
   <Drone>
     <Id>1003</Id>
-    <Model>Fantome-4</Model>
+    <Model>Fantome-5</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
     <Id>1004</Id>
-    <Model>Fantome-4</Model>
+    <Model>Fantome-5</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
     <Id>1005</Id>
-    <Model>Fantome-4</Model>
+    <Model>Fantome-5</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
