@@ -276,7 +276,6 @@ namespace PL
 				catch (Exception)
 				{ MessageBox.Show("Parcel can't be deliverd", "ERROR"); }
 			}
-			else { }
 			drone = bl.GetDrone(drone.Id);
 			mySender.dronesList.Clear();
 			foreach (var item in bl.GetListOfDrones(d => true))
@@ -441,7 +440,8 @@ namespace PL
 				controlContainer.Visibility = Visibility.Visible;
 				shipping_button();
 				charging_button();
-				if (flag) Close();
+				if (flag) 
+					Close();
             }
 		}
 		private void backgroundWorker1_ProgressChanged(object sender,ProgressChangedEventArgs e)

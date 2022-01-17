@@ -25,6 +25,7 @@ namespace PL
 		private BlApi.IBL bl;
 		IEnumerable<BO.DroneToList> drones = new List<BO.DroneToList>();
 		public ObservableCollection<BO.DroneToList> dronesList { set; get; }
+		bool flag = false;
 		//-------------------------------------------------------------- FUNC AND CONST VARIABL -------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
 		private const uint MF_BYCOMMAND = 0x00000000;
@@ -93,10 +94,21 @@ namespace PL
 		{
 			StatusSelector.SelectedItem = null;
 			if (WeightSelector.SelectedItem == null)
-				drones = bl.GetListOfDrones(d => true);
+			{
+				dronesList.Clear();
+				foreach (var item in bl.GetListOfDrones(d => true))
+				{
+					dronesList.Add(item);
+				}
+			}
 			else
-				drones = bl.GetListOfDrones(d => d.MaxWeight == (BO.WeightCategories)WeightSelector.SelectedItem);
-			//DroneListView.ItemsSource = drones;
+			{
+				dronesList.Clear();
+				foreach (var item in bl.GetListOfDrones(d => true))
+				{
+					dronesList.Add(item);
+				}
+			}
 		}
 		/// <summary>
 		/// if the user press the button clear "weight selector"
@@ -106,11 +118,22 @@ namespace PL
 		private void ClearWeight_Click(object sender, RoutedEventArgs e)
 		{
 			WeightSelector.SelectedItem = null;
-			if(StatusSelector.SelectedItem == null)
-				drones = bl.GetListOfDrones(d => true);
+			if (StatusSelector.SelectedItem == null)
+			{
+				dronesList.Clear();
+				foreach (var item in bl.GetListOfDrones(d => true))
+				{
+					dronesList.Add(item);
+				}
+			}
 			else
-				drones = bl.GetListOfDrones(d => d.Status == (BO.DroneStatuses)StatusSelector.SelectedItem);
-			//DroneListView.ItemsSource = drones;
+			{
+				dronesList.Clear();
+				foreach (var item in bl.GetListOfDrones(d => d.Status == (BO.DroneStatuses)StatusSelector.SelectedItem))
+				{
+					dronesList.Add(item);
+				}
+			}
 		}
 		/// <summary>
 		/// groop all drone by her status
@@ -121,10 +144,14 @@ namespace PL
 		{
 			if (groupButton.Content.ToString() == "Group the List")
 			{
-				DroneListViewGrouping.ItemsSource = drones;
-				CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(DroneListViewGrouping.ItemsSource);
-				PropertyGroupDescription groupDescription = new PropertyGroupDescription("Status");
-				view.GroupDescriptions.Add(groupDescription);
+				if (!flag)
+				{
+					DroneListViewGrouping.ItemsSource = dronesList;
+					CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(DroneListViewGrouping.ItemsSource);
+					PropertyGroupDescription groupDescription = new PropertyGroupDescription("Status");
+					view.GroupDescriptions.Add(groupDescription);
+					flag = true;
+				}
 				DroneListViewGrouping.Visibility = Visibility.Visible;
 				DroneListView.Visibility = Visibility.Hidden;
 				groupButton.Content = "Default display";
@@ -136,8 +163,6 @@ namespace PL
 				DroneListViewGrouping.Visibility = Visibility.Hidden;
 				DroneListView.Visibility = Visibility.Visible;
 				groupButton.Content = "Group the List";
-				drones = bl.GetListOfDrones(d => true);
-				DroneListView.ItemsSource = drones;
 				StatusSelector.IsEnabled = true;
 				WeightSelector.IsEnabled = true;
 			}
@@ -179,11 +204,6 @@ namespace PL
 			{
 				new droneWindow(bl, (BO.DroneToList)DroneListViewGrouping.SelectedItem,this).ShowDialog();
 				
-				drones = bl.GetListOfDrones(d => true);
-				DroneListViewGrouping.ItemsSource = drones;
-				CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(DroneListViewGrouping.ItemsSource);
-				PropertyGroupDescription groupDescription = new PropertyGroupDescription("Status");
-				view.GroupDescriptions.Add(groupDescription);
 				filterByStatus();
 				filterByWeight();
 			}
