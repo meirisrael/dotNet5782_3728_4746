@@ -462,6 +462,7 @@ namespace PL
 				shipping_button();
 				Cursor = Cursors.Arrow;
 				controlContainer.Visibility = Visibility.Visible;
+				drone = bl.GetDrone(drone.Id);
 				shipping_button();
 				charging_button();
 				if (flag) 
