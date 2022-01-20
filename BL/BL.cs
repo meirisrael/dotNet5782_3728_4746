@@ -1443,6 +1443,11 @@ namespace BL
 			return p.Id;
 		}
 		#endregion
+
+		#region SIMULATOR
+		/// <summary>
+		/// simulator constructor
+		/// </summary>
 		public class Background_Worker
         {
 			private System.ComponentModel.BackgroundWorker backgroundWorker1 = new BackgroundWorker();
@@ -1450,8 +1455,6 @@ namespace BL
 			public Background_Worker(BL ibl,int droneId, Action<BO.Drone> ReportProgressSimulator,Func<bool> Cancellation)
             {
 				BlApi.IBL bl= ibl;
-				//BO.DroneToList drone = new BO.DroneToList();
-				//drone = droneToList[indexDrone(droneId)];
 				BO.Drone drone = new();
 				drone = bl.GetDrone(droneId);
 				bool flag = true;
@@ -1463,23 +1466,18 @@ namespace BL
 						{
 							Thread.Sleep(timer);
 							drone.Battery += 2;
-							if (drone.Battery > 100) drone.Battery = 100;
-							//Drone_label.Content = drone.ToString();
-							//updateDroneList(drone);						
-							ReportProgressSimulator(drone);//this.backgroundWorker1.ReportProgress(0, drone);
+							if (drone.Battery > 100) drone.Battery = 100;				
+							ReportProgressSimulator(drone);
 						}
 						bl.Fullycharged_simulator(drone.Id);
 						drone = bl.GetDrone(drone.Id);
-						//drone = droneToList[indexDrone(droneId)];
 						ReportProgressSimulator(drone);
-						//worker.ReportProgress(0);
 					}
 					else if (drone.Status == BO.DroneStatuses.free)
 					{
 						try
 						{
 							bl.AffectParcelToDrone(drone.Id);
-							//updateDroneList(drone);
 							drone = bl.GetDrone(drone.Id);
 							ReportProgressSimulator(drone);
 						}
@@ -1492,13 +1490,10 @@ namespace BL
 								try
 								{
 									bl.DroneToCharge(drone.Id);
-
-									//	drone = droneToList[indexDrone(droneId)];
 									bat -= bl.GetDrone(drone.Id).Battery;
 									for (double i = bat; i > 2; i -= 2)
 									{
 										drone.Battery -= 2;
-										//updateDroneList(drone);
 										ReportProgressSimulator(drone);
 										Thread.Sleep(timer);
 									}
@@ -1519,12 +1514,10 @@ namespace BL
 						{
 							double bat = drone.Battery;
 							bl.ParcelCollection(drone.Id);
-							//drone = droneToList[indexDrone(droneId)];
 							bat -= bl.GetDrone(drone.Id).Battery;
 							for (double i = bat; i > 2; i -= 2)
 							{
 								drone.Battery -= 2;
-								//updateDroneList(drone);
 								ReportProgressSimulator(drone);
 								Thread.Sleep(timer);
 							}
@@ -1533,12 +1526,10 @@ namespace BL
 
 							bat = drone.Battery;
 							bl.ParcelDeliverd(drone.Id);
-							//drone = droneToList[indexDrone(droneId)];
 							bat -= bl.GetDrone(drone.Id).Battery;
 							for (double i = bat; i > 2; i -= 2)
 							{
 								drone.Battery -= 2;
-							//	updateDroneList(drone);
 								ReportProgressSimulator(drone);
 								Thread.Sleep(timer);
 							}
@@ -1559,5 +1550,6 @@ namespace BL
 			}
 			
 		}
-	}
+        #endregion
+    }
 }

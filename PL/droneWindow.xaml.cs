@@ -95,6 +95,9 @@ namespace PL
 			if (drone.InTransit.Id != 0)
 				parcelDetails_Button.Visibility = Visibility.Visible;
 		}
+		/// <summary>
+		/// simulator initializer
+		/// </summary>
 		private void InitializeBackgroundWorker()//////
 		{
 			backgroundWorker1.DoWork +=
@@ -387,7 +390,11 @@ namespace PL
 				Close();
 			}
 		}
-
+		/// <summary>
+		/// automatic and manual button for the simulator
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void Automatic_Button_Click(object sender, RoutedEventArgs e)
 		{
 			
@@ -406,21 +413,38 @@ namespace PL
 				this.backgroundWorker1.RunWorkerAsync();
 			}
 		}
+		/// <summary>
+		/// simulator function to start doing things in background
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
 		{
-			//BackgroundWorker worker = sender as BackgroundWorker;
 			Action<BO.Drone> a =(drone)=> ReportProgressSimulator(drone);
 			bl.Simulator(drone.Id,a, Cancellation);
 		}
+		/// <summary>
+		/// delegate for the simulator progresschange function
+		/// </summary>
+		/// <param name="drone"></param>
 		private void ReportProgressSimulator(BO.Drone drone)
 		{
 			//drone = bl.GetDrone(drone.Id);
 			this.backgroundWorker1.ReportProgress(0, drone);
 		}
+		/// <summary>
+		/// delegate for the cancellation function
+		/// </summary>
+		/// <returns></returns>
 		private bool Cancellation()
         {
 			return this.backgroundWorker1.CancellationPending;
 		}
+		/// <summary>
+		/// end of simulation
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void backgroundWorker1_RunWorkerCompleted( object sender, RunWorkerCompletedEventArgs e)
 		{
 			if (e.Error != null)
@@ -444,6 +468,11 @@ namespace PL
 					Close();
             }
 		}
+		/// <summary>
+		/// update function when simulator is running
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void backgroundWorker1_ProgressChanged(object sender,ProgressChangedEventArgs e)
 		{
 			Drone_label.Content = e.UserState.ToString();
