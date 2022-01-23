@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace PL
 {
@@ -23,6 +25,7 @@ namespace PL
 	{
 		private BlApi.IBL bl;
 		private BO.BaseStation BaseStation;
+		public ObservableCollection<BO.DroneCharge> dronesList { set; get; }
 		//-------------------------------------------------------------- FUNC AND CONST VARIABL -------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
 		private const uint MF_BYCOMMAND = 0x00000000;
@@ -62,6 +65,8 @@ namespace PL
 			Base_details.Content =BaseStation.ToString();
 			if (BaseStation.DroneInCharge.Count != 0)
 			{
+				dronesList = new ObservableCollection<BO.DroneCharge>(BaseStation.DroneInCharge);
+				dronesList.CollectionChanged += dronesList_CollectionChanged;
 				droneListView.ItemsSource = BaseStation.DroneInCharge;
 				droneListView.Visibility = Visibility.Visible;
 			}
@@ -316,6 +321,10 @@ namespace PL
 			{ update_button.IsEnabled = true; chargeSlots_base.Background = Brushes.LightGreen; }
 			else { update_button.IsEnabled = false; chargeSlots_base.Background = Brushes.White; }
 			}
+		public void dronesList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			droneListView.ItemsSource = dronesList;
+		}
 
 		/// <summary>
 		/// if the user want to close or cancel the page 

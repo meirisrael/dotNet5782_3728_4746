@@ -14,6 +14,7 @@ using System.Windows.Threading;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace PL
 {
@@ -61,6 +62,7 @@ namespace PL
 			drones = bl.GetListOfDrones(d => true);
 			//DroneListView.ItemsSource = drones;
 			dronesList = new ObservableCollection<BO.DroneToList>(drones);
+			dronesList.CollectionChanged += dronesList_CollectionChanged;
 			DroneListView.ItemsSource = dronesList;
 			this.DataContext = this;
 
@@ -249,6 +251,9 @@ namespace PL
 		/// <param name="e"></param>
 		private void Close_Click(object sender, RoutedEventArgs e) => Close();
 
-		
+		public void dronesList_CollectionChanged(object sender,NotifyCollectionChangedEventArgs e)
+        {
+			DroneListView.ItemsSource = dronesList;
+		}
 	}
 }

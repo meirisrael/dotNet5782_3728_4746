@@ -839,21 +839,39 @@ namespace BL
 				updateDroneList(drone);
 			}
 		}
-
+		/// <summary>
+		/// function for charging drone in the simulator
+		/// </summary>
+		/// <param name="droneId"></param>
 		public void Fullycharged_simulator(int droneId)
         {
 			BO.DroneToList drone = new BO.DroneToList();
 			drone = droneToList[indexDrone(droneId)];
 			if (drone.Status != BO.DroneStatuses.Maintenance)//if the drone id of drone that the user gave is not in Maintenance so need to throw that
 				throw new BO.DroneNotInCharge();
-			drone.Status = BO.DroneStatuses.free;
-			drone.Battery = 100;
-			DO.BaseStation baseStation = new DO.BaseStation();
-			baseStation = currentBase(drone.Loc.Longitude, drone.Loc.Latitude);
-			lock (dal)
+			drone.Battery += 2;
+			if (drone.Battery >= 100)
 			{
-				dal.DroneLeaveChargeStation(droneId, baseStation.Id);//base station- charge slot++ and remove the drone from the list "drone charge"
+				DO.BaseStation baseStation = new DO.BaseStation();
+				baseStation = currentBase(drone.Loc.Longitude, drone.Loc.Latitude);
+				drone.Battery = 100;
+				drone.Status = BO.DroneStatuses.free;
+				lock (dal)
+				{
+					dal.DroneLeaveChargeStation(droneId, baseStation.Id);//base station- charge slot++ and remove the drone from the list "drone charge"
+				}
 			}
+		}
+		/// <summary>
+		/// function to soustract battery for the simulator
+		/// </summary>
+		/// <param name="droneId"></param>
+		/// <param name="num"></param>
+		public void Minus_Battery(int droneId,int num)
+        {
+			BO.DroneToList drone = new BO.DroneToList();
+			drone = droneToList[indexDrone(droneId)];
+			drone.Battery +=num;
 		}
 		public void Simulator(int droneId, Action<BO.Drone> ReportProgressSimulator, Func<bool> Cancellation)
         {
@@ -1465,13 +1483,10 @@ namespace BL
 						while (drone.Battery != 100)
 						{
 							Thread.Sleep(timer);
-							drone.Battery += 2;
-							if (drone.Battery > 100) drone.Battery = 100;				
+							bl.Fullycharged_simulator(drone.Id);
+							drone = bl.GetDrone(drone.Id);	
 							ReportProgressSimulator(drone);
 						}
-						bl.Fullycharged_simulator(drone.Id);
-						drone = bl.GetDrone(drone.Id);
-						ReportProgressSimulator(drone);
 					}
 					else if (drone.Status == BO.DroneStatuses.free)
 					{
@@ -1491,14 +1506,14 @@ namespace BL
 								{
 									bl.DroneToCharge(drone.Id);
 									bat -= bl.GetDrone(drone.Id).Battery;
+									bl.Minus_Battery(drone.Id, (int)bat);
 									for (double i = bat; i > 2; i -= 2)
 									{
-										drone.Battery -= 2;
+										bl.Minus_Battery(drone.Id, -2);
+										drone = bl.GetDrone(drone.Id);
 										ReportProgressSimulator(drone);
 										Thread.Sleep(timer);
 									}
-									drone = bl.GetDrone(drone.Id);
-									ReportProgressSimulator(drone);
 								}
                                 catch (Exception)
 								{
@@ -1515,26 +1530,26 @@ namespace BL
 							double bat = drone.Battery;
 							bl.ParcelCollection(drone.Id);
 							bat -= bl.GetDrone(drone.Id).Battery;
+							bl.Minus_Battery(drone.Id, (int)bat);
 							for (double i = bat; i > 2; i -= 2)
 							{
-								drone.Battery -= 2;
+								bl.Minus_Battery(drone.Id, -2);
+								drone = bl.GetDrone(drone.Id);
 								ReportProgressSimulator(drone);
 								Thread.Sleep(timer);
 							}
-							drone = bl.GetDrone(drone.Id);
-							ReportProgressSimulator(drone);
 
 							bat = drone.Battery;
 							bl.ParcelDeliverd(drone.Id);
 							bat -= bl.GetDrone(drone.Id).Battery;
+							bl.Minus_Battery(drone.Id, (int)bat);
 							for (double i = bat; i > 2; i -= 2)
 							{
-								drone.Battery -= 2;
+								bl.Minus_Battery(drone.Id, -2);
+								drone = bl.GetDrone(drone.Id);
 								ReportProgressSimulator(drone);
 								Thread.Sleep(timer);
 							}
-							drone = bl.GetDrone(drone.Id);
-							ReportProgressSimulator(drone);
 						}
 						catch (Exception)
 						{

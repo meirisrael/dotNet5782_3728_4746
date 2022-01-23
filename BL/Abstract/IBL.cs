@@ -28,6 +28,7 @@ namespace BlApi
 		public void ParcelCollection(int droneId);
 		public void ParcelDeliverd(int droneId);
 		public void Fullycharged_simulator(int droneId);
+		public void Minus_Battery(int droneId, int num);
 		public void Simulator(int droneId, Action<BO.Drone> ReportProgressSimulator, Func<bool> Cancellation);
 		#endregion
 
