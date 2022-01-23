@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 
 namespace PL
@@ -23,7 +25,8 @@ namespace PL
 	public partial class displayCustomersList : Window
 	{
 		private BlApi.IBL bl;
-		IEnumerable<BO.CustomerToList> customers = new List<BO.CustomerToList>();
+
+		public ObservableCollection<BO.CustomerToList> customers { set; get; }
 		//-------------------------------------------------------------- FUNC AND CONST VARIABL -------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
 		private const uint MF_BYCOMMAND = 0x00000000;
@@ -56,8 +59,9 @@ namespace PL
 		{
 			InitializeComponent();
 			bl = ibl;
-			customers = bl.GetListOfCustomers();
+			customers = new ObservableCollection<BO.CustomerToList>(bl.GetListOfCustomers());
 			CustomerlistView.ItemsSource = customers;
+			customers.CollectionChanged += customers_CollectionChanged;
 		}
 		/// <summary>
 		/// Close button
@@ -77,7 +81,7 @@ namespace PL
 			else
 			{
 				new CustomerWindowAdmin(bl, (BO.CustomerToList)CustomerlistView.SelectedItem).ShowDialog();
-				customers = bl.GetListOfCustomers();
+				customers = new ObservableCollection<BO.CustomerToList>(bl.GetListOfCustomers());
 				CustomerlistView.ItemsSource = customers;
 			}
 		}
@@ -86,8 +90,12 @@ namespace PL
         private void Add_Click(object sender, RoutedEventArgs e)
         {
 			new CustomerWindowAdmin(bl).ShowDialog();
-			customers = bl.GetListOfCustomers();
+			customers = new ObservableCollection<BO.CustomerToList>(bl.GetListOfCustomers());
 			CustomerlistView.ItemsSource = customers;
 		}
-    }
+		public void customers_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			CustomerlistView.ItemsSource = customers;
+		}
+	}
 }

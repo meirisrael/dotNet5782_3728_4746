@@ -193,7 +193,7 @@ namespace PL
 				MessageBox.Show("Choose a drone !!", "ERROR");
 			else
 			{
-				new droneWindow(bl, (BO.DroneToList)DroneListView.SelectedItem, this).ShowDialog();
+				new droneWindow(bl, (BO.DroneToList)DroneListView.SelectedItem, this).Show();
 				filterByStatus();
 				filterByWeight();
 			}
@@ -204,7 +204,7 @@ namespace PL
 				MessageBox.Show("Choose a drone !!", "ERROR");
 			else
 			{
-				new droneWindow(bl, (BO.DroneToList)DroneListViewGrouping.SelectedItem,this).ShowDialog();
+				new droneWindow(bl, (BO.DroneToList)DroneListViewGrouping.SelectedItem,this).Show();
 				
 				filterByStatus();
 				filterByWeight();

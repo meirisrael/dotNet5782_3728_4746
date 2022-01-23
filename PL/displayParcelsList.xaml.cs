@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace PL
 {
@@ -22,7 +24,7 @@ namespace PL
 	public partial class displayParcelsList : Window
 	{
 		private BlApi.IBL bl;
-		private IEnumerable<BO.ParcelToList> parcels;
+		public ObservableCollection<BO.ParcelToList> parcels { set; get; }
 		//-------------------------------------------------------------- FUNC AND CONST VARIABL -------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
 		private const uint MF_BYCOMMAND = 0x00000000;
@@ -57,7 +59,8 @@ namespace PL
 			bl = ibl;
 			StatusSelector.ItemsSource = Enum.GetValues(typeof(BO.ParcelStatues));
 			ParcelListView.Visibility = Visibility.Visible;
-			parcels = bl.GetListOfParcels(p => true);
+			parcels = new ObservableCollection<BO.ParcelToList>(bl.GetListOfParcels(p => true));
+			parcels.CollectionChanged += parcels_CollectionChanged;
 			ParcelListView.ItemsSource = parcels;
 		}
 
@@ -70,7 +73,7 @@ namespace PL
 		private void Add_Click(object sender, RoutedEventArgs e)
 		{
 			new ParcelWindowAdmin(bl).ShowDialog();
-			parcels = bl.GetListOfParcels(p => true);
+			parcels = new ObservableCollection<BO.ParcelToList>(bl.GetListOfParcels(p => true));
 			ParcelListView.ItemsSource = parcels;
 		}
 		/// <summary>
@@ -96,7 +99,7 @@ namespace PL
 				ParcelListViewGrouping.Visibility = Visibility.Hidden;
 				ParcelListView.Visibility = Visibility.Visible;
 				groupButton.Content = "Group the List";
-				parcels = bl.GetListOfParcels(d => true);
+				parcels = new ObservableCollection<BO.ParcelToList>(bl.GetListOfParcels(p => true));
 				ParcelListView.ItemsSource = parcels;
 				StatusSelector.IsEnabled = true;
 			}
@@ -109,7 +112,7 @@ namespace PL
 		private void Clear_Click(object sender, RoutedEventArgs e)
 		{
 			StatusSelector.SelectedItem = null;
-			parcels = bl.GetListOfParcels(p => true);
+			parcels = new ObservableCollection<BO.ParcelToList>(bl.GetListOfParcels(p => true));
 			ParcelListView.ItemsSource = parcels;
 		}
 
@@ -133,8 +136,8 @@ namespace PL
 				MessageBox.Show("Choose a drone !!", "ERROR");
 			else
 			{
-				new ParcelWindowAdmin(bl, (BO.ParcelToList)ParcelListView.SelectedItem).ShowDialog();
-				parcels = bl.GetListOfParcels(p => true);
+				new ParcelWindowAdmin(bl, (BO.ParcelToList)ParcelListView.SelectedItem).Show();
+				parcels = new ObservableCollection<BO.ParcelToList>(bl.GetListOfParcels(p => true));
 				ParcelListView.ItemsSource = parcels;
 				filterByStatus();
 			}
@@ -150,9 +153,9 @@ namespace PL
 				MessageBox.Show("Choose a drone !!", "ERROR");
 			else
 			{
-				new ParcelWindowAdmin(bl, (BO.ParcelToList)ParcelListViewGrouping.SelectedItem).ShowDialog();
-				parcels = bl.GetListOfParcels(p => true);
-				
+				new ParcelWindowAdmin(bl, (BO.ParcelToList)ParcelListViewGrouping.SelectedItem).Show();
+				parcels = new ObservableCollection<BO.ParcelToList>(bl.GetListOfParcels(p => true));
+
 				ParcelListViewGrouping.ItemsSource = parcels;
 				CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListViewGrouping.ItemsSource);
 				PropertyGroupDescription groupDescription = new PropertyGroupDescription("NameSender");
@@ -170,14 +173,18 @@ namespace PL
 				return;
 			else if (StatusSelector.SelectedItem != null)
 			{
-				parcels = bl.GetListOfParcels(p => true);
-				parcels = parcels.ToList().FindAll(p => p.Status == (BO.ParcelStatues)StatusSelector.SelectedItem);
+				parcels = new ObservableCollection<BO.ParcelToList>(bl.GetListOfParcels(p => true));
+				parcels = new ObservableCollection<BO.ParcelToList>(parcels.ToList().FindAll(p => p.Status == (BO.ParcelStatues)StatusSelector.SelectedItem)); 
 			}
 			else
-				parcels = bl.GetListOfParcels(d => true);
+				parcels = new ObservableCollection<BO.ParcelToList>(bl.GetListOfParcels(p => true));
 			ParcelListView.ItemsSource = parcels;
 		}
-
+		public void parcels_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			parcels = new ObservableCollection<BO.ParcelToList>(bl.GetListOfParcels(p => true));
+			ParcelListView.ItemsSource = parcels;
+		}
 		/// <summary>
 		/// if the user want to close the page
 		/// </summary>
