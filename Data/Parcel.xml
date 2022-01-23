@@ -33,8 +33,8 @@
     <Priority>Normal</Priority>
     <Requested>2022-01-17T00:45:08.1559852+02:00</Requested>
     <Scheduled>2022-01-17T00:45:13.155986+02:00</Scheduled>
-    <PickedUp xsi:nil="true"/>
-    <Delivered xsi:nil="true"/>
+    <PickedUp xsi:nil="true" />
+    <Delivered xsi:nil="true" />
   </Parcel>
   <Parcel>
     <Id>4003</Id>
@@ -93,8 +93,8 @@
     <Priority>Normal</Priority>
     <Requested>2022-01-17T00:45:08.1559889+02:00</Requested>
     <Scheduled>2022-01-17T00:45:13.1559891+02:00</Scheduled>
-    <PickedUp xsi:nil="true"/>
-    <Delivered xsi:nil="true" />
+    <PickedUp>2022-01-20T22:57:12.6247277+02:00</PickedUp>
+    <Delivered>2022-01-20T22:57:13.7441131+02:00</Delivered>
   </Parcel>
   <Parcel>
     <Id>4008</Id>

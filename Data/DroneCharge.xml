@@ -4,4 +4,8 @@
     <DroneId>1004</DroneId>
     <StationId>2001</StationId>
   </Drone>
+  <Drone>
+    <DroneId>1004</DroneId>
+    <StationId>2001</StationId>
+  </Drone>
 </ArrayOfDroneCharge>
