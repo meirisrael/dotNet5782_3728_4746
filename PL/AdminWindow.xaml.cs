@@ -33,7 +33,7 @@ namespace PL
 		/// <param name="e"></param>
 		private void DronesButton_Click(object sender, RoutedEventArgs e)
 		{
-			new displayListOfDrones(bl).ShowDialog();
+			new displayListOfDrones(bl).Show();
 		}
 		/// <summary>
 		/// if the user ant to open the base station window
@@ -60,7 +60,7 @@ namespace PL
 		/// <param name="e"></param>
 		private void Parcels_Click(object sender, RoutedEventArgs e)
 		{
-			new displayParcelsList(bl).ShowDialog();
+			new displayParcelsList(bl).Show();
 		}
 
 		/// <summary>
