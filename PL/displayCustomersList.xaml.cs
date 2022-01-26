@@ -63,12 +63,14 @@ namespace PL
 			CustomerlistView.ItemsSource = customers;
 			customers.CollectionChanged += customers_CollectionChanged;
 		}
+		public displayCustomersList()
+		{ }
 		/// <summary>
 		/// Close button
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-        private void Close_Click(object sender, RoutedEventArgs e) => Close();
+		private void Close_Click(object sender, RoutedEventArgs e) => Close();
 		/// <summary>
 		/// double click on a customer from the list to view his details and to update his name and phone number
 		/// </summary>
@@ -80,18 +82,14 @@ namespace PL
 				MessageBox.Show("Choose a drone !!", "ERROR");
 			else
 			{
-				new CustomerWindowAdmin(bl, (BO.CustomerToList)CustomerlistView.SelectedItem).ShowDialog();
-				customers = new ObservableCollection<BO.CustomerToList>(bl.GetListOfCustomers());
-				CustomerlistView.ItemsSource = customers;
+				new CustomerWindowAdmin(bl, (BO.CustomerToList)CustomerlistView.SelectedItem, this).ShowDialog();
 			}
 		}
 		
 		// button add to add a new customer
         private void Add_Click(object sender, RoutedEventArgs e)
         {
-			new CustomerWindowAdmin(bl).ShowDialog();
-			customers = new ObservableCollection<BO.CustomerToList>(bl.GetListOfCustomers());
-			CustomerlistView.ItemsSource = customers;
+			new CustomerWindowAdmin(bl,this).ShowDialog();
 		}
 		public void customers_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{

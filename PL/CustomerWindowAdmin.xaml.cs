@@ -23,6 +23,8 @@ namespace PL
     {
 		private BlApi.IBL bl;
 		private BO.Customer customer;
+		private ListView customerList_;
+		displayCustomersList mySender = new displayCustomersList();
 		//------------------------------------------------------------------ FUNC AND CONST VARIABL --------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
 		private const uint MF_BYCOMMAND = 0x00000000;
@@ -52,10 +54,11 @@ namespace PL
 		/// ctor when "new customer" button is pressed
 		/// </summary>
 		/// <param name="ibl"></param>
-		public CustomerWindowAdmin(BlApi.IBL ibl)
+		public CustomerWindowAdmin(BlApi.IBL ibl,displayCustomersList win)
         {
 			bl = ibl;
 			InitializeComponent();
+			mySender = win;
 			addCustomer_Grid.Visibility = Visibility.Visible;
 		}
 		/// <summary>
@@ -64,9 +67,10 @@ namespace PL
 		/// <param name="ibl"></param>
 		/// <param name="c"></param>
 		/// <param name="status"> admin or client </param>
-		public CustomerWindowAdmin(BlApi.IBL ibl,BO.CustomerToList c)
+		public CustomerWindowAdmin(BlApi.IBL ibl,BO.CustomerToList c, displayCustomersList win)
 		{
 			bl = ibl;
+			mySender = win;
 			customer = bl.GetCustomer(c.Id);
 			InitializeComponent();
 			update_Grid.Visibility = Visibility.Visible;
@@ -212,6 +216,11 @@ namespace PL
 			try
 			{
 				bl.AddCustomer(customerId, NameBox.Text, PhoneBox.Text, location);
+				mySender.customers.Clear();
+				foreach (var item in bl.GetListOfCustomers())
+				{
+					mySender.customers.Add(item);
+				}
 				MessageBox.Show("Successfuly added", "Successfull");
 				MessageBox.Show($"Your userId is- {customerId}\nYour code is- {NameBox.Text+customerId}", "Login information");
 				Close();
@@ -230,6 +239,11 @@ namespace PL
 		private void update_button_Click(object sender, RoutedEventArgs e)
         {
 			bl.UpdateCustomer(customer.Id, upNameBox.Text, upPhoneBox.Text);
+			mySender.customers.Clear();
+			foreach (var item in bl.GetListOfCustomers())
+			{
+				mySender.customers.Add(item);
+			}
 			MessageBox.Show("Successfuly updated");
 			customer = bl.GetCustomer(customer.Id);
 			customerLabel.Content = customer.ToString();
@@ -249,7 +263,7 @@ namespace PL
 				MessageBox.Show("Choose a parcel !!", "ERROR");
 			else
 			{
-				new ParcelWindowAdmin(bl, (BO.ParcelToList)parcelListView.SelectedItem).ShowDialog();
+				new ParcelWindowAdmin(bl, (BO.ParcelToList)parcelListView.SelectedItem, new displayParcelsList()).ShowDialog();
 				parcelListView.ItemsSource = bl.GetListOfParcels(p => p.SenderId == customer.Id);
 				customer = bl.GetCustomer(customer.Id);
 				customerLabel.Content = customer.ToString();

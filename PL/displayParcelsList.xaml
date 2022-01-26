@@ -26,7 +26,7 @@
 			<Label Content="Filter by Status " HorizontalAlignment="Left" VerticalAlignment="Top" Width="106" Height="35" Margin="91,6,0,0" FontFamily="Comic Sans MS"/>
 			<Button x:Name="groupButton" Content="Group the List" Click="groupButton_Click" HorizontalAlignment="Center" Margin="0,0,0,5" VerticalAlignment="Bottom" Background="DarkMagenta" Height="25" BorderBrush="Black" BorderThickness="1" FontFamily="Comic Sans MS"  FontWeight="DemiBold" Grid.Column="1"/>
 		</Grid>
-		<ListView x:Name="ParcelListView"  Grid.Row="1" FontFamily="David" FontWeight="DemiBold" Visibility="Hidden" Foreground="WhiteSmoke" MouseDoubleClick="ParcelListView_MouseDoubleClick">
+		<ListView x:Name="ParcelListView"  Grid.Row="1" FontFamily="David" FontWeight="DemiBold" Visibility="Hidden" Foreground="WhiteSmoke" MouseDoubleClick="ParcelListView_MouseDoubleClick" ItemsSource="{Binding}">
 			<ListView.Background>
 				<ImageBrush ImageSource="\picture\background.png" AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="Fill" />
 			</ListView.Background>

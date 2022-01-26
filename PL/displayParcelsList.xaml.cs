@@ -24,6 +24,7 @@ namespace PL
 	public partial class displayParcelsList : Window
 	{
 		private BlApi.IBL bl;
+		public IEnumerable<BO.ParcelToList> parcel = new List<BO.ParcelToList>();
 		public ObservableCollection<BO.ParcelToList> parcels { set; get; }
 		//-------------------------------------------------------------- FUNC AND CONST VARIABL -------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
@@ -59,11 +60,14 @@ namespace PL
 			bl = ibl;
 			StatusSelector.ItemsSource = Enum.GetValues(typeof(BO.ParcelStatues));
 			ParcelListView.Visibility = Visibility.Visible;
+			parcel = bl.GetListOfParcels(f => true);
 			parcels = new ObservableCollection<BO.ParcelToList>(bl.GetListOfParcels(p => true));
 			parcels.CollectionChanged += parcels_CollectionChanged;
 			ParcelListView.ItemsSource = parcels;
+			this.DataContext = this;
 		}
-
+        public displayParcelsList()
+		{ }
 
 		/// <summary>
 		/// if the user want to add an new parcel 
@@ -72,9 +76,8 @@ namespace PL
 		/// <param name="e"> click </param>
 		private void Add_Click(object sender, RoutedEventArgs e)
 		{
-			new ParcelWindowAdmin(bl).ShowDialog();
-			parcels = new ObservableCollection<BO.ParcelToList>(bl.GetListOfParcels(p => true));
-			ParcelListView.ItemsSource = parcels;
+			new ParcelWindowAdmin(bl,this).Show();
+			filterByStatus();
 		}
 		/// <summary>
 		/// if the user want to group the list of parcel by the sender sent of parcel or go back to default view
@@ -136,9 +139,7 @@ namespace PL
 				MessageBox.Show("Choose a drone !!", "ERROR");
 			else
 			{
-				new ParcelWindowAdmin(bl, (BO.ParcelToList)ParcelListView.SelectedItem).Show();
-				parcels = new ObservableCollection<BO.ParcelToList>(bl.GetListOfParcels(p => true));
-				ParcelListView.ItemsSource = parcels;
+				new ParcelWindowAdmin(bl, (BO.ParcelToList)ParcelListView.SelectedItem,this).Show();
 				filterByStatus();
 			}
 		}
@@ -153,10 +154,7 @@ namespace PL
 				MessageBox.Show("Choose a drone !!", "ERROR");
 			else
 			{
-				new ParcelWindowAdmin(bl, (BO.ParcelToList)ParcelListViewGrouping.SelectedItem).Show();
-				parcels = new ObservableCollection<BO.ParcelToList>(bl.GetListOfParcels(p => true));
-
-				ParcelListViewGrouping.ItemsSource = parcels;
+				new ParcelWindowAdmin(bl, (BO.ParcelToList)ParcelListViewGrouping.SelectedItem, new displayParcelsList()).Show();
 				CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListViewGrouping.ItemsSource);
 				PropertyGroupDescription groupDescription = new PropertyGroupDescription("NameSender");
 				view.GroupDescriptions.Add(groupDescription);
@@ -173,17 +171,17 @@ namespace PL
 				return;
 			else if (StatusSelector.SelectedItem != null)
 			{
-				parcels = new ObservableCollection<BO.ParcelToList>(bl.GetListOfParcels(p => true));
-				parcels = new ObservableCollection<BO.ParcelToList>(parcels.ToList().FindAll(p => p.Status == (BO.ParcelStatues)StatusSelector.SelectedItem)); 
+				parcel = bl.GetListOfParcels(p => true);
+				parcel = parcels.ToList().FindAll(p => p.Status == (BO.ParcelStatues)StatusSelector.SelectedItem);
 			}
 			else
-				parcels = new ObservableCollection<BO.ParcelToList>(bl.GetListOfParcels(p => true));
-			ParcelListView.ItemsSource = parcels;
+				parcel = bl.GetListOfParcels(d => true);
+			ParcelListView.ItemsSource = parcel;
 		}
 		public void parcels_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
-			parcels = new ObservableCollection<BO.ParcelToList>(bl.GetListOfParcels(p => true));
-			ParcelListView.ItemsSource = parcels;
+			parcel = bl.GetListOfParcels(d => true); 
+			ParcelListView.ItemsSource = parcel;
 		}
 		/// <summary>
 		/// if the user want to close the page

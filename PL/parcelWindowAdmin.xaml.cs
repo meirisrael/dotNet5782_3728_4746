@@ -23,6 +23,8 @@ namespace PL
 	{
 		private BlApi.IBL bl;
 		private BO.Parcel parcel;
+		private ListView parcelList_;
+		displayParcelsList mySender = new displayParcelsList();
 		//-------------------------------------------------------------- FUNC AND CONST VARIABL -------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
 		private const uint MF_BYCOMMAND = 0x00000000;
@@ -51,10 +53,12 @@ namespace PL
 		/// ctor add new parcel
 		/// </summary>
 		/// <param name="ibl"></param>
-		public ParcelWindowAdmin(BlApi.IBL ibl)
+		public ParcelWindowAdmin(BlApi.IBL ibl, displayParcelsList win)
 		{
 			InitializeComponent();
+			mySender = win;
 			bl = ibl;
+			this.parcelList_ = win.ParcelListView;
 			addParcel_grid.Visibility = Visibility.Visible;
 			weightSelector.ItemsSource = Enum.GetValues(typeof(BO.WeightCategories));
 			prioritySelector.ItemsSource = Enum.GetValues(typeof(BO.Priorities));
@@ -64,9 +68,10 @@ namespace PL
 		/// </summary>
 		/// <param name="ibl"></param>
 		/// <param name="p"></param>
-		public ParcelWindowAdmin(BlApi.IBL ibl, BO.ParcelToList p)
+		public ParcelWindowAdmin(BlApi.IBL ibl, BO.ParcelToList p,displayParcelsList win)
 		{
 			InitializeComponent();
+			mySender = win;
 			actionPrcel_grid.Visibility = Visibility.Visible;
 			bl = ibl;
 			parcel = bl.GetParcel(p.Id);
@@ -116,6 +121,11 @@ namespace PL
 			try
 			{
 				bl.AddParcel(parcelId, senderId, targetId, (BO.WeightCategories)weightSelector.SelectedItem, (BO.Priorities)prioritySelector.SelectedItem);
+				mySender.parcels.Clear();
+				foreach (var item in bl.GetListOfParcels(f=>true))
+				{
+					mySender.parcels.Add(item);
+				}
 				MessageBox.Show("Successfuly added", "Successfull");
 				Close();
 			}
@@ -161,6 +171,11 @@ namespace PL
 				bl.ParcelCollection(parcel.Drone.Id);
 				parcel = bl.GetParcel(parcel.Id);
 				parcelDetails.Content = parcel.ToString();
+				mySender.parcels.Clear();
+				foreach (var item in bl.GetListOfParcels(f => true))
+				{
+					mySender.parcels.Add(item);
+				}
 				shippingButton();
 			}
 			else
@@ -168,6 +183,11 @@ namespace PL
 				bl.ParcelDeliverd(parcel.Drone.Id);
 				parcel = bl.GetParcel(parcel.Id);
 				parcelDetails.Content = parcel.ToString();
+				mySender.parcels.Clear();
+				foreach (var item in bl.GetListOfParcels(f => true))
+				{
+					mySender.parcels.Add(item);
+				}
 				shippingButton();
 				drone_Button.Visibility = Visibility.Hidden;
 			}
@@ -180,7 +200,7 @@ namespace PL
 		private void senderDetails_Click(object sender, RoutedEventArgs e)
 		{
 			BO.CustomerToList customer = new BO.CustomerToList { Id = parcel.Sender.Id };
-			new CustomerWindowAdmin(bl, customer).ShowDialog();
+			new CustomerWindowAdmin(bl, customer,new displayCustomersList()).ShowDialog();
 			parcel = bl.GetParcel(parcel.Id);
 			parcelDetails.Content = parcel.ToString();
 		}
@@ -192,7 +212,7 @@ namespace PL
 		private void targetDetails_Click(object sender, RoutedEventArgs e)
 		{
 			BO.CustomerToList customer = new BO.CustomerToList { Id = parcel.Target.Id };
-			new CustomerWindowAdmin(bl, customer).ShowDialog();
+			new CustomerWindowAdmin(bl, customer, new displayCustomersList()).ShowDialog();
 			parcel = bl.GetParcel(parcel.Id);
 			parcelDetails.Content = parcel.ToString();
 		}
@@ -221,6 +241,11 @@ namespace PL
 				try
 				{
 					bl.DeleteParcel(parcel.Id);
+					mySender.parcels.Clear();
+					foreach (var item in bl.GetListOfParcels(f => true))
+					{
+						mySender.parcels.Add(item);
+					}
 					MessageBox.Show("Successfuly deleted", "Successfull");
 					Close();
 				}

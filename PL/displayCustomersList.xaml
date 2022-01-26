@@ -14,7 +14,7 @@
             <RowDefinition Height="25*"/>
             <RowDefinition Height="192*"/>
         </Grid.RowDefinitions>
-        <ListView x:Name="CustomerlistView" Opacity="0.8" Grid.Row="1" FontFamily="Arial Rounded MT Bold" MouseDoubleClick="CustomerlistView_MouseDoubleClick">
+        <ListView x:Name="CustomerlistView" Opacity="0.8" Grid.Row="1" FontFamily="Arial Rounded MT Bold" MouseDoubleClick="CustomerlistView_MouseDoubleClick" ItemsSource="{Binding}">
             <ListView.Background>
                 <ImageBrush ImageSource="/picture/customer.jpg"/>
             </ListView.Background>
