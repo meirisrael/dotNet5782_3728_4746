@@ -24,7 +24,7 @@ namespace PL
 		private BlApi.IBL bl;
 		private BO.Parcel parcel;
 		private ListView parcelList_;
-		displayParcelsList mySender = new displayParcelsList();
+		displayParcelsList mySender;
 		//-------------------------------------------------------------- FUNC AND CONST VARIABL -------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
 		private const uint MF_BYCOMMAND = 0x00000000;
@@ -200,7 +200,7 @@ namespace PL
 		private void senderDetails_Click(object sender, RoutedEventArgs e)
 		{
 			BO.CustomerToList customer = new BO.CustomerToList { Id = parcel.Sender.Id };
-			new CustomerWindowAdmin(bl, customer,new displayCustomersList()).ShowDialog();
+			new CustomerWindowAdmin(bl, customer,new displayCustomersList(bl)).ShowDialog();
 			parcel = bl.GetParcel(parcel.Id);
 			parcelDetails.Content = parcel.ToString();
 		}
@@ -212,7 +212,7 @@ namespace PL
 		private void targetDetails_Click(object sender, RoutedEventArgs e)
 		{
 			BO.CustomerToList customer = new BO.CustomerToList { Id = parcel.Target.Id };
-			new CustomerWindowAdmin(bl, customer, new displayCustomersList()).ShowDialog();
+			new CustomerWindowAdmin(bl, customer, new displayCustomersList(bl)).ShowDialog();
 			parcel = bl.GetParcel(parcel.Id);
 			parcelDetails.Content = parcel.ToString();
 		}
@@ -224,7 +224,7 @@ namespace PL
 		private void droneDetails_Click(object sender, RoutedEventArgs e)
 		{
 			BO.DroneToList drone = new BO.DroneToList { Id = parcel.Drone.Id };
-			new droneWindow(bl, drone,new displayListOfDrones()).ShowDialog();
+			new droneWindow(bl, drone,new displayListOfDrones(bl)).ShowDialog();
 			parcel = bl.GetParcel(parcel.Id);
 			parcelDetails.Content = parcel.ToString();
 		}

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="List Of Drones" Height="640" Width="800" Icon="\icon\logo_company.ico">
+        Title="List Of Drones" Height="640" Width="800" Icon="\icon\logo_company.ico" ResizeMode="NoResize">
 	<Grid Name="MainGride">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="50*"/>

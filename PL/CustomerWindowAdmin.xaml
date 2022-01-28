@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="Customer Window" Height="450" Width="800" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.IsSharedSizeScope="True" Icon="icon\logo_company.ico">
+        Title="Customer Window" Height="450" Width="800" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.IsSharedSizeScope="True" Icon="icon\logo_company.ico" ResizeMode="NoResize">
 	<Grid x:Name="mainGrid">
 		<Grid x:Name="addCustomer_Grid" Visibility="Hidden">
 			<Grid.ColumnDefinitions>

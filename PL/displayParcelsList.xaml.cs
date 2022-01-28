@@ -66,8 +66,7 @@ namespace PL
 			ParcelListView.ItemsSource = parcels;
 			this.DataContext = this;
 		}
-        public displayParcelsList()
-		{ }
+
 
 		/// <summary>
 		/// if the user want to add an new parcel 
@@ -154,7 +153,7 @@ namespace PL
 				MessageBox.Show("Choose a drone !!", "ERROR");
 			else
 			{
-				new ParcelWindowAdmin(bl, (BO.ParcelToList)ParcelListViewGrouping.SelectedItem, new displayParcelsList()).Show();
+				new ParcelWindowAdmin(bl, (BO.ParcelToList)ParcelListViewGrouping.SelectedItem, new displayParcelsList(bl)).Show();
 				CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListViewGrouping.ItemsSource);
 				PropertyGroupDescription groupDescription = new PropertyGroupDescription("NameSender");
 				view.GroupDescriptions.Add(groupDescription);
