@@ -26,6 +26,7 @@ namespace PL
 		private BlApi.IBL bl;
 		public IEnumerable<BO.ParcelToList> parcel = new List<BO.ParcelToList>();
 		public ObservableCollection<BO.ParcelToList> parcels { set; get; }
+		bool flag = false;
 		//-------------------------------------------------------------- FUNC AND CONST VARIABL -------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
 		private const uint MF_BYCOMMAND = 0x00000000;
@@ -60,9 +61,9 @@ namespace PL
 			bl = ibl;
 			StatusSelector.ItemsSource = Enum.GetValues(typeof(BO.ParcelStatues));
 			ParcelListView.Visibility = Visibility.Visible;
-			parcel = bl.GetListOfParcels(f => true);
-			parcels = new ObservableCollection<BO.ParcelToList>(bl.GetListOfParcels(p => true));
-			parcels.CollectionChanged += parcels_CollectionChanged;
+			parcel = bl.GetListOfParcels(p => true);
+			parcels = new ObservableCollection<BO.ParcelToList>(parcel);
+			//parcels.CollectionChanged += parcels_CollectionChanged;
 			ParcelListView.ItemsSource = parcels;
 			this.DataContext = this;
 		}
@@ -87,10 +88,14 @@ namespace PL
 		{
 			if (groupButton.Content.ToString() == "Group the List")
 			{
-				ParcelListViewGrouping.ItemsSource = parcels;
-				CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListViewGrouping.ItemsSource);
-				PropertyGroupDescription groupDescription = new PropertyGroupDescription("NameSender");
-				view.GroupDescriptions.Add(groupDescription);
+				if (!flag)
+				{
+					ParcelListViewGrouping.ItemsSource = bl.GetListOfParcels(p => true);
+					CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListViewGrouping.ItemsSource);
+					PropertyGroupDescription groupDescription = new PropertyGroupDescription("NameSender");
+					view.GroupDescriptions.Add(groupDescription);
+					flag = true;
+				}
 				ParcelListViewGrouping.Visibility = Visibility.Visible;
 				ParcelListView.Visibility = Visibility.Hidden;
 				groupButton.Content = "Default display";
@@ -138,7 +143,7 @@ namespace PL
 				MessageBox.Show("Choose a drone !!", "ERROR");
 			else
 			{
-				new ParcelWindowAdmin(bl, (BO.ParcelToList)ParcelListView.SelectedItem,this).Show();
+				new ParcelWindowAdmin(bl, (BO.ParcelToList)ParcelListView.SelectedItem,this).ShowDialog();
 				filterByStatus();
 			}
 		}
@@ -171,17 +176,22 @@ namespace PL
 			else if (StatusSelector.SelectedItem != null)
 			{
 				parcel = bl.GetListOfParcels(p => true);
-				parcel = parcels.ToList().FindAll(p => p.Status == (BO.ParcelStatues)StatusSelector.SelectedItem);
+				parcel = parcel.ToList().FindAll(p => p.Status == (BO.ParcelStatues)StatusSelector.SelectedItem);
 			}
 			else
-				parcel = bl.GetListOfParcels(d => true);
-			ParcelListView.ItemsSource = parcel;
+				parcel = bl.GetListOfParcels(p => true);
+			parcels.Clear();
+			foreach (var item in parcel)
+			{
+				parcels.Add(item);
+			}
 		}
-		public void parcels_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-		{
-			parcel = bl.GetListOfParcels(d => true); 
-			ParcelListView.ItemsSource = parcel;
-		}
+
+		//public void parcels_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		//{
+		//	parcel = bl.GetListOfParcels(d => true); 
+		//	ParcelListView.ItemsSource = parcel;
+		//}
 		/// <summary>
 		/// if the user want to close the page
 		/// </summary>

@@ -263,7 +263,7 @@ namespace PL
 			else
 			{
 				new ParcelWindowAdmin(bl, (BO.ParcelToList)parcelListView.SelectedItem, new displayParcelsList(bl)).ShowDialog();
-				parcelListView.ItemsSource = bl.GetListOfParcels(p => p.SenderId == customer.Id);
+				parcelListView.ItemsSource = bl.GetListOfParcels(p => (p.SenderId == customer.Id || p.TargetId == customer.Id));
 				customer = bl.GetCustomer(customer.Id);
 				customerLabel.Content = customer.ToString();
 			}

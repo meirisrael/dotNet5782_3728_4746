@@ -224,9 +224,11 @@ namespace PL
 		private void droneDetails_Click(object sender, RoutedEventArgs e)
 		{
 			BO.DroneToList drone = new BO.DroneToList { Id = parcel.Drone.Id };
-			new droneWindow(bl, drone,new displayListOfDrones(bl)).ShowDialog();
+			new droneWindow(bl, drone,new displayListOfDrones(bl),this).ShowDialog();
 			parcel = bl.GetParcel(parcel.Id);
 			parcelDetails.Content = parcel.ToString();
+			if (parcel.Delivered != null)
+				drone_Button.Visibility = Visibility.Hidden;
 		}
 		/// <summary>
 		/// if the user want to delte the parcel
