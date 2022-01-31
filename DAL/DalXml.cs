@@ -170,7 +170,7 @@ namespace DalXml
 		#endregion
 
 		#region method - action on drone and parcel
-		//method - action on drone and parcel
+		//method - action on drone and parce
 		/// <summary>
 		/// affect a parcel to a drone 
 		/// </summary>
