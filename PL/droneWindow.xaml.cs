@@ -95,6 +95,42 @@ namespace PL
 				parcelDetails_Button.Visibility = Visibility.Visible;
 		}
 		/// <summary>
+		/// if the window opened by parcel window
+		/// </summary>
+		/// <param name="ibl"> bl </param>
+		/// <param name="d"> drone </param>
+		/// <param name="win"> drone window </param>
+		/// <param name="parWin"> parcel window </param>
+		public droneWindow(BlApi.IBL ibl, BO.DroneToList d, displayListOfDrones win, ParcelWindowAdmin parWin)
+		{
+			InitializeComponent();
+			bl = ibl;
+			action_drone_Grid.Visibility = Visibility.Visible;
+			drone = bl.GetDrone(d.Id);
+			Drone_label.Content = drone.ToString();
+			controlContainer.Visibility = Visibility.Hidden;
+			auto_button.Visibility = Visibility.Hidden;
+			
+		}
+		/// <summary>
+		/// if the user opended the window by base window
+		/// </summary>
+		/// <param name="ibl"></param>
+		/// <param name="d"></param>
+		/// <param name="win"></param>
+		/// <param name="baseWin"></param>
+		public droneWindow(BlApi.IBL ibl, BO.DroneToList d, displayListOfDrones win, baseWindow baseWin)
+		{
+			InitializeComponent();
+			bl = ibl;
+			action_drone_Grid.Visibility = Visibility.Visible;
+			drone = bl.GetDrone(d.Id);
+			Drone_label.Content = drone.ToString();
+			controlContainer.Visibility = Visibility.Hidden;
+			auto_button.Visibility = Visibility.Hidden;
+
+		}
+		/// <summary>
 		/// simulator initializer
 		/// </summary>
 		private void InitializeBackgroundWorker()
@@ -254,7 +290,9 @@ namespace PL
 					bl.AffectParcelToDrone(drone.Id);
 					MessageBox.Show("Successfuly associated to an parcel", "Successfull");
 				}
-				catch (Exception)
+				catch (BO.AllParcelAssoc ex)
+				{ MessageBox.Show("No parcel to affect", "ERROR"); }
+				catch
 				{ MessageBox.Show("Drone can't be affected to a parcel", "ERROR"); }
 			}
 			else if (parcel_button.Content.ToString() == "Collecte parcel")

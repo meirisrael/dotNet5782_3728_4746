@@ -146,4 +146,5 @@ namespace BO
 		public FactoryError() : base($"IBL-ERROR: ONLY TWO FACTORY ARE EXISTS\n") { }
 		public FactoryError(string ms) : base($"{ms}\nIBL-ERROR: ONLY TWO FACTORY ARE EXISTS\n") { }
 	}
+
 }

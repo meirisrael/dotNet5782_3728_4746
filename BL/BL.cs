@@ -65,10 +65,20 @@ namespace BL
 			{
 				foreach (DO.Drone d in dal.GetListDrones(d => true))
 				{
-					DateTime? isDeliverd = dal.GetListParcels(b => true).ToList().Find(item => item.DroneId == d.Id).Delivered;
-					int idParcel = dal.GetListParcels(b => true).ToList().Find(item => item.DroneId == d.Id).Id;//return id of parcel that the drone is associated;
-					if (isDeliverd != null)//check if the parcel is not in transit
-						idParcel = 0;
+					List<DO.Parcel> parcel = new List<DO.Parcel>();
+					parcel = dal.GetListParcels(b => true).ToList();
+					int idParcel = 0;
+					for (int i = 0; i <parcel.Count(); i++)
+					{
+						DateTime? isDeliverd = parcel.Find(item => item.DroneId == d.Id).Delivered;
+						if (isDeliverd != null)//check if the parcel is not in transit
+							continue;
+						else
+						{
+							idParcel = parcel[i].Id;
+							break;
+						}
+					}
 					BO.Location l = new BO.Location();
 					l.Latitude = 0; l.Longitude = 0;
 					droneToList.Add(new BO.DroneToList
@@ -594,6 +604,8 @@ namespace BL
 				if (chargeslots != "")
 				{
 					charge_slots = int.Parse(chargeslots);
+					if (charge_slots < 0)
+						throw new BO.InvalidChargeSlot();
 					baseStation.ChargeSlots = charge_slots;
 					dal.UpdateBaseStation(baseStation);
 				}
@@ -1030,6 +1042,7 @@ namespace BL
 			parcel.Scheduled = p.Scheduled;
 			parcel.PickedUp = p.PickedUp;
 			parcel.Delivered = p.Delivered;
+			parcel.Drone.Id = p.DroneId;
 
 			sender.Id = p.SenderId;
 			sender.Name = getCustomerInIBL(sender.Id).Name;
@@ -1039,9 +1052,10 @@ namespace BL
 			target.Name = getCustomerInIBL(target.Id).Name;
 			parcel.Target = target;
 
-			drone = droneToList.Find(item => item.IdOfParcel == parcelId);
-			if (drone != null)
+			//
+			if (parcel.Drone.Id != 0)
 			{
+				drone = droneToList.Find(item => item.Id== parcel.Drone.Id);
 				parcel.Drone.Id = drone.Id;
 				parcel.Drone.Battery = drone.Battery;
 				parcel.Drone.Loc = drone.Loc;

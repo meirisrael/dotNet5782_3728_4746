@@ -184,7 +184,7 @@ namespace PL
 			{
 				BO.DroneToList d = new BO.DroneToList();
 				d.Id = BaseStation.DroneInCharge[droneListView.SelectedIndex].DroneId;
-				new droneWindow(bl, d,new displayListOfDrones(bl)).ShowDialog();
+				new droneWindow(bl, d,new displayListOfDrones(bl),this).ShowDialog();
 				BaseStation = bl.GetBaseStation(BaseStation.Id);
 				if (BaseStation.DroneInCharge.Count != 0)
 				{
@@ -236,7 +236,10 @@ namespace PL
 				name_base.Background = Brushes.White;
 			}
 			catch (Exception)
-			{ }
+			{
+				MessageBox.Show("Base-Station charge-slots cant be negative", "ERROR");
+				chargeSlots_base.Background = Brushes.Salmon;
+			}
 		}
 		/// <summary>
 		/// user enter a new data in the box
@@ -321,6 +324,7 @@ namespace PL
 			{ update_button.IsEnabled = true; chargeSlots_base.Background = Brushes.LightGreen; }
 			else { update_button.IsEnabled = false; chargeSlots_base.Background = Brushes.White; }
 			}
+
 		public void dronesList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			droneListView.ItemsSource = dronesList;

@@ -146,7 +146,7 @@ namespace PL
 			{
 				if (!flag)
 				{
-					DroneListViewGrouping.ItemsSource = dronesList;
+					DroneListViewGrouping.ItemsSource = bl.GetListOfDrones(d => true);
 					CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(DroneListViewGrouping.ItemsSource);
 					PropertyGroupDescription groupDescription = new PropertyGroupDescription("Status");
 					view.GroupDescriptions.Add(groupDescription);
@@ -223,7 +223,12 @@ namespace PL
 			else
 				drones = bl.GetListOfDrones(d => true);
 
-			DroneListView.ItemsSource = drones;
+			dronesList.Clear();
+			foreach (var item in drones)
+			{
+				dronesList.Add(item);
+			}
+			//DroneListView.ItemsSource = drones;
 		}
 		/// <summary>
 		/// filter the list view by the weight of drone
@@ -239,7 +244,12 @@ namespace PL
 			else
 				drones = bl.GetListOfDrones(d => d.Status == (BO.DroneStatuses)StatusSelector.SelectedItem);
 
-			DroneListView.ItemsSource = drones;
+			dronesList.Clear();
+			foreach (var item in drones)
+			{
+				dronesList.Add(item);
+			}
+			//DroneListView.ItemsSource = drones;
 		}
 
 		/// <summary>
