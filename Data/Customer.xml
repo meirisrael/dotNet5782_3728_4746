@@ -70,4 +70,11 @@
     <Longitude>27.732994683009107</Longitude>
     <Latitude>33.59010090357163</Latitude>
   </Customer>
+  <Customer>
+    <Id>3010</Id>
+    <Name>lolo</Name>
+    <Phone>0523497165</Phone>
+    <Longitude>120.5</Longitude>
+    <Latitude>14.62</Latitude>
+  </Customer>
 </ArrayOfCustomer>
