@@ -23,8 +23,7 @@ namespace PL
     {
 		private BlApi.IBL bl;
 		private BO.Customer customer;
-		private ListView customerList_;
-		displayCustomersList mySender = new displayCustomersList();
+		displayCustomersList mySender;
 		//------------------------------------------------------------------ FUNC AND CONST VARIABL --------------------------------------------------------------------------------------------------
 		private const Int32 GWL_STYLE = -16;
 		private const uint MF_BYCOMMAND = 0x00000000;
@@ -263,7 +262,7 @@ namespace PL
 				MessageBox.Show("Choose a parcel !!", "ERROR");
 			else
 			{
-				new ParcelWindowAdmin(bl, (BO.ParcelToList)parcelListView.SelectedItem, new displayParcelsList()).ShowDialog();
+				new ParcelWindowAdmin(bl, (BO.ParcelToList)parcelListView.SelectedItem, new displayParcelsList(bl)).ShowDialog();
 				parcelListView.ItemsSource = bl.GetListOfParcels(p => p.SenderId == customer.Id);
 				customer = bl.GetCustomer(customer.Id);
 				customerLabel.Content = customer.ToString();

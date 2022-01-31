@@ -26,8 +26,7 @@ namespace PL
 	{
 		private BlApi.IBL bl;
 		private BO.Drone drone;
-		private ListView droneList_;
-		displayListOfDrones mySender = new displayListOfDrones();
+		displayListOfDrones mySender;
 		private System.ComponentModel.BackgroundWorker backgroundWorker1 = new BackgroundWorker();
 		private bool flag;
 		//------------------------------------------------------------------ FUNC AND CONST VARIABL --------------------------------------------------------------------------------------------------
@@ -84,7 +83,7 @@ namespace PL
 		public droneWindow(BlApi.IBL ibl, BO.DroneToList d, displayListOfDrones win)
 		{
 			InitializeComponent();
-			InitializeBackgroundWorker();//////
+			InitializeBackgroundWorker();
 			bl = ibl;
 			mySender = win;
 			action_drone_Grid.Visibility = Visibility.Visible;
@@ -98,7 +97,7 @@ namespace PL
 		/// <summary>
 		/// simulator initializer
 		/// </summary>
-		private void InitializeBackgroundWorker()//////
+		private void InitializeBackgroundWorker()
 		{
 			backgroundWorker1.DoWork +=
 				new DoWorkEventHandler(backgroundWorker1_DoWork);
@@ -297,7 +296,7 @@ namespace PL
 		private void parcelDetails_Click(object sender, RoutedEventArgs e)
 		{
 			BO.ParcelToList p = new BO.ParcelToList { Id = drone.InTransit.Id };
-			new ParcelWindowAdmin(bl,p, new displayParcelsList()).ShowDialog();
+			new ParcelWindowAdmin(bl,p, new displayParcelsList(bl)).ShowDialog();
 		}
 
 		/// <summary>

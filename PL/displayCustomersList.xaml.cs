@@ -63,8 +63,6 @@ namespace PL
 			CustomerlistView.ItemsSource = customers;
 			customers.CollectionChanged += customers_CollectionChanged;
 		}
-		public displayCustomersList()
-		{ }
 		/// <summary>
 		/// Close button
 		/// </summary>

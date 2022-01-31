@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="Client Window" Height="450" Width="800" Loaded="Window_Loaded" Icon="\icon\logo_company.ico">
+        Title="Client Window" Height="450" Width="800" Loaded="Window_Loaded" Icon="\icon\logo_company.ico" ResizeMode="NoResize">
     <Window.Resources>
         <Style x:Key = "TriggerStyle" TargetType = "Button">
             <Setter Property = "Foreground" Value = "Black" />

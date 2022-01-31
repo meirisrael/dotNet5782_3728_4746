@@ -4,7 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="List of base-station's" Height="473" Width="800" Icon="\icon\logo_company.ico">
+        Title="List of base-station's" Height="473" Width="800" Icon="\icon\logo_company.ico" ResizeMode="NoResize">
 	<Grid>
 		<Button Content="ADD Base-Sation" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="green" Width="110" Height="25" Click="Add_Click" BorderBrush="Black" BorderThickness="1" FontFamily="Comic Sans MS"  FontWeight="DemiBold" Margin="0,0,80,80"/>
 
@@ -57,6 +57,7 @@
 		<Button Content="Close" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="134" Height="34" Background="Red"  FontFamily="Comic Sans MS" FontWeight="DemiBold" Margin="0,0,0,15"
 				Click="Close_Click"/>
 		<Button x:Name="groupButton" Content="Group the List" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="148,0,0,80" Click="groupButton_Click" Background="DarkMagenta" Height="25" BorderBrush="Black" BorderThickness="1" FontFamily="Comic Sans MS"  FontWeight="DemiBold"/>
+
 		<Grid.Background>
 			<ImageBrush ImageSource="\picture\baseDrone.png" AlignmentY="Top" AlignmentX="Center" Stretch="Fill"/>
 		</Grid.Background>

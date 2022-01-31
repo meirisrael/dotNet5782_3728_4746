@@ -69,8 +69,6 @@ namespace PL
 			StatusSelector.ItemsSource = Enum.GetValues(typeof(BO.DroneStatuses));
 			WeightSelector.ItemsSource = Enum.GetValues(typeof(BO.WeightCategories));
 		}
-		public displayListOfDrones()
-		{}
 
 		/// <summary>
 		/// if the user select a status to filter
