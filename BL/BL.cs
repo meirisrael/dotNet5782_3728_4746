@@ -61,19 +61,19 @@ namespace BL
 		/// </summary>
 		private void reqListOfDrone()
 		{
+			List<DO.Parcel> parcel = new List<DO.Parcel>();
+			parcel = dal.GetListParcels(b => true).ToList();
 			lock (dal)
 			{
 				foreach (DO.Drone d in dal.GetListDrones(d => true))
 				{
-					List<DO.Parcel> parcel = new List<DO.Parcel>();
-					parcel = dal.GetListParcels(b => true).ToList();
 					int idParcel = 0;
 					for (int i = 0; i <parcel.Count(); i++)
 					{
-						DateTime? isDeliverd = parcel.Find(item => item.DroneId == d.Id).Delivered;
-						if (isDeliverd != null)//check if the parcel is not in transit
+						if (parcel[i].DroneId == d.Id && parcel[i].Delivered != null)
 							continue;
-						else
+
+						else if(parcel[i].DroneId == d.Id && parcel[i].Delivered == null)
 						{
 							idParcel = parcel[i].Id;
 							break;

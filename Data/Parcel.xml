@@ -93,8 +93,8 @@
     <Priority>Emergecey</Priority>
     <Requested>2022-01-31T16:55:29.9954816+02:00</Requested>
     <Scheduled>2022-01-31T16:55:34.9954822+02:00</Scheduled>
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
+    <PickedUp>2022-01-31T17:22:45.4508048+02:00</PickedUp>
+    <Delivered>2022-01-31T17:22:47.0000838+02:00</Delivered>
   </Parcel>
   <Parcel>
     <Id>4008</Id>
@@ -117,7 +117,7 @@
     <Priority>Emergecey</Priority>
     <Requested>2022-01-31T16:55:29.9954853+02:00</Requested>
     <Scheduled>2022-01-31T16:55:34.9954859+02:00</Scheduled>
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
+    <PickedUp>2022-01-31T17:21:44.5101513+02:00</PickedUp>
+    <Delivered>2022-01-31T17:21:46.6284199+02:00</Delivered>
   </Parcel>
 </ArrayOfParcel>
