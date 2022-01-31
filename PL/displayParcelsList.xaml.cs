@@ -66,7 +66,7 @@ namespace PL
 			ParcelListView.ItemsSource = parcels;
 			this.DataContext = this;
 		}
-        public displayParcelsList()
+		public displayParcelsList()
 		{ }
 
 		/// <summary>
@@ -76,7 +76,7 @@ namespace PL
 		/// <param name="e"> click </param>
 		private void Add_Click(object sender, RoutedEventArgs e)
 		{
-			new ParcelWindowAdmin(bl,this).Show();
+			new ParcelWindowAdmin(bl, this).Show();
 			filterByStatus();
 		}
 		/// <summary>
@@ -115,8 +115,8 @@ namespace PL
 		private void Clear_Click(object sender, RoutedEventArgs e)
 		{
 			StatusSelector.SelectedItem = null;
-			parcels = new ObservableCollection<BO.ParcelToList>(bl.GetListOfParcels(p => true));
-			ParcelListView.ItemsSource = parcels;
+			parcel = bl.GetListOfParcels(d => true);
+			ParcelListView.ItemsSource = parcel;
 		}
 
 		/// <summary>
@@ -139,7 +139,7 @@ namespace PL
 				MessageBox.Show("Choose a drone !!", "ERROR");
 			else
 			{
-				new ParcelWindowAdmin(bl, (BO.ParcelToList)ParcelListView.SelectedItem,this).Show();
+				new ParcelWindowAdmin(bl, (BO.ParcelToList)ParcelListView.SelectedItem, this).Show();
 				filterByStatus();
 			}
 		}
@@ -180,7 +180,7 @@ namespace PL
 		}
 		public void parcels_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
-			parcel = bl.GetListOfParcels(d => true); 
+			parcel = bl.GetListOfParcels(d => true);
 			ParcelListView.ItemsSource = parcel;
 		}
 		/// <summary>
