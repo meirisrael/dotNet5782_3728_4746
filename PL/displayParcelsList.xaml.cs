@@ -76,7 +76,7 @@ namespace PL
 		/// <param name="e"> click </param>
 		private void Add_Click(object sender, RoutedEventArgs e)
 		{
-			new ParcelWindowAdmin(bl,this).Show();
+			new ParcelWindowAdmin(bl, this).Show();
 			filterByStatus();
 		}
 		/// <summary>
@@ -119,8 +119,8 @@ namespace PL
 		private void Clear_Click(object sender, RoutedEventArgs e)
 		{
 			StatusSelector.SelectedItem = null;
-			parcels = new ObservableCollection<BO.ParcelToList>(bl.GetListOfParcels(p => true));
-			ParcelListView.ItemsSource = parcels;
+			parcel = bl.GetListOfParcels(d => true);
+			ParcelListView.ItemsSource = parcel;
 		}
 
 		/// <summary>

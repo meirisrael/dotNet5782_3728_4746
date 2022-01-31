@@ -13,11 +13,7 @@
     <StationId>2000</StationId>
   </Drone>
   <Drone>
-    <DroneId>1008</DroneId>
-    <StationId>2001</StationId>
-  </Drone>
-  <Drone>
-    <DroneId>1009</DroneId>
+    <DroneId>1001</DroneId>
     <StationId>2001</StationId>
   </Drone>
 </ArrayOfDroneCharge>
